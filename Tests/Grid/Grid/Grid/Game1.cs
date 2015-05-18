@@ -20,8 +20,9 @@ namespace Grid
         SpriteBatch spriteBatch;
         BasicEffect effect;
         Matrix view, projection;
-        Plane plane = new Plane(5, 1.0f);
+        Plane plane = new Plane(10, 1.0f);
         Camera camera;
+        SpriteFont spriteFont;
         
 
         public Game1()
@@ -53,6 +54,7 @@ namespace Grid
             spriteBatch = new SpriteBatch(GraphicsDevice);
             effect = new BasicEffect(GraphicsDevice);
             projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f);
+            spriteFont = Content.Load<SpriteFont>("Font");
         }
 
         /// <summary>
@@ -91,7 +93,17 @@ namespace Grid
 
             effect.CurrentTechnique.Passes[0].Apply();
             plane.Draw(gameTime, GraphicsDevice);
+            spriteBatch.Begin();
+            for (int i = 0; i < plane.getSideLength(); ++i)
+            {
+                for (int j = 0; j < plane.getSideLength(); ++j)
+                {
+                    int tmp = i*plane.getSideLength()+j;
+                    spriteBatch.DrawString(spriteFont, plane.getPlaneHexagons().ElementAt(tmp).getIndexNumber().ToString(), plane.getPlaneHexagons().ElementAt(tmp).get2DPosition(), Color.White);
+                }
+            }
 
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }

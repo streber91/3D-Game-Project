@@ -14,9 +14,10 @@ namespace Grid
     class Hexagon
     {
         VertexPositionColor[] vertices = new VertexPositionColor[6];
+        Vector3 position;
+        int indexNumber;
 
-
-        public Hexagon(Vector3 position, float sidelength, Color color)
+        public Hexagon(Vector3 position, float sidelength, Color color, int indexNumber)
         {
             /*vertices[0] = new VertexPositionColor(position + new Vector3(-sidelength / 2 - sidelength / (float)Math.Sqrt(2), 0.0f, 0.0f), color);
             vertices[1] = new VertexPositionColor(position + new Vector3(-sidelength / 2, sidelength / (float)Math.Sqrt(2), 0.0f), color);
@@ -25,13 +26,18 @@ namespace Grid
             vertices[4] = new VertexPositionColor(position + new Vector3(sidelength / 2, -sidelength / (float)Math.Sqrt(2), 0.0f), color);
             vertices[5] = new VertexPositionColor(position + new Vector3(sidelength / 2 + sidelength / (float)Math.Sqrt(2), 0.0f, 0.0f), color);*/
 
-            vertices[0] = new VertexPositionColor(position + new Vector3(-sidelength, 0.0f, 0.0f), Color.Green);
-            vertices[1] = new VertexPositionColor(position + new Vector3(-sidelength / 2, sidelength * 7 / 8, 0.0f), Color.Red);
-            vertices[2] = new VertexPositionColor(position + new Vector3(-sidelength / 2, -sidelength * 7 / 8, 0.0f), Color.Blue);
-            vertices[3] = new VertexPositionColor(position + new Vector3(sidelength / 2, sidelength * 7 / 8, 0.0f), Color.Yellow);
-            vertices[4] = new VertexPositionColor(position + new Vector3(sidelength / 2, -sidelength * 7 / 8, 0.0f), Color.Orange);
-            vertices[5] = new VertexPositionColor(position + new Vector3(sidelength, 0.0f, 0.0f), Color.Purple);
+            this.position = position;
+            this.indexNumber = indexNumber;
+            vertices[0] = new VertexPositionColor(position + new Vector3(-sidelength, 0.0f, 0.0f), color);
+            vertices[1] = new VertexPositionColor(position + new Vector3(-sidelength / 2, sidelength * 7 / 8, 0.0f), color);
+            vertices[2] = new VertexPositionColor(position + new Vector3(-sidelength / 2, -sidelength * 7 / 8, 0.0f), color);
+            vertices[3] = new VertexPositionColor(position + new Vector3(sidelength / 2, sidelength * 7 / 8, 0.0f), color);
+            vertices[4] = new VertexPositionColor(position + new Vector3(sidelength / 2, -sidelength * 7 / 8, 0.0f), color);
+            vertices[5] = new VertexPositionColor(position + new Vector3(sidelength, 0.0f, 0.0f), color);
         }
+
+        public int getIndexNumber() { return indexNumber; }
+        public Vector2 get2DPosition() { return new Vector2(position.X, position.Z); }
 
         public void Draw(GameTime gameTime, GraphicsDevice graphics)
         {

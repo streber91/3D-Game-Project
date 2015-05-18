@@ -20,7 +20,7 @@ namespace Grid
         SpriteBatch spriteBatch;
         BasicEffect effect;
         Matrix view, projection;
-        Plane plane = new Plane(10, 1.0f);
+        Plane plane;
         Camera camera;
         SpriteFont spriteFont;
         
@@ -39,6 +39,7 @@ namespace Grid
         /// </summary>
         protected override void Initialize()
         {
+            plane = new Plane(10, 1.0f);
             camera = new Camera(new Vector3(7, 4, 15), new Vector3(7, 4, 0), Vector3.Up);
 
             base.Initialize();
@@ -93,13 +94,15 @@ namespace Grid
 
             effect.CurrentTechnique.Passes[0].Apply();
             plane.Draw(gameTime, GraphicsDevice);
-            spriteBatch.Begin();
+            spriteBatch.Begin(0, null, null, null, RasterizerState.CullNone, effect);
             for (int i = 0; i < plane.getSideLength(); ++i)
             {
                 for (int j = 0; j < plane.getSideLength(); ++j)
                 {
                     int tmp = i*plane.getSideLength()+j;
-                    spriteBatch.DrawString(spriteFont, plane.getPlaneHexagons().ElementAt(tmp).getIndexNumber().ToString(), plane.getPlaneHexagons().ElementAt(tmp).get2DPosition(), Color.White);
+                    Vector3 indexPosition3D = Vector3.Transform(plane.getPlaneHexagons().ElementAt(tmp).get3DPosition(), view);
+                    Vector2 indexPosition2D = new Vector2(indexPosition3D.X, indexPosition3D.Y);
+                    spriteBatch.DrawString(spriteFont, plane.getPlaneHexagons().ElementAt(tmp).getIndexNumber().ToString(), indexPosition2D, Color.White, 0, Vector2.Zero, 0.10f, 0, indexPosition3D.Z);
                 }
             }
 

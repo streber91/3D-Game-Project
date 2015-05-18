@@ -38,6 +38,7 @@ namespace Grid
 
         public int getIndexNumber() { return indexNumber; }
         public Vector2 get2DPosition() { return new Vector2(position.X, position.Z); }
+        public Vector3 get3DPosition() { return position; }
 
         public void Draw(GameTime gameTime, GraphicsDevice graphics)
         {

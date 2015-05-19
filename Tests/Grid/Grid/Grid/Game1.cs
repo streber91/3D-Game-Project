@@ -164,14 +164,27 @@ namespace Grid
                 mouseY -= 0.875f;
                 ++Y;
             }
-            
+
+            if (mouseX <= hexagonsidelength / 2)
+            {
+                if ((X + Y) % 2 == 0)
+                {
+                    if (0.875 >= mouseX * 1.75 + mouseY) --X;
+                    if (X < 0) X += planelength;
+                }
+                else
+                {
+                    if (0 >= mouseX * 1.75 - mouseY) --X;
+                    if (X < 0) X += planelength;
+                }
+            }
             if (X % 2 != 0)
             {
                 --Y;
                 if (Y < 0) Y += planelength * 2;
             }
 
-            return new Vector2(X, (int)(Y/2));
+            return new Vector2(X, (int)(Y / 2));
         }
     }
 }

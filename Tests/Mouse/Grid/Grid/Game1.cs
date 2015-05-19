@@ -159,13 +159,21 @@ namespace Grid
                 mouseY -= 0.875f;
                 ++Y;
             }
-            
+
+            if ((X + Y) % 2 == 0)
+            {
+               // if(0.875 >= mouseX * 1.75 + mouseY) 
+            }
+            else
+            {
+
+            }
             if (X % 2 != 0)
             {
                 --Y;
                 if (Y < 0) Y += plane.getSideLength() * 2;
             }
-
+            
             return new Vector2(X, (int)(Y/2));
         }
     }

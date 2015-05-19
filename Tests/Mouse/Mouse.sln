@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grid", "Grid\Grid\Grid.csproj", "{117C876A-755C-494C-BDD7-AD5084EE6C1C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mouse", "Grid\Grid\Mouse.csproj", "{117C876A-755C-494C-BDD7-AD5084EE6C1C}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "GridContent", "Grid\GridContent\GridContent.contentproj", "{0E0D8A54-5F17-407C-85C7-6D243A446BB2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MouseContent", "Grid\GridContent\MouseContent.contentproj", "{0E0D8A54-5F17-407C-85C7-6D243A446BB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

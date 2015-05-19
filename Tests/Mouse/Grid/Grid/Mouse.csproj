@@ -119,9 +119,10 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GridContent\GridContent.contentproj">
-      <Name>GridContent</Name>
+    <ProjectReference Include="..\GridContent\MouseContent.contentproj">
+      <Name>MouseContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{0E0D8A54-5F17-407C-85C7-6D243A446BB2}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

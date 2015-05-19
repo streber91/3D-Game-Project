@@ -15,14 +15,17 @@ namespace Grid
     {
         VertexPositionColor[] vertices = new VertexPositionColor[6];
         Vector3 position;
-        Color standartColor;
-        int indexNumber;
+        Vector2 indexNumber;
+        Vector2[] neighbors = new Vector2[6]; //[up,right-up,right-down,down,left-down,left-up]
+        Color standardcolor;
 
-        public Hexagon(Vector3 position, float sidelength, Color color, int indexNumber)
+
+        public Hexagon(Vector3 position, float sidelength, Color color, Vector2 indexNumber, Vector2[] neighbors)
         {
-            standartColor = color;
             this.position = position;
             this.indexNumber = indexNumber;
+            this.neighbors = neighbors;
+            standardcolor = color;
             vertices[0] = new VertexPositionColor(position + new Vector3(-sidelength, 0.0f, 0.0f), color);
             vertices[1] = new VertexPositionColor(position + new Vector3(-sidelength / 2, sidelength * 7 / 8, 0.0f), color);
             vertices[2] = new VertexPositionColor(position + new Vector3(-sidelength / 2, -sidelength * 7 / 8, 0.0f), color);
@@ -31,8 +34,17 @@ namespace Grid
             vertices[5] = new VertexPositionColor(position + new Vector3(sidelength, 0.0f, 0.0f), color);
         }
 
-        public int getIndexNumber() { return indexNumber; }
+        public Vector2 getIndexNumber() { return indexNumber; }
         public Vector2 get2DPosition() { return new Vector2(position.X, position.Z); }
+        public Vector3 get3DPosition() { return position; }
+        public Vector2[] getNeighbors() { return neighbors; }
+        public Color getStdColor() { return standardcolor; }
+
+        public void Draw(GameTime gameTime, GraphicsDevice graphics)
+        {
+            graphics.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.TriangleStrip, vertices, 0, 4);
+        }
+
         public void setColor(Color color) 
         {
             for (int i = 0; i < 6; ++i)
@@ -40,11 +52,7 @@ namespace Grid
                 vertices[i].Color = color;
             }
         }
-        public Color getStColor() { return standartColor; }
 
-        public void Draw(GameTime gameTime, GraphicsDevice graphics)
-        {
-            graphics.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.TriangleStrip, vertices, 0, 4);
-        }
+        
     }
 }

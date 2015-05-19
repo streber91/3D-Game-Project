@@ -37,10 +37,22 @@ namespace Grid
         public Vector2 getIndexNumber() { return indexNumber; }
         public Vector2 get2DPosition() { return new Vector2(position.X, position.Z); }
         public Vector3 get3DPosition() { return position; }
+        public Vector2[] getNeighbors() { return neighbors; }
+        public Color getStdColor() { return standardcolor; }
 
         public void Draw(GameTime gameTime, GraphicsDevice graphics)
         {
             graphics.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.TriangleStrip, vertices, 0, 4);
         }
+
+        public void setColor(Color color) 
+        {
+            for (int i = 0; i < 6; ++i)
+            {
+                vertices[i].Color = color;
+            }
+        }
+
+        
     }
 }

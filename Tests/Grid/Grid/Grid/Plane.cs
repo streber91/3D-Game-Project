@@ -27,13 +27,13 @@ namespace Grid
                     Vector2[] neighbors = new Vector2[6];
                     if (i % 2 == 0)
                     {
-                        float xValue = (--indexNumber.X + sidelength) % sidelength;
-                        float yUpValue = ++indexNumber.Y % sidelength;
-                        float yDownValue = (--indexNumber.Y + sidelength) % sidelength;
+                        float xValue = (indexNumber.X - 1 + sidelength) % sidelength;
+                        float yUpValue = (indexNumber.Y + 1) % sidelength;
+                        float yDownValue = (indexNumber.Y - 1 + sidelength) % sidelength;
 
                         neighbors[0] = new Vector2(indexNumber.X, yUpValue);
-                        neighbors[1] = new Vector2(++indexNumber.X, indexNumber.Y);
-                        neighbors[2] = new Vector2(++indexNumber.X, yDownValue);
+                        neighbors[1] = new Vector2(indexNumber.X + 1, indexNumber.Y);
+                        neighbors[2] = new Vector2(indexNumber.X + 1, yDownValue);
                         neighbors[3] = new Vector2(indexNumber.X, yDownValue);
                         neighbors[4] = new Vector2(xValue, yDownValue);
                         neighbors[5] = new Vector2(xValue, indexNumber.Y);
@@ -49,16 +49,16 @@ namespace Grid
                     }
                     else
                     {
-                        float xValue = ++indexNumber.X % sidelength;
-                        float yUpValue = ++indexNumber.Y % sidelength;
-                        float yDownValue = (--indexNumber.Y + sidelength) % sidelength;
+                        float xValue = (indexNumber.X + 1) % sidelength;
+                        float yUpValue = (indexNumber.Y + 1) % sidelength;
+                        float yDownValue = (indexNumber.Y - 1 + sidelength) % sidelength;
 
                         neighbors[0] = new Vector2(indexNumber.X, yUpValue);
                         neighbors[1] = new Vector2(xValue, yUpValue);
                         neighbors[2] = new Vector2(xValue, indexNumber.Y);
                         neighbors[3] = new Vector2(indexNumber.X, yDownValue);
-                        neighbors[4] = new Vector2(--indexNumber.X, indexNumber.Y);
-                        neighbors[5] = new Vector2(--indexNumber.X, yUpValue);
+                        neighbors[4] = new Vector2(indexNumber.X - 1, indexNumber.Y);
+                        neighbors[5] = new Vector2(indexNumber.X - 1, yUpValue);
 
                         if (i >= 5 && j >= 5) plane.Add(new Hexagon(new Vector3((i - 1) * 3 / 2 * hexagonsidelength + 2.5f * hexagonsidelength,
                                                                     j * 2 * hexagonsidelength * 7 / 8 + 2 * hexagonsidelength * 7 / 8, 0), hexagonsidelength, Color.Blue, indexNumber, neighbors));
@@ -71,6 +71,7 @@ namespace Grid
                     }
                     ++indexNumber.Y;
      ;          }
+                indexNumber.Y = 0;
                 ++indexNumber.X;
             }
         }

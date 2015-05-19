@@ -22,8 +22,11 @@ namespace Grid
         Matrix view, projection;
         Plane plane;
         Camera camera;
-        
-
+        MouseState mousestate;
+        SpriteFont font;
+        Vector3 mouseposition;
+        float hexagonsidelength;
+        int planelength;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -38,8 +41,15 @@ namespace Grid
         /// </summary>
         protected override void Initialize()
         {
-            plane = new Plane(10, 1.0f);
-            camera = new Camera(new Vector3(7, 4, 15), new Vector3(7, 4, 0), Vector3.Up);
+            hexagonsidelength = 1;
+            planelength = 6; //need an even number!
+            plane = new Plane(planelength, hexagonsidelength);
+            camera = new Camera(new Vector3(0, 0, 15), new Vector3(0, 0, 0), Vector3.Up);
+            IsMouseVisible = true;
+            mousestate = Mouse.GetState();
+            view = Matrix.CreateLookAt(camera.getCameraPosition(), camera.getCameraTarget(), camera.getUpVector());
+            projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f);
+            mouseposition = GraphicsDevice.Viewport.Unproject(new Vector3(mousestate.X, mousestate.Y, 0), projection, view, Matrix.Identity);
 
             base.Initialize();
         }
@@ -53,7 +63,7 @@ namespace Grid
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             effect = new BasicEffect(GraphicsDevice);
-            projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f);
+            font = Content.Load<SpriteFont>("testfont");
         }
 
         /// <summary>
@@ -74,11 +84,26 @@ namespace Grid
         {
             camera.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds);
             view = Matrix.CreateLookAt(camera.getCameraPosition(), camera.getCameraTarget(), camera.getUpVector());
+            mousestate = Mouse.GetState();
+            mouseposition = mousepos();
+
+            foreach (Hexagon hex in plane.getPlaneHexagons())
+            {
+                hex.setColor(hex.getStdColor());
+            }
             
+            Vector2 mouseover = gridColision(mouseposition);
+            Vector2[] neigbors = plane.getPlaneHexagons()[(int)(mouseover.X * plane.getSideLength() + mouseover.Y)].getNeighbors();
+
+            plane.getPlaneHexagons()[(int)(mouseover.X * plane.getSideLength() + mouseover.Y)].setColor(Color.Brown);
+            foreach (Vector2 hex in neigbors)
+            {
+                plane.getPlaneHexagons()[(int)(hex.X * plane.getSideLength() + hex.Y)].setColor(Color.Brown);
+            }
 
             base.Update(gameTime);
         }
-
+        
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -86,35 +111,62 @@ namespace Grid
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-
-
-            //effect.World = Matrix.Identity;
             effect.View = view;
             effect.Projection = projection;
             effect.VertexColorEnabled = true;
+            
             effect.CurrentTechnique.Passes[0].Apply();
             plane.Draw(gameTime, GraphicsDevice);
 
-            /*Matrix invertY = Matrix.CreateScale(1, -1, 1);
-            effect.World = invertY;
-            effect.CurrentTechnique.Passes[0].Apply();
-            spriteBatch.Begin(0, null, null, DepthStencilState.DepthRead, RasterizerState.CullNone, effect);
-            for (int i = 0; i < plane.getSideLength(); ++i)
-            {
-                for (int j = 0; j < plane.getSideLength(); ++j)
-                {
-                    int tmp = i*plane.getSideLength()+j;
-                    Vector3 indexPosition3D = Vector3.Transform(plane.getPlaneHexagons().ElementAt(tmp).get3DPosition(), view * invertY);
-                    Vector2 indexPosition2D = new Vector2(indexPosition3D.X, indexPosition3D.Y);
+            spriteBatch.Begin();
 
-                    string text = plane.getPlaneHexagons().ElementAt(tmp).getIndexNumber().ToString();
-                    Vector2 textOrigin = spriteFont.MeasureString(text) / 2;
+            spriteBatch.DrawString(font, mousestate.X.ToString() + " : " + mousestate.Y.ToString(), new Vector2(10, 10), Color.White);
+            spriteBatch.DrawString(font, mouseposition.X.ToString() + " : " + mouseposition.Y.ToString() + " : " + mouseposition.Z.ToString(), new Vector2(10, 25), Color.White);
 
-                    spriteBatch.DrawString(spriteFont, text, indexPosition2D, Color.Purple, 0, textOrigin, 0.10f, 0, indexPosition3D.Z);
-                }
-            }
-            spriteBatch.End();*/
+            spriteBatch.End();
+
             base.Draw(gameTime);
+        }
+
+        private Vector3 mousepos()
+        {
+            Vector3 vec1 = GraphicsDevice.Viewport.Unproject(new Vector3(mousestate.X, mousestate.Y, 1), projection, view, Matrix.Identity);
+            Vector3 vec2 = GraphicsDevice.Viewport.Unproject(new Vector3(mousestate.X, mousestate.Y, 0), projection, view, Matrix.Identity);
+            float a = -vec1.Z / (vec2.Z - vec1.Z);
+            Vector3 mousepos = new Vector3(a * (vec2.X - vec1.X) + vec1.X, a * (vec2.Y - vec1.Y) + vec1.Y, 0.0f);
+
+            return mousepos;
+        }
+
+        private Vector2 gridColision(Vector3 mouse)
+        {
+            float mouseX = mouse.X;
+            float mouseY = mouse.Y;
+            int X = 0;
+            int Y = 0;
+            while (mouseX < 0) mouseX = mouseX + (plane.getSideLength() * 1.5f * hexagonsidelength);
+            while (mouseY < 0) mouseY = mouseY + (plane.getSideLength() * 2 * 0.875f * hexagonsidelength);
+            mouseX = mouseX % (plane.getSideLength() * 1.5f * hexagonsidelength);
+            mouseY = mouseY % (plane.getSideLength() * 2 * 0.875f * hexagonsidelength);
+
+            while (mouseX >= 1.5f * hexagonsidelength)
+            {
+                mouseX -= 1.5f;
+                ++X;
+            }
+            while (mouseY >= 0.875f * hexagonsidelength)
+            {
+                mouseY -= 0.875f;
+                ++Y;
+            }
+            
+            if (X % 2 != 0)
+            {
+                --Y;
+                if (Y < 0) Y += plane.getSideLength() * 2;
+            }
+
+            return new Vector2(X, (int)(Y/2));
         }
     }
 }

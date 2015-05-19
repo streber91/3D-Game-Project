@@ -89,10 +89,17 @@ namespace Grid
 
             foreach (Hexagon hex in plane.getPlaneHexagons())
             {
-                hex.setColor(hex.getStColor());
+                hex.setColor(hex.getStdColor());
             }
+            
+            Vector2 mouseover = gridColision(mouseposition);
+            Vector2[] neigbors = plane.getPlaneHexagons()[(int)(mouseover.X * plane.getSideLength() + mouseover.Y)].getNeighbors();
 
-            plane.getPlaneHexagons()[(int)(gridColision(mouseposition).X * plane.getSideLength() + gridColision(mouseposition).Y)].setColor(Color.Brown);
+            plane.getPlaneHexagons()[(int)(mouseover.X * plane.getSideLength() + mouseover.Y)].setColor(Color.Brown);
+            foreach (Vector2 hex in neigbors)
+            {
+                plane.getPlaneHexagons()[(int)(hex.X * plane.getSideLength() + hex.Y)].setColor(Color.Brown);
+            }
 
             base.Update(gameTime);
         }

@@ -160,13 +160,18 @@ namespace Grid
                 ++Y;
             }
 
-            if ((X + Y) % 2 == 0)
+            if (mouseX <= hexagonsidelength / 2)
             {
-               // if(0.875 >= mouseX * 1.75 + mouseY) 
-            }
-            else
-            {
-
+                if ((X + Y) % 2 == 0)
+                {
+                    if (0.875 >= mouseX * 1.75 + mouseY) --X;
+                    if (X < 0) X += plane.getSideLength();
+                }
+                else
+                {
+                    if (0 >= mouseX * 1.75 - mouseY) --X;
+                    if (X < 0) X += plane.getSideLength();
+                }
             }
             if (X % 2 != 0)
             {

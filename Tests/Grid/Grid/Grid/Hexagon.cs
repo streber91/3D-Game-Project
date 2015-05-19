@@ -13,12 +13,13 @@ namespace Grid
 {
     class Hexagon
     {
-        VertexPositionColor[] vertices = new VertexPositionColor[6];
+        
         Vector3 position;
         Vector2 indexNumber;
         Vector2[] neighbors = new Vector2[6]; //[up,right-up,right-down,down,left-down,left-up]
         Color standardcolor;
-
+        Color drawcolor;
+        float sidelength;
 
         public Hexagon(Vector3 position, float sidelength, Color color, Vector2 indexNumber, Vector2[] neighbors)
         {
@@ -26,12 +27,8 @@ namespace Grid
             this.indexNumber = indexNumber;
             this.neighbors = neighbors;
             standardcolor = color;
-            vertices[0] = new VertexPositionColor(position + new Vector3(-sidelength, 0.0f, 0.0f), color);
-            vertices[1] = new VertexPositionColor(position + new Vector3(-sidelength / 2, sidelength * 7 / 8, 0.0f), color);
-            vertices[2] = new VertexPositionColor(position + new Vector3(-sidelength / 2, -sidelength * 7 / 8, 0.0f), color);
-            vertices[3] = new VertexPositionColor(position + new Vector3(sidelength / 2, sidelength * 7 / 8, 0.0f), color);
-            vertices[4] = new VertexPositionColor(position + new Vector3(sidelength / 2, -sidelength * 7 / 8, 0.0f), color);
-            vertices[5] = new VertexPositionColor(position + new Vector3(sidelength, 0.0f, 0.0f), color);
+            drawcolor = color;
+            this.sidelength = sidelength;
         }
 
         public Vector2 getIndexNumber() { return indexNumber; }
@@ -40,19 +37,21 @@ namespace Grid
         public Vector2[] getNeighbors() { return neighbors; }
         public Color getStdColor() { return standardcolor; }
 
-        public void Draw(GameTime gameTime, GraphicsDevice graphics)
+        public void Draw(GraphicsDevice graphics, Vector3 drawPosition)
         {
+            VertexPositionColor[] vertices = new VertexPositionColor[6];
+            vertices[0] = new VertexPositionColor(drawPosition + new Vector3(-sidelength, 0.0f, 0.0f), drawcolor);
+            vertices[1] = new VertexPositionColor(drawPosition + new Vector3(-sidelength / 2, sidelength * 7 / 8, 0.0f), drawcolor);
+            vertices[2] = new VertexPositionColor(drawPosition + new Vector3(-sidelength / 2, -sidelength * 7 / 8, 0.0f), drawcolor);
+            vertices[3] = new VertexPositionColor(drawPosition + new Vector3(sidelength / 2, sidelength * 7 / 8, 0.0f), drawcolor);
+            vertices[4] = new VertexPositionColor(drawPosition + new Vector3(sidelength / 2, -sidelength * 7 / 8, 0.0f), drawcolor);
+            vertices[5] = new VertexPositionColor(drawPosition + new Vector3(sidelength, 0.0f, 0.0f), drawcolor);
             graphics.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.TriangleStrip, vertices, 0, 4);
         }
 
         public void setColor(Color color) 
         {
-            for (int i = 0; i < 6; ++i)
-            {
-                vertices[i].Color = color;
-            }
+            drawcolor = color;
         }
-
-        
     }
 }

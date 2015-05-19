@@ -27,6 +27,8 @@ namespace Grid
         Vector3 mouseposition;
         float hexagonsidelength;
         int planelength;
+        Vector2 indexOfMiddleHexagon;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -42,9 +44,9 @@ namespace Grid
         protected override void Initialize()
         {
             hexagonsidelength = 1;
-            planelength = 6; //need an even number!
+            planelength = 10; //need an even number!
             plane = new Plane(planelength, hexagonsidelength);
-            camera = new Camera(new Vector3(0, 0, 15), new Vector3(0, 0, 0), Vector3.Up);
+            camera = new Camera(new Vector3(0, 0, 15), new Vector3(0, 0, 0), Vector3.Up, planelength, hexagonsidelength);
             IsMouseVisible = true;
             mousestate = Mouse.GetState();
             view = Matrix.CreateLookAt(camera.getCameraPosition(), camera.getCameraTarget(), camera.getUpVector());
@@ -93,13 +95,16 @@ namespace Grid
             }
             
             Vector2 mouseover = gridColision(mouseposition);
-            Vector2[] neigbors = plane.getPlaneHexagons()[(int)(mouseover.X * plane.getSideLength() + mouseover.Y)].getNeighbors();
+            Vector2[] neigbors = plane.getPlaneHexagons()[(int)(mouseover.X * planelength + mouseover.Y)].getNeighbors();
 
-            plane.getPlaneHexagons()[(int)(mouseover.X * plane.getSideLength() + mouseover.Y)].setColor(Color.Brown);
+            plane.getPlaneHexagons()[(int)(mouseover.X * planelength + mouseover.Y)].setColor(Color.Brown);
             foreach (Vector2 hex in neigbors)
             {
-                plane.getPlaneHexagons()[(int)(hex.X * plane.getSideLength() + hex.Y)].setColor(Color.Brown);
+                plane.getPlaneHexagons()[(int)(hex.X * planelength + hex.Y)].setColor(Color.Brown);
             }
+
+            indexOfMiddleHexagon = gridColision(camera.getCameraTarget());
+            plane.getPlaneHexagons()[(int)(indexOfMiddleHexagon.X * planelength + indexOfMiddleHexagon.Y)].setColor(Color.Purple);
 
             base.Update(gameTime);
         }
@@ -116,7 +121,7 @@ namespace Grid
             effect.VertexColorEnabled = true;
             
             effect.CurrentTechnique.Passes[0].Apply();
-            plane.Draw(gameTime, GraphicsDevice);
+            plane.Draw(GraphicsDevice, indexOfMiddleHexagon);
 
             spriteBatch.Begin();
 
@@ -144,10 +149,10 @@ namespace Grid
             float mouseY = mouse.Y;
             int X = 0;
             int Y = 0;
-            while (mouseX < 0) mouseX = mouseX + (plane.getSideLength() * 1.5f * hexagonsidelength);
-            while (mouseY < 0) mouseY = mouseY + (plane.getSideLength() * 2 * 0.875f * hexagonsidelength);
-            mouseX = mouseX % (plane.getSideLength() * 1.5f * hexagonsidelength);
-            mouseY = mouseY % (plane.getSideLength() * 2 * 0.875f * hexagonsidelength);
+            while (mouseX < 0) mouseX = mouseX + (planelength * 1.5f * hexagonsidelength);
+            while (mouseY < 0) mouseY = mouseY + (planelength * 2 * 0.875f * hexagonsidelength);
+            mouseX = mouseX % (planelength * 1.5f * hexagonsidelength);
+            mouseY = mouseY % (planelength * 2 * 0.875f * hexagonsidelength);
 
             while (mouseX >= 1.5f * hexagonsidelength)
             {
@@ -163,7 +168,7 @@ namespace Grid
             if (X % 2 != 0)
             {
                 --Y;
-                if (Y < 0) Y += plane.getSideLength() * 2;
+                if (Y < 0) Y += planelength * 2;
             }
 
             return new Vector2(X, (int)(Y/2));

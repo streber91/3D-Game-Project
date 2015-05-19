@@ -18,12 +18,16 @@ namespace Grid
         Vector3 upVector;
         KeyboardState keyboard = Keyboard.GetState();
         float counter;
+        int planelength;
+        float hexagonsidelength;
 
-        public Camera(Vector3 cameraPosition, Vector3 cameraTarget, Vector3 upVector)
+        public Camera(Vector3 cameraPosition, Vector3 cameraTarget, Vector3 upVector, int planelength, float hexagonsidelength)
         {
             this.cameraPosition = cameraPosition;
             this.cameraTarget = cameraTarget;
             this.upVector = upVector;
+            this.planelength = planelength;
+            this.hexagonsidelength = hexagonsidelength;
         }
 
         public void Update(GameTime gameTime, float timeSinceLastUpdate)
@@ -34,39 +38,53 @@ namespace Grid
             {
                 if (keyboard.IsKeyDown(Keys.Up))
                 {
-                    changeCameraPosition(Vector3.UnitY); changeCameraTarget(Vector3.UnitY); counter = 0;
-                    if (getCameraPosition().Y >= 10)
-                    {
-                        setCameraPosition(new Vector3(getCameraPosition().X, -10, getCameraPosition().Z));
-                        setCameraTarget(new Vector3(getCameraTarget().X, -10, getCameraTarget().Z));
-                    }
+                    //changeCameraPosition(Vector3.UnitY); changeCameraTarget(Vector3.UnitY); counter = 0;
+                    float yPosition = (getCameraPosition().Y + 1 + planelength * 1.75f * hexagonsidelength) % (planelength * 1.75f * hexagonsidelength);
+                    setCameraPosition(new Vector3(getCameraPosition().X, yPosition, getCameraPosition().Z));
+                    setCameraTarget(new Vector3(getCameraTarget().X, yPosition, getCameraTarget().Z));
+                    counter = 0;
                 }
                 else if (keyboard.IsKeyDown(Keys.Down))
                 {
-                    changeCameraPosition(-Vector3.UnitY); changeCameraTarget(-Vector3.UnitY); counter = 0;
-                    if (getCameraPosition().Y <= -10)
+                    /*changeCameraPosition(-Vector3.UnitY); changeCameraTarget(-Vector3.UnitY); counter = 0;
+                    if (getCameraPosition().Y <= 0)
                     {
-                        setCameraPosition(new Vector3(getCameraPosition().X, 10, getCameraPosition().Z));
-                        setCameraTarget(new Vector3(getCameraTarget().X, 10, getCameraTarget().Z));
-                    }
+                        setCameraPosition(new Vector3(getCameraPosition().X, planelength, getCameraPosition().Z));
+                        setCameraTarget(new Vector3(getCameraTarget().X, planelength, getCameraTarget().Z));
+                    }*/
+
+                    float yPosition = (getCameraPosition().Y - 1 + planelength * 1.75f * hexagonsidelength) % (planelength * 1.75f * hexagonsidelength);
+                    setCameraPosition(new Vector3(getCameraPosition().X, yPosition, getCameraPosition().Z));
+                    setCameraTarget(new Vector3(getCameraTarget().X, yPosition, getCameraTarget().Z));
+                    counter = 0;
                 }
                 else if (keyboard.IsKeyDown(Keys.Left))
                 {
-                    changeCameraPosition(-Vector3.UnitX); changeCameraTarget(-Vector3.UnitX); counter = 0;
-                    if (getCameraPosition().X <= -10)
+                    /*changeCameraPosition(-Vector3.UnitX); changeCameraTarget(-Vector3.UnitX); counter = 0;
+                    if (getCameraPosition().X <= 0)
                     {
-                        setCameraPosition(new Vector3(10, getCameraPosition().Y, getCameraPosition().Z));
-                        setCameraTarget(new Vector3(10, getCameraTarget().Y, getCameraTarget().Z));
-                    }
+                        setCameraPosition(new Vector3(planelength, getCameraPosition().Y, getCameraPosition().Z));
+                        setCameraTarget(new Vector3(planelength, getCameraTarget().Y, getCameraTarget().Z));
+                    }*/
+
+                    float xPosition = (getCameraPosition().X - 1 + planelength * 1.5f * hexagonsidelength) % (planelength * 1.5f * hexagonsidelength);
+                    setCameraPosition(new Vector3(xPosition, getCameraTarget().Y, getCameraPosition().Z));
+                    setCameraTarget(new Vector3(xPosition, getCameraTarget().Y, getCameraTarget().Z));
+                    counter = 0;
                 }
                 else if (keyboard.IsKeyDown(Keys.Right))
                 {
-                    changeCameraPosition(Vector3.UnitX); changeCameraTarget(Vector3.UnitX); counter = 0;
-                    if (getCameraPosition().X >= 10)
+                    /*changeCameraPosition(Vector3.UnitX); changeCameraTarget(Vector3.UnitX); counter = 0;
+                    if (getCameraPosition().X >= planelength * 1.5 * hexagonsidelength)
                     {
-                        setCameraPosition(new Vector3(-10, getCameraPosition().Y, getCameraPosition().Z));
-                        setCameraTarget(new Vector3(-10, getCameraTarget().Y, getCameraTarget().Z));
-                    }
+                        setCameraPosition(new Vector3(-planelength, getCameraPosition().Y, getCameraPosition().Z));
+                        setCameraTarget(new Vector3(-planelength, getCameraTarget().Y, getCameraTarget().Z));
+                    }*/
+
+                    float xPosition = (getCameraPosition().X + 1 + planelength * 1.5f * hexagonsidelength) % (planelength * 1.5f * hexagonsidelength);
+                    setCameraPosition(new Vector3(xPosition, getCameraTarget().Y, getCameraPosition().Z));
+                    setCameraTarget(new Vector3(xPosition, getCameraTarget().Y, getCameraTarget().Z));
+                    counter = 0;
                 }
             }
         }

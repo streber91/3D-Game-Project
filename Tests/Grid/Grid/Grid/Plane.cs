@@ -16,10 +16,14 @@ namespace Grid
         List<Hexagon> plane = new List<Hexagon>();
         Vector2 indexNumber = new Vector2(0,0);
         int sidelength;
+        float hexagonSideLength;
+        int drawHeight = 2;
+        int drawWidth = 5;   
 
         public Plane(int sidelength, float hexagonsidelength)
         {
             this.sidelength = sidelength;
+            hexagonSideLength = hexagonsidelength;
             for (int i = 0; i < sidelength; ++i)
             {
                 for (int j = 0; j < sidelength; ++j)
@@ -76,16 +80,60 @@ namespace Grid
             }
         }
 
-        public int getSideLength() { return sidelength; }
-
         public List<Hexagon> getPlaneHexagons() { return plane; }
 
-        public void Draw(GameTime gameTime, GraphicsDevice graphics)
+        public void Draw(GraphicsDevice graphics, Vector2 indexOfMiddleHexagon)
         {
-            for (int i = 0; i < plane.Count; ++i)
+            /*for (int i = 0; i < plane.Count; ++i)
             {
                 plane[i].Draw(gameTime, graphics);
+            }*/
+            Hexagon middle = plane[(int)(indexOfMiddleHexagon.X * sidelength + indexOfMiddleHexagon.Y)];
+            middle.Draw(graphics, middle.get3DPosition());
+            rekRightDraw(graphics, middle.getNeighbors()[1], drawWidth, middle.get3DPosition() + (Vector3.UnitY * 0.875f + Vector3.UnitX * 1.5f) * hexagonSideLength);
+            rekLeftDraw(graphics, middle.getNeighbors()[5], drawWidth, middle.get3DPosition() + (Vector3.UnitY * 0.875f - Vector3.UnitX * 1.5f) * hexagonSideLength);
+            rekUpDraw(graphics, middle.getNeighbors()[0], drawHeight, middle.get3DPosition() + Vector3.UnitY * 1.75f * hexagonSideLength);
+            rekDownDraw(graphics, middle.getNeighbors()[3], drawHeight, middle.get3DPosition() - Vector3.UnitY * 1.75f * hexagonSideLength);
+        }
+
+        private void rekRightDraw(GraphicsDevice graphics, Vector2 position, int counter, Vector3 drawposition)
+        {
+            Hexagon me = plane[(int)(position.X * sidelength + position.Y)];
+            me.Draw(graphics, drawposition);
+            rekUpDraw(graphics, me.getNeighbors()[0], drawHeight, drawposition + Vector3.UnitY * 1.75f * hexagonSideLength);
+            rekDownDraw(graphics, me.getNeighbors()[3], drawHeight, drawposition - Vector3.UnitY * 1.75f * hexagonSideLength);
+            if (counter > 0)
+            {
+                if (counter % 2 == 0) rekRightDraw(graphics, me.getNeighbors()[1], counter - 1, drawposition + (Vector3.UnitY * 0.875f + Vector3.UnitX * 1.5f) * hexagonSideLength);
+                else rekRightDraw(graphics, me.getNeighbors()[2], counter - 1, drawposition + (-Vector3.UnitY * 0.875f + Vector3.UnitX * 1.5f) * hexagonSideLength);
             }
+        }
+
+        private void rekLeftDraw(GraphicsDevice graphics, Vector2 position, int counter, Vector3 drawposition)
+        {
+            Hexagon me = plane[(int)(position.X * sidelength + position.Y)];
+            me.Draw(graphics, drawposition);
+            rekUpDraw(graphics, me.getNeighbors()[0], drawHeight, drawposition + Vector3.UnitY * 1.75f * hexagonSideLength);
+            rekDownDraw(graphics, me.getNeighbors()[3], drawHeight, drawposition - Vector3.UnitY * 1.75f * hexagonSideLength);
+            if (counter > 0)
+            {
+                if (counter % 2 == 0) rekLeftDraw(graphics, me.getNeighbors()[5], counter - 1, drawposition + (Vector3.UnitY * 0.875f - Vector3.UnitX * 1.5f) * hexagonSideLength);
+                else rekLeftDraw(graphics, me.getNeighbors()[4], counter - 1, drawposition + (-Vector3.UnitY * 0.875f - Vector3.UnitX * 1.5f) * hexagonSideLength);
+            }
+        }
+
+        private void rekUpDraw(GraphicsDevice graphics, Vector2 position, int counter, Vector3 drawposition)
+        {
+            Hexagon me = plane[(int)(position.X * sidelength + position.Y)];
+            me.Draw(graphics, drawposition);
+            if (counter > 0) rekUpDraw(graphics, me.getNeighbors()[0], counter - 1, drawposition + Vector3.UnitY * 1.75f * hexagonSideLength);
+        }
+
+        private void rekDownDraw(GraphicsDevice graphics, Vector2 position, int counter, Vector3 drawposition)
+        {
+            Hexagon me = plane[(int)(position.X * sidelength + position.Y)];
+            me.Draw(graphics, drawposition);
+            if (counter > 0) rekDownDraw(graphics, me.getNeighbors()[3], counter - 1, drawposition - Vector3.UnitY * 1.75f * hexagonSideLength);
         }
     }
 }

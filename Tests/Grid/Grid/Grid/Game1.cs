@@ -22,7 +22,6 @@ namespace Grid
         Matrix view, projection;
         Plane plane;
         Camera camera;
-        SpriteFont spriteFont;
         
 
         public Game1()
@@ -55,7 +54,6 @@ namespace Grid
             spriteBatch = new SpriteBatch(GraphicsDevice);
             effect = new BasicEffect(GraphicsDevice);
             projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f);
-            spriteFont = Content.Load<SpriteFont>("Font");
         }
 
         /// <summary>
@@ -88,25 +86,34 @@ namespace Grid
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
+
+
+            //effect.World = Matrix.Identity;
             effect.View = view;
             effect.Projection = projection;
             effect.VertexColorEnabled = true;
-
             effect.CurrentTechnique.Passes[0].Apply();
             plane.Draw(gameTime, GraphicsDevice);
-            spriteBatch.Begin(0, null, null, null, RasterizerState.CullNone, effect);
+
+            /*Matrix invertY = Matrix.CreateScale(1, -1, 1);
+            effect.World = invertY;
+            effect.CurrentTechnique.Passes[0].Apply();
+            spriteBatch.Begin(0, null, null, DepthStencilState.DepthRead, RasterizerState.CullNone, effect);
             for (int i = 0; i < plane.getSideLength(); ++i)
             {
                 for (int j = 0; j < plane.getSideLength(); ++j)
                 {
                     int tmp = i*plane.getSideLength()+j;
-                    Vector3 indexPosition3D = Vector3.Transform(plane.getPlaneHexagons().ElementAt(tmp).get3DPosition(), view);
+                    Vector3 indexPosition3D = Vector3.Transform(plane.getPlaneHexagons().ElementAt(tmp).get3DPosition(), view * invertY);
                     Vector2 indexPosition2D = new Vector2(indexPosition3D.X, indexPosition3D.Y);
-                    spriteBatch.DrawString(spriteFont, plane.getPlaneHexagons().ElementAt(tmp).getIndexNumber().ToString(), indexPosition2D, Color.White, 0, Vector2.Zero, 0.10f, 0, indexPosition3D.Z);
+
+                    string text = plane.getPlaneHexagons().ElementAt(tmp).getIndexNumber().ToString();
+                    Vector2 textOrigin = spriteFont.MeasureString(text) / 2;
+
+                    spriteBatch.DrawString(spriteFont, text, indexPosition2D, Color.Purple, 0, textOrigin, 0.10f, 0, indexPosition3D.Z);
                 }
             }
-
-            spriteBatch.End();
+            spriteBatch.End();*/
             base.Draw(gameTime);
         }
     }

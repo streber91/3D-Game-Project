@@ -121,7 +121,7 @@ namespace Grid
             effect.VertexColorEnabled = true;
             
             effect.CurrentTechnique.Passes[0].Apply();
-            plane.Draw(GraphicsDevice, indexOfMiddleHexagon);
+            plane.Draw(GraphicsDevice, indexOfMiddleHexagon, camera.getCameraTarget());
 
             spriteBatch.Begin();
 

@@ -20,6 +20,7 @@ namespace Grid
         Color standardcolor;
         Color drawcolor;
         float sidelength;
+        Object entity;
 
         Model hexagonModel;
         private Matrix[] boneTransforms;
@@ -43,6 +44,8 @@ namespace Grid
         public Vector2[] getNeighbors() { return neighbors; }
         public Color getStdColor() { return standardcolor; }
 
+        public void setObjekt(Object entity) { this.entity = entity; }
+
         public void Draw(GraphicsDevice graphics, Vector3 drawPosition)
         {
             VertexPositionColor[] vertices = new VertexPositionColor[6];
@@ -58,13 +61,13 @@ namespace Grid
 
         public void DrawModel(Camera camera, Vector3 drawPosition)
         {
-                this.hexagonModel.Root.Transform = Matrix.Identity *
-           
-                Matrix.CreateScale(0.85f) *
-                Matrix.CreateRotationX(MathHelper.PiOver2) *
-                Matrix.CreateRotationY(0) *
-                Matrix.CreateRotationZ(0) *
-                Matrix.CreateTranslation(drawPosition);
+            this.hexagonModel.Root.Transform = Matrix.Identity *
+
+            Matrix.CreateScale(/*0.0127f*/0.875f) *
+            Matrix.CreateRotationX(MathHelper.PiOver2) *
+            Matrix.CreateRotationY(0) *
+            Matrix.CreateRotationZ(0/*MathHelper.PiOver2*/) *
+            Matrix.CreateTranslation(drawPosition + new Vector3(0.5f, 0.875f, 0));
                 this.hexagonModel.CopyAbsoluteBoneTransformsTo(boneTransforms);
 
             foreach (ModelMesh mesh in  this.hexagonModel.Meshes)
@@ -82,8 +85,7 @@ namespace Grid
                 }
                 mesh.Draw();
             }
-
-
+            //if(entity != null) entity.DrawModel(camera, drawPosition + Vector3.UnitZ);
         }
 
         public void setColor(Color color) 

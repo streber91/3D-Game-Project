@@ -28,13 +28,24 @@ namespace Grid
         float hexagonsidelength;
         int planelength;
         Vector2 indexOfMiddleHexagon;
+        List<Object> walls;
 
+        float updateTimeCounter;
+        float updates;
+        float drawUpdates;
+
+        float frameTimeCounter;
+        float frames;
+        float drawFrame;
+
+        Model floor;
         Model dummyWall;
-
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 1366;
+            graphics.PreferredBackBufferHeight = 768;
             Content.RootDirectory = "Content";
         }
 
@@ -47,11 +58,26 @@ namespace Grid
         protected override void Initialize()
         {
             hexagonsidelength = 1;
-            planelength = 10; //need an even number!
+            planelength = 100; //need an even number!
+            frameTimeCounter = 0;
+            frames = 0;
+            drawFrame = 0;
+            updateTimeCounter = 0;
+            updates = 0;
+            drawUpdates = 0;
 
-            dummyWall = Content.Load<Model>("Models//dummyWall_HEX_01");
-            plane = new Plane(planelength, hexagonsidelength, dummyWall);
-            camera = new Camera(new Vector3(0, 0, 15), new Vector3(0, 0, 0), Vector3.Up, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f, planelength, hexagonsidelength);
+            floor = Content.Load<Model>("Models//dummyWall_HEX_01");
+            dummyWall = Content.Load<Model>("Models//sandWall_HEX_01");
+            plane = new Plane(planelength, hexagonsidelength, floor);
+            walls = new List<Object>();
+            for (int i = 0; i < planelength; ++i)
+            {
+                for (int j = 0; j < planelength; ++j)
+                {
+                    walls.Add(new Object(new Vector2(i, j), 0, Color.White, dummyWall, plane));
+                }
+            }
+            camera = new Camera(new Vector3(0, -10, 15), new Vector3(0, 0, 0), Vector3.UnitZ, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f, planelength, hexagonsidelength);
             IsMouseVisible = true;
             mousestate = Mouse.GetState();
 
@@ -95,6 +121,23 @@ namespace Grid
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            /*for (int i = 0; i < 2500000; ++i)
+            {
+                float tmp = 20;
+                tmp /= 5;
+                tmp += 6;
+                tmp *= 11;
+                tmp -= 10;
+            }*/
+
+            updateTimeCounter += gameTime.ElapsedGameTime.Milliseconds;
+            ++updates;
+            if (updateTimeCounter >= 1000)
+            {
+                drawUpdates = updates;
+                updates = 0;
+                updateTimeCounter -= 1000;
+            }
 
             mousestate = Mouse.GetState();
             mouseposition = mousepos();
@@ -127,23 +170,31 @@ namespace Grid
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            frameTimeCounter += gameTime.ElapsedGameTime.Milliseconds;
+            ++frames;
+            if (frameTimeCounter >= 1000)
+            {
+                drawFrame = frames;
+                frames = 0;
+                frameTimeCounter -= 1000;
+            }
+
             GraphicsDevice.Clear(Color.Blue);
             effect.View = camera.View;
             effect.Projection = camera.Projection;
             effect.VertexColorEnabled = true;
 
-            
-
             effect.CurrentTechnique.Passes[0].Apply();
             //plane.Draw(GraphicsDevice, indexOfMiddleHexagon, camera.getCameraTarget());
-
+            
             plane.DrawModel(camera, indexOfMiddleHexagon, camera.getCameraTarget());
-
 
             spriteBatch.Begin();
 
             spriteBatch.DrawString(font, mousestate.X.ToString() + " : " + mousestate.Y.ToString(), new Vector2(10, 10), Color.White);
             spriteBatch.DrawString(font, mouseposition.X.ToString() + " : " + mouseposition.Y.ToString() + " : " + mouseposition.Z.ToString(), new Vector2(10, 25), Color.White);
+            spriteBatch.DrawString(font, "FPS: " + drawFrame.ToString(), new Vector2(10, 40), Color.White);
+            spriteBatch.DrawString(font, "UPS: " + drawUpdates.ToString(), new Vector2(10, 55), Color.White);
 
             spriteBatch.End();
 

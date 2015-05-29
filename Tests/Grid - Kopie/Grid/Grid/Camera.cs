@@ -95,56 +95,83 @@ namespace Grid
                     System.Diagnostics.Debug.WriteLine("Output");
                 }*/
 
-                if (keyboard.IsKeyDown(Keys.Up))
+                if (keyboard.IsKeyDown(Keys.W))
                 {
-                    //changeCameraPosition(Vector3.UnitY); changeCameraTarget(Vector3.UnitY); counter = 0;
-                    float yPosition = (getCameraPosition().Y + 1 + planelength * 1.75f * hexagonsidelength) % (planelength * 1.75f * hexagonsidelength);
-                    setCameraPosition(new Vector3(getCameraPosition().X, yPosition, getCameraPosition().Z));
-                    setCameraTarget(new Vector3(getCameraTarget().X, yPosition, getCameraTarget().Z));
+                    Vector3 positionchange = (getCameraTarget() - getCameraPosition()) + Vector3.UnitZ * getCameraPosition().Z;
+                    positionchange.Normalize();
+                    Vector3 newPosition = getCameraPosition() + positionchange;
+                    Vector3 newTarget = getCameraTarget() + positionchange;
+                    setCameraPosition(newPosition);
+                    setCameraTarget(newTarget);
                     counter = 0;
                 }
-                else if (keyboard.IsKeyDown(Keys.Down))
+                else if (keyboard.IsKeyDown(Keys.S))
                 {
-                    /*changeCameraPosition(-Vector3.UnitY); changeCameraTarget(-Vector3.UnitY); counter = 0;
-                    if (getCameraPosition().Y <= 0)
-                    {
-                        setCameraPosition(new Vector3(getCameraPosition().X, planelength, getCameraPosition().Z));
-                        setCameraTarget(new Vector3(getCameraTarget().X, planelength, getCameraTarget().Z));
-                    }*/
+                    Vector3 positionchange = -((getCameraTarget() - getCameraPosition()) + Vector3.UnitZ * getCameraPosition().Z);
+                    positionchange.Normalize();
+                    Vector3 newPosition = getCameraPosition() + positionchange;
+                    Vector3 newTarget = getCameraTarget() + positionchange;
+                    setCameraPosition(newPosition);
+                    setCameraTarget(newTarget);
+                    counter = 0;         
+                }
+                else if (keyboard.IsKeyDown(Keys.A))
+                {
+                    Vector3 positionchange = (getCameraTarget() - getCameraPosition()) + Vector3.UnitZ * getCameraPosition().Z;
+                    positionchange.Normalize();
+                    positionchange = new Vector3(-positionchange.Y, positionchange.X, positionchange.Z);
+                    Vector3 newPosition = getCameraPosition() + positionchange;
+                    Vector3 newTarget = getCameraTarget() + positionchange;
+                    setCameraPosition(newPosition);
+                    setCameraTarget(newTarget);
+                    counter = 0;
+                }
+                else if (keyboard.IsKeyDown(Keys.D))
+                {
+                    Vector3 positionchange = (getCameraTarget() - getCameraPosition()) + Vector3.UnitZ * getCameraPosition().Z;
+                    positionchange.Normalize();
+                    positionchange = new Vector3(positionchange.Y, -positionchange.X, positionchange.Z);
+                    Vector3 newPosition = getCameraPosition() + positionchange;
+                    Vector3 newTarget = getCameraTarget() + positionchange;
+                    setCameraPosition(newPosition);
+                    setCameraTarget(newTarget);
+                    counter = 0;
+                }
+                else if (keyboard.IsKeyDown(Keys.E))
+                {
+                    Vector3 newCameraPosition = Vector3.Transform(getCameraPosition() - getCameraTarget(), Matrix.CreateFromAxisAngle(Vector3.UnitZ, gameTime.ElapsedGameTime.Milliseconds * 0.01f)) + getCameraTarget();
+                    setCameraPosition(newCameraPosition);
+                    counter = 0;
+                }
+                else if (keyboard.IsKeyDown(Keys.Q))
+                {
+                    Vector3 newCameraPosition = Vector3.Transform(getCameraPosition() - getCameraTarget(), Matrix.CreateFromAxisAngle(Vector3.UnitZ, -gameTime.ElapsedGameTime.Milliseconds * 0.01f)) + getCameraTarget();
+                    setCameraPosition(newCameraPosition);
+                    counter = 0;
+                }
 
-                    float yPosition = (getCameraPosition().Y - 1 + planelength * 1.75f * hexagonsidelength) % (planelength * 1.75f * hexagonsidelength);
-                    setCameraPosition(new Vector3(getCameraPosition().X, yPosition, getCameraPosition().Z));
-                    setCameraTarget(new Vector3(getCameraTarget().X, yPosition, getCameraTarget().Z));
-                    counter = 0;
-                }
-                else if (keyboard.IsKeyDown(Keys.Left))
-                {
-                    /*changeCameraPosition(-Vector3.UnitX); changeCameraTarget(-Vector3.UnitX); counter = 0;
-                    if (getCameraPosition().X <= 0)
-                    {
-                        setCameraPosition(new Vector3(planelength, getCameraPosition().Y, getCameraPosition().Z));
-                        setCameraTarget(new Vector3(planelength, getCameraTarget().Y, getCameraTarget().Z));
-                    }*/
 
-                    float xPosition = (getCameraPosition().X - 1 + planelength * 1.5f * hexagonsidelength) % (planelength * 1.5f * hexagonsidelength);
-                    setCameraPosition(new Vector3(xPosition, getCameraTarget().Y, getCameraPosition().Z));
-                    setCameraTarget(new Vector3(xPosition, getCameraTarget().Y, getCameraTarget().Z));
-                    counter = 0;
-                }
-                else if (keyboard.IsKeyDown(Keys.Right))
+                if (getCameraTarget().Y >= planelength * 1.75f * hexagonsidelength)
                 {
-                    /*changeCameraPosition(Vector3.UnitX); changeCameraTarget(Vector3.UnitX); counter = 0;
-                    if (getCameraPosition().X >= planelength * 1.5 * hexagonsidelength)
-                    {
-                        setCameraPosition(new Vector3(-planelength, getCameraPosition().Y, getCameraPosition().Z));
-                        setCameraTarget(new Vector3(-planelength, getCameraTarget().Y, getCameraTarget().Z));
-                    }*/
-
-                    float xPosition = (getCameraPosition().X + 1 + planelength * 1.5f * hexagonsidelength) % (planelength * 1.5f * hexagonsidelength);
-                    setCameraPosition(new Vector3(xPosition, getCameraTarget().Y, getCameraPosition().Z));
-                    setCameraTarget(new Vector3(xPosition, getCameraTarget().Y, getCameraTarget().Z));
-                    counter = 0;
+                    setCameraPosition(getCameraPosition() - planelength * 1.75f * hexagonsidelength * Vector3.UnitY);
+                    setCameraTarget(getCameraTarget() - planelength * 1.75f * hexagonsidelength * Vector3.UnitY);
                 }
+                if (getCameraTarget().Y < 0)
+                {
+                    setCameraPosition(getCameraPosition() + planelength * 1.75f * hexagonsidelength * Vector3.UnitY);
+                    setCameraTarget(getCameraTarget() + planelength * 1.75f * hexagonsidelength * Vector3.UnitY);
+                }
+                if (getCameraTarget().X >= planelength * 1.5f * hexagonsidelength)
+                {
+                    setCameraPosition(getCameraPosition() - planelength * 1.5f * hexagonsidelength * Vector3.UnitX);
+                    setCameraTarget(getCameraTarget() - planelength * 1.5f * hexagonsidelength * Vector3.UnitX);
+                }
+                if (getCameraTarget().X < 0)
+                {
+                    setCameraPosition(getCameraPosition() + planelength * 1.5f * hexagonsidelength * Vector3.UnitX);
+                    setCameraTarget(getCameraTarget() + planelength * 1.5f * hexagonsidelength * Vector3.UnitX);
+                }
+
             }
         }
 

@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Underlord", "Underlord\Underlord\Underlord.csproj", "{6097E378-427B-4236-837A-98556014EACC}"
+EndProject
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "UnderlordContent", "Underlord\UnderlordContent\UnderlordContent.contentproj", "{4F41F530-BA45-4089-998A-98291EC8F7AA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6097E378-427B-4236-837A-98556014EACC}.Debug|x86.ActiveCfg = Debug|x86
+		{6097E378-427B-4236-837A-98556014EACC}.Debug|x86.Build.0 = Debug|x86
+		{6097E378-427B-4236-837A-98556014EACC}.Release|x86.ActiveCfg = Release|x86
+		{6097E378-427B-4236-837A-98556014EACC}.Release|x86.Build.0 = Release|x86
+		{4F41F530-BA45-4089-998A-98291EC8F7AA}.Debug|x86.ActiveCfg = Debug|x86
+		{4F41F530-BA45-4089-998A-98291EC8F7AA}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

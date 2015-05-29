@@ -14,7 +14,6 @@ namespace Grid
     class Plane
     {
         List<Hexagon> plane = new List<Hexagon>();
-        Vector2 indexNumber = new Vector2(0,0);
         int sidelength;
         float hexagonSideLength;
         int drawHeight = 2;
@@ -22,6 +21,7 @@ namespace Grid
 
         public Plane(int sidelength, float hexagonsidelength, Model model)
         {
+            Vector2 indexNumber = new Vector2(0, 0);
             this.sidelength = sidelength;
             hexagonSideLength = hexagonsidelength;
             for (int i = 0; i < sidelength; ++i)
@@ -42,14 +42,15 @@ namespace Grid
                         neighbors[4] = new Vector2(xValue, yDownValue);
                         neighbors[5] = new Vector2(xValue, indexNumber.Y);
 
-                        if (i >= 5 && j >= 5) plane.Add(new Hexagon(new Vector3(i * 3 / 2 * hexagonsidelength + hexagonsidelength,
+                        plane.Add(new Hexagon(new Vector3(i * 3 / 2 * hexagonsidelength + hexagonsidelength, j * 2 * hexagonsidelength * 7 / 8 + hexagonsidelength * 7 / 8, 0), hexagonsidelength, Color.Green, indexNumber, neighbors, model));
+                        /*if (i >= 5 && j >= 5) plane.Add(new Hexagon(new Vector3(i * 3 / 2 * hexagonsidelength + hexagonsidelength,
                                                                     j * 2 * hexagonsidelength * 7 / 8 + hexagonsidelength * 7 / 8, 0), hexagonsidelength, Color.Blue, indexNumber, neighbors, model));
                         else if (i >= 5) plane.Add(new Hexagon(new Vector3(i * 3 / 2 * hexagonsidelength + hexagonsidelength,
                                                                     j * 2 * hexagonsidelength * 7 / 8 + hexagonsidelength * 7 / 8, 0), hexagonsidelength, Color.Green, indexNumber, neighbors, model));
                         else if (j >= 5) plane.Add(new Hexagon(new Vector3(i * 3 / 2 * hexagonsidelength + hexagonsidelength,
                                                                     j * 2 * hexagonsidelength * 7 / 8 + hexagonsidelength * 7 / 8, 0), hexagonsidelength, Color.Red, indexNumber, neighbors, model));
                         else plane.Add(new Hexagon(new Vector3(i * 3 / 2 * hexagonsidelength + hexagonsidelength,
-                                                                    j * 2 * hexagonsidelength * 7 / 8 + hexagonsidelength * 7 / 8, 0), hexagonsidelength, Color.Yellow, indexNumber, neighbors, model));
+                                                                    j * 2 * hexagonsidelength * 7 / 8 + hexagonsidelength * 7 / 8, 0), hexagonsidelength, Color.Yellow, indexNumber, neighbors, model));*/
                     }
                     else
                     {
@@ -64,14 +65,15 @@ namespace Grid
                         neighbors[4] = new Vector2(indexNumber.X - 1, indexNumber.Y);
                         neighbors[5] = new Vector2(indexNumber.X - 1, yUpValue);
 
-                        if (i >= 5 && j >= 5) plane.Add(new Hexagon(new Vector3((i - 1) * 3 / 2 * hexagonsidelength + 2.5f * hexagonsidelength,
+                        plane.Add(new Hexagon(new Vector3(i * 3 / 2 * hexagonsidelength + hexagonsidelength, j * 2 * hexagonsidelength * 7 / 8 + hexagonsidelength * 7 / 8, 0), hexagonsidelength, Color.Green, indexNumber, neighbors, model));
+                        /*if (i >= 5 && j >= 5) plane.Add(new Hexagon(new Vector3((i - 1) * 3 / 2 * hexagonsidelength + 2.5f * hexagonsidelength,
                                                                     j * 2 * hexagonsidelength * 7 / 8 + 2 * hexagonsidelength * 7 / 8, 0), hexagonsidelength, Color.Blue, indexNumber, neighbors, model));
                         else if (i >= 5) plane.Add(new Hexagon(new Vector3((i - 1) * 3 / 2 * hexagonsidelength + 2.5f * hexagonsidelength,
                                                                     j * 2 * hexagonsidelength * 7 / 8 + 2 * hexagonsidelength * 7 / 8, 0), hexagonsidelength, Color.Green, indexNumber, neighbors, model));
                         else if (j >= 5) plane.Add(new Hexagon(new Vector3((i - 1) * 3 / 2 * hexagonsidelength + 2.5f * hexagonsidelength,
                                                                     j * 2 * hexagonsidelength * 7 / 8 + 2 * hexagonsidelength * 7 / 8, 0), hexagonsidelength, Color.Red, indexNumber, neighbors, model));
                         else plane.Add(new Hexagon(new Vector3((i - 1) * 3 / 2 * hexagonsidelength + 2.5f * hexagonsidelength,
-                                                                    j * 2 * hexagonsidelength * 7 / 8 + 2 * hexagonsidelength * 7 / 8, 0), hexagonsidelength, Color.Yellow, indexNumber, neighbors, model));
+                                                                    j * 2 * hexagonsidelength * 7 / 8 + 2 * hexagonsidelength * 7 / 8, 0), hexagonsidelength, Color.Yellow, indexNumber, neighbors, model));*/
                     }
                     ++indexNumber.Y;
      ;          }
@@ -81,6 +83,7 @@ namespace Grid
         }
 
         public List<Hexagon> getPlaneHexagons() { return plane; }
+        public Hexagon getHexagonAt(float X, float Y) { return plane[(int)(X * sidelength + Y)]; }
 
         public void Draw(GraphicsDevice graphics, Vector2 indexOfMiddleHexagon, Vector3 cameraTarget)
         {

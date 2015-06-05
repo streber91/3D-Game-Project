@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Underlord.Renderer;
 
 namespace Underlord.Entity
 {
@@ -51,9 +52,6 @@ namespace Underlord.Entity
             {
             }
         }
-        public void draw()
-        {
-        }
         public void update(GameTime time)
         {
         }
@@ -82,6 +80,9 @@ namespace Underlord.Entity
             this.position = pos;
         }
 
+        override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor)
+        {
 
+        }
     }
 }

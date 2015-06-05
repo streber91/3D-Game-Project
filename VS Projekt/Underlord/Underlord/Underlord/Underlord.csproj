@@ -108,12 +108,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity\Nest.cs" />
+    <Compile Include="Entity\Wall.cs" />
     <Compile Include="Environment\Hexagon.cs" />
-    <Compile Include="Environment\Imp.cs" />
+    <Compile Include="Entity\Imp.cs" />
     <Compile Include="Environment\Map.cs" />
     <Compile Include="Environment\Room.cs" />
     <Compile Include="Logic\AI.cs" />
-    <Compile Include="Logic\Upgrade.cs" />
+    <Compile Include="Entity\Upgrade.cs" />
     <Compile Include="Logic\Ability.cs" />
     <Compile Include="Entity\Creature.cs" />
     <Compile Include="Entity\Thing.cs" />

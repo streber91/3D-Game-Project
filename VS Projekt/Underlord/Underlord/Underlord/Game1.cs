@@ -45,14 +45,14 @@ namespace Underlord
         protected override void Initialize()
         {
             hexagonSideLength = 1; //do not change
-            planeLength = 100; //need an even number!
+            planeLength = 10; //need an even number!
             frameTimeCounter = 0;
             frames = 0;
             drawFrame = 0;
             updateTimeCounter = 0;
             updates = 0;
             drawUpdates = 0;
-            floor = Content.Load<Model>("Models//dummyWall_HEX_01");
+            floor = Content.Load<Model>("Models//floorSand_HEX_01");
             wall = Content.Load<Model>("Models//sandWall_HEX_01");
             map = new Map(planeLength, floor, true, hexagonSideLength);
             walls = new List<Wall>();
@@ -68,13 +68,15 @@ namespace Underlord
             projection = camera.Projection;
             mouseState = Mouse.GetState();
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
+
+            base.Initialize();
         }
 
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             effect = new BasicEffect(GraphicsDevice);
-            font = Content.Load<SpriteFont>("testfont");
+            font = Content.Load<SpriteFont>("font");
         }
 
         protected override void UnloadContent()
@@ -113,13 +115,15 @@ namespace Underlord
             }
             Vector2 mouseover = Vars_Func.gridColision(mousePosition, planeLength, hexagonSideLength);
             Vector2[] neigbors = map.getHexagonAt(mouseover.X, mouseover.Y).getNeighbors(); //getPlaneHexagons()[(int)(mouseover.X * planeLength + mouseover.Y)].getNeighbors();
-            map.getHexagonAt(mouseover.X, mouseover.Y).Color = Color.Brown;// getPlaneHexagons()[(int)(mouseover.X * planeLength + mouseover.Y)].setColor(Color.Brown);
+            map.getHexagonAt(mouseover.X, mouseover.Y).Color = Color.Blue;// getPlaneHexagons()[(int)(mouseover.X * planeLength + mouseover.Y)].setColor(Color.Brown);
             foreach (Vector2 hex in neigbors)
             {
-                map.getHexagonAt(hex.X, hex.Y).Color = Color.Brown;
+                map.getHexagonAt(hex.X, hex.Y).Color = Color.Blue;
             }
             indexOfMiddleHexagon = Vars_Func.gridColision(camera.Target, planeLength, hexagonSideLength);
             map.getHexagonAt(indexOfMiddleHexagon.X, indexOfMiddleHexagon.Y).Color = Color.Purple;
+
+            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
@@ -144,6 +148,8 @@ namespace Underlord
             spriteBatch.DrawString(font, "FPS: " + drawFrame.ToString(), new Vector2(10, 40), Color.White);
             spriteBatch.DrawString(font, "UPS: " + drawUpdates.ToString(), new Vector2(10, 55), Color.White);
             spriteBatch.End();
+
+            base.Draw(gameTime);
         }
     }
 }

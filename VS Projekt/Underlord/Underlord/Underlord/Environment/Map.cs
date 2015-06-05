@@ -41,6 +41,7 @@ namespace Underlord.Environment
                             neighbors[3] = new Vector2(indexNumber.X, yDownValue);
                             neighbors[4] = new Vector2(xValue, yDownValue);
                             neighbors[5] = new Vector2(xValue, indexNumber.Y);
+                            map.Add(new Hexagon(new Vector3(i * 3 / 2 * hexagonSideLength + hexagonSideLength, j * 2 * hexagonSideLength * 7 / 8 + hexagonSideLength * 7 / 8, 0), indexNumber, neighbors, model));
                         }
                         else
                         {
@@ -54,8 +55,9 @@ namespace Underlord.Environment
                             neighbors[3] = new Vector2(indexNumber.X, yDownValue);
                             neighbors[4] = new Vector2(indexNumber.X - 1, indexNumber.Y);
                             neighbors[5] = new Vector2(indexNumber.X - 1, yUpValue);
+                            map.Add(new Hexagon(new Vector3(i * 3 / 2 * hexagonSideLength + hexagonSideLength, j * 2 * hexagonSideLength * 7 / 8 + hexagonSideLength * 7 / 8 * 2, 0), indexNumber, neighbors, model));
                         }
-                        map.Add(new Hexagon(new Vector3(i * 3 / 2 * hexagonSideLength + hexagonSideLength, j * 2 * hexagonSideLength * 7 / 8 + hexagonSideLength * 7 / 8, 0), indexNumber, neighbors, model));
+                        
                         ++indexNumber.Y;
                         ;
                     }

@@ -23,7 +23,8 @@ namespace Underlord
         Map map;
         Camera camera;
         SpriteFont font;
-        int planeLength, hexagonSideLength;
+        int planeLength;
+        float hexagonSideLength;
         MouseState mouseState;
         Vector3 mousePosition;
         Vector2 indexOfMiddleHexagon;
@@ -63,7 +64,7 @@ namespace Underlord
                     walls.Add(new Wall(new Vector2(i, j), Vars_Func.TypWall.Stone, 300, map, wall));
                 }
             }
-            camera = new Camera(new Vector3(0, 0, 15), new Vector3(0, 0, 0), Vector3.Up/*Vector3.UnitZ*/, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f, planeLength, hexagonSideLength);
+            camera = new Camera(new Vector3(0, 0/*-10*/, -15), new Vector3(0, 0, 0), Vector3.Up/*Vector3.UnitZ*/, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f, planeLength, hexagonSideLength);
             view = camera.View;
             projection = camera.Projection;
             mouseState = Mouse.GetState();

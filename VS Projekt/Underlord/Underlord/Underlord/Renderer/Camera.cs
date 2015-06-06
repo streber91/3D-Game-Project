@@ -13,8 +13,8 @@ namespace Underlord.Renderer
         Vector3 cameraTarget;
         Vector3 upVector;
         KeyboardState keyboard = Keyboard.GetState();
-        float counter;
-        int planelength, hexagonsidelength;
+        float counter, hexagonsidelength;
+        int planelength;
         private Vector3 baseCameraReference = new Vector3(0, 0, 1);
         private bool needViewResync = true;
         private Matrix cachedViewMatrix;
@@ -51,7 +51,7 @@ namespace Underlord.Renderer
         #endregion
 
         #region Constructor
-        public Camera(Vector3 cameraPosition, Vector3 cameraTarget, Vector3 upVector, float aspectRatio, float nearClip, float farClip, int planelength, int hexagonsidelength)
+        public Camera(Vector3 cameraPosition, Vector3 cameraTarget, Vector3 upVector, float aspectRatio, float nearClip, float farClip, int planelength, float hexagonsidelength)
         {
             this.cameraPosition = cameraPosition;
             this.cameraTarget = cameraTarget;

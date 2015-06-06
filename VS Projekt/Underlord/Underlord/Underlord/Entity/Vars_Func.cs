@@ -29,7 +29,7 @@ namespace Underlord.Entity
            return mousepos;
        }
 
-       public static Vector2 gridColision(Vector3 position, int planeLength, int hexagonSideLength)
+       public static Vector2 gridColision(Vector3 position, int planeLength, float hexagonSideLength)
        {
            float positionX = position.X;
            float positionY = position.Y;

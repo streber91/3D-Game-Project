@@ -13,9 +13,10 @@ namespace Underlord.Environment
     {
         //String name = "";
         List<Hexagon> map = new List<Hexagon>();
-        int sidelength, drawHeight, drawWidth, hexagonSideLength;
+        int sidelength, drawHeight, drawWidth;
+        float hexagonSideLength;
 
-        public Map(int sidelength, Model model, Boolean newGame, int hexagonSideLength)
+        public Map(int sidelength, Model model, Boolean newGame, float hexagonSideLength)
         {
             drawHeight = 2;
             drawWidth = 5;

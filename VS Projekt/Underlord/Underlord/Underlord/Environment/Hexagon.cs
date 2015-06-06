@@ -58,11 +58,11 @@ namespace Underlord.Environment
         {
             this.hexagonModel.Root.Transform = Matrix.Identity *
 
-            Matrix.CreateScale(/*0.0127f*/0.875f) *
-            Matrix.CreateRotationX(MathHelper.PiOver2) *
+            Matrix.CreateScale(/*0.0127f*/1) *
+            Matrix.CreateRotationX(2*MathHelper.PiOver2) *
             Matrix.CreateRotationY(0) *
             Matrix.CreateRotationZ(0/*MathHelper.PiOver2*/) *
-            Matrix.CreateTranslation(drawPosition /*+ new Vector3(0.5f, 0.875f, 0)*/);
+            Matrix.CreateTranslation(drawPosition + new Vector3(0.5f, 2.625f, 0));
             this.hexagonModel.CopyAbsoluteBoneTransformsTo(boneTransforms);
 
             foreach (ModelMesh mesh in this.hexagonModel.Meshes)

@@ -52,8 +52,8 @@ namespace Underlord
             updateTimeCounter = 0;
             updates = 0;
             drawUpdates = 0;
-            floor = Content.Load<Model>("Models//floorSand_HEX_01");
-            wall = Content.Load<Model>("Models//sandWall_HEX_01");
+            floor = Content.Load<Model>("Models//floorSand_HEX_02");
+            wall = Content.Load<Model>("Models//sandWall_HEX_02");
             map = new Map(planeLength, floor, true, hexagonSideLength);
             walls = new List<Wall>();
             for (int i = 0; i < planeLength; ++i)
@@ -63,7 +63,7 @@ namespace Underlord
                     walls.Add(new Wall(new Vector2(i, j), Vars_Func.TypWall.Stone, 300, map, wall));
                 }
             }
-            camera = new Camera(new Vector3(0, -10, 15), new Vector3(0, 0, 0), Vector3.UnitZ, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f, planeLength, hexagonSideLength);
+            camera = new Camera(new Vector3(0, 0, 15), new Vector3(0, 0, 0), Vector3.Up/*Vector3.UnitZ*/, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f, planeLength, hexagonSideLength);
             view = camera.View;
             projection = camera.Projection;
             mouseState = Mouse.GetState();

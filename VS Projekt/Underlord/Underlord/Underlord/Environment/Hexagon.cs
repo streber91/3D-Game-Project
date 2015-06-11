@@ -62,7 +62,7 @@ namespace Underlord.Environment
             Matrix.CreateRotationX(0/*2*MathHelper.PiOver2*/) *
             Matrix.CreateRotationY(0) *
             Matrix.CreateRotationZ(0/*MathHelper.PiOver2*/) *
-            Matrix.CreateTranslation(drawPosition + new Vector3(0.5f, 0.0f, 0));
+            Matrix.CreateTranslation(drawPosition + new Vector3(0.0f, 0.0f, 0));
             this.hexagonModel.CopyAbsoluteBoneTransformsTo(boneTransforms);
 
             foreach (ModelMesh mesh in this.hexagonModel.Meshes)
@@ -80,7 +80,7 @@ namespace Underlord.Environment
                 }
                 mesh.Draw();
             }
-             //if(obj != null) obj.DrawModel(camera, drawPosition + Vector3.UnitZ, drawColor);
+             if(obj != null) obj.DrawModel(camera, drawPosition /*+ Vector3.UnitZ*/, drawColor);
         }
     }
 }

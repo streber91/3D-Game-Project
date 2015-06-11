@@ -11,49 +11,53 @@ namespace Underlord.Entity
     {
             Vars_Func.Typ typus;
             List<Upgrade> upgrades;
-            List<Vector2> upgradePos;
-            float size = 1f, nutrition = 250f, maxNutrition = 450f;
+            List<Vector2> upgradePos, nestHexagons;
+            float size, nutrition, maxNutrition, growcounter;
             Boolean undead = false;
             Vector2 targetPos, position;
-
         // update list in construtor for loading issues
-        public Nest(Vars_Func.Typ typus, Vector2 pos, List<Upgrade> ups, List<Vector2> upsPos)
+        public Nest(Vars_Func.Typ typus, Vector2 position)
         {
+            this.nestHexagons = new List<Vector2>();
+            nestHexagons.Add(position);
             this.typus = typus;
-            this.position = pos;
-            this.upgrades = ups;
-            this.upgradePos = upsPos;
+            this.position = position;
+            this.upgrades = new List<Upgrade>();
+            this.upgradePos = new List<Vector2>();
+            size = 1;
+            maxNutrition = 450f;
+            nutrition = 250f;
         }
 
-        public void upgrade(Upgrade ups, Vector2 upsPos)
+        public void addUpgrade(Upgrade upgrade, Vector2 upgradePosition)
         {
-            this.upgrades.Add(ups);
-            this.upgradePos.Add(upsPos);
+            this.upgrades.Add(upgrade);
+            this.upgradePos.Add(upgradePosition);
         }
         public void increaseNutrition(float d)
         {
-            if (this.nutrition + d <= maxNutrition)
+            if (nutrition + d <= maxNutrition)
             {
-                this.nutrition += d;
+                nutrition += d;
             }
             else
             {
+                nutrition = maxNutrition;
             }
         }
         public void decreaseNutrition(float d)
         {
             this.nutrition -= d;
 
-            if (this.nutrition <= 0)
+            if (nutrition <= 0)
             {
+                nutrition = 0;
                 setDead(true);
-            }
-            else
-            {
             }
         }
         public void update(GameTime time)
         {
+
         }
         public Boolean isUndead()
         {

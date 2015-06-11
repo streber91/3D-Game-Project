@@ -31,8 +31,8 @@ namespace Underlord.Entity
         {
             this.objectModel.Root.Transform = Matrix.Identity *
 
-            Matrix.CreateScale(0.875f) *
-            Matrix.CreateRotationX(MathHelper.PiOver2) *
+            Matrix.CreateScale(1) *
+            Matrix.CreateRotationX(0/*MathHelper.PiOver2*/) *
             Matrix.CreateRotationY(0) *
             Matrix.CreateRotationZ(0) *
             Matrix.CreateTranslation(drawPosition);

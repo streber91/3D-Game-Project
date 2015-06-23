@@ -28,9 +28,8 @@ namespace Underlord
         MouseState mouseState;
         Vector3 mousePosition;
         Vector2 indexOfMiddleHexagon;
-        List<Wall> walls;
+        List<Thing> mapObjects;
 
-        Model floor, wall;
         float updateTimeCounter, updates, drawUpdates;
         float frameTimeCounter, frames, drawFrame;
 
@@ -53,17 +52,17 @@ namespace Underlord
             updateTimeCounter = 0;
             updates = 0;
             drawUpdates = 0;
-            floor = Content.Load<Model>("Models//floorSand_HEX_03");
-            wall = Content.Load<Model>("Models//sandWall_HEX_02");
-            map = new Map(planeLength, floor, true, hexagonSideLength);
-            walls = new List<Wall>();
-            for (int i = 0; i < planeLength; ++i)
-            {
-                for (int j = 0; j < planeLength; ++j)
-                {
-                    walls.Add(new Wall(new Vector2(i, j), Vars_Func.TypWall.Stone, 300, map, wall));
-                }
-            }
+            Vars_Func.loadContent(Content);
+            map = new Map(planeLength, Entity.Vars_Func.HexTyp.Sand, true, hexagonSideLength);
+            //mapObjects = Logic.Mapgenerator.generateMap();
+
+            //for (int i = 0; i < planeLength; ++i)
+            //{
+            //    for (int j = 0; j < planeLength; ++j)
+            //    {
+            //        mapObjects.Add(new Wall(new Vector2(i, j), Vars_Func.TypWall.Stone, 300, map, wall));
+            //    }
+            //}
             camera = new Camera(new Vector3(0, -10, 15), new Vector3(0, 0, 0), Vector3.UnitZ, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f, planeLength, hexagonSideLength);
             view = camera.View;
             projection = camera.Projection;

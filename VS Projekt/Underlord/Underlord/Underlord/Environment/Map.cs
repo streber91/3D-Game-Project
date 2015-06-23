@@ -16,7 +16,7 @@ namespace Underlord.Environment
         int sidelength, drawHeight, drawWidth;
         float hexagonSideLength;
 
-        public Map(int sidelength, Model model, Boolean newGame, float hexagonSideLength)
+        public Map(int sidelength, Entity.Vars_Func.HexTyp typ, Boolean newGame, float hexagonSideLength)
         {
             drawHeight = 2;
             drawWidth = 5;
@@ -42,7 +42,7 @@ namespace Underlord.Environment
                             neighbors[3] = new Vector2(indexNumber.X, yDownValue);
                             neighbors[4] = new Vector2(xValue, yDownValue);
                             neighbors[5] = new Vector2(xValue, indexNumber.Y);
-                            map.Add(new Hexagon(new Vector3(i * 3 / 2 * hexagonSideLength + hexagonSideLength * 1.5f, j * 2 * hexagonSideLength * 7 / 8 + hexagonSideLength * 7 / 8, 0), indexNumber, neighbors, model));
+                            map.Add(new Hexagon(new Vector3(i * 3 / 2 * hexagonSideLength + hexagonSideLength * 1.5f, j * 2 * hexagonSideLength * 7 / 8 + hexagonSideLength * 7 / 8, 0), indexNumber, neighbors, typ));
                         }
                         else
                         {
@@ -56,7 +56,7 @@ namespace Underlord.Environment
                             neighbors[3] = new Vector2(indexNumber.X, yDownValue);
                             neighbors[4] = new Vector2(indexNumber.X - 1, indexNumber.Y);
                             neighbors[5] = new Vector2(indexNumber.X - 1, yUpValue);
-                            map.Add(new Hexagon(new Vector3(i * 3 / 2 * hexagonSideLength + hexagonSideLength * 1.5f, j * 2 * hexagonSideLength * 7 / 8 + hexagonSideLength * 7 / 8 * 2, 0), indexNumber, neighbors, model));
+                            map.Add(new Hexagon(new Vector3(i * 3 / 2 * hexagonSideLength + hexagonSideLength * 1.5f, j * 2 * hexagonSideLength * 7 / 8 + hexagonSideLength * 7 / 8 * 2, 0), indexNumber, neighbors, typ));
                         }
                         
                         ++indexNumber.Y;

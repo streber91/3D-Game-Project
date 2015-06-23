@@ -11,34 +11,32 @@ namespace Underlord.Entity
     class Wall : Thing
     {
         Vector2 indexPosition;
-        Vars_Func.TypWall type;
+        Vars_Func.WallTyp typ;
         int hp;
 
-        Model objectModel;
         private Matrix[] boneTransforms;
 
-        public Wall(Vector2 indexPosition, Vars_Func.TypWall type, int hp, Map map, Model model)
+        public Wall(Vector2 indexPosition, Vars_Func.WallTyp typ, int hp, Map map)
         {
             this.indexPosition = indexPosition;
-            this.type = type;
+            this.typ = typ;
             this.hp = hp;
             map.getHexagonAt(indexPosition.X, indexPosition.Y).Obj = this;
-            objectModel = model;
-            boneTransforms = new Matrix[this.objectModel.Bones.Count];
+            boneTransforms = new Matrix[Entity.Vars_Func.getWallModell(typ).Bones.Count];
         }
 
         override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor)
         {
-            this.objectModel.Root.Transform = Matrix.Identity *
+            Entity.Vars_Func.getWallModell(typ).Root.Transform = Matrix.Identity *
 
             Matrix.CreateScale(1) *
             Matrix.CreateRotationX(0/*MathHelper.PiOver2*/) *
             Matrix.CreateRotationY(0) *
             Matrix.CreateRotationZ(0) *
             Matrix.CreateTranslation(drawPosition);
-            this.objectModel.CopyAbsoluteBoneTransformsTo(boneTransforms);
+            Entity.Vars_Func.getWallModell(typ).CopyAbsoluteBoneTransformsTo(boneTransforms);
 
-            foreach (ModelMesh mesh in this.objectModel.Meshes)
+            foreach (ModelMesh mesh in Entity.Vars_Func.getWallModell(typ).Meshes)
             {
                 foreach (BasicEffect basicEffect in mesh.Effects)
                 {

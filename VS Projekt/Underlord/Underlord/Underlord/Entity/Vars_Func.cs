@@ -4,20 +4,44 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
 
 namespace Underlord.Entity
 {
    static class Vars_Func
     {
-       public enum Typ {Beetle, Knight, length };
+       public enum CreatureTyp {Beetle, Knight, length };
+       public enum NestTyp { Beetle, length };
        public enum UpgradeTyp {Arcane, Training, length };
-       public enum TypWall {Stone, Gold, Diamond, length };
+       public enum WallTyp {Sand, Gold, Diamond, length };
+       public enum HexTyp { Sand, length };
 
        static List<Model> CreatureModels;
        static List<Model> NestModels;
        static List<Model> UpgradeModels;
        static List<Model> WallModels;
        static List<Model> HexagonModels;
+
+       public static Model getCreatureModell(CreatureTyp typ) { return CreatureModels[(int)typ]; }
+       public static Model getNestModell(NestTyp typ) { return NestModels[(int)typ]; }
+       public static Model getUpgradeModell(UpgradeTyp typ) { return UpgradeModels[(int)typ]; }
+       public static Model getWallModell(WallTyp typ) { return WallModels[(int)typ]; }
+       public static Model getHexagonModell(HexTyp typ) { return HexagonModels[(int)typ]; }
+
+       public static void loadContent(ContentManager Content)
+       {
+           CreatureModels = new List<Model>();
+           NestModels = new List<Model>();
+           UpgradeModels = new List<Model>();
+           WallModels = new List<Model>();
+           HexagonModels = new List<Model>();
+
+           
+           HexagonModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
+
+           HexagonModels.Add(Content.Load<Model>("Models//floorSand_HEX_03"));
+
+       }
 
        public static Vector3 mousepos(GraphicsDevice graphics, MouseState mousestate, Matrix projection, Matrix view)
        {
@@ -72,5 +96,6 @@ namespace Underlord.Entity
 
            return new Vector2(X, (int)(Y / 2));
        }
+
     }
 }

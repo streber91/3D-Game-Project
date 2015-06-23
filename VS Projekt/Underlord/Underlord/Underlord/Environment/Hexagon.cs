@@ -16,7 +16,8 @@ namespace Underlord.Environment
         List<Boolean> imps;
         Thing obj;
         Color drawColor;
-        Model hexagonModel;
+        Entity.Vars_Func.HexTyp typ;
+        //Model hexagonModel;
         private Matrix[] boneTransforms;
 
         #region Properties
@@ -32,14 +33,14 @@ namespace Underlord.Environment
         }
         #endregion
 
-        public Hexagon(Vector3 position, Vector2 indexNumber, Vector2[] neighbors, Model model)
+        public Hexagon(Vector3 position, Vector2 indexNumber, Vector2[] neighbors, Entity.Vars_Func.HexTyp typ)
         {
             this.position = position;
             this.indexNumber = indexNumber;
             this.neighbors = neighbors;
             drawColor = Color.White;
-            this.hexagonModel = model;
-            boneTransforms = new Matrix[this.hexagonModel.Bones.Count];
+            this.typ = typ;
+            boneTransforms = new Matrix[Entity.Vars_Func.getHexagonModell(typ).Bones.Count];
         }
 
         public Vector3 get3DPosition() { return position; }
@@ -56,16 +57,16 @@ namespace Underlord.Environment
 
         public void DrawModel(Camera camera, Vector3 drawPosition)
         {
-            this.hexagonModel.Root.Transform = Matrix.Identity *
+            Entity.Vars_Func.getHexagonModell(typ).Root.Transform = Matrix.Identity *
 
             Matrix.CreateScale(/*0.0127f*/1) *
             Matrix.CreateRotationX(0/*2*MathHelper.PiOver2*/) *
             Matrix.CreateRotationY(0) *
             Matrix.CreateRotationZ(0/*MathHelper.PiOver2*/) *
             Matrix.CreateTranslation(drawPosition + new Vector3(0.0f, 0.0f, 0));
-            this.hexagonModel.CopyAbsoluteBoneTransformsTo(boneTransforms);
+            Entity.Vars_Func.getHexagonModell(typ).CopyAbsoluteBoneTransformsTo(boneTransforms);
 
-            foreach (ModelMesh mesh in this.hexagonModel.Meshes)
+            foreach (ModelMesh mesh in Entity.Vars_Func.getHexagonModell(typ).Meshes)
             {
                 foreach (BasicEffect basicEffect in mesh.Effects)
                 {

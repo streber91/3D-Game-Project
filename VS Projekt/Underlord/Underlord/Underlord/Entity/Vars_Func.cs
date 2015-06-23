@@ -13,7 +13,7 @@ namespace Underlord.Entity
        public enum CreatureTyp {Beetle, Knight, length };
        public enum NestTyp { Beetle, length };
        public enum UpgradeTyp {Arcane, Training, length };
-       public enum WallTyp {Sand, Gold, Diamond, length };
+       public enum WallTyp { Sand, Gold, Diamond, Entrance, HQ, length };
        public enum HexTyp { Sand, length };
 
        static List<Model> CreatureModels;
@@ -37,7 +37,11 @@ namespace Underlord.Entity
            HexagonModels = new List<Model>();
 
            
-           HexagonModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
+           WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
+           WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
+           WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
+           WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
+           WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
 
            HexagonModels.Add(Content.Load<Model>("Models//floorSand_HEX_03"));
 

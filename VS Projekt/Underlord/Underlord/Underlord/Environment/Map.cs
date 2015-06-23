@@ -96,10 +96,6 @@ namespace Underlord.Environment
 
         }*/
 
-
-
-
-
         public void DrawModel(Camera camera, Vector2 indexOfMiddleHexagon, Vector3 cameraTarget)
         {
             Hexagon middle = map[(int)(indexOfMiddleHexagon.X * sidelength + indexOfMiddleHexagon.Y)];

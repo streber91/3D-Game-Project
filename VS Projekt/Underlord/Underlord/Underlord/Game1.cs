@@ -54,15 +54,8 @@ namespace Underlord
             drawUpdates = 0;
             Vars_Func.loadContent(Content);
             map = new Map(planeLength, Entity.Vars_Func.HexTyp.Sand, true, hexagonSideLength);
-            //mapObjects = Logic.Mapgenerator.generateMap();
+            mapObjects = Logic.Mapgenerator.generateMap(map, planeLength, 3, 4);
 
-            //for (int i = 0; i < planeLength; ++i)
-            //{
-            //    for (int j = 0; j < planeLength; ++j)
-            //    {
-            //        mapObjects.Add(new Wall(new Vector2(i, j), Vars_Func.TypWall.Stone, 300, map, wall));
-            //    }
-            //}
             camera = new Camera(new Vector3(0, -10, 15), new Vector3(0, 0, 0), Vector3.UnitZ, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f, planeLength, hexagonSideLength);
             view = camera.View;
             projection = camera.Projection;

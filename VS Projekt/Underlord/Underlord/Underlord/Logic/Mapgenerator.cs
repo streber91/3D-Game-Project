@@ -44,7 +44,7 @@ namespace Underlord.Logic
                 for (int j = 0; j < size; ++j)
                 {
                     int randnum = rand.Next(specials.Count);
-                    if (j % 5 == 0 && specials.Count > 0) //TODO specials besser berechnen (count)
+                    if (j % 5 == 0 && i % 5 == 0)
                     {
                         mapObjekts.Add(new Entity.Wall(new Vector2(i, j), specials[randnum], 300, hexmap));
                         if (specials[randnum] == Entity.Vars_Func.WallTyp.Diamond || Entity.Vars_Func.WallTyp.Gold == specials[randnum])
@@ -58,7 +58,7 @@ namespace Underlord.Logic
                         if (specials[randnum] == Entity.Vars_Func.WallTyp.Entrance) EN = new Vector2(i, j);
                         specials.RemoveAt(randnum);
                     }
-                    else if(hexmap.getHexagonAt(i, j) == null) mapObjekts.Add(new Entity.Wall(new Vector2(i, j), Underlord.Entity.Vars_Func.WallTyp.Sand, 300, hexmap));
+                    else if(hexmap.getHexagonAt(i, j).Obj == null) mapObjekts.Add(new Entity.Wall(new Vector2(i, j), Underlord.Entity.Vars_Func.WallTyp.Sand, 300, hexmap));
                 }
             }
             foreach (Vector2 hex in hexmap.getHexagonAt(HQ.X, HQ.Y).getNeighbors())

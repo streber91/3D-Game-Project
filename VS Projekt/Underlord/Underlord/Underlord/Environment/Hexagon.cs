@@ -17,7 +17,6 @@ namespace Underlord.Environment
         Thing obj;
         Color drawColor;
         Entity.Vars_Func.HexTyp typ;
-        //Model hexagonModel;
         private Matrix[] boneTransforms;
 
         #region Properties

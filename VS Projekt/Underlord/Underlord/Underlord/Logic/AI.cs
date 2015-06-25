@@ -18,7 +18,7 @@ namespace Underlord.Logic
             //else if(computeNearestEnemy != null) auf gegner zubewegen else
             if(creature.Path.Count == 0)
             {
-                if(computeDistance(creature.getHome().getTarget(), creature.Position) < 5) randomwalk(creature, map);
+                if(Entity.Vars_Func.computeDistance(creature.getHome().getTarget(), creature.Position, map) < 5) randomwalk(creature, map);
                 else  determinePath(creature, map);
             }
              
@@ -43,7 +43,7 @@ namespace Underlord.Logic
                 if (tmp == creature.getHome().getTarget()) break;
                 foreach (Vector2 hex in map.getHexagonAt(tmp).getNeighbors())
                 {
-                    if (!map.getHexagonAt(hex).Visited && map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.Wall)
+                    if (!map.getHexagonAt(hex).Visited && (map.getHexagonAt(hex).Obj == null || map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.Wall))
                     {
                         queue.Enqueue(hex);
                         map.getHexagonAt(hex).Visited = true;
@@ -70,11 +70,6 @@ namespace Underlord.Logic
         static private void randomwalk(Creature creature, Environment.Map map)
         {
             creature.Path.Push(map.getHexagonAt(creature.Position).getNeighbors()[(int)rand.Next(6)]);
-        }
-
-        static private int computeDistance(Vector2 pos1, Vector2 pos2)
-        {
-            return (int)(Math.Abs(pos1.X - pos2.X) + Math.Abs(pos1.Y - pos2.Y)); //überarbeiten
         }
     }
 }

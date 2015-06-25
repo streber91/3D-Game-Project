@@ -33,7 +33,7 @@ namespace Underlord.Logic
                 case Vars_Func.GameState.MainMenue:
                     break;
                 case Vars_Func.GameState.Ingame:
-                    map.getHexagonAt(mouseover.X, mouseover.Y).Color = Color.Yellow;// getPlaneHexagons()[(int)(mouseover.X * planeLength + mouseover.Y)].setColor(Color.Brown);
+                    map.getHexagonAt(mouseover).Color = Color.Yellow;// getPlaneHexagons()[(int)(mouseover.X * planeLength + mouseover.Y)].setColor(Color.Brown);
                     if (timeCounter > 100)
                     {
                         if (keyboard.IsKeyDown(Keys.R))
@@ -49,7 +49,7 @@ namespace Underlord.Logic
                     break;
                 case Vars_Func.GameState.CreateRoom:
                     
-                    map.getHexagonAt(mouseover.X, mouseover.Y).Color = Color.Purple;// getPlaneHexagons()[(int)(mouseover.X * planeLength + mouseover.Y)].setColor(Color.Brown);
+                    map.getHexagonAt(mouseover).Color = Color.Purple;// getPlaneHexagons()[(int)(mouseover.X * planeLength + mouseover.Y)].setColor(Color.Brown);
                     //Color the Hexagons around the coursor too
                     /*Vector2[] neigbors = map.getHexagonAt(mouseover.X, mouseover.Y).getNeighbors(); //getPlaneHexagons()[(int)(mouseover.X * planeLength + mouseover.Y)].getNeighbors();
                     foreach (Vector2 hex in neigbors)
@@ -68,9 +68,11 @@ namespace Underlord.Logic
                         }
                         if (counter == 0 && mouseState.LeftButton == ButtonState.Pressed)
                         {
-                            //if (map.getHexagonAt(mouseover.X, mouseover.Y).Obj
-                            indexOfMiddleHexagonForRoomCreation = mouseover;
-                            ++counter;
+                            if (map.getHexagonAt(mouseover).Obj == null || map.getHexagonAt(mouseover).Obj.getThingTyp() != Vars_Func.ThingTyp.Wall)
+                            {
+                                indexOfMiddleHexagonForRoomCreation = mouseover;
+                                ++counter;
+                            }
                             timeCounter = 0;
                         }
                         else if (counter == 1 && mouseState.LeftButton == ButtonState.Pressed)

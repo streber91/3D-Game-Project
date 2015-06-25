@@ -12,11 +12,12 @@ namespace Underlord.Environment
     class Map
     {
         //String name = "";
+        List<Room> rooms = new List<Room>();
         List<Hexagon> map = new List<Hexagon>();
-        int sidelength, drawHeight, drawWidth;
+        int planeSidelength, drawHeight, drawWidth;
         float hexagonSideLength;
 
-        public Map(int sidelength, Model model, Boolean newGame, float hexagonSideLength)
+        public Map(int sidelength, Entity.Vars_Func.HexTyp typ, Boolean newGame, float hexagonSideLength)
         {
             drawHeight = 2;
             drawWidth = 5;
@@ -24,7 +25,7 @@ namespace Underlord.Environment
             if (newGame)
             {
                 Vector2 indexNumber = new Vector2(0, 0);
-                this.sidelength = sidelength;
+                this.planeSidelength = sidelength;
                 for (int i = 0; i < sidelength; ++i)
                 {
                     for (int j = 0; j < sidelength; ++j)
@@ -42,7 +43,7 @@ namespace Underlord.Environment
                             neighbors[3] = new Vector2(indexNumber.X, yDownValue);
                             neighbors[4] = new Vector2(xValue, yDownValue);
                             neighbors[5] = new Vector2(xValue, indexNumber.Y);
-                            map.Add(new Hexagon(new Vector3(i * 3 / 2 * hexagonSideLength + hexagonSideLength * 1.5f, j * 2 * hexagonSideLength * 7 / 8 + hexagonSideLength * 7 / 8, 0), indexNumber, neighbors, model));
+                            map.Add(new Hexagon(new Vector3(i * 3 / 2 * hexagonSideLength + hexagonSideLength * 1.5f, j * 2 * hexagonSideLength * 7 / 8 + hexagonSideLength * 7 / 8, 0), indexNumber, neighbors, typ));
                         }
                         else
                         {
@@ -56,7 +57,7 @@ namespace Underlord.Environment
                             neighbors[3] = new Vector2(indexNumber.X, yDownValue);
                             neighbors[4] = new Vector2(indexNumber.X - 1, indexNumber.Y);
                             neighbors[5] = new Vector2(indexNumber.X - 1, yUpValue);
-                            map.Add(new Hexagon(new Vector3(i * 3 / 2 * hexagonSideLength + hexagonSideLength * 1.5f, j * 2 * hexagonSideLength * 7 / 8 + hexagonSideLength * 7 / 8 * 2, 0), indexNumber, neighbors, model));
+                            map.Add(new Hexagon(new Vector3(i * 3 / 2 * hexagonSideLength + hexagonSideLength * 1.5f, j * 2 * hexagonSideLength * 7 / 8 + hexagonSideLength * 7 / 8 * 2, 0), indexNumber, neighbors, typ));
                         }
                         
                         ++indexNumber.Y;
@@ -73,10 +74,17 @@ namespace Underlord.Environment
             }
         }
 
+        #region Properties
+        public List<Room> Rooms
+        {
+            get { return rooms; }
+        }
+        #endregion
+
         public List<Hexagon> getMapHexagons() { return map; }
-        public Hexagon getHexagonAt(float X, float Y) { return map[(int)(X * sidelength + Y)]; }
-
-
+        public Hexagon getHexagonAt(float X, float Y) { return map[(int)(X * planeSidelength + Y)]; }
+        public Hexagon getHexagonAt(Vector2 pos) { return map[(int)(pos.X * planeSidelength + pos.Y)]; }
+        public int getPlanelength() { return planeSidelength; }
 
 
         public void saveGame()
@@ -96,18 +104,14 @@ namespace Underlord.Environment
 
         }*/
 
-
-
-
-
         public void DrawModel(Camera camera, Vector2 indexOfMiddleHexagon, Vector3 cameraTarget)
         {
-            Hexagon middle = map[(int)(indexOfMiddleHexagon.X * sidelength + indexOfMiddleHexagon.Y)];
+            Hexagon middle = map[(int)(indexOfMiddleHexagon.X * planeSidelength + indexOfMiddleHexagon.Y)];
             Vector3 middleDrawPosition = middle.get3DPosition();
-            if (middleDrawPosition.X - cameraTarget.X <= 1.5f * hexagonSideLength) middleDrawPosition += Vector3.UnitX * 1.5f * hexagonSideLength * sidelength;
-            if (middleDrawPosition.X - cameraTarget.X >= 1.5f * hexagonSideLength) middleDrawPosition -= Vector3.UnitX * 1.5f * hexagonSideLength * sidelength;
-            if (middleDrawPosition.Y - cameraTarget.Y <= 1.5f * hexagonSideLength) middleDrawPosition += Vector3.UnitY * 1.75f * hexagonSideLength * sidelength;
-            if (middleDrawPosition.Y - cameraTarget.Y >= 1.5f * hexagonSideLength) middleDrawPosition -= Vector3.UnitY * 1.75f * hexagonSideLength * sidelength;
+            if (middleDrawPosition.X - cameraTarget.X <= 1.5f * hexagonSideLength) middleDrawPosition += Vector3.UnitX * 1.5f * hexagonSideLength * planeSidelength;
+            if (middleDrawPosition.X - cameraTarget.X >= 1.5f * hexagonSideLength) middleDrawPosition -= Vector3.UnitX * 1.5f * hexagonSideLength * planeSidelength;
+            if (middleDrawPosition.Y - cameraTarget.Y <= 1.5f * hexagonSideLength) middleDrawPosition += Vector3.UnitY * 1.75f * hexagonSideLength * planeSidelength;
+            if (middleDrawPosition.Y - cameraTarget.Y >= 1.5f * hexagonSideLength) middleDrawPosition -= Vector3.UnitY * 1.75f * hexagonSideLength * planeSidelength;
 
             middle.DrawModel(camera, middleDrawPosition);
             rekRightDrawModel(camera, middle.getNeighbors()[1], drawWidth, middleDrawPosition + (Vector3.UnitY * 0.875f + Vector3.UnitX * 1.5f) * hexagonSideLength);
@@ -118,7 +122,7 @@ namespace Underlord.Environment
 
         private void rekRightDrawModel(Camera camera, Vector2 position, int counter, Vector3 drawposition)
         {
-            Hexagon me = map[(int)(position.X * sidelength + position.Y)];
+            Hexagon me = map[(int)(position.X * planeSidelength + position.Y)];
             me.DrawModel(camera, drawposition);
             rekUpDrawModel(camera, me.getNeighbors()[0], drawHeight, drawposition + Vector3.UnitY * 1.75f * hexagonSideLength);
             rekDownDrawModel(camera, me.getNeighbors()[3], drawHeight, drawposition - Vector3.UnitY * 1.75f * hexagonSideLength);
@@ -131,7 +135,7 @@ namespace Underlord.Environment
 
         private void rekLeftDrawModel(Camera camera, Vector2 position, int counter, Vector3 drawposition)
         {
-            Hexagon me = map[(int)(position.X * sidelength + position.Y)];
+            Hexagon me = map[(int)(position.X * planeSidelength + position.Y)];
             me.DrawModel(camera, drawposition);
             rekUpDrawModel(camera, me.getNeighbors()[0], drawHeight, drawposition + Vector3.UnitY * 1.75f * hexagonSideLength);
             rekDownDrawModel(camera, me.getNeighbors()[3], drawHeight, drawposition - Vector3.UnitY * 1.75f * hexagonSideLength);
@@ -144,14 +148,14 @@ namespace Underlord.Environment
 
         private void rekUpDrawModel(Camera camera, Vector2 position, int counter, Vector3 drawposition)
         {
-            Hexagon me = map[(int)(position.X * sidelength + position.Y)];
+            Hexagon me = map[(int)(position.X * planeSidelength + position.Y)];
             me.DrawModel(camera, drawposition);
             if (counter > 0) rekUpDrawModel(camera, me.getNeighbors()[0], counter - 1, drawposition + Vector3.UnitY * 1.75f * hexagonSideLength);
         }
 
         private void rekDownDrawModel(Camera camera, Vector2 position, int counter, Vector3 drawposition)
         {
-            Hexagon me = map[(int)(position.X * sidelength + position.Y)];
+            Hexagon me = map[(int)(position.X * planeSidelength + position.Y)];
             me.DrawModel(camera, drawposition);
             if (counter > 0) rekDownDrawModel(camera, me.getNeighbors()[3], counter - 1, drawposition - Vector3.UnitY * 1.75f * hexagonSideLength);
         }

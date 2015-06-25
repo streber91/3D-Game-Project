@@ -9,14 +9,15 @@ namespace Underlord.Entity
 {
     class Nest : Thing
     {
-            Vars_Func.Typ typus;
-            List<Upgrade> upgrades;
-            List<Vector2> upgradePos, nestHexagons;
-            float size, nutrition, maxNutrition, growcounter;
-            Boolean undead = false;
-            Vector2 targetPos, position;
+        Vars_Func.CreatureTyp typus;
+        List<Upgrade> upgrades;
+        List<Vector2> upgradePos, nestHexagons;
+        float size, nutrition, maxNutrition, growcounter;
+        Boolean undead = false;
+        Vector2 targetPos, position;
+
         // update list in construtor for loading issues
-        public Nest(Vars_Func.Typ typus, Vector2 position)
+        public Nest(Vars_Func.CreatureTyp typus, Vector2 position)
         {
             this.nestHexagons = new List<Vector2>();
             nestHexagons.Add(position);

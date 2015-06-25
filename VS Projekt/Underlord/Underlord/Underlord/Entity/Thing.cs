@@ -8,6 +8,9 @@ namespace Underlord.Entity
 {
     abstract class Thing
     {
+        Vars_Func.ThingTyp thingTyp;
         abstract public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor);
+
+        public Vars_Func.ThingTyp getThingTyp() { return thingTyp; }
     }
 }

@@ -4,20 +4,50 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
 
 namespace Underlord.Entity
 {
    static class Vars_Func
     {
-       public enum Typ {Beetle, Knight, length };
+       public enum CreatureTyp {Beetle, Knight, length };
+       public enum NestTyp { Beetle, length };
        public enum UpgradeTyp {Arcane, Training, length };
-       public enum TypWall {Stone, Gold, Diamond, length };
+       public enum WallTyp { Sand, Gold, Diamond, Entrance, HQ, length };
+       public enum HexTyp { Sand, length };
+       public enum GameState { MainMenue, Ingame, Save, Load, CreateRoom, Build, Mine, length };
+       public enum ThingTyp { Wall, Upgrade, Nest, Creature, length };
 
        static List<Model> CreatureModels;
        static List<Model> NestModels;
        static List<Model> UpgradeModels;
        static List<Model> WallModels;
        static List<Model> HexagonModels;
+
+       public static Model getCreatureModell(CreatureTyp typ) { return CreatureModels[(int)typ]; }
+       public static Model getNestModell(NestTyp typ) { return NestModels[(int)typ]; }
+       public static Model getUpgradeModell(UpgradeTyp typ) { return UpgradeModels[(int)typ]; }
+       public static Model getWallModell(WallTyp typ) { return WallModels[(int)typ]; }
+       public static Model getHexagonModell(HexTyp typ) { return HexagonModels[(int)typ]; }
+
+       public static void loadContent(ContentManager Content)
+       {
+           CreatureModels = new List<Model>();
+           NestModels = new List<Model>();
+           UpgradeModels = new List<Model>();
+           WallModels = new List<Model>();
+           HexagonModels = new List<Model>();
+
+           
+           WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
+           WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
+           WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
+           WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
+           WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
+
+           HexagonModels.Add(Content.Load<Model>("Models//floorSand_HEX_03"));
+
+       }
 
        public static Vector3 mousepos(GraphicsDevice graphics, MouseState mousestate, Matrix projection, Matrix view)
        {
@@ -27,6 +57,46 @@ namespace Underlord.Entity
            Vector3 mousepos = new Vector3(a * (vec2.X - vec1.X) + vec1.X, a * (vec2.Y - vec1.Y) + vec1.Y, 0.0f);
 
            return mousepos;
+       }
+
+       public static int computeDistance(Vector2 pos1, Vector2 pos2, Environment.Map map)
+       {
+            int distanz = 0;
+            Vector2 tmp = new Vector2();
+            Queue<Vector2> queue = new Queue<Vector2>();
+            queue.Enqueue(pos1);
+            map.getHexagonAt(pos1).Visited = true;
+            queue.Enqueue(new Vector2(map.getPlanelength(), 0));
+
+            while (queue.Count != 1)
+            {
+                tmp = queue.Dequeue();
+                if (tmp == pos2) break;
+                if (tmp.X == map.getPlanelength())
+                {
+                    ++distanz;
+                    queue.Enqueue(tmp);
+                    continue;
+                }
+                foreach (Vector2 hex in map.getHexagonAt(tmp).getNeighbors())
+                {
+                    if (!map.getHexagonAt(hex).Visited)
+                    {
+                        queue.Enqueue(hex);
+                        map.getHexagonAt(hex).Visited = true;
+                    }
+                }
+            }
+
+            for (int i = 0; i < map.getPlanelength(); ++i)
+            {
+                for (int j = 0; j < map.getPlanelength(); ++j)
+                {
+                    map.getHexagonAt(i, j).Visited = false;
+                }
+            }
+
+            return distanz;
        }
 
        public static Vector2 gridColision(Vector3 position, int planeLength, float hexagonSideLength)

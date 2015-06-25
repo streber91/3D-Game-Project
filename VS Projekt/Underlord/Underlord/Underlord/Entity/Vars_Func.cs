@@ -15,6 +15,7 @@ namespace Underlord.Entity
        public enum UpgradeTyp {Arcane, Training, length };
        public enum WallTyp { Sand, Gold, Diamond, Entrance, HQ, length };
        public enum HexTyp { Sand, length };
+       public enum GameState { MainMenue, Ingame, Save, Load, CreateRoom, Build, Mine, length };
        public enum ThingTyp { Wall, Upgrade, Nest, Creature, length };
 
        static List<Model> CreatureModels;
@@ -141,6 +142,5 @@ namespace Underlord.Entity
 
            return new Vector2(X, (int)(Y / 2));
        }
-
     }
 }

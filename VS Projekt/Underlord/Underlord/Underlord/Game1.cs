@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using Underlord.Entity;
 using Underlord.Renderer;
 using Underlord.Environment;
+using Underlord.Logic;
 
 namespace Underlord
 {
@@ -25,6 +26,7 @@ namespace Underlord
         SpriteFont font;
         int planeLength;
         float hexagonSideLength;
+        KeyboardState keyboard;
         MouseState mouseState;
         Vector3 mousePosition;
         Vector2 indexOfMiddleHexagon;
@@ -59,6 +61,7 @@ namespace Underlord
             camera = new Camera(new Vector3(0, -10, 15), new Vector3(0, 0, 0), Vector3.UnitZ, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f, planeLength, hexagonSideLength);
             view = camera.View;
             projection = camera.Projection;
+            keyboard = Keyboard.GetState();
             mouseState = Mouse.GetState();
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
 
@@ -79,9 +82,6 @@ namespace Underlord
 
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
             /*for (int i = 0; i < 2500000; ++i)
             {
                 float tmp = 20;
@@ -98,6 +98,7 @@ namespace Underlord
                 updates = 0;
                 updateTimeCounter -= 1000;
             }
+            keyboard = Keyboard.GetState();
             mouseState = Mouse.GetState();
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
             camera.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, mouseState);
@@ -106,15 +107,24 @@ namespace Underlord
             {
                 hex.Color = Color.White;
             }
-            Vector2 mouseover = Vars_Func.gridColision(mousePosition, planeLength, hexagonSideLength);
-            Vector2[] neigbors = map.getHexagonAt(mouseover.X, mouseover.Y).getNeighbors(); //getPlaneHexagons()[(int)(mouseover.X * planeLength + mouseover.Y)].getNeighbors();
-            map.getHexagonAt(mouseover.X, mouseover.Y).Color = Color.Blue;// getPlaneHexagons()[(int)(mouseover.X * planeLength + mouseover.Y)].setColor(Color.Brown);
-            foreach (Vector2 hex in neigbors)
+            switch(Interaction.GameState)
             {
-                map.getHexagonAt(hex.X, hex.Y).Color = Color.Blue;
+                case Vars_Func.GameState.CreateRoom:
+                    foreach (Hexagon hex in map.getMapHexagons())
+                    {
+                        if (hex.RoomNumber == 1) hex.Color = Color.Red;
+                        else if (hex.RoomNumber == 2) hex.Color = Color.Yellow;
+                        else if (hex.RoomNumber == 3) hex.Color = Color.Green;
+                        else if (hex.RoomNumber != 0) hex.Color = Color.Blue;
+                    }
+                    break;
             }
             indexOfMiddleHexagon = Vars_Func.gridColision(camera.Target, planeLength, hexagonSideLength);
-            map.getHexagonAt(indexOfMiddleHexagon.X, indexOfMiddleHexagon.Y).Color = Color.Purple;
+            //Color the Hexagon in the middle of the Screen purple
+            //map.getHexagonAt(indexOfMiddleHexagon.X, indexOfMiddleHexagon.Y).Color = Color.Purple;
+
+            Vector2 mouseover = Vars_Func.gridColision(mousePosition, planeLength, hexagonSideLength);
+            Interaction.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, map, mouseover, mouseState, keyboard);
 
             base.Update(gameTime);
         }

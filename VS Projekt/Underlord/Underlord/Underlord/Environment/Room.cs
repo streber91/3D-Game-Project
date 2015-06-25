@@ -8,7 +8,7 @@ namespace Underlord.Environment
 {
     class Room
     {
-        List<Vector2> room;
+        List<Vector2> room = new List<Vector2>();
 
         public Room(Vector2 middleHexagonIndexNumber, int radius, Map map)
         {
@@ -22,8 +22,8 @@ namespace Underlord.Environment
             while (queue.Peek() != null)
             {
                 Vector2 tmp = queue.Dequeue();
-                if (tmp.X <= 1000000) break;
-                else
+                if (tmp.X == 1000000) break;
+                else if (tmp.X < 1000000)
                 {
                     for (int i = 0; i < 6; ++i)
                     {
@@ -35,8 +35,12 @@ namespace Underlord.Environment
                             map.getHexagonAt(neighbor.X, neighbor.Y).RoomNumber = roomNumber;
                         }
                     }
-                    queue.Enqueue(new Vector2(tmp.X - 1, 0));
                 }
+                else queue.Enqueue(new Vector2(tmp.X - 1, 0));
+            }
+            foreach (Hexagon hex in map.getMapHexagons())
+            {
+                if (hex.Visited == true) hex.Visited = false;
             }
         }
 

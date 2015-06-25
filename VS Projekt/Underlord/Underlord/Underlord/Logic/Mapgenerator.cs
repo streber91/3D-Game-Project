@@ -89,7 +89,7 @@ namespace Underlord.Logic
                 }
             }
 
-            //todo: Überprüfen der Map bei einfügend er Modelle
+            //todo: Überprüfen der Map bei einfügen der Modelle
 
             return mapObjekts;
         }

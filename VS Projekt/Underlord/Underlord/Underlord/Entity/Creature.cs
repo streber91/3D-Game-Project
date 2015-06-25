@@ -9,14 +9,14 @@ namespace Underlord.Entity
 {
     class Creature : Thing
     {
-            Vars_Func.Typ type;
-            List<Ability> abilities;
-            int hp, dmg, vision;
-            float size = 1f, attackCooldown = 0.100f, timeSinceLastAttack = 0;
-            Vector2 position;
-            List<Vector2> path;
+        Vars_Func.CreatureTyp type;
+        List<Ability> abilities;
+        int hp, dmg, vision;
+        float size = 1f, attackCooldown = 0.100f, timeSinceLastAttack = 0;
+        Vector2 position;
+        List<Vector2> path;
 
-        public Creature(Vars_Func.Typ type, List<Ability> ability, Vector2 pos)
+        public Creature(Vars_Func.CreatureTyp type, List<Ability> ability, Vector2 pos)
         {
             this.type = type;
             this.abilities = ability;

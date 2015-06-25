@@ -13,7 +13,7 @@ namespace Underlord.Entity
         Vars_Func.CreatureTyp type;
         List<Ability> abilities;
         int hp, dmg, vision;
-        float size, attackCooldown, timeSinceLastAttack;
+        float size, speed, actionTimeCounter;
         Vector2 position;
         Stack<Vector2> path;
         Nest home;
@@ -26,8 +26,8 @@ namespace Underlord.Entity
             this.abilities = ability;
             this.position = pos;
             size = 1;
-            attackCooldown = 0.1f;
-            timeSinceLastAttack = 0;
+            speed = 1;
+            actionTimeCounter = 0;
         }
 
         #region Properties
@@ -40,6 +40,11 @@ namespace Underlord.Entity
         {
             get { return position; }
             set { position = value; }
+        }
+        public float ActionTimeCounter
+        {
+            get { return actionTimeCounter; }
+            set { actionTimeCounter = value; }
         }
         #endregion
 
@@ -69,9 +74,7 @@ namespace Underlord.Entity
         public int getVision() { return this.vision; }
         //public Vector2 getNextPathTile() { return this.path.ElementAt(0); }
         public float getDmg() { return this.dmg; }
-        public float getAttackCooldown() { return this.attackCooldown; }
-        public void setAttackCooldown(float d) { this.attackCooldown = d; }
-        public float getTimeSinceLastAttack() { return this.timeSinceLastAttack; }
+        public float getSpeed() { return this.speed; }
 
         override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor)
         {

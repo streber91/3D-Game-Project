@@ -13,16 +13,23 @@ namespace Underlord.Logic
 
         static public void compute(Creature creature, GameTime time, Environment.Map map)
         {
-            
-            //if(gegner in angrifsreichweite) angreifen
-            //else if(computeNearestEnemy != null) auf gegner zubewegen else
-            if(creature.Path.Count == 0)
+            if (creature.ActionTimeCounter >= 1000 / creature.getSpeed())
             {
-                if(Entity.Vars_Func.computeDistance(creature.getHome().getTarget(), creature.Position, map) < 5) randomwalk(creature, map);
-                else  determinePath(creature, map);
+                //if(gegner in angrifsreichweite) angreifen
+                //else if(computeNearestEnemy != null) auf gegner zubewegen else
+                if (creature.Path.Count == 0)
+                {
+                    if (Entity.Vars_Func.computeDistance(creature.getHome().getTarget(), creature.Position, map) < 5) randomwalk(creature, map);
+                    else determinePath(creature, map);
+                }
+
+                if (creature.ActionTimeCounter >= 1000 / creature.getSpeed())
+                {
+                    creature.Position = creature.Path.Pop();
+                    creature.ActionTimeCounter -= 1000 / creature.getSpeed();
+                }
             }
-             
-            creature.Position = creature.Path.Pop();
+            creature.ActionTimeCounter += time.ElapsedGameTime.Milliseconds;
         }
 
         static private List<Vector2> computeNearestEnemy(Creature creature, Environment.Map map)

@@ -150,6 +150,16 @@ namespace Underlord
             spriteBatch.DrawString(font, mousePosition.X.ToString() + " : " + mousePosition.Y.ToString() + " : " + mousePosition.Z.ToString(), new Vector2(10, 25), Color.White);
             spriteBatch.DrawString(font, "FPS: " + drawFrame.ToString(), new Vector2(10, 40), Color.White);
             spriteBatch.DrawString(font, "UPS: " + drawUpdates.ToString(), new Vector2(10, 55), Color.White);
+
+            Texture2D test = Content.Load<Texture2D>("TEST");
+            Rectangle rec = new Rectangle(0, 0, 1366, 144);
+            Rectangle rec2 = new Rectangle(0, 144, 180, 624);
+            Rectangle rec3 = new Rectangle(180, 648, 1186, 120);
+            spriteBatch.Draw(test, rec, Color.Red);
+            spriteBatch.Draw(test, rec2, Color.Black);
+            spriteBatch.Draw(test, rec3, Color.Green);
+            
+
             spriteBatch.End();
 
             base.Draw(gameTime);

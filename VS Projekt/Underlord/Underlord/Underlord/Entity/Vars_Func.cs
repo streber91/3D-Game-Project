@@ -58,6 +58,46 @@ namespace Underlord.Entity
            return mousepos;
        }
 
+       public static int computeDistance(Vector2 pos1, Vector2 pos2, Environment.Map map)
+       {
+            int distanz = 0;
+            Vector2 tmp = new Vector2();
+            Queue<Vector2> queue = new Queue<Vector2>();
+            queue.Enqueue(pos1);
+            map.getHexagonAt(pos1).Visited = true;
+            queue.Enqueue(new Vector2(map.getPlanelength(), 0));
+
+            while (queue.Count != 1)
+            {
+                tmp = queue.Dequeue();
+                if (tmp == pos2) break;
+                if (tmp.X == map.getPlanelength())
+                {
+                    ++distanz;
+                    queue.Enqueue(tmp);
+                    continue;
+                }
+                foreach (Vector2 hex in map.getHexagonAt(tmp).getNeighbors())
+                {
+                    if (!map.getHexagonAt(hex).Visited)
+                    {
+                        queue.Enqueue(hex);
+                        map.getHexagonAt(hex).Visited = true;
+                    }
+                }
+            }
+
+            for (int i = 0; i < map.getPlanelength(); ++i)
+            {
+                for (int j = 0; j < map.getPlanelength(); ++j)
+                {
+                    map.getHexagonAt(i, j).Visited = false;
+                }
+            }
+
+            return distanz;
+       }
+
        public static Vector2 gridColision(Vector3 position, int planeLength, float hexagonSideLength)
        {
            float positionX = position.X;

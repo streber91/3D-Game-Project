@@ -51,8 +51,7 @@ namespace Underlord.Environment
             this.neighbors = neighbors;
             drawColor = Color.White;
             roomNumber = 0;
-            this.hexagonModel = model;
-            boneTransforms = new Matrix[this.hexagonModel.Bones.Count];
+            boneTransforms = new Matrix[Entity.Vars_Func.getHexagonModell(typ).Bones.Count];
         }
 
         public Vector3 get3DPosition() { return position; }

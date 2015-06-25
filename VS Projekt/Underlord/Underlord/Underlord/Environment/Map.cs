@@ -12,6 +12,7 @@ namespace Underlord.Environment
     class Map
     {
         //String name = "";
+        List<Room> rooms = new List<Room>();
         List<Hexagon> map = new List<Hexagon>();
         int sidelength, drawHeight, drawWidth;
         float hexagonSideLength;
@@ -72,6 +73,13 @@ namespace Underlord.Environment
                 //load(null);
             }
         }
+
+        #region Properties
+        public List<Room> Rooms
+        {
+            get { return rooms; }
+        }
+        #endregion
 
         public List<Hexagon> getMapHexagons() { return map; }
         public Hexagon getHexagonAt(float X, float Y) { return map[(int)(X * sidelength + Y)]; }

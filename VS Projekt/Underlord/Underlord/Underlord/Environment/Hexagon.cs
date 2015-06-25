@@ -15,6 +15,8 @@ namespace Underlord.Environment
         Vector2[] neighbors = new Vector2[6]; //[up,right-up,right-down,down,left-down,left-up]
         List<Boolean> imps;
         Thing obj;
+        int roomNumber;
+        bool visited;
         Color drawColor;
         Model hexagonModel;
         private Matrix[] boneTransforms;
@@ -30,6 +32,16 @@ namespace Underlord.Environment
             get { return obj; }
             set { obj = value; }
         }
+        public int RoomNumber
+        {
+            get { return roomNumber; }
+            set { roomNumber = value; }
+        }
+        public bool Visited
+        {
+            get { return visited; }
+            set { visited = value; }
+        }
         #endregion
 
         public Hexagon(Vector3 position, Vector2 indexNumber, Vector2[] neighbors, Model model)
@@ -38,6 +50,7 @@ namespace Underlord.Environment
             this.indexNumber = indexNumber;
             this.neighbors = neighbors;
             drawColor = Color.White;
+            roomNumber = 0;
             this.hexagonModel = model;
             boneTransforms = new Matrix[this.hexagonModel.Bones.Count];
         }

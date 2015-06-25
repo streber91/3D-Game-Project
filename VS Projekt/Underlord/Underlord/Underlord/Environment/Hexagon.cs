@@ -16,7 +16,8 @@ namespace Underlord.Environment
         List<Boolean> imps;
         Thing obj;
         int roomNumber;
-        bool visited;
+        bool visited; //for breadth-first search
+        Vector2 parent; //for breadth-first search
         Color drawColor;
         Entity.Vars_Func.HexTyp typ;
         private Matrix[] boneTransforms;
@@ -42,6 +43,11 @@ namespace Underlord.Environment
             get { return visited; }
             set { visited = value; }
         }
+        public Vector2 Parent
+        {
+            get { return parent; }
+            set { parent = value; }
+        }
         #endregion
 
         public Hexagon(Vector3 position, Vector2 indexNumber, Vector2[] neighbors, Entity.Vars_Func.HexTyp typ)
@@ -51,8 +57,8 @@ namespace Underlord.Environment
             this.neighbors = neighbors;
             drawColor = Color.White;
             roomNumber = 0;
-            this.hexagonModel = model;
-            boneTransforms = new Matrix[this.hexagonModel.Bones.Count];
+            parent = indexNumber;
+            boneTransforms = new Matrix[Entity.Vars_Func.getHexagonModell(typ).Bones.Count];
         }
 
         public Vector3 get3DPosition() { return position; }

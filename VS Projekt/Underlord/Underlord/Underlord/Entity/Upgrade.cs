@@ -9,14 +9,15 @@ namespace Underlord.Entity
 {
     class Upgrade : Thing
     {
-
-            String name = "";
-            int cost = 150;
-            float size = 1;
-            Ability effect;
+        Vars_Func.ThingTyp thingTyp;
+        String name = "";
+        int cost = 150;
+        float size = 1;
+        Ability effect;
 
         public Upgrade(String name, Ability eff)
         {
+            thingTyp = Vars_Func.ThingTyp.Upgrade;
             this.name = name;
             this.effect = eff;
         }

@@ -10,6 +10,7 @@ namespace Underlord.Entity
 {
     class Wall : Thing
     {
+        Vars_Func.ThingTyp thingTyp;
         Vector2 indexPosition;
         Vars_Func.WallTyp typ;
         int hp;
@@ -18,6 +19,7 @@ namespace Underlord.Entity
 
         public Wall(Vector2 indexPosition, Vars_Func.WallTyp typ, int hp, Map map)
         {
+            thingTyp = Vars_Func.ThingTyp.Wall;
             this.indexPosition = indexPosition;
             this.typ = typ;
             this.hp = hp;

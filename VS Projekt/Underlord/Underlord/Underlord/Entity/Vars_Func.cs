@@ -27,7 +27,8 @@ namespace Underlord.Entity
       // static List<Model> WallModels;
        static List<BasicModel> WallModels;
 
-       static List<Model> HexagonModels;
+     //  static List<Model> HexagonModels;
+       static List<BasicModel> HexagonModels;
 
        public static Model getCreatureModell(CreatureTyp typ) { return CreatureModels[(int)typ]; }
        public static Model getNestModell(NestTyp typ) { return NestModels[(int)typ]; }
@@ -36,7 +37,9 @@ namespace Underlord.Entity
        //public static Model getWallModell(WallTyp typ) { return WallModels[(int)typ]; }
        public static BasicModel getWallModell(WallTyp typ) { return WallModels[(int)typ]; }
 
-       public static Model getHexagonModell(HexTyp typ) { return HexagonModels[(int)typ]; }
+       //public static Model getHexagonModell(HexTyp typ) { return HexagonModels[(int)typ]; }
+       public static BasicModel getHexagonModell(HexTyp typ) { return HexagonModels[(int)typ]; }
+
 
        public static void loadContent(ContentManager Content)
        {
@@ -47,8 +50,8 @@ namespace Underlord.Entity
           // WallModels = new List<Model>();
            WallModels = new List<BasicModel>();
 
-           HexagonModels = new List<Model>();
-
+         //  HexagonModels = new List<Model>();
+           HexagonModels = new List<BasicModel>();
            
            //WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
            //WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
@@ -56,18 +59,15 @@ namespace Underlord.Entity
            //WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
            //WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
 
-           WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
-           WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
-           WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
-           WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
-           WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
-           foreach (BasicModel asset in WallModels)
-           {
-               asset.LoadContent(Content);
-           }
+           WallModels.Add(new BasicModel(Content.Load < Model > ("Models//sandWall_HEX_02")));
+           WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
+           WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
+           WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
+           WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
 
-           HexagonModels.Add(Content.Load<Model>("Models//floorSand_HEX_03"));
-
+          // HexagonModels.Add(Content.Load<Model>("Models//floorSand_HEX_03"));
+           HexagonModels.Add(new BasicModel(Content.Load<Model>("Models//floorSand_HEX_03")));
+                   
        }
 
        public static Vector3 mousepos(GraphicsDevice graphics, MouseState mousestate, Matrix projection, Matrix view)

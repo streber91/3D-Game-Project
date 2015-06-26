@@ -18,7 +18,7 @@ namespace Underlord.Entity
        public enum WallTyp { Sand, Gold, Diamond, Entrance, HQ, length };
        public enum HexTyp { Sand, length };
        public enum GameState { MainMenue, Ingame, Save, Load, CreateRoom, Build, Mine, length };
-       public enum ThingTyp { Wall, Upgrade, Nest, Creature, length };
+       public enum ThingTyp { Wall, Upgrade, Nest, DungeonCreature, HeroCreature, NeutralCreature, length };
 
        static List<Model> CreatureModels;
        static List<Model> NestModels;

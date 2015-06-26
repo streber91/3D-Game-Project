@@ -18,9 +18,9 @@ namespace Underlord.Entity
         Stack<Vector2> path;
         Nest home;
 
-        public Creature(Vars_Func.CreatureTyp type, List<Ability> ability, Vector2 pos, Nest home)
+        public Creature(Vars_Func.CreatureTyp type, List<Ability> ability, Vector2 pos, Nest home, Vars_Func.ThingTyp allignment)
         {
-            thingTyp = Vars_Func.ThingTyp.Creature;
+            thingTyp = allignment;
             this.home = home;
             this.type = type;
             this.abilities = ability;

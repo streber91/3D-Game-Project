@@ -59,15 +59,22 @@ namespace Underlord.Entity
            //WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
            //WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
 
-           WallModels.Add(new BasicModel(Content.Load < Model > ("Models//sandWall_HEX_02")));
-           WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
-           WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
-           WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
-           WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
+           WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
+           WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
+           WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
+           WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
+           WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
 
            //HexagonModels.Add(Content.Load<Model>("Models//floorSand_HEX_03"));
            HexagonModels.Add(new BasicModel(Content.Load<Model>("Models//floorSand_HEX_03")));
-                   
+
+           foreach (BasicModel bWall in WallModels)
+           {
+               bWall.LoadContent(Content);
+           }   
+           
+           
+     
        }
 
        public static Vector3 mousepos(GraphicsDevice graphics, MouseState mousestate, Matrix projection, Matrix view)

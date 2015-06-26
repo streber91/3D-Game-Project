@@ -200,6 +200,16 @@ namespace Underlord
 
             /*
             // Temporary
+                //Matrix knightModelMatrix = Matrix.Identity *
+                //Matrix.CreateScale(0.1f) *
+                //Matrix.CreateRotationX(MathHelper.PiOver2) *
+                //Matrix.CreateRotationY(0) *
+                //Matrix.CreateRotationZ(0) *
+                //Matrix.CreateTranslation(new Vector3(0, 0, 0.5f));
+
+                ///// Draw the knight
+                //knightModel.Draw(camera, knightModelMatrix);
+          
                 Matrix knightModelMatrix = Matrix.Identity *
                 Matrix.CreateScale(0.1f) *
                 Matrix.CreateRotationX(MathHelper.PiOver2) *

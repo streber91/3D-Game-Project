@@ -7,7 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
+using AnimationAux;
 using Underlord.Renderer;
+using Underlord.Animation;
 
 namespace Underlord.Basic
 {
@@ -84,6 +86,7 @@ namespace Underlord.Basic
         {
             this.model = content.Load<Model>(assetName);
         }
+
         #endregion
 
         #region Updating
@@ -109,7 +112,6 @@ namespace Underlord.Basic
         /// <param name="world">A world matrix to place the model</param>
         public void Draw(Camera camera, Matrix world)
         {
-
             if (model == null)
                 return;
 
@@ -117,30 +119,33 @@ namespace Underlord.Basic
             // Compute all of the bone absolute transforms
             //
 
-            Matrix[] boneTransforms = new Matrix[this.model.Bones.Count];
+            Matrix[] boneTransforms = new Matrix[model.Bones.Count];
+            model.Root.Transform = world;
+            model.CopyAbsoluteBoneTransformsTo(boneTransforms);
+
+            //
+            // Determine the skin transforms from the skeleton
+            //
 
             // Draw the model.
             foreach (ModelMesh modelMesh in model.Meshes)
             {
                 foreach (BasicEffect basicEffect in modelMesh.Effects)
                 {
-                    basicEffect.World = boneTransforms[modelMesh.ParentBone.Index] * world;
-
+                    basicEffect.World = boneTransforms[modelMesh.ParentBone.Index];
                     basicEffect.View = camera.View;
                     basicEffect.Projection = camera.Projection;
-
-                   // basicEffect.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-                   // basicEffect.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+                    
                     basicEffect.EnableDefaultLighting();
+                    basicEffect.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+                    basicEffect.GraphicsDevice.BlendState = BlendState.AlphaBlend;
 
-                   // basicEffect.PreferPerPixelLighting = true;
-
+                    basicEffect.AmbientLightColor = new Vector3(modelColor.R, modelColor.G, modelColor.B);
+                    
                     if (this.modelTexture != null)
                     {
-                       // basicEffect.Texture = this.modelTexture;
+                        basicEffect.Texture = this.modelTexture;
                     }
-
-                 //   basicEffect.AmbientLightColor = new Vector3(this.modelColor.R, this.modelColor.G, this.modelColor.B);
                 }
                 modelMesh.Draw();
             }

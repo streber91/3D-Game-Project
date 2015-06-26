@@ -61,6 +61,10 @@ namespace Underlord.Entity
            WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
            WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
            WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
+           foreach (BasicModel asset in WallModels)
+           {
+               asset.LoadContent(Content);
+           }
 
            HexagonModels.Add(Content.Load<Model>("Models//floorSand_HEX_03"));
 

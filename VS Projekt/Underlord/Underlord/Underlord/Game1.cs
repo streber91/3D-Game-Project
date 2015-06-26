@@ -103,8 +103,6 @@ namespace Underlord
                 // And play the clip
                 AnimationPlayer player = knightModel.PlayClip(clip);
                 player.Looping = true;
-
-
         }
 
         protected override void UnloadContent()
@@ -114,6 +112,7 @@ namespace Underlord
 
         protected override void Update(GameTime gameTime)
         {
+            // just a test
             /*for (int i = 0; i < 2500000; ++i)
             {
                 float tmp = 20;

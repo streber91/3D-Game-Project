@@ -14,21 +14,15 @@ namespace Underlord.Entity
         int cost = 150;
         float size = 1;
         Ability effect;
-
+        // TODO everything inclusiv filter funktions
         public Upgrade(String name, Ability eff)
         {
             thingTyp = Vars_Func.ThingTyp.Upgrade;
             this.name = name;
             this.effect = eff;
         }
-        public Ability getEffect()
-        {
-            return this.effect;
-        }
-        public String getName()
-        {
-            return this.name;
-        }
+        public Ability getEffect() { return this.effect; }
+        public String getName() { return this.name; }
 
         override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor)
         { 

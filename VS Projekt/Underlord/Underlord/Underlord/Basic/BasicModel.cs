@@ -69,9 +69,13 @@ namespace Underlord.Basic
         public BasicModel(string assetName)
         {
             this.assetName = assetName;
-
         }
 
+        public BasicModel(Model model)
+        {
+            this.model = model;
+        }
+        
         /// <summary>
         /// Load the model asset from content.
         /// </summary>
@@ -105,6 +109,7 @@ namespace Underlord.Basic
         /// <param name="world">A world matrix to place the model</param>
         public void Draw(Camera camera, Matrix world)
         {
+
             if (model == null)
                 return;
 
@@ -121,22 +126,21 @@ namespace Underlord.Basic
                 {
                     basicEffect.World = boneTransforms[modelMesh.ParentBone.Index] * world;
 
-
                     basicEffect.View = camera.View;
                     basicEffect.Projection = camera.Projection;
 
-                    basicEffect.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-                    basicEffect.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+                   // basicEffect.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+                   // basicEffect.GraphicsDevice.BlendState = BlendState.AlphaBlend;
                     basicEffect.EnableDefaultLighting();
 
-                    basicEffect.PreferPerPixelLighting = true;
+                   // basicEffect.PreferPerPixelLighting = true;
 
                     if (this.modelTexture != null)
                     {
-                        basicEffect.Texture = this.modelTexture;
+                       // basicEffect.Texture = this.modelTexture;
                     }
 
-                    basicEffect.AmbientLightColor = new Vector3(this.modelColor.R, this.modelColor.G, this.modelColor.B);
+                 //   basicEffect.AmbientLightColor = new Vector3(this.modelColor.R, this.modelColor.G, this.modelColor.B);
                 }
                 modelMesh.Draw();
             }

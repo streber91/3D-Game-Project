@@ -28,13 +28,14 @@ namespace Underlord
         Map map;
         Camera camera;
         SpriteFont font;
-        int planeLength;
+        int planeLength, minimapSize;
         float hexagonSideLength;
         KeyboardState keyboard;
         MouseState mouseState;
         Vector3 mousePosition;
         Vector2 indexOfMiddleHexagon;
         List<Thing> mapObjects;
+        Minimap minimap;
 
         float updateTimeCounter, updates, drawUpdates;
         float frameTimeCounter, frames, drawFrame;
@@ -63,6 +64,7 @@ namespace Underlord
         {
             hexagonSideLength = 1; //do not change
             planeLength = 10; //need an even number!
+            minimapSize = 180; //in pixel
             frameTimeCounter = 0;
             frames = 0;
             drawFrame = 0;
@@ -79,6 +81,7 @@ namespace Underlord
             keyboard = Keyboard.GetState();
             mouseState = Mouse.GetState();
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
+            minimap = new Minimap(map, new Vector2(), new Vector2(minimapSize, minimapSize));
 
             base.Initialize();
         }
@@ -207,7 +210,7 @@ namespace Underlord
                 /// Draw the knight
                 knightModel.Draw(camera, knightModelMatrix);
 
-            
+                minimap.drawMinimap(spriteBatch);
 
             spriteBatch.End();
 

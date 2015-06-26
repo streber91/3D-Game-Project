@@ -200,7 +200,6 @@ namespace Underlord
 
 
             // Temporary
-<<<<<<< HEAD
                 //Matrix knightModelMatrix = Matrix.Identity *
                 //Matrix.CreateScale(0.1f) *
                 //Matrix.CreateRotationX(MathHelper.PiOver2) *
@@ -211,7 +210,6 @@ namespace Underlord
                 ///// Draw the knight
                 //knightModel.Draw(camera, knightModelMatrix);
           
-=======
                 Matrix knightModelMatrix = Matrix.Identity *
                 Matrix.CreateScale(0.1f) *
                 Matrix.CreateRotationX(MathHelper.PiOver2) *
@@ -223,7 +221,6 @@ namespace Underlord
                 knightModel.Draw(camera, knightModelMatrix);
 
                 minimap.drawMinimap(spriteBatch);
->>>>>>> d521f60cda61af2f1d569cf803b88308c3a0ceff
 
             spriteBatch.End();
 

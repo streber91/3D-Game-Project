@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Underlord.Environment
 {
-    class Minimap : Microsoft.Xna.Framework.Game
+    class Minimap
     {
         int hexsize;
         Map map;

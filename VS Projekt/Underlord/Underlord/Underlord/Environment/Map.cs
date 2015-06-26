@@ -14,7 +14,7 @@ namespace Underlord.Environment
         //String name = "";
         List<Room> rooms = new List<Room>();
         List<Hexagon> map = new List<Hexagon>();
-        int planeSidelength, drawHeight, drawWidth;
+        int planeSidelength, drawHeight, drawWidth; // planeside = map size
         float hexagonSideLength;
 
         public Map(int sidelength, Entity.Vars_Func.HexTyp typ, Boolean newGame, float hexagonSideLength)

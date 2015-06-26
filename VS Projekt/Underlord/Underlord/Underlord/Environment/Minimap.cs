@@ -44,7 +44,7 @@ namespace Underlord.Environment
 
         public void drawHex(Vector2 pos, Color c , SpriteBatch sb)
         {
-            Rectangle rec = new Rectangle((int)(position.X + pos.X * hexsize + (pos.X % 2) * (0.5f * hexsize)), (int)(position.Y + pos.Y * hexsize), hexsize, hexsize);
+            Rectangle rec = new Rectangle((int)(position.X + pos.X * hexsize), (int)(position.Y + (hexsize * map.getPlanelength() - pos.Y * hexsize -1) - (pos.X % 2) * (0.5f * hexsize)), hexsize, hexsize);
             sb.Draw(Vars_Func.getPixel(), rec, c);
         }
         

@@ -20,6 +20,7 @@ namespace Underlord.Environment
         Vector2 parent; //for breadth-first search
         Color drawColor;
         Entity.Vars_Func.HexTyp typ;
+       
         private Matrix[] boneTransforms;
 
         #region Properties
@@ -58,7 +59,7 @@ namespace Underlord.Environment
             drawColor = Color.White;
             roomNumber = 0;
             parent = indexNumber;
-            boneTransforms = new Matrix[Entity.Vars_Func.getHexagonModell(typ).Bones.Count];
+            boneTransforms = new Matrix[Entity.Vars_Func.getHexagonModell(typ).Model.Bones.Count];
         }
 
         public Vector3 get3DPosition() { return position; }
@@ -75,16 +76,27 @@ namespace Underlord.Environment
 
         public void DrawModel(Camera camera, Vector3 drawPosition)
         {
-            Entity.Vars_Func.getHexagonModell(typ).Root.Transform = Matrix.Identity *
+            //Matrix modelMatrix = Matrix.Identity *
+            //Matrix.CreateScale(/*0.0127f*/1) *
+            //Matrix.CreateRotationX(0/*2*MathHelper.PiOver2*/) *
+            //Matrix.CreateRotationY(0) *
+            //Matrix.CreateRotationZ(0/*MathHelper.PiOver2*/) *
+            //Matrix.CreateTranslation(drawPosition + new Vector3(0.0f, 0.0f, 0));
+
+            //Entity.Vars_Func.getHexagonModell(typ).Color = drawColor;
+            //Entity.Vars_Func.getHexagonModell(typ).Draw(camera, modelMatrix);
+
+
+            Entity.Vars_Func.getHexagonModell(typ).Model.Root.Transform = Matrix.Identity *
 
             Matrix.CreateScale(/*0.0127f*/1) *
             Matrix.CreateRotationX(0/*2*MathHelper.PiOver2*/) *
             Matrix.CreateRotationY(0) *
             Matrix.CreateRotationZ(0/*MathHelper.PiOver2*/) *
             Matrix.CreateTranslation(drawPosition + new Vector3(0.0f, 0.0f, 0));
-            Entity.Vars_Func.getHexagonModell(typ).CopyAbsoluteBoneTransformsTo(boneTransforms);
+            Entity.Vars_Func.getHexagonModell(typ).Model.CopyAbsoluteBoneTransformsTo(boneTransforms);
 
-            foreach (ModelMesh mesh in Entity.Vars_Func.getHexagonModell(typ).Meshes)
+            foreach (ModelMesh mesh in Entity.Vars_Func.getHexagonModell(typ).Model.Meshes)
             {
                 foreach (BasicEffect basicEffect in mesh.Effects)
                 {

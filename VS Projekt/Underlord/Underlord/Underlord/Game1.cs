@@ -103,8 +103,6 @@ namespace Underlord
                 // And play the clip
                 AnimationPlayer player = knightModel.PlayClip(clip);
                 player.Looping = true;
-
-             base.LoadContent();
         }
 
         protected override void UnloadContent()

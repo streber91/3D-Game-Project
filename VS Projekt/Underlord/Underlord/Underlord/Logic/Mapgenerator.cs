@@ -8,6 +8,7 @@ namespace Underlord.Logic
 {
     static class Mapgenerator
     {
+        //TODO: test generator with new textures
         public static List<Entity.Thing> generateMap(Environment.Map hexmap, int size, int diamond,int gold)
         {
             List<Entity.Thing> mapObjekts  = new List<Entity.Thing>();
@@ -19,6 +20,7 @@ namespace Underlord.Logic
             Vector2 EN = new Vector2();
             int dia = diamond;
             int go = gold;
+            //determine special walls
             for (int i = 0 ; i < Math.Pow((size/5),2) - 2; ++i)
             {
 
@@ -38,12 +40,13 @@ namespace Underlord.Logic
                 }
                 
             }
-
+            // build map
             for (int i = 0; i < size; ++i)
             {
                 for (int j = 0; j < size; ++j)
                 {
                     int randnum = rand.Next(specials.Count);
+                    //special wall
                     if (j % 5 == 0 && i % 5 == 0)
                     {
                         mapObjekts.Add(new Entity.Wall(new Vector2(i, j), specials[randnum], 300, hexmap));
@@ -58,13 +61,16 @@ namespace Underlord.Logic
                         if (specials[randnum] == Entity.Vars_Func.WallTyp.Entrance) EN = new Vector2(i, j);
                         specials.RemoveAt(randnum);
                     }
+                    // fill rest with normal walls
                     else if(hexmap.getHexagonAt(i, j).Obj == null) mapObjekts.Add(new Entity.Wall(new Vector2(i, j), Underlord.Entity.Vars_Func.WallTyp.Sand, 300, hexmap));
                 }
             }
+            // room for HQ
             foreach (Vector2 hex in hexmap.getHexagonAt(HQ.X, HQ.Y).getNeighbors())
             {
                 hexmap.getHexagonAt(hex.X, hex.Y).Obj = null;
             }
+            // build path from first entry to HQ
             while( !hexmap.getHexagonAt(HQ.X, HQ.Y).getNeighbors().Contains(EN))
             {
                 if (HQ.X < EN.X)
@@ -88,8 +94,6 @@ namespace Underlord.Logic
                     ++EN.Y;
                 }
             }
-
-            //todo: Überprüfen der Map bei einfügen der Modelle
 
             return mapObjekts;
         }

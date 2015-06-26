@@ -47,7 +47,7 @@ namespace Underlord.Entity
             set { actionTimeCounter = value; }
         }
         #endregion
-
+        // TODO filter funktions and implemnt funktions
         public void increaseHP(int d)
         {
             if(d<0)
@@ -67,7 +67,7 @@ namespace Underlord.Entity
         {
             // update path    update life       update attackCD
         }
-
+        
         public Boolean canMove(/*Direction dir*/){ return false; }
         public Nest getHome() { return home; }
         public float getHP() { return this.hp; }

@@ -112,6 +112,7 @@ namespace Underlord
 
         protected override void Update(GameTime gameTime)
         {
+            // just a test
             /*for (int i = 0; i < 2500000; ++i)
             {
                 float tmp = 20;

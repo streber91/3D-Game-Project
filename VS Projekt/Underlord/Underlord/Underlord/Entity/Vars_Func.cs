@@ -72,6 +72,8 @@ namespace Underlord.Entity
 
        public static Vector3 mousepos(GraphicsDevice graphics, MouseState mousestate, Matrix projection, Matrix view)
        {
+           // calculate 3D mouspose out of an 2D Mosepos with Z = 0
+           // represents the mousover in 3D space
            Vector3 vec1 = graphics.Viewport.Unproject(new Vector3(mousestate.X, mousestate.Y, 1), projection, view, Matrix.Identity);
            Vector3 vec2 = graphics.Viewport.Unproject(new Vector3(mousestate.X, mousestate.Y, 0), projection, view, Matrix.Identity);
            float a = -vec1.Z / (vec2.Z - vec1.Z);
@@ -82,7 +84,10 @@ namespace Underlord.Entity
 
        public static int computeDistance(Vector2 pos1, Vector2 pos2, Environment.Map map)
        {
+           //return statement
             int distanz = 0;
+
+            //breadth-first search
             Vector2 tmp = new Vector2();
             Queue<Vector2> queue = new Queue<Vector2>();
             queue.Enqueue(pos1);
@@ -108,7 +113,7 @@ namespace Underlord.Entity
                     }
                 }
             }
-
+            //clear Hexmap for next search
             for (int i = 0; i < map.getPlanelength(); ++i)
             {
                 for (int j = 0; j < map.getPlanelength(); ++j)
@@ -119,9 +124,10 @@ namespace Underlord.Entity
 
             return distanz;
        }
-
+       // TODO write comment
        public static Vector2 gridColision(Vector3 position, int planeLength, float hexagonSideLength)
        {
+           //magic 
            float positionX = position.X;
            float positionY = position.Y;
            int X = 0;

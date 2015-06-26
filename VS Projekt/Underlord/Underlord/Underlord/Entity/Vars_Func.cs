@@ -23,23 +23,22 @@ namespace Underlord.Entity
        static List<Model> CreatureModels;
        static List<Model> NestModels;
        static List<Model> UpgradeModels;
-
-      // static List<Model> WallModels;
+       //static List<Model> WallModels;
        static List<BasicModel> WallModels;
-
-     //  static List<Model> HexagonModels;
+       //static List<Model> HexagonModels;
        static List<BasicModel> HexagonModels;
+
+       static Texture2D pixel;
 
        public static Model getCreatureModell(CreatureTyp typ) { return CreatureModels[(int)typ]; }
        public static Model getNestModell(NestTyp typ) { return NestModels[(int)typ]; }
        public static Model getUpgradeModell(UpgradeTyp typ) { return UpgradeModels[(int)typ]; }
-
        //public static Model getWallModell(WallTyp typ) { return WallModels[(int)typ]; }
        public static BasicModel getWallModell(WallTyp typ) { return WallModels[(int)typ]; }
-
        //public static Model getHexagonModell(HexTyp typ) { return HexagonModels[(int)typ]; }
        public static BasicModel getHexagonModell(HexTyp typ) { return HexagonModels[(int)typ]; }
 
+       public static Texture2D getPixel() { return pixel; }
 
        public static void loadContent(ContentManager Content)
        {
@@ -52,7 +51,8 @@ namespace Underlord.Entity
 
          //  HexagonModels = new List<Model>();
            HexagonModels = new List<BasicModel>();
-           
+
+           pixel = Content.Load<Texture2D>("TEST");
            //WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
            //WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
            //WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));

@@ -116,6 +116,7 @@
     <Compile Include="Environment\Hexagon.cs" />
     <Compile Include="Entity\Imp.cs" />
     <Compile Include="Environment\Map.cs" />
+    <Compile Include="Environment\Minimap.cs" />
     <Compile Include="Environment\Room.cs" />
     <Compile Include="Logic\AI.cs" />
     <Compile Include="Entity\Upgrade.cs" />

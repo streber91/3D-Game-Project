@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
+using Underlord.Basic;
+
 namespace Underlord.Entity
 {
    static class Vars_Func
@@ -21,13 +23,19 @@ namespace Underlord.Entity
        static List<Model> CreatureModels;
        static List<Model> NestModels;
        static List<Model> UpgradeModels;
-       static List<Model> WallModels;
+
+      // static List<Model> WallModels;
+       static List<BasicModel> WallModels;
+
        static List<Model> HexagonModels;
 
        public static Model getCreatureModell(CreatureTyp typ) { return CreatureModels[(int)typ]; }
        public static Model getNestModell(NestTyp typ) { return NestModels[(int)typ]; }
        public static Model getUpgradeModell(UpgradeTyp typ) { return UpgradeModels[(int)typ]; }
-       public static Model getWallModell(WallTyp typ) { return WallModels[(int)typ]; }
+
+       //public static Model getWallModell(WallTyp typ) { return WallModels[(int)typ]; }
+       public static BasicModel getWallModell(WallTyp typ) { return WallModels[(int)typ]; }
+
        public static Model getHexagonModell(HexTyp typ) { return HexagonModels[(int)typ]; }
 
        public static void loadContent(ContentManager Content)
@@ -35,15 +43,24 @@ namespace Underlord.Entity
            CreatureModels = new List<Model>();
            NestModels = new List<Model>();
            UpgradeModels = new List<Model>();
-           WallModels = new List<Model>();
+
+          // WallModels = new List<Model>();
+           WallModels = new List<BasicModel>();
+
            HexagonModels = new List<Model>();
 
            
-           WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
-           WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
-           WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
-           WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
-           WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
+           //WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
+           //WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
+           //WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
+           //WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
+           //WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
+
+           WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
+           WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
+           WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
+           WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
+           WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
 
            HexagonModels.Add(Content.Load<Model>("Models//floorSand_HEX_03"));
 

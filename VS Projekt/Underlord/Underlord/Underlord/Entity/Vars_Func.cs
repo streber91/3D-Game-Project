@@ -46,10 +46,10 @@ namespace Underlord.Entity
            NestModels = new List<Model>();
            UpgradeModels = new List<Model>();
 
-          // WallModels = new List<Model>();
+           //WallModels = new List<Model>();
            WallModels = new List<BasicModel>();
 
-         //  HexagonModels = new List<Model>();
+           //HexagonModels = new List<Model>();
            HexagonModels = new List<BasicModel>();
 
            pixel = Content.Load<Texture2D>("TEST");
@@ -65,7 +65,7 @@ namespace Underlord.Entity
            WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
            WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
 
-          // HexagonModels.Add(Content.Load<Model>("Models//floorSand_HEX_03"));
+           //HexagonModels.Add(Content.Load<Model>("Models//floorSand_HEX_03"));
            HexagonModels.Add(new BasicModel(Content.Load<Model>("Models//floorSand_HEX_03")));
                    
        }

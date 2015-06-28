@@ -22,8 +22,8 @@ namespace Underlord.Logic
                 if(nearestEnemy != null) creature.Path = determinePath(creature.Position, nearestEnemy[0], map);
                 else if (creature.Path.Count == 0)
                 {
-                    if (Entity.Vars_Func.computeDistance(creature.getHome().getTarget(), creature.Position, map) < 5) randomwalk(creature, map);
-                    else creature.Path = determinePath(creature.Position, creature.getHome().getTarget(), map);
+                    if (Entity.Vars_Func.computeDistance(creature.getHome().TargetPos, creature.Position, map) < 5) randomwalk(creature, map);
+                    else creature.Path = determinePath(creature.Position, creature.getHome().TargetPos, map);
                 }
                 // time left for action?
                 if (creature.ActionTimeCounter >= 1000 / creature.getSpeed())

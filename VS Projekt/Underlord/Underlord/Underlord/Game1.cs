@@ -81,7 +81,7 @@ namespace Underlord
             keyboard = Keyboard.GetState();
             mouseState = Mouse.GetState();
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
-            minimap = new Minimap(map, new Vector2(), new Vector2(minimapSize, minimapSize));
+            minimap = new Minimap(map, new Vector2(graphics.PreferredBackBufferWidth - minimapSize, graphics.PreferredBackBufferHeight - minimapSize), new Vector2(minimapSize, minimapSize));
 
             base.Initialize();
         }
@@ -116,14 +116,15 @@ namespace Underlord
         protected override void Update(GameTime gameTime)
         {
             // just a test
-            /*for (int i = 0; i < 2500000; ++i)
-            {
-                float tmp = 20;
-                tmp /= 5;
-                tmp += 6;
-                tmp *= 11;
-                tmp -= 10;
-            }*/
+            //for (int i = 0; i < 3500000; ++i)
+            //{
+            //    float tmp = 20;
+            //    tmp /= 5;
+            //    tmp += 6;
+            //    tmp *= 11;
+            //    tmp -= 10;
+            //}
+
             updateTimeCounter += gameTime.ElapsedGameTime.Milliseconds;
             ++updates;
             if (updateTimeCounter >= 1000)
@@ -219,9 +220,9 @@ namespace Underlord
 
                 /// Draw the knight
                 knightModel.Draw(camera, knightModelMatrix);
-            
-            //minimap.drawMinimap(spriteBatch);
             */
+            minimap.drawMinimap(spriteBatch);
+            
             spriteBatch.End();
 
             base.Draw(gameTime);

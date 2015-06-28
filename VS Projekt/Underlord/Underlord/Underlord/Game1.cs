@@ -34,7 +34,6 @@ namespace Underlord
         MouseState mouseState;
         Vector3 mousePosition;
         Vector2 indexOfMiddleHexagon;
-        List<Thing> mapObjects;
         Minimap minimap;
 
         float updateTimeCounter, updates, drawUpdates;
@@ -63,7 +62,7 @@ namespace Underlord
         protected override void Initialize()
         {
             hexagonSideLength = 1; //do not change
-            planeLength = 10; //need an even number!
+            planeLength = 20; //need an even number!
             minimapSize = 180; //in pixel
             frameTimeCounter = 0;
             frames = 0;
@@ -73,7 +72,7 @@ namespace Underlord
             drawUpdates = 0;
             Vars_Func.loadContent(Content);
             map = new Map(planeLength, Entity.Vars_Func.HexTyp.Sand, true, hexagonSideLength);
-            mapObjects = Logic.Mapgenerator.generateMap(map, planeLength, (int)(planeLength / 3), (int)(planeLength / 2));
+            Logic.Mapgenerator.generateMap(map, planeLength, (int)(planeLength / 10), (int)(planeLength / 5));
 
             camera = new Camera(new Vector3(0, -10, 15), new Vector3(0, 0, 0), Vector3.UnitZ, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f, planeLength, hexagonSideLength);
             view = camera.View;
@@ -160,7 +159,6 @@ namespace Underlord
 
             Vector2 mouseover = Vars_Func.gridColision(mousePosition, planeLength, hexagonSideLength);
             Interaction.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, map, mouseover, mouseState, keyboard);
-
            
             // Temporary
                 /// Update the knight

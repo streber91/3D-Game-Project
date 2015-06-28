@@ -9,9 +9,8 @@ namespace Underlord.Logic
     static class Mapgenerator
     {
         //TODO: test generator with new textures
-        public static List<Entity.Thing> generateMap(Environment.Map hexmap, int size, int diamond,int gold)
+        public static void generateMap(Environment.Map hexmap, int size, int diamond,int gold)
         {
-            List<Entity.Thing> mapObjekts  = new List<Entity.Thing>();
             List<Entity.Vars_Func.WallTyp> specials = new List<Entity.Vars_Func.WallTyp>();
             specials.Add(Entity.Vars_Func.WallTyp.HQ);
             specials.Add(Entity.Vars_Func.WallTyp.Entrance);
@@ -36,7 +35,7 @@ namespace Underlord.Logic
                 }
                 else
                 {
-                    specials.Add(Entity.Vars_Func.WallTyp.Sand);
+                    specials.Add(Entity.Vars_Func.WallTyp.Stone);
                 }
                 
             }
@@ -49,12 +48,12 @@ namespace Underlord.Logic
                     //special wall
                     if (j % 5 == 0 && i % 5 == 0)
                     {
-                        mapObjekts.Add(new Entity.Wall(new Vector2(i, j), specials[randnum], 300, hexmap));
+                        new Entity.Wall(new Vector2(i, j), specials[randnum], 300, hexmap);
                         if (specials[randnum] == Entity.Vars_Func.WallTyp.Diamond || Entity.Vars_Func.WallTyp.Gold == specials[randnum])
                         {
                             foreach (Vector2 hex in hexmap.getHexagonAt(i, j).getNeighbors())
                             {
-                                hexmap.getHexagonAt(hex.X, hex.Y).Obj = new Entity.Wall(new Vector2(i, j), Underlord.Entity.Vars_Func.WallTyp.Gold, 300, hexmap);
+                                new Entity.Wall(new Vector2(hex.X, hex.Y), Underlord.Entity.Vars_Func.WallTyp.Gold, 300, hexmap);
                             }
                         }
                         if (specials[randnum] == Entity.Vars_Func.WallTyp.HQ) HQ = new Vector2(i, j);
@@ -62,7 +61,7 @@ namespace Underlord.Logic
                         specials.RemoveAt(randnum);
                     }
                     // fill rest with normal walls
-                    else if(hexmap.getHexagonAt(i, j).Obj == null) mapObjekts.Add(new Entity.Wall(new Vector2(i, j), Underlord.Entity.Vars_Func.WallTyp.Sand, 300, hexmap));
+                    else if(hexmap.getHexagonAt(i, j).Obj == null) new Entity.Wall(new Vector2(i, j), Underlord.Entity.Vars_Func.WallTyp.Stone, 300, hexmap);
                 }
             }
             // room for HQ
@@ -94,8 +93,6 @@ namespace Underlord.Logic
                     ++EN.Y;
                 }
             }
-
-            return mapObjekts;
         }
     }
 }

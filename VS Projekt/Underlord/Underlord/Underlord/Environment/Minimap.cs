@@ -37,7 +37,12 @@ namespace Underlord.Environment
 
                 if (temp.Obj != null && temp.Obj.getThingTyp().Equals(Vars_Func.ThingTyp.Wall))
                 {
-                    drawHex(temp.getIndexNumber(), Color.Orange , sb);
+                    //abfrage welche art von Wall vorliegt (sry brauchte ich zum debugen)
+                    Wall tmp = (Wall)temp.Obj;
+                    if (tmp.getObjType().Equals(Vars_Func.WallTyp.Stone)) drawHex(temp.getIndexNumber(), Color.Orange, sb);
+                    if (tmp.getObjType().Equals(Vars_Func.WallTyp.Gold)) drawHex(temp.getIndexNumber(), Color.Yellow, sb);
+                    if (tmp.getObjType().Equals(Vars_Func.WallTyp.Diamond)) drawHex(temp.getIndexNumber(), Color.Green, sb);
+                   
                 }
             }
         }
@@ -47,6 +52,6 @@ namespace Underlord.Environment
             Rectangle rec = new Rectangle((int)(position.X + pos.X * hexsize), (int)(position.Y + (hexsize * map.getPlanelength() - pos.Y * hexsize -1) - (pos.X % 2) * (0.5f * hexsize)), hexsize, hexsize);
             sb.Draw(Vars_Func.getPixel(), rec, c);
         }
-        
+
     }
 }

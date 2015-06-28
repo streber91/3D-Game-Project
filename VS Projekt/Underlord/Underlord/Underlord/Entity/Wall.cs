@@ -17,11 +17,10 @@ namespace Underlord.Entity
 
        // private Matrix[] boneTransforms;
 
-        public Texture2D Texture{
-
+        public Texture2D Texture
+        {
             set { Entity.Vars_Func.getWallModell(typ).Texture = value; }
         }
-
 
         public Wall(Vector2 indexPosition, Vars_Func.WallTyp typ, int hp, Map map)
         {
@@ -68,5 +67,7 @@ namespace Underlord.Entity
             //    mesh.Draw();
             //}
         }
+
+        public Vars_Func.WallTyp getObjType() { return typ; }
     }
 }

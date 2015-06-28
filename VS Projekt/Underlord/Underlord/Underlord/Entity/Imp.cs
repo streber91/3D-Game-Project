@@ -14,7 +14,8 @@ namespace Underlord.Entity
         Vector2 position;
         Stack<Vector2> path;
         Logic.Job currentJob;
-        float worktime;
+        Boolean working;
+        float actionTimeCounter;
 
         #region Properties
 
@@ -36,10 +37,10 @@ namespace Underlord.Entity
             set { position = value; }
         }
 
-        public float Worktime
+        public float ActionTimeCounter
         {
-            get { return worktime; }
-            set { worktime = value; }
+            get { return actionTimeCounter; }
+            set { actionTimeCounter = value; }
         }
 
         #endregion
@@ -50,10 +51,12 @@ namespace Underlord.Entity
         #region Constructor
         public Imp(Vector2 position)
         {
-            worktime = 0;
+            actionTimeCounter = 0;
+            working = false;
             HP = 100;
             thingTyp = Vars_Func.ThingTyp.DungeonCreature;
             this.position = position;
+            path = new Stack<Vector2>();
         }
         #endregion
 

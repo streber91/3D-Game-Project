@@ -17,7 +17,7 @@ namespace Underlord.Entity
         Vector2 position;
         Stack<Vector2> path;
         Nest home;
-        //TODO implemetn balancing and diferent stats
+        //TODO implement balancing and diferent stats
         public Creature(Vars_Func.CreatureTyp type, List<Ability> ability, Vector2 pos, Nest home, Vars_Func.ThingTyp allignment)
         {
             thingTyp = allignment;
@@ -65,20 +65,19 @@ namespace Underlord.Entity
             }
             else { this.hp -= d; }
         }
-
+        
         override public void update(GameTime time, Environment.Map map)
         {
             Logic.AI.compute(this, time, map);
             // update path    update life       update attackCD
         }
         
-        //public Boolean canMove(/*Direction dir*/){ return false; }
         public Nest getHome() { return home; }
         public int getHP() { return this.hp; }
         public int getVision() { return this.vision; }
         public int getDmg() { return this.dmg; }
         public float getSpeed() { return this.speed; }
-
+        
         override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor)
         {
             

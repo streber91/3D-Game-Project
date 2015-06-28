@@ -11,7 +11,6 @@ namespace Underlord.Environment
 {
     class Map
     {
-        //String name = "";
         List<Room> rooms = new List<Room>();
         List<Nest> nests = new List<Nest>();
         List<Hexagon> map = new List<Hexagon>();
@@ -93,24 +92,39 @@ namespace Underlord.Environment
         public Hexagon getHexagonAt(float X, float Y) { return map[(int)(X * planeSidelength + Y)]; }
         public Hexagon getHexagonAt(Vector2 pos) { return map[(int)(pos.X * planeSidelength + pos.Y)]; }
         public int getPlanelength() { return planeSidelength; }
-
-
+        //TODO implement list for things AND implement konsistens in all remove and constructors
+        //TODO
         public void saveGame()
         {
+
+        }
+        //TODO
+        public void move(Imp imp)
+        {
+
         }
 
-        public void move(Creature crea)
+        public void move(Creature creature)
         {
+            if (getHexagonAt(creature.Path.Peek()) == null)
+            {
+                getHexagonAt(creature.Position).Obj = null;
+                creature.Position = creature.Path.Pop();
+                getHexagonAt(creature.Position).Obj = creature;
+                creature.ActionTimeCounter -= 1000 / creature.getSpeed();
+            }
         }
+        //TODO
         public void remove(Thing thing)
         {
+            // delet thing from list
             // determine position and set map[x][y] = null
         }
+        //TODO
+        //private void loadSavegame(File savegame)
+        //{
 
-        /*private void loadSavegame(File savegame)
-        {
-
-        }*/
+        //}
 
         public void DrawModel(Camera camera, Vector2 indexOfMiddleHexagon, Vector3 cameraTarget, int drawWidth)
         {

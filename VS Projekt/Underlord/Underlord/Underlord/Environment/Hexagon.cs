@@ -13,7 +13,7 @@ namespace Underlord.Environment
         Vector3 position;
         Vector2 indexNumber;
         Vector2[] neighbors = new Vector2[6]; //[up,right-up,right-down,down,left-down,left-up]
-        List<Boolean> imps;
+        //List<Boolean> imps;
         Thing obj;
         int roomNumber;
         bool building;
@@ -60,7 +60,7 @@ namespace Underlord.Environment
         public Vector3 get3DPosition() { return position; }
         public Vector2 getIndexNumber() { return indexNumber; }
         public Vector2[] getNeighbors() { return neighbors; }
-        public void getImp() { } //TODO
+        //public void getImp() { } //TODO
         public void setObjekt(Thing obj) { this.obj = obj; }
 
         #region Constructor
@@ -77,10 +77,10 @@ namespace Underlord.Environment
         }
         #endregion
         //TODO
-        public void addImp()
-        {
-            this.imps.Add(true);
-        }
+        //public void addImp()
+        //{
+        //    this.imps.Add(true);
+        //}
 
         public void DrawModel(Camera camera, Vector3 drawPosition)
         {

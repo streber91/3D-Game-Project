@@ -13,13 +13,64 @@ namespace Underlord.Logic
         //TODO
         static public void compute(Imp imp, GameTime time, Environment.Map map)
         {
-            if (imp.CurentJob.getJobTyp() != Entity.Vars_Func.ImpJob.Idle)
+            
             {
-                //do job
-            }
-            else
-            {
-                //search job
+                //ImpJob { Idle, Harvest, Feed, Mine, MineDiamonds, length };
+                switch ((int)imp.CurentJob.getJobTyp())
+                {
+                    case 0:
+                        // search Job
+                        break;
+
+                    case 1:
+                        if (imp.Path.Count == 0) imp.Path = determinePath(imp.Position, imp.CurentJob.getDestination(), map);
+                        else if (imp.Path.Count == 1)
+                        {
+
+                        }
+                        else if (imp.ActionTimeCounter >= 500)
+                        {
+
+                        }
+                        break;
+
+                    case 2:
+                        if (imp.Path.Count == 0) imp.Path = determinePath(imp.Position, imp.CurentJob.getDestination(), map);
+                        else if (imp.Path.Count == 1)
+                        {
+
+                        }
+                        else if (imp.ActionTimeCounter >= 500)
+                        {
+
+                        }
+                        break;
+
+                    case 3:
+                        if (imp.Path.Count == 0) imp.Path = determinePath(imp.Position, imp.CurentJob.getDestination(), map);
+                        else if (imp.Path.Count == 1)
+                        {
+
+                        }
+                        else if (imp.ActionTimeCounter >= 500)
+                        {
+
+                        }
+                        break;
+
+                    case 4:
+                        if (imp.Path.Count == 0) imp.Path = determinePath(imp.Position, imp.CurentJob.getDestination(), map);
+                        else if (imp.Path.Count == 1)
+                        {
+
+                        }
+                        else if (imp.ActionTimeCounter >= 500)
+                        {
+
+                        }
+                        break;
+                }
+                imp.ActionTimeCounter += time.ElapsedGameTime.Milliseconds;
             }
         }
 
@@ -56,11 +107,7 @@ namespace Underlord.Logic
                 // time left for action?
                 if (creature.ActionTimeCounter >= 1000 / creature.getSpeed())
                 {
-                    // IMPORTANT: always change obj in Hexmap if some objekts position get changed!
-                    map.getHexagonAt(creature.Position).Obj = null;
-                    creature.Position = creature.Path.Pop();
-                    map.getHexagonAt(creature.Position).Obj = creature;
-                    creature.ActionTimeCounter -= 1000 / creature.getSpeed();
+                    map.move(creature);
                 }
             }
             creature.ActionTimeCounter += time.ElapsedGameTime.Milliseconds;
@@ -121,7 +168,14 @@ namespace Underlord.Logic
             return nearesEnemy;
         }
 
-        static private Stack<Vector2> determinePath(Vector2 start, Vector2 destination , Environment.Map map)
+        static private Stack<Vector2> determinePath(Vector2 start, Vector2 destination, Environment.Map map)
+        {
+            List<Vector2> des = new List<Vector2>();
+            des.Add(destination);
+            return determinePath(start, des, map);
+        }
+
+        static private Stack<Vector2> determinePath(Vector2 start, List<Vector2> destination , Environment.Map map)
         {
             //return statement
             Stack<Vector2> path = new Stack<Vector2>();
@@ -135,7 +189,7 @@ namespace Underlord.Logic
             while (queue.Peek() != null)
             {
                 tmp = queue.Dequeue();
-                if (tmp == destination) break;
+                if (destination.Contains(tmp)) break;
                 foreach (Vector2 hex in map.getHexagonAt(tmp).getNeighbors())
                 {
                     // is the hex a not wall objekt? 

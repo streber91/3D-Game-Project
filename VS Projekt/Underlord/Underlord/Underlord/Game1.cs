@@ -44,12 +44,13 @@ namespace Underlord
             /// <summary>
             /// The animated model we are displaying
             /// </summary>
-            private AnimationModel knightModel = null;
+            private AnimationModel impModel = null;
 
             /// <summary>
             /// This model is loaded solely for the dance animation
             /// </summary>
-            private AnimationModel knightAnimationClip = null;
+            private AnimationModel impWalkAnimation = null;
+            private AnimationModel impGrableAnimation = null;
 
         public Game1()
         {
@@ -94,17 +95,20 @@ namespace Underlord
 
             //Temporary
                 // Load the model we will display
-                knightModel = new AnimationModel("AnimationModels//knight_&_sword_ANI_01");
-                knightModel.LoadContent(Content);
+                impModel = new AnimationModel("AnimationModels//minion_ANI_grabbling_01");
+                impModel.LoadContent(Content);
 
                 // Load the model that has an animation clip it in
-                knightAnimationClip = new AnimationModel("AnimationModels//knight_&_sword_ANI_01");
-                knightAnimationClip.LoadContent(Content);
+                impGrableAnimation = new AnimationModel("AnimationModels//minion_ANI_grabbling_01");
+                impGrableAnimation.LoadContent(Content);
 
-                AnimationClip clip = knightAnimationClip.Clips[0];
+                impWalkAnimation = new AnimationModel("AnimationModels//minion_ANI_walk_simple_02");
+                impWalkAnimation.LoadContent(Content);
+
+                AnimationClip walkClip = impWalkAnimation.Clips[0];
 
                 // And play the clip
-                AnimationPlayer player = knightModel.PlayClip(clip);
+                AnimationPlayer player = impModel.PlayClip(walkClip);
                 player.Looping = true;
         }
 
@@ -176,7 +180,10 @@ namespace Underlord
            
             // Temporary
                 /// Update the knight
-                knightModel.Update(gameTime);
+                /// 
+            
+
+                impModel.Update(gameTime);
             
             base.Update(gameTime);
         }
@@ -211,19 +218,9 @@ namespace Underlord
             //spriteBatch.Draw(test, rec2, Color.Black);
             //spriteBatch.Draw(test, rec3, Color.Green);
 
-            /*
-            // Temporary
-                //Matrix knightModelMatrix = Matrix.Identity *
-                //Matrix.CreateScale(0.1f) *
-                //Matrix.CreateRotationX(MathHelper.PiOver2) *
-                //Matrix.CreateRotationY(0) *
-                //Matrix.CreateRotationZ(0) *
-                //Matrix.CreateTranslation(new Vector3(0, 0, 0.5f));
-
-                ///// Draw the knight
-                //knightModel.Draw(camera, knightModelMatrix);
-          
-                Matrix knightModelMatrix = Matrix.Identity *
+            
+             //Temporary
+                Matrix impMatrix = Matrix.Identity *
                 Matrix.CreateScale(0.1f) *
                 Matrix.CreateRotationX(MathHelper.PiOver2) *
                 Matrix.CreateRotationY(0) *
@@ -231,8 +228,8 @@ namespace Underlord
                 Matrix.CreateTranslation(new Vector3(0, 0, 0.5f));
 
                 /// Draw the knight
-                knightModel.Draw(camera, knightModelMatrix);
-            */
+                impModel.Draw(camera, impMatrix);
+            
             minimap.drawMinimap(spriteBatch);
             
             spriteBatch.End();

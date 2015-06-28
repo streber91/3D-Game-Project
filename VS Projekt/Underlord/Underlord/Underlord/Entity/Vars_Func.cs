@@ -54,14 +54,17 @@ namespace Underlord.Entity
 
            WallModels[(int)WallTyp.Stone].Texture = Content.Load<Texture2D>("Textures//wall_rock_TEXT");
            WallModels[(int)WallTyp.Gold].Texture = Content.Load<Texture2D>("Textures//wall_gold_TEXT");
-           
+           WallModels[(int)WallTyp.Diamond].Texture = Content.Load<Texture2D>("Textures//wall_diamond_TEXT");
 
            HexagonModels.Add(new BasicModel(Content.Load<Model>("Models//floorSand_HEX_03")));
            HexagonModels.Add(new BasicModel(Content.Load<Model>("Models//floorSand_HEX_03")));
 
-           
+           HexagonModels[(int)HexTyp.Sand].Texture = Content.Load<Texture2D>("Textures//floor_stone_TEXT");
+           HexagonModels[(int)HexTyp.Stone].Texture = Content.Load<Texture2D>("Textures//floor_stone_TEXT");
 
            NestModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));
+
+           NestModels[(int)NestTyp.Beetle].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
 
            foreach (BasicModel bWall in WallModels)
            {

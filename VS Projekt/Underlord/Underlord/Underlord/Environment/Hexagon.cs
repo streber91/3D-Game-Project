@@ -76,7 +76,7 @@ namespace Underlord.Environment
             boneTransforms = new Matrix[Entity.Vars_Func.getHexagonModell(typ).Model.Bones.Count];
         }
         #endregion
-
+        //TODO
         public void addImp()
         {
             this.imps.Add(true);
@@ -84,41 +84,17 @@ namespace Underlord.Environment
 
         public void DrawModel(Camera camera, Vector3 drawPosition)
         {
-            //Matrix modelMatrix = Matrix.Identity *
-            //Matrix.CreateScale(/*0.0127f*/1) *
-            //Matrix.CreateRotationX(0/*2*MathHelper.PiOver2*/) *
-            //Matrix.CreateRotationY(0) *
-            //Matrix.CreateRotationZ(0/*MathHelper.PiOver2*/) *
-            //Matrix.CreateTranslation(drawPosition + new Vector3(0.0f, 0.0f, 0));
-
-            //Entity.Vars_Func.getHexagonModell(typ).Color = drawColor;
-            //Entity.Vars_Func.getHexagonModell(typ).Draw(camera, modelMatrix);
-
-            Entity.Vars_Func.getHexagonModell(typ).Model.Root.Transform = Matrix.Identity *
-
+            Matrix modelMatrix = Matrix.Identity *
             Matrix.CreateScale(1) *
             Matrix.CreateRotationX(0) *
             Matrix.CreateRotationY(0) *
             Matrix.CreateRotationZ(0) *
             Matrix.CreateTranslation(drawPosition + new Vector3(0.0f, 0.0f, 0));
-            Entity.Vars_Func.getHexagonModell(typ).Model.CopyAbsoluteBoneTransformsTo(boneTransforms);
 
-            foreach (ModelMesh mesh in Entity.Vars_Func.getHexagonModell(typ).Model.Meshes)
-            {
-                foreach (BasicEffect basicEffect in mesh.Effects)
-                {
-                    basicEffect.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-                    basicEffect.GraphicsDevice.BlendState = BlendState.AlphaBlend;
-                    basicEffect.EnableDefaultLighting();
-                    basicEffect.World = boneTransforms[mesh.ParentBone.Index];
-                    basicEffect.View = camera.View;
-                    basicEffect.Projection = camera.Projection;
+            Entity.Vars_Func.getHexagonModell(typ).Color = drawColor;
+            Entity.Vars_Func.getHexagonModell(typ).Draw(camera, modelMatrix);
 
-                    basicEffect.AmbientLightColor = new Vector3(this.drawColor.R, this.drawColor.G, this.drawColor.B);
-                }
-                mesh.Draw();
-            }
-             if(obj != null) obj.DrawModel(camera, drawPosition, drawColor);
+            if(obj != null) obj.DrawModel(camera, drawPosition, drawColor);
         }
     }
 }

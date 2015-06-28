@@ -16,16 +16,14 @@ namespace Underlord.Entity
        public enum NestTyp { Beetle, length };
        public enum UpgradeTyp {Arcane, Training, length };
        public enum WallTyp { Stone, Gold, Diamond, Entrance, HQ, length };
-       public enum HexTyp { Sand, length };
+       public enum HexTyp { Sand, Stone, length };
        public enum GameState { MainMenue, Ingame, Save, Load, CreateRoom, Build, Mine, length };
        public enum ThingTyp { Wall, Upgrade, Nest, DungeonCreature, HeroCreature, NeutralCreature, length };
 
        static List<Model> CreatureModels;
        static List<Model> NestModels;
        static List<Model> UpgradeModels;
-       //static List<Model> WallModels;
        static List<BasicModel> WallModels;
-       //static List<Model> HexagonModels;
        static List<BasicModel> HexagonModels;
 
        static Texture2D pixel;
@@ -33,9 +31,7 @@ namespace Underlord.Entity
        public static Model getCreatureModell(CreatureTyp typ) { return CreatureModels[(int)typ]; }
        public static Model getNestModell(NestTyp typ) { return NestModels[(int)typ]; }
        public static Model getUpgradeModell(UpgradeTyp typ) { return UpgradeModels[(int)typ]; }
-       //public static Model getWallModell(WallTyp typ) { return WallModels[(int)typ]; }
        public static BasicModel getWallModell(WallTyp typ) { return WallModels[(int)typ]; }
-       //public static Model getHexagonModell(HexTyp typ) { return HexagonModels[(int)typ]; }
        public static BasicModel getHexagonModell(HexTyp typ) { return HexagonModels[(int)typ]; }
 
        public static Texture2D getPixel() { return pixel; }
@@ -45,17 +41,10 @@ namespace Underlord.Entity
            CreatureModels = new List<Model>();
            NestModels = new List<Model>();
            UpgradeModels = new List<Model>();
-           //WallModels = new List<Model>();
            WallModels = new List<BasicModel>();
-           //HexagonModels = new List<Model>();
            HexagonModels = new List<BasicModel>();
 
            pixel = Content.Load<Texture2D>("TEST");
-           //WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
-           //WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
-           //WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
-           //WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
-           //WallModels.Add(Content.Load<Model>("Models//sandWall_HEX_02"));
 
            WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
            WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
@@ -63,11 +52,14 @@ namespace Underlord.Entity
            WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
            WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
 
+           WallModels[(int)WallTyp.Stone].Texture = Content.Load<Texture2D>("Textures//wall_rock_TEXT");
            WallModels[(int)WallTyp.Gold].Texture = Content.Load<Texture2D>("Textures//wall_gold_TEXT");
-           WallModels[(int)WallTyp.Diamond].Texture = null;
+           
 
-           //HexagonModels.Add(Content.Load<Model>("Models//floorSand_HEX_03"));
            HexagonModels.Add(new BasicModel(Content.Load<Model>("Models//floorSand_HEX_03")));
+           HexagonModels.Add(new BasicModel(Content.Load<Model>("Models//floorSand_HEX_03")));
+
+           
 
            foreach (BasicModel bWall in WallModels)
            {

@@ -15,7 +15,7 @@ namespace Underlord.Environment
         List<Room> rooms = new List<Room>();
         List<Nest> nests = new List<Nest>();
         List<Hexagon> map = new List<Hexagon>();
-        int planeSidelength, drawHeight, drawWidth; // planeside = map size
+        int planeSidelength; // drawWidth, drawHeight, planeside = map size
         float hexagonSideLength;
 
         #region Properties
@@ -31,8 +31,8 @@ namespace Underlord.Environment
 
         public Map(int sidelength, Entity.Vars_Func.HexTyp typ, Boolean newGame, float hexagonSideLength)
         {
-            drawHeight = 2;
-            drawWidth = 5;
+            //drawWidth = 5;
+            //drawHeight = 3;
             this.hexagonSideLength = hexagonSideLength;
             if (newGame)
             {
@@ -109,60 +109,193 @@ namespace Underlord.Environment
 
         }*/
 
-        public void DrawModel(Camera camera, Vector2 indexOfMiddleHexagon, Vector3 cameraTarget)
+        public void DrawModel(Camera camera, Vector2 indexOfMiddleHexagon, Vector3 cameraTarget, int drawWidth)
         {
-            Hexagon middle = map[(int)(indexOfMiddleHexagon.X * planeSidelength + indexOfMiddleHexagon.Y)];
-            Vector3 middleDrawPosition = middle.get3DPosition();
-            if (middleDrawPosition.X - cameraTarget.X <= 1.5f * hexagonSideLength) middleDrawPosition += Vector3.UnitX * 1.5f * hexagonSideLength * planeSidelength;
-            if (middleDrawPosition.X - cameraTarget.X >= 1.5f * hexagonSideLength) middleDrawPosition -= Vector3.UnitX * 1.5f * hexagonSideLength * planeSidelength;
-            if (middleDrawPosition.Y - cameraTarget.Y <= 1.5f * hexagonSideLength) middleDrawPosition += Vector3.UnitY * 1.75f * hexagonSideLength * planeSidelength;
-            if (middleDrawPosition.Y - cameraTarget.Y >= 1.5f * hexagonSideLength) middleDrawPosition -= Vector3.UnitY * 1.75f * hexagonSideLength * planeSidelength;
+            Vector2 tmp = indexOfMiddleHexagon;
+            Vector3 drawposition = getHexagonAt(indexOfMiddleHexagon).get3DPosition();
+            if (drawposition.X - cameraTarget.X <= 1.5f * hexagonSideLength) drawposition += Vector3.UnitX * 1.5f * hexagonSideLength * planeSidelength;
+            if (drawposition.X - cameraTarget.X >= 1.5f * hexagonSideLength) drawposition -= Vector3.UnitX * 1.5f * hexagonSideLength * planeSidelength;
+            if (drawposition.Y - cameraTarget.Y <= 1.5f * hexagonSideLength) drawposition += Vector3.UnitY * 1.75f * hexagonSideLength * planeSidelength;
+            if (drawposition.Y - cameraTarget.Y >= 1.5f * hexagonSideLength) drawposition -= Vector3.UnitY * 1.75f * hexagonSideLength * planeSidelength;
 
-            middle.DrawModel(camera, middleDrawPosition);
-            rekRightDrawModel(camera, middle.getNeighbors()[1], drawWidth, middleDrawPosition + (Vector3.UnitY * 0.875f + Vector3.UnitX * 1.5f) * hexagonSideLength);
-            rekLeftDrawModel(camera, middle.getNeighbors()[5], drawWidth, middleDrawPosition + (Vector3.UnitY * 0.875f - Vector3.UnitX * 1.5f) * hexagonSideLength);
-            rekUpDrawModel(camera, middle.getNeighbors()[0], drawHeight, middleDrawPosition + Vector3.UnitY * 1.75f * hexagonSideLength);
-            rekDownDrawModel(camera, middle.getNeighbors()[3], drawHeight, middleDrawPosition - Vector3.UnitY * 1.75f * hexagonSideLength);
-        }
+            //breadth-first search
+            Queue<Vector2> queue = new Queue<Vector2>();
+            Queue<Vector3> vecQueue = new Queue<Vector3>();
+            queue.Enqueue(tmp);
+            vecQueue.Enqueue(drawposition);
+            getHexagonAt(tmp).Visited = true;
+            //enqueue dummys
+            queue.Enqueue(new Vector2(getPlanelength() + drawWidth, 0));
+            vecQueue.Enqueue(new Vector3(getPlanelength() + drawWidth, 0, 0));
 
-        private void rekRightDrawModel(Camera camera, Vector2 position, int counter, Vector3 drawposition)
-        {
-            Hexagon me = map[(int)(position.X * planeSidelength + position.Y)];
-            me.DrawModel(camera, drawposition);
-            rekUpDrawModel(camera, me.getNeighbors()[0], drawHeight, drawposition + Vector3.UnitY * 1.75f * hexagonSideLength);
-            rekDownDrawModel(camera, me.getNeighbors()[3], drawHeight, drawposition - Vector3.UnitY * 1.75f * hexagonSideLength);
-            if (counter > 0)
+            while (queue.Count != 1)
             {
-                if (counter % 2 == 0) rekRightDrawModel(camera, me.getNeighbors()[1], counter - 1, drawposition + (Vector3.UnitY * 0.875f + Vector3.UnitX * 1.5f) * hexagonSideLength);
-                else rekRightDrawModel(camera, me.getNeighbors()[2], counter - 1, drawposition + (-Vector3.UnitY * 0.875f + Vector3.UnitX * 1.5f) * hexagonSideLength);
+                tmp = queue.Dequeue();
+                drawposition = vecQueue.Dequeue();
+
+                if (tmp.X >= getPlanelength())
+                {
+                    // stop if drawWidth is reached
+                    if (tmp.X <= getPlanelength()) break;
+
+                    queue.Enqueue(new Vector2(tmp.X - 1, 0));
+                    vecQueue.Enqueue(new Vector3(tmp.X - 1, 0, 0));
+                    continue;
+                }
+
+                //draw the Hexagon
+                getHexagonAt(tmp).DrawModel(camera, drawposition);
+
+                //enqueue neigbors
+                if (!getHexagonAt(getHexagonAt(tmp).getNeighbors()[0]).Visited)
+                {
+                    getHexagonAt(getHexagonAt(tmp).getNeighbors()[0]).Visited = true;
+                    queue.Enqueue(getHexagonAt(tmp).getNeighbors()[0]);
+                    vecQueue.Enqueue(drawposition + Vector3.UnitY * 1.75f * hexagonSideLength);
+                }
+                if (!getHexagonAt(getHexagonAt(tmp).getNeighbors()[1]).Visited)
+                {
+                    getHexagonAt(getHexagonAt(tmp).getNeighbors()[1]).Visited = true;
+                    queue.Enqueue(getHexagonAt(tmp).getNeighbors()[1]);
+                    vecQueue.Enqueue(drawposition + (Vector3.UnitY * 0.875f + Vector3.UnitX * 1.5f) * hexagonSideLength);
+                }
+                if (!getHexagonAt(getHexagonAt(tmp).getNeighbors()[2]).Visited)
+                {
+                    getHexagonAt(getHexagonAt(tmp).getNeighbors()[2]).Visited = true;
+                    queue.Enqueue(getHexagonAt(tmp).getNeighbors()[2]);
+                    vecQueue.Enqueue(drawposition + (-Vector3.UnitY * 0.875f + Vector3.UnitX * 1.5f) * hexagonSideLength);
+                }
+                if (!getHexagonAt(getHexagonAt(tmp).getNeighbors()[3]).Visited)
+                {
+                    getHexagonAt(getHexagonAt(tmp).getNeighbors()[3]).Visited = true;
+                    queue.Enqueue(getHexagonAt(tmp).getNeighbors()[3]);
+                    vecQueue.Enqueue(drawposition - Vector3.UnitY * 1.75f * hexagonSideLength);
+                }
+                if (!getHexagonAt(getHexagonAt(tmp).getNeighbors()[4]).Visited)
+                {
+                    getHexagonAt(getHexagonAt(tmp).getNeighbors()[4]).Visited = true;
+                    queue.Enqueue(getHexagonAt(tmp).getNeighbors()[4]);
+                    vecQueue.Enqueue(drawposition + (-Vector3.UnitY * 0.875f - Vector3.UnitX * 1.5f) * hexagonSideLength);
+                }
+                if (!getHexagonAt(getHexagonAt(tmp).getNeighbors()[5]).Visited)
+                {
+                    getHexagonAt(getHexagonAt(tmp).getNeighbors()[5]).Visited = true;
+                    queue.Enqueue(getHexagonAt(tmp).getNeighbors()[5]);
+                    vecQueue.Enqueue(drawposition + (Vector3.UnitY * 0.875f - Vector3.UnitX * 1.5f) * hexagonSideLength);
+                }
+            }
+
+            //clear Hexmap for next search
+            for (int i = 0; i < getPlanelength(); ++i)
+            {
+                for (int j = 0; j < getPlanelength(); ++j)
+                {
+                    getHexagonAt(i, j).Visited = false;
+                }
             }
         }
 
-        private void rekLeftDrawModel(Camera camera, Vector2 position, int counter, Vector3 drawposition)
-        {
-            Hexagon me = map[(int)(position.X * planeSidelength + position.Y)];
-            me.DrawModel(camera, drawposition);
-            rekUpDrawModel(camera, me.getNeighbors()[0], drawHeight, drawposition + Vector3.UnitY * 1.75f * hexagonSideLength);
-            rekDownDrawModel(camera, me.getNeighbors()[3], drawHeight, drawposition - Vector3.UnitY * 1.75f * hexagonSideLength);
-            if (counter > 0)
-            {
-                if (counter % 2 == 0) rekLeftDrawModel(camera, me.getNeighbors()[5], counter - 1, drawposition + (Vector3.UnitY * 0.875f - Vector3.UnitX * 1.5f) * hexagonSideLength);
-                else rekLeftDrawModel(camera, me.getNeighbors()[4], counter - 1, drawposition + (-Vector3.UnitY * 0.875f - Vector3.UnitX * 1.5f) * hexagonSideLength);
-            }
-        }
+        #region trydraw
+        //public void DrawModel(Camera camera, Vector2 indexOfMiddleHexagon, Vector3 cameraTarget, int drawWidth)
+        //{
+        //    if (drawWidth > 0)
+        //    {
+        //        Hexagon tmp = this.getHexagonAt(indexOfMiddleHexagon);
+        //        Vector3 drawposition = tmp.get3DPosition();
+        //        if (drawposition.X - cameraTarget.X <= 1.5f * hexagonSideLength) drawposition += Vector3.UnitX * 1.5f * hexagonSideLength * planeSidelength;
+        //        if (drawposition.X - cameraTarget.X >= 1.5f * hexagonSideLength) drawposition -= Vector3.UnitX * 1.5f * hexagonSideLength * planeSidelength;
+        //        if (drawposition.Y - cameraTarget.Y <= 1.5f * hexagonSideLength) drawposition += Vector3.UnitY * 1.75f * hexagonSideLength * planeSidelength;
+        //        if (drawposition.Y - cameraTarget.Y >= 1.5f * hexagonSideLength) drawposition -= Vector3.UnitY * 1.75f * hexagonSideLength * planeSidelength;
+        //        //draw first hexagon and all neigbors
+        //        tmp.DrawModel(camera, drawposition);
+        //        recDrawModel(camera, tmp.getNeighbors()[0], drawposition + Vector3.UnitY * 1.75f * hexagonSideLength, drawWidth - 1);
+        //        recDrawModel(camera, tmp.getNeighbors()[1], drawposition + (Vector3.UnitY * 0.875f + Vector3.UnitX * 1.5f) * hexagonSideLength, drawWidth - 1);
+        //        recDrawModel(camera, tmp.getNeighbors()[2], drawposition + (-Vector3.UnitY * 0.875f + Vector3.UnitX * 1.5f) * hexagonSideLength, drawWidth - 1);
+        //        recDrawModel(camera, tmp.getNeighbors()[3], drawposition - Vector3.UnitY * 1.75f * hexagonSideLength, drawWidth - 1);
+        //        recDrawModel(camera, tmp.getNeighbors()[4], drawposition + (-Vector3.UnitY * 0.875f - Vector3.UnitX * 1.5f) * hexagonSideLength, drawWidth - 1);
+        //        recDrawModel(camera, tmp.getNeighbors()[5], drawposition + (Vector3.UnitY * 0.875f - Vector3.UnitX * 1.5f) * hexagonSideLength, drawWidth - 1);
 
-        private void rekUpDrawModel(Camera camera, Vector2 position, int counter, Vector3 drawposition)
-        {
-            Hexagon me = map[(int)(position.X * planeSidelength + position.Y)];
-            me.DrawModel(camera, drawposition);
-            if (counter > 0) rekUpDrawModel(camera, me.getNeighbors()[0], counter - 1, drawposition + Vector3.UnitY * 1.75f * hexagonSideLength);
-        }
+        //        foreach (Hexagon hex in this.map)
+        //        {
+        //            hex.AllreadyDrawn = false;
+        //        }
+        //    }
+        //}
+        //private void recDrawModel(Camera camera, Vector2 indexOfMiddleHexagon, Vector3 drawposition, int drawWidth)
+        //{
+        //    if (drawWidth > 0)
+        //    {
+        //        Hexagon tmp = this.getHexagonAt(indexOfMiddleHexagon);
+        //        //draw hexagon that hasen't drawn yet
+        //        if(!tmp.AllreadyDrawn) tmp.DrawModel(camera, drawposition);
+        //        //draws all Neigbors
+        //        recDrawModel(camera, tmp.getNeighbors()[0], drawposition + Vector3.UnitY * 1.75f * hexagonSideLength, drawWidth - 1);
+        //        recDrawModel(camera, tmp.getNeighbors()[1], drawposition + (Vector3.UnitY * 0.875f + Vector3.UnitX * 1.5f) * hexagonSideLength, drawWidth - 1);
+        //        recDrawModel(camera, tmp.getNeighbors()[2], drawposition + (-Vector3.UnitY * 0.875f + Vector3.UnitX * 1.5f) * hexagonSideLength, drawWidth - 1);
+        //        recDrawModel(camera, tmp.getNeighbors()[3], drawposition - Vector3.UnitY * 1.75f * hexagonSideLength, drawWidth - 1);
+        //        recDrawModel(camera, tmp.getNeighbors()[4], drawposition + (-Vector3.UnitY * 0.875f - Vector3.UnitX * 1.5f) * hexagonSideLength, drawWidth - 1);
+        //        recDrawModel(camera, tmp.getNeighbors()[5], drawposition + (Vector3.UnitY * 0.875f - Vector3.UnitX * 1.5f) * hexagonSideLength, drawWidth - 1);
 
-        private void rekDownDrawModel(Camera camera, Vector2 position, int counter, Vector3 drawposition)
-        {
-            Hexagon me = map[(int)(position.X * planeSidelength + position.Y)];
-            me.DrawModel(camera, drawposition);
-            if (counter > 0) rekDownDrawModel(camera, me.getNeighbors()[3], counter - 1, drawposition - Vector3.UnitY * 1.75f * hexagonSideLength);
-        }
+        //    }
+        //}
+        #endregion
+
+        #region olddraw
+        //public void DrawModel(Camera camera, Vector2 indexOfMiddleHexagon, Vector3 cameraTarget)
+        //{
+        //    Hexagon middle = map[(int)(indexOfMiddleHexagon.X * planeSidelength + indexOfMiddleHexagon.Y)];
+        //    Vector3 middleDrawPosition = middle.get3DPosition();
+        //    if (middleDrawPosition.X - cameraTarget.X <= 1.5f * hexagonSideLength) middleDrawPosition += Vector3.UnitX * 1.5f * hexagonSideLength * planeSidelength;
+        //    if (middleDrawPosition.X - cameraTarget.X >= 1.5f * hexagonSideLength) middleDrawPosition -= Vector3.UnitX * 1.5f * hexagonSideLength * planeSidelength;
+        //    if (middleDrawPosition.Y - cameraTarget.Y <= 1.5f * hexagonSideLength) middleDrawPosition += Vector3.UnitY * 1.75f * hexagonSideLength * planeSidelength;
+        //    if (middleDrawPosition.Y - cameraTarget.Y >= 1.5f * hexagonSideLength) middleDrawPosition -= Vector3.UnitY * 1.75f * hexagonSideLength * planeSidelength;
+
+        //    middle.DrawModel(camera, middleDrawPosition);
+        //    rekRightDrawModel(camera, middle.getNeighbors()[1], drawWidth, middleDrawPosition + (Vector3.UnitY * 0.875f + Vector3.UnitX * 1.5f) * hexagonSideLength);
+        //    rekLeftDrawModel(camera, middle.getNeighbors()[5], drawWidth, middleDrawPosition + (Vector3.UnitY * 0.875f - Vector3.UnitX * 1.5f) * hexagonSideLength);
+        //    rekUpDrawModel(camera, middle.getNeighbors()[0], drawHeight, middleDrawPosition + Vector3.UnitY * 1.75f * hexagonSideLength);
+        //    rekDownDrawModel(camera, middle.getNeighbors()[3], drawHeight, middleDrawPosition - Vector3.UnitY * 1.75f * hexagonSideLength);
+        //}
+
+        //private void rekRightDrawModel(Camera camera, Vector2 position, int counter, Vector3 drawposition)
+        //{
+        //    Hexagon me = map[(int)(position.X * planeSidelength + position.Y)];
+        //    me.DrawModel(camera, drawposition);
+        //    rekUpDrawModel(camera, me.getNeighbors()[0], drawHeight, drawposition + Vector3.UnitY * 1.75f * hexagonSideLength);
+        //    rekDownDrawModel(camera, me.getNeighbors()[3], drawHeight, drawposition - Vector3.UnitY * 1.75f * hexagonSideLength);
+        //    if (counter > 0)
+        //    {
+        //        if (counter % 2 == 0) rekRightDrawModel(camera, me.getNeighbors()[1], counter - 1, drawposition + (Vector3.UnitY * 0.875f + Vector3.UnitX * 1.5f) * hexagonSideLength);
+        //        else rekRightDrawModel(camera, me.getNeighbors()[2], counter - 1, drawposition + (-Vector3.UnitY * 0.875f + Vector3.UnitX * 1.5f) * hexagonSideLength);
+        //    }
+        //}
+
+        //private void rekLeftDrawModel(Camera camera, Vector2 position, int counter, Vector3 drawposition)
+        //{
+        //    Hexagon me = map[(int)(position.X * planeSidelength + position.Y)];
+        //    me.DrawModel(camera, drawposition);
+        //    rekUpDrawModel(camera, me.getNeighbors()[0], drawHeight, drawposition + Vector3.UnitY * 1.75f * hexagonSideLength);
+        //    rekDownDrawModel(camera, me.getNeighbors()[3], drawHeight, drawposition - Vector3.UnitY * 1.75f * hexagonSideLength);
+        //    if (counter > 0)
+        //    {
+        //        if (counter % 2 == 0) rekLeftDrawModel(camera, me.getNeighbors()[5], counter - 1, drawposition + (Vector3.UnitY * 0.875f - Vector3.UnitX * 1.5f) * hexagonSideLength);
+        //        else rekLeftDrawModel(camera, me.getNeighbors()[4], counter - 1, drawposition + (-Vector3.UnitY * 0.875f - Vector3.UnitX * 1.5f) * hexagonSideLength);
+        //    }
+        //}
+
+        //private void rekUpDrawModel(Camera camera, Vector2 position, int counter, Vector3 drawposition)
+        //{
+        //    Hexagon me = map[(int)(position.X * planeSidelength + position.Y)];
+        //    me.DrawModel(camera, drawposition);
+        //    if (counter > 0) rekUpDrawModel(camera, me.getNeighbors()[0], counter - 1, drawposition + Vector3.UnitY * 1.75f * hexagonSideLength);
+        //}
+
+        //private void rekDownDrawModel(Camera camera, Vector2 position, int counter, Vector3 drawposition)
+        //{
+        //    Hexagon me = map[(int)(position.X * planeSidelength + position.Y)];
+        //    me.DrawModel(camera, drawposition);
+        //    if (counter > 0) rekDownDrawModel(camera, me.getNeighbors()[3], counter - 1, drawposition - Vector3.UnitY * 1.75f * hexagonSideLength);
+        //}
+        #endregion
     }
 }

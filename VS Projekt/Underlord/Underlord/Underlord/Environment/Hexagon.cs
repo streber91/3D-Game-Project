@@ -24,7 +24,7 @@ namespace Underlord.Environment
        
         private Matrix[] boneTransforms;
 
-        #region Properties
+        #region Properties 
         public Color Color
         {
             get { return drawColor; }
@@ -93,7 +93,6 @@ namespace Underlord.Environment
 
             //Entity.Vars_Func.getHexagonModell(typ).Color = drawColor;
             //Entity.Vars_Func.getHexagonModell(typ).Draw(camera, modelMatrix);
-
 
             Entity.Vars_Func.getHexagonModell(typ).Model.Root.Transform = Matrix.Identity *
 

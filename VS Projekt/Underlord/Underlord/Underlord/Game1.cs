@@ -28,7 +28,7 @@ namespace Underlord
         Map map;
         Camera camera;
         SpriteFont font;
-        int planeLength, minimapSize;
+        int planeLength, minimapSize, mapDrawWidth;
         float hexagonSideLength;
         KeyboardState keyboard;
         MouseState mouseState;
@@ -62,8 +62,9 @@ namespace Underlord
 
         protected override void Initialize()
         {
+            mapDrawWidth = 12;
             hexagonSideLength = 1; //do not change
-            planeLength = 20; //need an even number!
+            planeLength = 30; //need an even number!
             minimapSize = 180; //in pixel
             frameTimeCounter = 0;
             frames = 0;
@@ -81,7 +82,7 @@ namespace Underlord
             keyboard = Keyboard.GetState();
             mouseState = Mouse.GetState();
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
-            minimap = new Minimap(map, new Vector2(graphics.PreferredBackBufferWidth - minimapSize, graphics.PreferredBackBufferHeight - minimapSize), new Vector2(minimapSize, minimapSize));
+            minimap = new Minimap(map, new Vector2(graphics.PreferredBackBufferWidth - minimapSize, 0), new Vector2(minimapSize, minimapSize));
 
             base.Initialize();
         }
@@ -201,7 +202,7 @@ namespace Underlord
             effect.Projection = camera.Projection;
             effect.VertexColorEnabled = true;
             effect.CurrentTechnique.Passes[0].Apply();
-            map.DrawModel(camera, indexOfMiddleHexagon, camera.Target);
+            map.DrawModel(camera, indexOfMiddleHexagon, camera.Target, mapDrawWidth);
             spriteBatch.Begin();
             spriteBatch.DrawString(font, mouseState.X.ToString() + " : " + mouseState.Y.ToString(), new Vector2(10, 10), Color.White);
             spriteBatch.DrawString(font, mousePosition.X.ToString() + " : " + mousePosition.Y.ToString() + " : " + mousePosition.Z.ToString(), new Vector2(10, 25), Color.White);

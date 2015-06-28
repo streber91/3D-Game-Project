@@ -62,10 +62,10 @@ namespace Underlord
 
         protected override void Initialize()
         {
-            mapDrawWidth = 12;
+            mapDrawWidth = 10; //dont go over 15
             hexagonSideLength = 1; //do not change
-            planeLength = 30; //need an even number!
-            minimapSize = 180; //in pixel
+            planeLength = 50; //need an even number!
+            minimapSize = 240; //in pixel
             frameTimeCounter = 0;
             frames = 0;
             drawFrame = 0;

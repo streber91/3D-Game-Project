@@ -43,6 +43,12 @@ namespace Underlord.Entity
             set { actionTimeCounter = value; }
         }
 
+        public Boolean Working
+        {
+            get { return working; }
+            set { working = value; }
+        }
+
         #endregion
 
         public int getHP() { return HP; }

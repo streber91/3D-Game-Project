@@ -15,60 +15,27 @@ namespace Underlord.Logic
         {
             
             {
-                //ImpJob { Idle, Harvest, Feed, Mine, MineDiamonds, length };
-                switch ((int)imp.CurentJob.getJobTyp())
+                // search Job
+                if (imp.CurentJob.getJobTyp() == Vars_Func.ImpJob.Idle)
                 {
-                    case 0:
-                        // search Job
-                        break;
-
-                    case 1:
-                        if (imp.Path.Count == 0) imp.Path = determinePath(imp.Position, imp.CurentJob.getDestination(), map);
-                        else if (imp.Path.Count == 1)
-                        {
-
-                        }
-                        else if (imp.ActionTimeCounter >= 500)
-                        {
-
-                        }
-                        break;
-
-                    case 2:
-                        if (imp.Path.Count == 0) imp.Path = determinePath(imp.Position, imp.CurentJob.getDestination(), map);
-                        else if (imp.Path.Count == 1)
-                        {
-
-                        }
-                        else if (imp.ActionTimeCounter >= 500)
-                        {
-
-                        }
-                        break;
-
-                    case 3:
-                        if (imp.Path.Count == 0) imp.Path = determinePath(imp.Position, imp.CurentJob.getDestination(), map);
-                        else if (imp.Path.Count == 1)
-                        {
-
-                        }
-                        else if (imp.ActionTimeCounter >= 500)
-                        {
-
-                        }
-                        break;
-
-                    case 4:
-                        if (imp.Path.Count == 0) imp.Path = determinePath(imp.Position, imp.CurentJob.getDestination(), map);
-                        else if (imp.Path.Count == 1)
-                        {
-
-                        }
-                        else if (imp.ActionTimeCounter >= 500)
-                        {
-
-                        }
-                        break;
+                    //TODO
+                }
+                // search path to workplace
+                else if(imp.Path.Count == 0) imp.Path = determinePath(imp.Position, imp.CurentJob.getDestination(), map);
+                // working
+                else if (imp.Path.Count == 1)
+                {
+                    imp.Working = true;
+                    imp.CurentJob.Worktime -= time.ElapsedGameTime.Milliseconds;
+                    if (imp.CurentJob.Worktime <= 0)
+                    {
+                        imp.Working = false;
+                        imp.CurentJob = null;
+                    }
+                }
+                else if (imp.ActionTimeCounter >= 500)
+                {
+                    map.move(imp);
                 }
                 imp.ActionTimeCounter += time.ElapsedGameTime.Milliseconds;
             }
@@ -81,7 +48,7 @@ namespace Underlord.Logic
             {
                 List<Vector2> nearestEnemy = computeNearestEnemy(creature, map);
 
-                // walk to nearest Enemy and attack if ther is one
+                // walk to nearest Enemy and attack if there is one
                 if (nearestEnemy != null)
                 {
                     if (map.getHexagonAt(creature.Position).getNeighbors().Contains(nearestEnemy[0]))

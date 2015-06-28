@@ -120,10 +120,19 @@ namespace Underlord.Logic
                         if (mouseState.LeftButton == ButtonState.Pressed)
                         {
                             //place nest only when there is a room at mouseposition and the room doesn't have a nest already
+                            //the neighbors of the hexagon at mouseposition must be in the same room
                             if (map.getHexagonAt(mouseover).RoomNumber != 0 && map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType == Vars_Func.NestTyp.length)
                             {
-                                map.Nests.Add(new Nest(Vars_Func.NestTyp.Beetle, mouseover, map.getHexagonAt(mouseover), map));
-                                map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType = Vars_Func.NestTyp.Beetle;
+                                bool placeable = true;
+                                for (int i = 0; i < 6; ++i)
+                                {
+                                    if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).getNeighbors()[i]).RoomNumber) placeable = false;
+                                }
+                                if (placeable)
+                                {
+                                    map.Nests.Add(new Nest(Vars_Func.NestTyp.Beetle, mouseover, map.getHexagonAt(mouseover), map));
+                                    map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType = Vars_Func.NestTyp.Beetle;
+                                }
                             }
                         }
                     }

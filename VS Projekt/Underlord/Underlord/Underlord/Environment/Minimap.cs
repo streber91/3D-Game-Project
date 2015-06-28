@@ -39,10 +39,9 @@ namespace Underlord.Environment
                 {
                     //abfrage welche art von Wall vorliegt (sry brauchte ich zum debugen)
                     Wall tmp = (Wall)temp.Obj;
-                    if (tmp.getObjType().Equals(Vars_Func.WallTyp.Stone)) drawHex(temp.getIndexNumber(), Color.Orange, sb);
-                    if (tmp.getObjType().Equals(Vars_Func.WallTyp.Gold)) drawHex(temp.getIndexNumber(), Color.Yellow, sb);
-                    if (tmp.getObjType().Equals(Vars_Func.WallTyp.Diamond)) drawHex(temp.getIndexNumber(), Color.Green, sb);
-                   
+                    if (tmp.Typ.Equals(Vars_Func.WallTyp.Stone)) drawHex(temp.getIndexNumber(), Color.Orange, sb);
+                    if (tmp.Typ.Equals(Vars_Func.WallTyp.Gold)) drawHex(temp.getIndexNumber(), Color.Yellow, sb);
+                    if (tmp.Typ.Equals(Vars_Func.WallTyp.Diamond)) drawHex(temp.getIndexNumber(), Color.Green, sb);
                 }
             }
         }

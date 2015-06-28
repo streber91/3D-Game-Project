@@ -10,22 +10,20 @@ namespace Underlord.Entity
 {
     class Wall : Thing
     {
-        Vars_Func.ThingTyp thingTyp;
         Vector2 indexPosition;
         Vars_Func.WallTyp typ;
         int hp;
        // private Matrix[] boneTransforms;
-
-        public Texture2D Texture
-        {
-            set { Entity.Vars_Func.getWallModell(typ).Texture = value; }
-        }
 
         #region Properties
         public Vars_Func.WallTyp Typ
         {
             set { typ = value; }
             get { return typ; }
+        }
+        public Texture2D Texture
+        {
+            set { Entity.Vars_Func.getWallModell(typ).Texture = value; }
         }
         #endregion
 
@@ -36,7 +34,7 @@ namespace Underlord.Entity
             this.indexPosition = indexPosition;
             this.typ = typ;
             this.hp = hp;
-            map.getHexagonAt(indexPosition.X, indexPosition.Y).Obj = this;
+            map.getHexagonAt(indexPosition).Obj = this;
             //boneTransforms = new Matrix[Entity.Vars_Func.getWallModell(typ).Model.Bones.Count];
         }
         #endregion
@@ -76,7 +74,5 @@ namespace Underlord.Entity
             //    mesh.Draw();
             //}
         }
-
-        public Vars_Func.WallTyp getObjType() { return typ; }
     }
 }

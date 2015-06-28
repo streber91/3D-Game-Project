@@ -45,8 +45,8 @@ namespace Underlord.Entity
         }
         #endregion
 
-        // update list in construtor for loading issues
-        public Nest(Vars_Func.NestTyp typus, Vector2 position, Environment.Hexagon hex)
+        #region Constructor
+        public Nest(Vars_Func.NestTyp typus, Vector2 position, Environment.Hexagon hex, Environment.Map map)
         {
             nestHexagons = new List<Vector2>();
             nestHexagons.Add(position);
@@ -58,7 +58,9 @@ namespace Underlord.Entity
             size = 1;
             maxNutrition = 450f;
             nutrition = 250f;
+            hex.Obj = this;
         }
+        #endregion
 
         public void addUpgrade(Upgrade upgrade, Vector2 upgradePosition)
         {

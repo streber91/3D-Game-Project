@@ -144,7 +144,7 @@ namespace Underlord.Logic
                         if (mouseState.LeftButton == ButtonState.Pressed)
                         {
                             //mine only if there is a wall
-                            if(map.getHexagonAt(mouseover).Obj != null && map.getHexagonAt(mouseover).Obj.getThingTyp() == Vars_Func.ThingTyp.Wall)
+                            if (map.getHexagonAt(mouseover).Obj != null && map.getHexagonAt(mouseover).Obj.getThingTyp() == Vars_Func.ThingTyp.Wall && ((Wall)map.getHexagonAt(mouseover).Obj).Typ != Vars_Func.WallTyp.HQ && ((Wall)map.getHexagonAt(mouseover).Obj).Typ != Vars_Func.WallTyp.Entrance)
                             {
                                 map.getHexagonAt(mouseover).Obj = null;
                             }

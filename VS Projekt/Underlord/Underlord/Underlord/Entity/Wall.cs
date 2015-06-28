@@ -21,6 +21,14 @@ namespace Underlord.Entity
             set { Entity.Vars_Func.getWallModell(typ).Texture = value; }
         }
 
+        #region Properties
+        public Vars_Func.WallTyp Typ
+        {
+            set { typ = value; }
+            get { return typ; }
+        }
+        #endregion
+
         #region Constructor
         public Wall(Vector2 indexPosition, Vars_Func.WallTyp typ, int hp, Map map)
         {

@@ -47,7 +47,7 @@ namespace Underlord
         protected override void Initialize()
         {
             hexagonSideLength = 1; //do not change
-            planeLength = 10; //need an even number!
+            planeLength = 20; //need an even number!
             frameTimeCounter = 0;
             frames = 0;
             drawFrame = 0;
@@ -103,6 +103,7 @@ namespace Underlord
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
             camera.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, mouseState);
             view = camera.View;
+            //reset the color of all hexagons
             foreach (Hexagon hex in map.getMapHexagons())
             {
                 hex.Color = Color.White;
@@ -112,6 +113,17 @@ namespace Underlord
                 case Vars_Func.GameState.CreateRoom:
                     foreach (Hexagon hex in map.getMapHexagons())
                     {
+                        //colors the room-hexagons in CreateRom mode
+                        if (hex.RoomNumber == 1) hex.Color = Color.Red;
+                        else if (hex.RoomNumber == 2) hex.Color = Color.Yellow;
+                        else if (hex.RoomNumber == 3) hex.Color = Color.Green;
+                        else if (hex.RoomNumber != 0) hex.Color = Color.Blue;
+                    }
+                    break;
+                case Vars_Func.GameState.Build:
+                    foreach (Hexagon hex in map.getMapHexagons())
+                    {
+                        //colors the room-hexagons in Build mode
                         if (hex.RoomNumber == 1) hex.Color = Color.Red;
                         else if (hex.RoomNumber == 2) hex.Color = Color.Yellow;
                         else if (hex.RoomNumber == 3) hex.Color = Color.Green;

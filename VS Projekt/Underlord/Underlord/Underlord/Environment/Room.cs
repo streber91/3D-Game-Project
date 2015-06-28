@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace Underlord.Environment
@@ -9,44 +8,72 @@ namespace Underlord.Environment
     class Room
     {
         List<Vector2> room = new List<Vector2>();
+        Entity.Vars_Func.NestTyp nestType;
 
+        #region Properties
+        public Entity.Vars_Func.NestTyp NestType
+        {
+            get { return nestType; }
+            set { nestType = value; }
+        }
+        #endregion
+
+        #region Constructor
         public Room(Vector2 middleHexagonIndexNumber, int radius, Map map)
         {
-            room.Add(middleHexagonIndexNumber);
-            Queue<Vector2> queue = new Queue<Vector2>();
-            queue.Enqueue(middleHexagonIndexNumber);
-            queue.Enqueue(new Vector2(radius+1000000,0));
-            map.getHexagonAt(middleHexagonIndexNumber).Visited = true;
-            int roomNumber = map.Rooms.Count + 1;
-            map.getHexagonAt(middleHexagonIndexNumber).RoomNumber = roomNumber;
-            while (queue.Count != 1)
+            nestType = Entity.Vars_Func.NestTyp.length;
+            //create nest with only the middle hexagon
+            if (radius == 0)
             {
-                Vector2 tmp = queue.Dequeue();
-                if (tmp.X == 1000000) break;
-                else if (tmp.X < 1000000)
+                room.Add(middleHexagonIndexNumber);
+                map.getHexagonAt(middleHexagonIndexNumber).RoomNumber = map.Rooms.Count + 1;
+            }
+            //create nest through a broad-first-search
+            else
+            {
+                room.Add(middleHexagonIndexNumber); //add middle hexagon
+                Queue<Vector2> queue = new Queue<Vector2>(); //create a queue
+                queue.Enqueue(middleHexagonIndexNumber); //add middle hexagon to queue
+                queue.Enqueue(new Vector2(radius + map.getPlanelength(), 0)); //add dummy-element to queue (x-value is a value that can't be reached with coordinated of the map)
+                map.getHexagonAt(middleHexagonIndexNumber).Visited = true; //set visited for the middle element at true
+                int roomNumber = map.Rooms.Count + 1; //set the number for the new room at map.Room.Count + 1, because roomNumber = 0 means there is no room
+                map.getHexagonAt(middleHexagonIndexNumber).RoomNumber = roomNumber; //set the roomNumber for the middle hexagon
+                while (queue.Count != 1)
                 {
-                    for (int i = 0; i < 6; ++i)
+                    Vector2 tmp = queue.Dequeue(); //get the first element of the queue
+                    if (tmp.X == map.getPlanelength() + 1) break; //stop if the element is the dummy-element with an x-value that sasy that the radius is reached
+                    //if element is a map-element
+                    else if (tmp.X < map.getPlanelength())
                     {
-                        Vector2 neighbor = map.getHexagonAt(tmp).getNeighbors()[i];
-                        if (map.getHexagonAt(neighbor).Visited == false)
+                        //for all neighbors
+                        for (int i = 0; i < 6; ++i)
                         {
-                            map.getHexagonAt(neighbor).Visited = true;
-                            if (map.getHexagonAt(neighbor).Obj == null || map.getHexagonAt(neighbor).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.Wall)
+                            Vector2 neighbor = map.getHexagonAt(tmp).getNeighbors()[i];
+                            //which weren't visited already
+                            if (map.getHexagonAt(neighbor).Visited == false)
                             {
-                                queue.Enqueue(neighbor);
-                                map.getHexagonAt(neighbor).RoomNumber = roomNumber;
-                                room.Add(neighbor);
+                                map.getHexagonAt(neighbor).Visited = true; //set visited at true
+                                //when there isn't an object on the hexagon or the object isn't a wall
+                                if (map.getHexagonAt(neighbor).Obj == null || map.getHexagonAt(neighbor).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.Wall)
+                                {
+                                    queue.Enqueue(neighbor); //add the neighbor to the queue
+                                    map.getHexagonAt(neighbor).RoomNumber = roomNumber; //set the roomNumber of the neighbor
+                                    room.Add(neighbor); //and add the neighbor to the room
+                                }
                             }
                         }
                     }
+                    //if element is the dummy-element with radius isn't reached
+                    else queue.Enqueue(new Vector2(tmp.X - 1, 0));
                 }
-                else queue.Enqueue(new Vector2(tmp.X - 1, 0));
-            }
-            foreach (Hexagon hex in map.getMapHexagons())
-            {
-                if (hex.Visited == true) hex.Visited = false;
+                //set visited for all hexagon at false (for the next use of searching)
+                foreach (Hexagon hex in map.getMapHexagons())
+                {
+                    if (hex.Visited == true) hex.Visited = false;
+                }
             }
         }
+        #endregion
 
         public void mergeRoom(Room r)
         {

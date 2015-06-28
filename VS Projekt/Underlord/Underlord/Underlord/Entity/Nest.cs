@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Underlord.Renderer;
 
@@ -9,22 +8,53 @@ namespace Underlord.Entity
 {
     class Nest : Thing
     {
-        Vars_Func.CreatureTyp typus;
-        List<Upgrade> upgrades;
+        Vars_Func.NestTyp typus;
+        Upgrade[] upgrades;
         List<Vector2> upgradePos, nestHexagons;
         float size, nutrition, maxNutrition, growcounter;
-        Boolean undead = false;
+        Boolean undead;
         Vector2 targetPos, position;
 
-        // update list in construtor for loading issues
-        public Nest(Vars_Func.CreatureTyp typus, Vector2 position)
+        #region Properties
+        public Boolean Undead
         {
-            this.nestHexagons = new List<Vector2>();
+            get { return undead; }
+            set { undead = value; }
+        }
+        public Vector2 TargetPos
+        {
+            get { return targetPos; }
+            set { targetPos = value; }
+        }
+        public Vector2 Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
+        public List<Vector2> NestHexagons
+        {
+            get { return nestHexagons; }
+        }
+        public Upgrade[] Upgrades
+        {
+            get { return upgrades; }
+        }
+        public List<Vector2> UpgradePos
+        {
+            get { return upgradePos; }
+        }
+        #endregion
+
+        // update list in construtor for loading issues
+        public Nest(Vars_Func.NestTyp typus, Vector2 position, Environment.Hexagon hex)
+        {
+            nestHexagons = new List<Vector2>();
             nestHexagons.Add(position);
             this.typus = typus;
             this.position = position;
-            this.upgrades = new List<Upgrade>();
-            this.upgradePos = new List<Vector2>();
+            targetPos = hex.getNeighbors()[3];
+            upgradePos = new List<Vector2>();
+            undead = false;
             size = 1;
             maxNutrition = 450f;
             nutrition = 250f;
@@ -32,8 +62,8 @@ namespace Underlord.Entity
 
         public void addUpgrade(Upgrade upgrade, Vector2 upgradePosition)
         {
-            this.upgrades.Add(upgrade);
-            this.upgradePos.Add(upgradePosition);
+            //upgrades.Add(upgrade);
+            upgradePos.Add(upgradePosition);
         }
         public void increaseNutrition(float d)
         {
@@ -48,41 +78,17 @@ namespace Underlord.Entity
         }
         public void decreaseNutrition(float d)
         {
-            this.nutrition -= d;
+            nutrition -= d;
 
             if (nutrition <= 0)
             {
                 nutrition = 0;
-                setDead(true);
+                Undead = true;
             }
         }
         public void update(GameTime time)
         {
 
-        }
-        public Boolean isUndead()
-        {
-            return this.undead;
-        }
-        public void setDead(Boolean dead)
-        {
-            this.undead=dead;
-        }
-        public void setTarget(Vector2 pos)
-        {
-            this.targetPos = pos;
-        }
-        public Vector2 getTarget()
-        {
-            return this.targetPos;
-        }
-        public Vector2 getPosition()
-        {
-            return this.position;
-        }
-        public void setPosition(Vector2 pos)
-        {
-            this.position = pos;
         }
 
         override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor)

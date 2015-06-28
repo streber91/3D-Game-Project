@@ -33,12 +33,20 @@ namespace Underlord.Logic
                 case Vars_Func.GameState.MainMenue:
                     break;
                 case Vars_Func.GameState.Ingame:
-                    map.getHexagonAt(mouseover).Color = Color.Yellow;// getPlaneHexagons()[(int)(mouseover.X * planeLength + mouseover.Y)].setColor(Color.Brown);
+                    //colors the hexagon at mouseposition in Ingame mode yellow
+                    map.getHexagonAt(mouseover).Color = Color.Yellow;
                     if (timeCounter > 100)
                     {
+                        //switch to CreateRoom Mode in "R" is pressed
                         if (keyboard.IsKeyDown(Keys.R))
                         {
                             gameState = Vars_Func.GameState.CreateRoom;
+                            timeCounter = 0;
+                        }
+                        //switch to Build Mode if "N" ist pressed
+                        if (keyboard.IsKeyDown(Keys.N))
+                        {
+                            gameState = Vars_Func.GameState.Build;
                             timeCounter = 0;
                         }
                     }
@@ -48,16 +56,18 @@ namespace Underlord.Logic
                 case Vars_Func.GameState.Load:
                     break;
                 case Vars_Func.GameState.CreateRoom:
-                    
-                    map.getHexagonAt(mouseover).Color = Color.Purple;// getPlaneHexagons()[(int)(mouseover.X * planeLength + mouseover.Y)].setColor(Color.Brown);
-                    //Color the Hexagons around the coursor too
-                    /*Vector2[] neigbors = map.getHexagonAt(mouseover.X, mouseover.Y).getNeighbors(); //getPlaneHexagons()[(int)(mouseover.X * planeLength + mouseover.Y)].getNeighbors();
+                    //colors the hexagon at mouseposition in CreateRoom mode blue
+                    map.getHexagonAt(mouseover).Color = Color.Blue;
+                    //color the hexagons around the coursor too
+                    /*Vector2[] neigbors = map.getHexagonAt(mouseover.X, mouseover.Y).getNeighbors();
                     foreach (Vector2 hex in neigbors)
                     {
                         map.getHexagonAt(hex.X, hex.Y).Color = Color.Blue;
                     }*/
+                    //only ten clicks per second
                     if (timeCounter > 100)
                     {
+                        //back to Ingame mode and reset of values
                         if (keyboard.IsKeyDown(Keys.Escape))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
@@ -66,6 +76,7 @@ namespace Underlord.Logic
                             gameState = Vars_Func.GameState.Ingame;
                             timeCounter = 0;
                         }
+                        //first click determines the middle of the new room
                         if (counter == 0 && mouseState.LeftButton == ButtonState.Pressed)
                         {
                             if (map.getHexagonAt(mouseover).Obj == null || map.getHexagonAt(mouseover).Obj.getThingTyp() != Vars_Func.ThingTyp.Wall)
@@ -75,9 +86,10 @@ namespace Underlord.Logic
                             }
                             timeCounter = 0;
                         }
+                        //second click determines the radius for the new room and creates the room
                         else if (counter == 1 && mouseState.LeftButton == ButtonState.Pressed)
                         {
-                            radius = Math.Max((int)Math.Abs(indexOfMiddleHexagonForRoomCreation.X - mouseover.X), (int)Math.Abs(indexOfMiddleHexagonForRoomCreation.Y - mouseover.Y));
+                            radius = Vars_Func.computeDistance(indexOfMiddleHexagonForRoomCreation, mouseover, map);
                             map.Rooms.Add(new Room(indexOfMiddleHexagonForRoomCreation, radius, map));
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -87,6 +99,28 @@ namespace Underlord.Logic
                     }
                     break;
                 case Vars_Func.GameState.Build:
+                    //colors the hexagon at mouseposition in Build mode purple
+                    map.getHexagonAt(mouseover).Color = Color.Purple;
+                    //only ten clicks per second
+                    if (timeCounter > 100)
+                    {
+                        //back to Ingame Mode
+                        if (keyboard.IsKeyDown(Keys.Escape))
+                        {
+                            gameState = Vars_Func.GameState.Ingame;
+                            timeCounter = 0;
+                        }
+                        //try to place a nest at mouseposition
+                        if (mouseState.LeftButton == ButtonState.Pressed)
+                        {
+                            //place nest only when there is a room at mouseposition and the room doesn't have a nest already
+                            if (map.getHexagonAt(mouseover).RoomNumber != 0 && map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType == Vars_Func.NestTyp.length)
+                            {
+                                map.Nests.Add(new Nest(Vars_Func.NestTyp.Beetle, mouseover, map.getHexagonAt(mouseover)));
+                                map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType = Vars_Func.NestTyp.Beetle;
+                            }
+                        }
+                    }
                     break;
                 case Vars_Func.GameState.Mine:
                     break;

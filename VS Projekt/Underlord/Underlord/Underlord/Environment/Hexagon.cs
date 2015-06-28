@@ -16,6 +16,7 @@ namespace Underlord.Environment
         List<Boolean> imps;
         Thing obj;
         int roomNumber;
+        bool building;
         bool visited; //for breadth-first search
         Vector2 parent; //for breadth-first search
         Color drawColor;
@@ -48,25 +49,32 @@ namespace Underlord.Environment
             get { return parent; }
             set { parent = value; }
         }
+        public bool Building
+        {
+            get { return building; }
+            set { building = value; }
+        }
         #endregion
 
+        public Vector3 get3DPosition() { return position; }
+        public Vector2 getIndexNumber() { return indexNumber; }
+        public Vector2[] getNeighbors() { return neighbors; }
+        public void getImp() { } //TODO
+        public void setObjekt(Thing obj) { this.obj = obj; }
+
+        #region Constructor
         public Hexagon(Vector3 position, Vector2 indexNumber, Vector2[] neighbors, Entity.Vars_Func.HexTyp typ)
         {
             this.position = position;
             this.indexNumber = indexNumber;
             this.neighbors = neighbors;
             drawColor = Color.White;
+            building = false;
             roomNumber = 0;
             parent = indexNumber;
             boneTransforms = new Matrix[Entity.Vars_Func.getHexagonModell(typ).Bones.Count];
         }
-
-        public Vector3 get3DPosition() { return position; }
-        public Vector2 getIndexNumber() { return indexNumber; }
-        public Vector2[] getNeighbors() { return neighbors; }
-        public void getImp() { } //TODO
-
-        public void setObjekt(Thing obj) { this.obj = obj; }
+        #endregion
 
         public void addImp()
         {
@@ -77,10 +85,10 @@ namespace Underlord.Environment
         {
             Entity.Vars_Func.getHexagonModell(typ).Root.Transform = Matrix.Identity *
 
-            Matrix.CreateScale(/*0.0127f*/1) *
-            Matrix.CreateRotationX(0/*2*MathHelper.PiOver2*/) *
+            Matrix.CreateScale(1) *
+            Matrix.CreateRotationX(0) *
             Matrix.CreateRotationY(0) *
-            Matrix.CreateRotationZ(0/*MathHelper.PiOver2*/) *
+            Matrix.CreateRotationZ(0) *
             Matrix.CreateTranslation(drawPosition + new Vector3(0.0f, 0.0f, 0));
             Entity.Vars_Func.getHexagonModell(typ).CopyAbsoluteBoneTransformsTo(boneTransforms);
 
@@ -99,7 +107,7 @@ namespace Underlord.Environment
                 }
                 mesh.Draw();
             }
-             if(obj != null) obj.DrawModel(camera, drawPosition /*+ Vector3.UnitZ*/, drawColor);
+             if(obj != null) obj.DrawModel(camera, drawPosition, drawColor);
         }
     }
 }

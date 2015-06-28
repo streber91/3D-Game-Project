@@ -13,9 +13,21 @@ namespace Underlord.Environment
     {
         //String name = "";
         List<Room> rooms = new List<Room>();
+        List<Nest> nests = new List<Nest>();
         List<Hexagon> map = new List<Hexagon>();
         int planeSidelength, drawHeight, drawWidth;
         float hexagonSideLength;
+
+        #region Properties
+        public List<Room> Rooms
+        {
+            get { return rooms; }
+        }
+        public List<Nest> Nests
+        {
+            get { return nests; }
+        }
+        #endregion
 
         public Map(int sidelength, Entity.Vars_Func.HexTyp typ, Boolean newGame, float hexagonSideLength)
         {
@@ -73,13 +85,6 @@ namespace Underlord.Environment
                 //load(null);
             }
         }
-
-        #region Properties
-        public List<Room> Rooms
-        {
-            get { return rooms; }
-        }
-        #endregion
 
         public List<Hexagon> getMapHexagons() { return map; }
         public Hexagon getHexagonAt(float X, float Y) { return map[(int)(X * planeSidelength + Y)]; }

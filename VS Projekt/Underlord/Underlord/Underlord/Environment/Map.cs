@@ -307,7 +307,7 @@ namespace Underlord.Environment
         {
             foreach (Nest n in nests)
             {
-                n.update(gameTime, timeSinceLastUpdate, this);
+                n.update(gameTime, this);
             }
         }
     }

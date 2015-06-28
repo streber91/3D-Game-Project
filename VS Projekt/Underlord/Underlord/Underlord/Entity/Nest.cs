@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Underlord.Renderer;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Underlord.Entity
@@ -90,9 +89,9 @@ namespace Underlord.Entity
         }
         #endregion
 
-        public void update(GameTime gameTime, float timeSinceLastUpdate, Environment.Map map)
+        override public void update(GameTime gameTime, Environment.Map map)
         {
-            timeCounter += timeSinceLastUpdate;
+            timeCounter += gameTime.ElapsedGameTime.Milliseconds;
             if (timeCounter > 1000)
             {
                 if (possibleNextNestHexagons.Count != 0)
@@ -118,11 +117,11 @@ namespace Underlord.Entity
             }
         }
 
-        override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor)
+        override public void DrawModel(Renderer.Camera camera, Vector3 drawPosition, Color drawColor)
         {
             Matrix modelMatrix = Matrix.Identity *
             Matrix.CreateScale(1) *
-            Matrix.CreateRotationX(MathHelper.Pi) *
+            Matrix.CreateRotationX(0) *
             Matrix.CreateRotationY(0) *
             Matrix.CreateRotationZ(0) *
             Matrix.CreateTranslation(drawPosition);

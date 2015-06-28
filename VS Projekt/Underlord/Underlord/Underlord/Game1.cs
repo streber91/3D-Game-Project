@@ -176,7 +176,7 @@ namespace Underlord
             //map.getHexagonAt(indexOfMiddleHexagon.X, indexOfMiddleHexagon.Y).Color = Color.Purple;
 
             Vector2 mouseover = Vars_Func.gridColision(mousePosition, planeLength, hexagonSideLength);
-            Interaction.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, map, mouseover, mouseState, keyboard);
+            Interaction.Update(gameTime, map, mouseover, mouseState, keyboard);
            
             // Temporary
                 /// Update the knight

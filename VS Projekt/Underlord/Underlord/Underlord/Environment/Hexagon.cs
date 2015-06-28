@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Underlord.Entity;
-using Underlord.Renderer;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -14,7 +12,7 @@ namespace Underlord.Environment
         Vector2 indexNumber;
         Vector2[] neighbors = new Vector2[6]; //[up,right-up,right-down,down,left-down,left-up]
         List<Boolean> imps;
-        Thing obj;
+        Entity.Thing obj;
         int roomNumber;
         bool building;
         bool nest;
@@ -31,7 +29,7 @@ namespace Underlord.Environment
             get { return drawColor; }
             set { drawColor = value; }
         }
-        public Thing Obj
+        public Entity.Thing Obj
         {
             get { return obj; }
             set { obj = value; }
@@ -72,7 +70,6 @@ namespace Underlord.Environment
         public Vector2 getIndexNumber() { return indexNumber; }
         public Vector2[] getNeighbors() { return neighbors; }
         public void getImp() { } //TODO
-        public void setObjekt(Thing obj) { this.obj = obj; }
 
         #region Constructor
         public Hexagon(Vector3 position, Vector2 indexNumber, Vector2[] neighbors, Entity.Vars_Func.HexTyp typ)
@@ -94,7 +91,7 @@ namespace Underlord.Environment
             this.imps.Add(true);
         }
 
-        public void DrawModel(Camera camera, Vector3 drawPosition)
+        public void DrawModel(Renderer.Camera camera, Vector3 drawPosition)
         {
             Matrix modelMatrix = Matrix.Identity *
             Matrix.CreateScale(1) *

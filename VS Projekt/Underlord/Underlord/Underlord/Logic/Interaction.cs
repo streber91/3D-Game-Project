@@ -48,6 +48,12 @@ namespace Underlord.Logic
                         {
                             gameState = Vars_Func.GameState.Build;
                             timeCounter = 0;
+                        //switch to Mine Mode if "M" ist pressed
+                        }
+                        if (keyboard.IsKeyDown(Keys.M))
+                        {
+                            gameState = Vars_Func.GameState.Mine;
+                            timeCounter = 0;
                         }
                     }
                     break;
@@ -114,15 +120,45 @@ namespace Underlord.Logic
                         if (mouseState.LeftButton == ButtonState.Pressed)
                         {
                             //place nest only when there is a room at mouseposition and the room doesn't have a nest already
+                            //the neighbors of the hexagon at mouseposition must be in the same room
                             if (map.getHexagonAt(mouseover).RoomNumber != 0 && map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType == Vars_Func.NestTyp.length)
                             {
-                                map.Nests.Add(new Nest(Vars_Func.NestTyp.Beetle, mouseover, map.getHexagonAt(mouseover)));
-                                map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType = Vars_Func.NestTyp.Beetle;
+                                bool placeable = true;
+                                for (int i = 0; i < 6; ++i)
+                                {
+                                    if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).getNeighbors()[i]).RoomNumber) placeable = false;
+                                }
+                                if (placeable)
+                                {
+                                    map.Nests.Add(new Nest(Vars_Func.NestTyp.Beetle, mouseover, map.getHexagonAt(mouseover), map));
+                                    map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType = Vars_Func.NestTyp.Beetle;
+                                }
                             }
                         }
                     }
                     break;
                 case Vars_Func.GameState.Mine:
+                    //colors the hexagon at mouseposition in Mine mode red
+                    map.getHexagonAt(mouseover).Color = Color.Red;
+                    //only ten clicks per second
+                    if (timeCounter > 100)
+                    {
+                        //back to Ingame Mode
+                        if (keyboard.IsKeyDown(Keys.Escape))
+                        {
+                            gameState = Vars_Func.GameState.Ingame;
+                            timeCounter = 0;
+                        }
+                        //try to mine a wall at mouseposition
+                        if (mouseState.LeftButton == ButtonState.Pressed)
+                        {
+                            //mine only if there is a wall
+                            if (map.getHexagonAt(mouseover).Obj != null && map.getHexagonAt(mouseover).Obj.getThingTyp() == Vars_Func.ThingTyp.Wall && ((Wall)map.getHexagonAt(mouseover).Obj).Typ != Vars_Func.WallTyp.HQ && ((Wall)map.getHexagonAt(mouseover).Obj).Typ != Vars_Func.WallTyp.Entrance)
+                            {
+                                map.getHexagonAt(mouseover).Obj = null;
+                            }
+                        }
+                    }
                     break;
             }
         }

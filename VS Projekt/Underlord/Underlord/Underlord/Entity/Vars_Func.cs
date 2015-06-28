@@ -21,7 +21,7 @@ namespace Underlord.Entity
        public enum ThingTyp { Wall, Upgrade, Nest, DungeonCreature, HeroCreature, NeutralCreature, length };
 
        static List<Model> CreatureModels;
-       static List<Model> NestModels;
+       static List<BasicModel> NestModels;
        static List<Model> UpgradeModels;
        static List<BasicModel> WallModels;
        static List<BasicModel> HexagonModels;
@@ -29,7 +29,7 @@ namespace Underlord.Entity
        static Texture2D pixel;
 
        public static Model getCreatureModell(CreatureTyp typ) { return CreatureModels[(int)typ]; }
-       public static Model getNestModell(NestTyp typ) { return NestModels[(int)typ]; }
+       public static BasicModel getNestModell(NestTyp typ) { return NestModels[(int)typ]; }
        public static Model getUpgradeModell(UpgradeTyp typ) { return UpgradeModels[(int)typ]; }
        public static BasicModel getWallModell(WallTyp typ) { return WallModels[(int)typ]; }
        public static BasicModel getHexagonModell(HexTyp typ) { return HexagonModels[(int)typ]; }
@@ -39,7 +39,7 @@ namespace Underlord.Entity
        public static void loadContent(ContentManager Content)
        {
            CreatureModels = new List<Model>();
-           NestModels = new List<Model>();
+           NestModels = new List<BasicModel>();
            UpgradeModels = new List<Model>();
            WallModels = new List<BasicModel>();
            HexagonModels = new List<BasicModel>();
@@ -60,6 +60,8 @@ namespace Underlord.Entity
            HexagonModels.Add(new BasicModel(Content.Load<Model>("Models//floorSand_HEX_03")));
 
            
+
+           NestModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));
 
            foreach (BasicModel bWall in WallModels)
            {

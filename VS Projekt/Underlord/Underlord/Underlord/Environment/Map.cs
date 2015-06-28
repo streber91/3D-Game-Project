@@ -31,18 +31,20 @@ namespace Underlord.Environment
 
         public Map(int sidelength, Entity.Vars_Func.HexTyp typ, Boolean newGame, float hexagonSideLength)
         {
-            //drawWidth = 5;
-            //drawHeight = 3;
+            //drawHeight = 2; //how many hexagons are drawn up and down of the middle (+1)
+            //drawWidth = 5; //how many hexagons are drawn left and right of the middle (+1)
             this.hexagonSideLength = hexagonSideLength;
             if (newGame)
             {
                 Vector2 indexNumber = new Vector2(0, 0);
                 this.planeSidelength = sidelength;
+                //creates a map with proportions sidelength * sidelength
                 for (int i = 0; i < sidelength; ++i)
                 {
                     for (int j = 0; j < sidelength; ++j)
                     {
                         Vector2[] neighbors = new Vector2[6];
+                        //neighbor indices for i even
                         if (i % 2 == 0)
                         {
                             float xValue = (indexNumber.X - 1 + sidelength) % sidelength;
@@ -57,6 +59,7 @@ namespace Underlord.Environment
                             neighbors[5] = new Vector2(xValue, indexNumber.Y);
                             map.Add(new Hexagon(new Vector3(i * 3 / 2 * hexagonSideLength + hexagonSideLength * 1.5f, j * 2 * hexagonSideLength * 7 / 8 + hexagonSideLength * 7 / 8, 0), indexNumber, neighbors, typ));
                         }
+                        //neighbor indices for i uneven
                         else
                         {
                             float xValue = (indexNumber.X + 1) % sidelength;

@@ -24,6 +24,11 @@ namespace Underlord.Entity
         public Ability getEffect() { return this.effect; }
         public String getName() { return this.name; }
 
+        override public void update(GameTime time, Environment.Map map)
+        {
+
+        } 
+
         override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor)
         { 
 

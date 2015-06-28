@@ -94,7 +94,7 @@ namespace Underlord.Entity
                 Undead = true;
             }
         }
-        public void update(GameTime time)
+        override public void update(GameTime time, Environment.Map map)
         {
 
         }

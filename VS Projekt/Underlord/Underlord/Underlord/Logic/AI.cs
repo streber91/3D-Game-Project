@@ -10,7 +10,19 @@ namespace Underlord.Logic
     static class AI
     {
         static Random rand = new Random();
-        //TODO 
+        //TODO
+        static public void compute(Imp imp, GameTime time, Environment.Map map)
+        {
+            if (imp.CurentJob.getJobTyp() != Entity.Vars_Func.ImpJob.Idle)
+            {
+                //do job
+            }
+            else
+            {
+                //search job
+            }
+        }
+
         static public void compute(Creature creature, GameTime time, Environment.Map map)
         {
             // time for creatur to act?
@@ -18,13 +30,29 @@ namespace Underlord.Logic
             {
                 List<Vector2> nearestEnemy = computeNearestEnemy(creature, map);
 
-                //if(gegner in angrifsreichweite) angreifen else TODO
-                if(nearestEnemy != null) creature.Path = determinePath(creature.Position, nearestEnemy[0], map);
+                // walk to nearest Enemy and attack if ther is one
+                if (nearestEnemy != null)
+                {
+                    if (map.getHexagonAt(creature.Position).getNeighbors().Contains(nearestEnemy[0]))
+                    {
+                        while (creature.ActionTimeCounter >= 1000 / creature.getSpeed())
+                        {
+                            Creature target = (Creature) map.getHexagonAt(nearestEnemy[0]).Obj;
+                            target.decreaseHP(creature.getDmg());
+                            if (target.getHP() <= 0) map.remove(target);
+                            creature.ActionTimeCounter -= 1000 / creature.getSpeed();
+                        }
+                    }
+                    else creature.Path = determinePath(creature.Position, nearestEnemy[0], map);
+                }
+
+                // calculate path if creature has non
                 else if (creature.Path.Count == 0)
                 {
                     if (Entity.Vars_Func.computeDistance(creature.getHome().TargetPos, creature.Position, map) < 5) randomwalk(creature, map);
                     else creature.Path = determinePath(creature.Position, creature.getHome().TargetPos, map);
                 }
+
                 // time left for action?
                 if (creature.ActionTimeCounter >= 1000 / creature.getSpeed())
                 {

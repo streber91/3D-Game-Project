@@ -8,7 +8,6 @@ namespace Underlord.Logic
 {
     static class Mapgenerator
     {
-        //TODO: test generator with new textures
         public static void generateMap(Environment.Map hexmap, int size, int diamond,int gold)
         {
             List<Entity.Vars_Func.WallTyp> specials = new List<Entity.Vars_Func.WallTyp>();
@@ -22,7 +21,6 @@ namespace Underlord.Logic
             //determine special walls
             for (int i = 0 ; i < Math.Pow((size/5),2) - 2; ++i)
             {
-
                 if (dia > 0)
                 {
                     specials.Add(Entity.Vars_Func.WallTyp.Diamond);
@@ -45,7 +43,7 @@ namespace Underlord.Logic
                 for (int j = 0; j < size; ++j)
                 {
                     int randnum = rand.Next(specials.Count);
-                    //special wall
+                    // special wall
                     if (j % 5 == 0 && i % 5 == 0)
                     {
                         new Entity.Wall(new Vector2(i, j), specials[randnum], 300, hexmap);
@@ -69,7 +67,12 @@ namespace Underlord.Logic
             {
                 hexmap.getHexagonAt(hex.X, hex.Y).Obj = null;
             }
-            // build path from first entry to HQ
+            // room for entrance
+            foreach (Vector2 hex in hexmap.getHexagonAt(EN.X, EN.Y).getNeighbors())
+            {
+                hexmap.getHexagonAt(hex.X, hex.Y).Obj = null;
+            }
+            // build path from first entrance to HQ
             while( !hexmap.getHexagonAt(HQ.X, HQ.Y).getNeighbors().Contains(EN))
             {
                 if (HQ.X < EN.X)

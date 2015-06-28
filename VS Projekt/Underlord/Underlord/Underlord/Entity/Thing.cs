@@ -10,6 +10,7 @@ namespace Underlord.Entity
     {
         protected Vars_Func.ThingTyp thingTyp;
         abstract public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor);
+        abstract public void update(GameTime time, Environment.Map map);
 
         public Vars_Func.ThingTyp getThingTyp() { return thingTyp; }
     }

@@ -13,7 +13,7 @@ namespace Underlord.Entity
         Vector2 indexPosition;
         Vars_Func.WallTyp typ;
         int hp;
-       // private Matrix[] boneTransforms;
+        // private Matrix[] boneTransforms;
 
         #region Properties
         public Vars_Func.WallTyp Typ
@@ -39,6 +39,11 @@ namespace Underlord.Entity
         }
         #endregion
 
+        override public void update(GameTime time, Environment.Map map)
+        {
+
+        }
+
         override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor)
         {
             Matrix modelMatrix = Matrix.Identity *
@@ -50,6 +55,7 @@ namespace Underlord.Entity
 
             Entity.Vars_Func.getWallModell(typ).Color = drawColor;
             Entity.Vars_Func.getWallModell(typ).Draw(camera, modelMatrix);
+
 
             //Entity.Vars_Func.getWallModell(typ).Model.Root.Transform = Matrix.Identity *
             //Matrix.CreateScale(1) *

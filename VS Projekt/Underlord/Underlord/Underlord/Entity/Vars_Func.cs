@@ -12,13 +12,16 @@ namespace Underlord.Entity
 {
    static class Vars_Func
     {
+       public enum ThingTyp { Wall, Upgrade, Nest, DungeonCreature, HeroCreature, NeutralCreature, length };
        public enum CreatureTyp {Beetle, Knight, length };
        public enum NestTyp { Beetle, length };
        public enum UpgradeTyp {Arcane, Training, length };
        public enum WallTyp { Stone, Gold, Diamond, Entrance, HQ, length };
        public enum HexTyp { Sand, Stone, BeetleNest, length };
+
        public enum GameState { MainMenue, Ingame, Save, Load, CreateRoom, Build, Mine, length };
-       public enum ThingTyp { Wall, Upgrade, Nest, DungeonCreature, HeroCreature, NeutralCreature, length };
+
+       public enum ImpJob { Idle, Harvest, Feed, Mine, MineDiamonds, length };
 
        static List<Model> CreatureModels;
        static List<BasicModel> NestModels;

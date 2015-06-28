@@ -15,7 +15,7 @@ namespace Underlord.Entity
        public enum CreatureTyp {Beetle, Knight, length };
        public enum NestTyp { Beetle, length };
        public enum UpgradeTyp {Arcane, Training, length };
-       public enum WallTyp { Sand, Gold, Diamond, Entrance, HQ, length };
+       public enum WallTyp { Stone, Gold, Diamond, Entrance, HQ, length };
        public enum HexTyp { Sand, length };
        public enum GameState { MainMenue, Ingame, Save, Load, CreateRoom, Build, Mine, length };
        public enum ThingTyp { Wall, Upgrade, Nest, DungeonCreature, HeroCreature, NeutralCreature, length };
@@ -45,10 +45,8 @@ namespace Underlord.Entity
            CreatureModels = new List<Model>();
            NestModels = new List<Model>();
            UpgradeModels = new List<Model>();
-
            //WallModels = new List<Model>();
            WallModels = new List<BasicModel>();
-
            //HexagonModels = new List<Model>();
            HexagonModels = new List<BasicModel>();
 
@@ -64,6 +62,9 @@ namespace Underlord.Entity
            WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
            WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
            WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
+
+           WallModels[(int)WallTyp.Gold].Texture = Content.Load<Texture2D>("Textures//wall_gold_TEXT");
+           WallModels[(int)WallTyp.Diamond].Texture = null;
 
            //HexagonModels.Add(Content.Load<Model>("Models//floorSand_HEX_03"));
            HexagonModels.Add(new BasicModel(Content.Load<Model>("Models//floorSand_HEX_03")));

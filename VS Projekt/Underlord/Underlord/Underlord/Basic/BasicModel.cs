@@ -30,7 +30,7 @@ namespace Underlord.Basic
         /// <summary>
         /// The texture of the model.
         /// </summary>
-        protected Texture2D modelTexture = null;
+        protected Texture2D modelTexture;
 
         /// <summary>
         /// The color of the model.
@@ -141,8 +141,8 @@ namespace Underlord.Basic
                     basicEffect.GraphicsDevice.BlendState = BlendState.AlphaBlend;
 
                     basicEffect.AmbientLightColor = new Vector3(modelColor.R, modelColor.G, modelColor.B);
-                    
-                    if (this.modelTexture != null)
+
+                    if (this.modelTexture != basicEffect.Texture)
                     {
                         basicEffect.Texture = this.modelTexture;
                     }

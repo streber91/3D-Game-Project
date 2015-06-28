@@ -34,7 +34,6 @@ namespace Underlord
         MouseState mouseState;
         Vector3 mousePosition;
         Vector2 indexOfMiddleHexagon;
-        List<Thing> mapObjects;
         Minimap minimap;
 
         float updateTimeCounter, updates, drawUpdates;
@@ -44,12 +43,13 @@ namespace Underlord
             /// <summary>
             /// The animated model we are displaying
             /// </summary>
-            private AnimationModel knightModel = null;
+            private AnimationModel impModel = null;
 
             /// <summary>
             /// This model is loaded solely for the dance animation
             /// </summary>
-            private AnimationModel knightAnimationClip = null;
+            private AnimationModel impWalkAnimation = null;
+            private AnimationModel impGrableAnimation = null;
 
         public Game1()
         {
@@ -73,7 +73,7 @@ namespace Underlord
             drawUpdates = 0;
             Vars_Func.loadContent(Content);
             map = new Map(planeLength, Entity.Vars_Func.HexTyp.Sand, true, hexagonSideLength);
-            mapObjects = Logic.Mapgenerator.generateMap(map, planeLength, (int)(planeLength / 3), (int)(planeLength / 2));
+            Logic.Mapgenerator.generateMap(map, planeLength, (int)(planeLength / 10), (int)(planeLength / 5));
 
             camera = new Camera(new Vector3(0, -10, 15), new Vector3(0, 0, 0), Vector3.UnitZ, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f, planeLength, hexagonSideLength);
             view = camera.View;
@@ -94,17 +94,20 @@ namespace Underlord
 
             //Temporary
                 // Load the model we will display
-                knightModel = new AnimationModel("AnimationModels//knight_&_sword_ANI_01");
-                knightModel.LoadContent(Content);
+                impModel = new AnimationModel("AnimationModels//minion_ANI_grabbling_01");
+                impModel.LoadContent(Content);
 
                 // Load the model that has an animation clip it in
-                knightAnimationClip = new AnimationModel("AnimationModels//knight_&_sword_ANI_01");
-                knightAnimationClip.LoadContent(Content);
+                impGrableAnimation = new AnimationModel("AnimationModels//minion_ANI_grabbling_01");
+                impGrableAnimation.LoadContent(Content);
 
-                AnimationClip clip = knightAnimationClip.Clips[0];
+                impWalkAnimation = new AnimationModel("AnimationModels//minion_ANI_walk_simple_02");
+                impWalkAnimation.LoadContent(Content);
+
+                AnimationClip walkClip = impWalkAnimation.Clips[0];
 
                 // And play the clip
-                AnimationPlayer player = knightModel.PlayClip(clip);
+                AnimationPlayer player = impModel.PlayClip(walkClip);
                 player.Looping = true;
         }
 
@@ -172,11 +175,13 @@ namespace Underlord
 
             Vector2 mouseover = Vars_Func.gridColision(mousePosition, planeLength, hexagonSideLength);
             Interaction.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, map, mouseover, mouseState, keyboard);
-
            
             // Temporary
                 /// Update the knight
-                knightModel.Update(gameTime);
+                /// 
+            
+
+                impModel.Update(gameTime);
             
             base.Update(gameTime);
         }
@@ -211,19 +216,9 @@ namespace Underlord
             //spriteBatch.Draw(test, rec2, Color.Black);
             //spriteBatch.Draw(test, rec3, Color.Green);
 
-            /*
-            // Temporary
-                //Matrix knightModelMatrix = Matrix.Identity *
-                //Matrix.CreateScale(0.1f) *
-                //Matrix.CreateRotationX(MathHelper.PiOver2) *
-                //Matrix.CreateRotationY(0) *
-                //Matrix.CreateRotationZ(0) *
-                //Matrix.CreateTranslation(new Vector3(0, 0, 0.5f));
-
-                ///// Draw the knight
-                //knightModel.Draw(camera, knightModelMatrix);
-          
-                Matrix knightModelMatrix = Matrix.Identity *
+            
+             //Temporary
+                Matrix impMatrix = Matrix.Identity *
                 Matrix.CreateScale(0.1f) *
                 Matrix.CreateRotationX(MathHelper.PiOver2) *
                 Matrix.CreateRotationY(0) *
@@ -231,8 +226,8 @@ namespace Underlord
                 Matrix.CreateTranslation(new Vector3(0, 0, 0.5f));
 
                 /// Draw the knight
-                knightModel.Draw(camera, knightModelMatrix);
-            */
+                impModel.Draw(camera, impMatrix);
+            
             minimap.drawMinimap(spriteBatch);
             
             spriteBatch.End();

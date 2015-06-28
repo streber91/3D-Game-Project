@@ -142,6 +142,7 @@ namespace Underlord
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
             camera.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, mouseState);
             view = camera.View;
+            map.update(gameTime, gameTime.ElapsedGameTime.Milliseconds);
             //reset the color of all hexagons
             foreach (Hexagon hex in map.getMapHexagons())
             {
@@ -175,7 +176,7 @@ namespace Underlord
             //map.getHexagonAt(indexOfMiddleHexagon.X, indexOfMiddleHexagon.Y).Color = Color.Purple;
 
             Vector2 mouseover = Vars_Func.gridColision(mousePosition, planeLength, hexagonSideLength);
-            Interaction.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, map, mouseover, mouseState, keyboard);
+            Interaction.Update(gameTime, map, mouseover, mouseState, keyboard);
            
             // Temporary
                 /// Update the knight

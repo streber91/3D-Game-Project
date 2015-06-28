@@ -28,6 +28,7 @@ namespace Underlord.Environment
         }
         #endregion
 
+        #region Constructor
         public Map(int sidelength, Entity.Vars_Func.HexTyp typ, Boolean newGame, float hexagonSideLength)
         {
             //drawHeight = 2; //how many hexagons are drawn up and down of the middle (+1)
@@ -87,6 +88,7 @@ namespace Underlord.Environment
                 //load(null);
             }
         }
+        #endregion
 
         public List<Hexagon> getMapHexagons() { return map; }
         public Hexagon getHexagonAt(float X, float Y) { return map[(int)(X * planeSidelength + Y)]; }
@@ -314,5 +316,13 @@ namespace Underlord.Environment
         //    if (counter > 0) rekDownDrawModel(camera, me.getNeighbors()[3], counter - 1, drawposition - Vector3.UnitY * 1.75f * hexagonSideLength);
         //}
         #endregion
+
+        public void update(GameTime gameTime, float timeSinceLastUpdate)
+        {
+            foreach (Nest n in nests)
+            {
+                n.update(gameTime, this);
+            }
+        }
     }
 }

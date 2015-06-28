@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Underlord.Renderer;
-using Underlord.Environment;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -28,7 +26,7 @@ namespace Underlord.Entity
         #endregion
 
         #region Constructor
-        public Wall(Vector2 indexPosition, Vars_Func.WallTyp typ, int hp, Map map)
+        public Wall(Vector2 indexPosition, Vars_Func.WallTyp typ, int hp, Environment.Map map)
         {
             thingTyp = Vars_Func.ThingTyp.Wall;
             this.indexPosition = indexPosition;
@@ -39,12 +37,12 @@ namespace Underlord.Entity
         }
         #endregion
 
-        override public void update(GameTime time, Environment.Map map)
+        override public void update(GameTime gameTime, Environment.Map map)
         {
 
         }
 
-        override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor)
+        override public void DrawModel(Renderer.Camera camera, Vector3 drawPosition, Color drawColor)
         {
             Matrix modelMatrix = Matrix.Identity *
             Matrix.CreateScale(1) *

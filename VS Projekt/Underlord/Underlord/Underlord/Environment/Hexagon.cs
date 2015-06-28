@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Underlord.Entity;
-using Underlord.Renderer;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -14,9 +12,10 @@ namespace Underlord.Environment
         Vector2 indexNumber;
         Vector2[] neighbors = new Vector2[6]; //[up,right-up,right-down,down,left-down,left-up]
         //List<Boolean> imps;
-        Thing obj;
+        Entity.Thing obj;
         int roomNumber;
         bool building;
+        bool nest;
         bool visited; //for breadth-first search
         Vector2 parent; //for breadth-first search
         Color drawColor;
@@ -30,7 +29,7 @@ namespace Underlord.Environment
             get { return drawColor; }
             set { drawColor = value; }
         }
-        public Thing Obj
+        public Entity.Thing Obj
         {
             get { return obj; }
             set { obj = value; }
@@ -55,13 +54,22 @@ namespace Underlord.Environment
             get { return building; }
             set { building = value; }
         }
+        public bool Nest
+        {
+            get { return nest; }
+            set { nest = value; }
+        }
+        public Entity.Vars_Func.HexTyp Typ
+        {
+            get { return typ; }
+            set { typ = value; }
+        }
         #endregion
 
         public Vector3 get3DPosition() { return position; }
         public Vector2 getIndexNumber() { return indexNumber; }
         public Vector2[] getNeighbors() { return neighbors; }
         //public void getImp() { } //TODO
-        public void setObjekt(Thing obj) { this.obj = obj; }
 
         #region Constructor
         public Hexagon(Vector3 position, Vector2 indexNumber, Vector2[] neighbors, Entity.Vars_Func.HexTyp typ)
@@ -69,6 +77,7 @@ namespace Underlord.Environment
             this.position = position;
             this.indexNumber = indexNumber;
             this.neighbors = neighbors;
+            this.typ = typ;
             drawColor = Color.White;
             building = false;
             roomNumber = 0;
@@ -82,7 +91,7 @@ namespace Underlord.Environment
         //    this.imps.Add(true);
         //}
 
-        public void DrawModel(Camera camera, Vector3 drawPosition)
+        public void DrawModel(Renderer.Camera camera, Vector3 drawPosition)
         {
             Matrix modelMatrix = Matrix.Identity *
             Matrix.CreateScale(1) *

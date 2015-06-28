@@ -17,7 +17,7 @@ namespace Underlord.Entity
        public enum NestTyp { Beetle, length };
        public enum UpgradeTyp {Arcane, Training, length };
        public enum WallTyp { Stone, Gold, Diamond, Entrance, HQ, length };
-       public enum HexTyp { Sand, Stone, length };
+       public enum HexTyp { Sand, Stone, BeetleNest, length };
 
        public enum GameState { MainMenue, Ingame, Save, Load, CreateRoom, Build, Mine, length };
 
@@ -61,9 +61,11 @@ namespace Underlord.Entity
 
            HexagonModels.Add(new BasicModel(Content.Load<Model>("Models//floorSand_HEX_03")));
            HexagonModels.Add(new BasicModel(Content.Load<Model>("Models//floorSand_HEX_03")));
+           HexagonModels.Add(new BasicModel(Content.Load<Model>("Models//floorSand_HEX_03")));
 
            HexagonModels[(int)HexTyp.Sand].Texture = Content.Load<Texture2D>("Textures//floor_stone_TEXT");
            HexagonModels[(int)HexTyp.Stone].Texture = Content.Load<Texture2D>("Textures//floor_stone_TEXT");
+           HexagonModels[(int)HexTyp.BeetleNest].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
 
            NestModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));
 

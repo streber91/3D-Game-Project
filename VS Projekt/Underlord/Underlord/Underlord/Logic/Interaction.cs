@@ -4,7 +4,6 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Underlord.Entity;
-using Underlord.Environment;
 
 namespace Underlord.Logic
 {
@@ -24,9 +23,9 @@ namespace Underlord.Logic
         }
         #endregion
 
-        public static void Update(GameTime gameTime, float timeSinceLastUpdate, Map map, Vector2 mouseover, MouseState mouseState, KeyboardState keyboard)
+        public static void Update(GameTime gameTime, Environment.Map map, Vector2 mouseover, MouseState mouseState, KeyboardState keyboard)
         {
-            timeCounter += timeSinceLastUpdate;
+            timeCounter += gameTime.ElapsedGameTime.Milliseconds;
             
             switch (gameState)
             {
@@ -96,7 +95,7 @@ namespace Underlord.Logic
                         else if (counter == 1 && mouseState.LeftButton == ButtonState.Pressed)
                         {
                             radius = Vars_Func.computeDistance(indexOfMiddleHexagonForRoomCreation, mouseover, map);
-                            map.Rooms.Add(new Room(indexOfMiddleHexagonForRoomCreation, radius, map));
+                            map.Rooms.Add(new Environment.Room(indexOfMiddleHexagonForRoomCreation, radius, map));
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
                             counter = 0;

@@ -142,6 +142,7 @@ namespace Underlord
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
             camera.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, mouseState);
             view = camera.View;
+            map.update(gameTime, gameTime.ElapsedGameTime.Milliseconds);
             //reset the color of all hexagons
             foreach (Hexagon hex in map.getMapHexagons())
             {

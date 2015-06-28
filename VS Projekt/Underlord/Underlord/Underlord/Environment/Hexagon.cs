@@ -17,6 +17,7 @@ namespace Underlord.Environment
         Thing obj;
         int roomNumber;
         bool building;
+        bool nest;
         bool visited; //for breadth-first search
         Vector2 parent; //for breadth-first search
         Color drawColor;
@@ -55,6 +56,16 @@ namespace Underlord.Environment
             get { return building; }
             set { building = value; }
         }
+        public bool Nest
+        {
+            get { return nest; }
+            set { nest = value; }
+        }
+        public Entity.Vars_Func.HexTyp Typ
+        {
+            get { return typ; }
+            set { typ = value; }
+        }
         #endregion
 
         public Vector3 get3DPosition() { return position; }
@@ -69,6 +80,7 @@ namespace Underlord.Environment
             this.position = position;
             this.indexNumber = indexNumber;
             this.neighbors = neighbors;
+            this.typ = typ;
             drawColor = Color.White;
             building = false;
             roomNumber = 0;

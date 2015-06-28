@@ -153,7 +153,17 @@ namespace Underlord
                 case Vars_Func.GameState.CreateRoom:
                     foreach (Hexagon hex in map.getMapHexagons())
                     {
-                        //colors the room-hexagons in CreateRom mode
+                        //colors the room-hexagons in CreateRoom mode
+                        if (hex.RoomNumber == 1) hex.Color = Color.Red;
+                        else if (hex.RoomNumber == 2) hex.Color = Color.Yellow;
+                        else if (hex.RoomNumber == 3) hex.Color = Color.Green;
+                        else if (hex.RoomNumber != 0) hex.Color = Color.Blue;
+                    }
+                    break;
+                case Vars_Func.GameState.MergeRooms:
+                    foreach (Hexagon hex in map.getMapHexagons())
+                    {
+                        //colors the room-hexagons in MergeRooms mode
                         if (hex.RoomNumber == 1) hex.Color = Color.Red;
                         else if (hex.RoomNumber == 2) hex.Color = Color.Yellow;
                         else if (hex.RoomNumber == 3) hex.Color = Color.Green;

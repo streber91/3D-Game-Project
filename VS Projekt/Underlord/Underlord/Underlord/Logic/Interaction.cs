@@ -47,11 +47,17 @@ namespace Underlord.Logic
                         {
                             gameState = Vars_Func.GameState.Build;
                             timeCounter = 0;
-                        //switch to Mine Mode if "M" ist pressed
                         }
+                        //switch to Mine Mode if "M" ist pressed
                         if (keyboard.IsKeyDown(Keys.M))
                         {
                             gameState = Vars_Func.GameState.Mine;
+                            timeCounter = 0;
+                        }
+                        //switch to MergeRooms Mode if "T" ist pressed
+                        if (keyboard.IsKeyDown(Keys.T))
+                        {
+                            gameState = Vars_Func.GameState.MergeRooms;
                             timeCounter = 0;
                         }
                     }
@@ -84,7 +90,7 @@ namespace Underlord.Logic
                         //first click determines the middle of the new room
                         if (counter == 0 && mouseState.LeftButton == ButtonState.Pressed)
                         {
-                            if (map.getHexagonAt(mouseover).Obj == null || map.getHexagonAt(mouseover).Obj.getThingTyp() != Vars_Func.ThingTyp.Wall)
+                            if ((map.getHexagonAt(mouseover).Obj == null || map.getHexagonAt(mouseover).Obj.getThingTyp() != Vars_Func.ThingTyp.Wall) && map.getHexagonAt(mouseover).RoomNumber == 0)
                             {
                                 indexOfMiddleHexagonForRoomCreation = mouseover;
                                 ++counter;
@@ -156,6 +162,44 @@ namespace Underlord.Logic
                             {
                                 map.getHexagonAt(mouseover).Obj = null;
                             }
+                        }
+                    }
+                    break;
+                case Vars_Func.GameState.MergeRooms:
+                    //colors the hexagon at mouseposition in Mine mode blue
+                    map.getHexagonAt(mouseover).Color = Color.Blue;
+                    //only ten clicks per second
+                    if (timeCounter > 100)
+                    {
+                        //back to Ingame Mode
+                        if (keyboard.IsKeyDown(Keys.Escape))
+                        {
+                            gameState = Vars_Func.GameState.Ingame;
+                            timeCounter = 0;
+                        }
+                        //try to merge rooms
+                        if (mouseState.LeftButton == ButtonState.Pressed)
+                        {
+                            if (map.getHexagonAt(mouseover).RoomNumber != 0)
+                            {
+                                for (int i = 0; i < 6; ++i)
+                                {
+                                    Environment.Room room;
+                                    //if the selected hexagon and the neighbor hexagon have different roomnumbers
+                                    //and the neighbor hexagon is a room
+                                    //and there isn't a nest in the room of the neighbor hexagon
+                                    if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).getNeighbors()[i]).RoomNumber &&
+                                        map.getHexagonAt(map.getHexagonAt(mouseover).getNeighbors()[i]).RoomNumber != 0 &&
+                                        map.Rooms.ElementAt(map.getHexagonAt(map.getHexagonAt(mouseover).getNeighbors()[i]).RoomNumber - 1).NestType == Vars_Func.NestTyp.length)
+                                    {
+                                        //than get the room of the neighbor hexagon
+                                        //and merge it in the room of the selected hexagon
+                                        room = map.Rooms.ElementAt(map.getHexagonAt(map.getHexagonAt(mouseover).getNeighbors()[i]).RoomNumber - 1);
+                                        map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).mergeRoom(room, map);
+                                    }
+                                }
+                            }
+                            timeCounter = 0;
                         }
                     }
                     break;

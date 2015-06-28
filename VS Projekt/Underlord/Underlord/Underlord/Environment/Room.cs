@@ -54,7 +54,8 @@ namespace Underlord.Environment
                             {
                                 map.getHexagonAt(neighbor).Visited = true; //set visited at true
                                 //when there isn't an object on the hexagon or the object isn't a wall
-                                if (map.getHexagonAt(neighbor).Obj == null || map.getHexagonAt(neighbor).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.Wall)
+                                //and the hexagon isn't already a room
+                                if ((map.getHexagonAt(neighbor).Obj == null || map.getHexagonAt(neighbor).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.Wall) && map.getHexagonAt(neighbor).RoomNumber == 0)
                                 {
                                     queue.Enqueue(neighbor); //add the neighbor to the queue
                                     map.getHexagonAt(neighbor).RoomNumber = roomNumber; //set the roomNumber of the neighbor
@@ -75,11 +76,22 @@ namespace Underlord.Environment
         }
         #endregion
 
-        public void mergeRoom(Room r)
+        public void mergeRoom(Room r, Map map)
         {
+            int oldRoomNumber = map.getHexagonAt(r.room[0]).RoomNumber;
+            int newRoomNumber = map.getHexagonAt(this.room[0]).RoomNumber;
             foreach (Vector2 x in r.room)
             {
+                map.getHexagonAt(x).RoomNumber = newRoomNumber;
                 this.room.Add(x);
+            }
+            map.Rooms.RemoveAt(oldRoomNumber - 1);
+            for (int i = oldRoomNumber - 1; i < map.Rooms.Count; ++i)
+            {
+                for (int j = 0; j < map.Rooms[i].room.Count; ++j)
+                {
+                    map.getHexagonAt(map.Rooms[i].room[j]).RoomNumber -= 1;
+                }
             }
         }
     }

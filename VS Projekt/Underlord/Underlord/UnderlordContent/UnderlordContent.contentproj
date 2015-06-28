@@ -89,6 +89,51 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="TEST.bmp">
+      <Name>TEST</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AnimationModels\knight_&amp;_sword_ANI_01.fbx">
+      <Name>knight_&amp;_sword_ANI_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimationProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\wall_gold_TEXT.png">
+      <Name>wall_gold_TEXT</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AnimationAux\AnimationAux.csproj">
+      <Project>{F2F7FA8C-1FC7-42CC-93D8-E5DFF48AC09B}</Project>
+      <Name>AnimationAux</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AnimationPipeline\AnimationPipeline.csproj">
+      <Project>{FF2FBE94-50B5-4E78-9592-B95F32A8881E}</Project>
+      <Name>AnimationPipeline</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AnimationModels\minion_ANI_walk_simple_02.fbx">
+      <Name>minion_ANI_walk_simple_02</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AnimationModels\minion_ANI_grabbling_01.fbx">
+      <Name>minion_ANI_grabbling_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

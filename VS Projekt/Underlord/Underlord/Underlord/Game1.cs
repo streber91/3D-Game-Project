@@ -13,6 +13,10 @@ using Underlord.Renderer;
 using Underlord.Environment;
 using Underlord.Logic;
 
+// Add temporary Animation
+using Underlord.Animation;
+using AnimationAux;
+
 namespace Underlord
 {
     public class Game1 : Microsoft.Xna.Framework.Game
@@ -24,16 +28,28 @@ namespace Underlord
         Map map;
         Camera camera;
         SpriteFont font;
-        int planeLength;
+        int planeLength, minimapSize;
         float hexagonSideLength;
         KeyboardState keyboard;
         MouseState mouseState;
         Vector3 mousePosition;
         Vector2 indexOfMiddleHexagon;
         List<Thing> mapObjects;
+        Minimap minimap;
 
         float updateTimeCounter, updates, drawUpdates;
         float frameTimeCounter, frames, drawFrame;
+
+        // Temporary
+            /// <summary>
+            /// The animated model we are displaying
+            /// </summary>
+            private AnimationModel knightModel = null;
+
+            /// <summary>
+            /// This model is loaded solely for the dance animation
+            /// </summary>
+            private AnimationModel knightAnimationClip = null;
 
         public Game1()
         {
@@ -48,6 +64,7 @@ namespace Underlord
         {
             hexagonSideLength = 1; //do not change
             planeLength = 20; //need an even number!
+            minimapSize = 180; //in pixel
             frameTimeCounter = 0;
             frames = 0;
             drawFrame = 0;
@@ -64,6 +81,7 @@ namespace Underlord
             keyboard = Keyboard.GetState();
             mouseState = Mouse.GetState();
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
+            minimap = new Minimap(map, new Vector2(graphics.PreferredBackBufferWidth - minimapSize, graphics.PreferredBackBufferHeight - minimapSize), new Vector2(minimapSize, minimapSize));
 
             base.Initialize();
         }
@@ -73,6 +91,21 @@ namespace Underlord
             spriteBatch = new SpriteBatch(GraphicsDevice);
             effect = new BasicEffect(GraphicsDevice);
             font = Content.Load<SpriteFont>("font");
+
+            //Temporary
+                // Load the model we will display
+                knightModel = new AnimationModel("AnimationModels//knight_&_sword_ANI_01");
+                knightModel.LoadContent(Content);
+
+                // Load the model that has an animation clip it in
+                knightAnimationClip = new AnimationModel("AnimationModels//knight_&_sword_ANI_01");
+                knightAnimationClip.LoadContent(Content);
+
+                AnimationClip clip = knightAnimationClip.Clips[0];
+
+                // And play the clip
+                AnimationPlayer player = knightModel.PlayClip(clip);
+                player.Looping = true;
         }
 
         protected override void UnloadContent()
@@ -82,14 +115,16 @@ namespace Underlord
 
         protected override void Update(GameTime gameTime)
         {
-            /*for (int i = 0; i < 2500000; ++i)
-            {
-                float tmp = 20;
-                tmp /= 5;
-                tmp += 6;
-                tmp *= 11;
-                tmp -= 10;
-            }*/
+            // just a test
+            //for (int i = 0; i < 3500000; ++i)
+            //{
+            //    float tmp = 20;
+            //    tmp /= 5;
+            //    tmp += 6;
+            //    tmp *= 11;
+            //    tmp -= 10;
+            //}
+
             updateTimeCounter += gameTime.ElapsedGameTime.Milliseconds;
             ++updates;
             if (updateTimeCounter >= 1000)
@@ -138,6 +173,11 @@ namespace Underlord
             Vector2 mouseover = Vars_Func.gridColision(mousePosition, planeLength, hexagonSideLength);
             Interaction.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, map, mouseover, mouseState, keyboard);
 
+           
+            // Temporary
+                /// Update the knight
+                knightModel.Update(gameTime);
+            
             base.Update(gameTime);
         }
 
@@ -162,6 +202,39 @@ namespace Underlord
             spriteBatch.DrawString(font, mousePosition.X.ToString() + " : " + mousePosition.Y.ToString() + " : " + mousePosition.Z.ToString(), new Vector2(10, 25), Color.White);
             spriteBatch.DrawString(font, "FPS: " + drawFrame.ToString(), new Vector2(10, 40), Color.White);
             spriteBatch.DrawString(font, "UPS: " + drawUpdates.ToString(), new Vector2(10, 55), Color.White);
+
+            //Texture2D test = Content.Load<Texture2D>("TEST");
+            //Rectangle rec = new Rectangle(0, 0, 1366, 144);
+            //Rectangle rec2 = new Rectangle(0, 144, 180, 624);
+            //Rectangle rec3 = new Rectangle(180, 648, 1186, 120);
+            //spriteBatch.Draw(test, rec, Color.Red);
+            //spriteBatch.Draw(test, rec2, Color.Black);
+            //spriteBatch.Draw(test, rec3, Color.Green);
+
+            /*
+            // Temporary
+                //Matrix knightModelMatrix = Matrix.Identity *
+                //Matrix.CreateScale(0.1f) *
+                //Matrix.CreateRotationX(MathHelper.PiOver2) *
+                //Matrix.CreateRotationY(0) *
+                //Matrix.CreateRotationZ(0) *
+                //Matrix.CreateTranslation(new Vector3(0, 0, 0.5f));
+
+                ///// Draw the knight
+                //knightModel.Draw(camera, knightModelMatrix);
+          
+                Matrix knightModelMatrix = Matrix.Identity *
+                Matrix.CreateScale(0.1f) *
+                Matrix.CreateRotationX(MathHelper.PiOver2) *
+                Matrix.CreateRotationY(0) *
+                Matrix.CreateRotationZ(0) *
+                Matrix.CreateTranslation(new Vector3(0, 0, 0.5f));
+
+                /// Draw the knight
+                knightModel.Draw(camera, knightModelMatrix);
+            */
+            minimap.drawMinimap(spriteBatch);
+            
             spriteBatch.End();
 
             base.Draw(gameTime);

@@ -13,21 +13,24 @@ namespace Underlord.Entity
         Vars_Func.CreatureTyp type;
         List<Ability> abilities;
         int hp, dmg, vision;
-        float size, attackCooldown, timeSinceLastAttack;
+        float size, speed, actionTimeCounter;
         Vector2 position;
         Stack<Vector2> path;
         Nest home;
-
-        public Creature(Vars_Func.CreatureTyp type, List<Ability> ability, Vector2 pos, Nest home)
+        //TODO implemetn balancing an diferent stats
+        public Creature(Vars_Func.CreatureTyp type, List<Ability> ability, Vector2 pos, Nest home, Vars_Func.ThingTyp allignment)
         {
-            thingTyp = Vars_Func.ThingTyp.Creature;
+            thingTyp = allignment;
             this.home = home;
             this.type = type;
             this.abilities = ability;
             this.position = pos;
             size = 1;
-            attackCooldown = 0.1f;
-            timeSinceLastAttack = 0;
+            speed = 1;
+            actionTimeCounter = 0;
+            vision = 4;
+            hp = 100;
+            dmg = 10;
         }
 
         #region Properties
@@ -41,8 +44,13 @@ namespace Underlord.Entity
             get { return position; }
             set { position = value; }
         }
+        public float ActionTimeCounter
+        {
+            get { return actionTimeCounter; }
+            set { actionTimeCounter = value; }
+        }
         #endregion
-
+        // TODO filter funktions and implemnt funktions
         public void increaseHP(int d)
         {
             if(d<0)
@@ -62,16 +70,13 @@ namespace Underlord.Entity
         {
             // update path    update life       update attackCD
         }
-
-        public Boolean canMove(/*Direction dir*/){ return false; }
+        
+        //public Boolean canMove(/*Direction dir*/){ return false; }
         public Nest getHome() { return home; }
         public float getHP() { return this.hp; }
         public int getVision() { return this.vision; }
-        //public Vector2 getNextPathTile() { return this.path.ElementAt(0); }
         public float getDmg() { return this.dmg; }
-        public float getAttackCooldown() { return this.attackCooldown; }
-        public void setAttackCooldown(float d) { this.attackCooldown = d; }
-        public float getTimeSinceLastAttack() { return this.timeSinceLastAttack; }
+        public float getSpeed() { return this.speed; }
 
         override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor)
         {

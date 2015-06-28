@@ -15,7 +15,7 @@ namespace Underlord.Environment
         List<Room> rooms = new List<Room>();
         List<Nest> nests = new List<Nest>();
         List<Hexagon> map = new List<Hexagon>();
-        int planeSidelength, drawHeight, drawWidth;
+        int planeSidelength, drawHeight, drawWidth; // planeside = map size
         float hexagonSideLength;
 
         #region Properties

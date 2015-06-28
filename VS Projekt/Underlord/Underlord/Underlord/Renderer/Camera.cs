@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Underlord.Renderer
 {
-    class Camera
+    public class Camera
     {
         private Vector3 cameraPosition;
         private float cameraRotation;

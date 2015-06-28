@@ -14,7 +14,6 @@ namespace Underlord.Entity
         Vector2 indexPosition;
         Vars_Func.WallTyp typ;
         int hp;
-
        // private Matrix[] boneTransforms;
 
         public Texture2D Texture
@@ -22,6 +21,7 @@ namespace Underlord.Entity
             set { Entity.Vars_Func.getWallModell(typ).Texture = value; }
         }
 
+        #region Constructor
         public Wall(Vector2 indexPosition, Vars_Func.WallTyp typ, int hp, Map map)
         {
             thingTyp = Vars_Func.ThingTyp.Wall;
@@ -31,6 +31,7 @@ namespace Underlord.Entity
             map.getHexagonAt(indexPosition.X, indexPosition.Y).Obj = this;
             //boneTransforms = new Matrix[Entity.Vars_Func.getWallModell(typ).Model.Bones.Count];
         }
+        #endregion
 
         override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor)
         {

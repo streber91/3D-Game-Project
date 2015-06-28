@@ -103,7 +103,7 @@ namespace Underlord.Entity
         {
             Matrix modelMatrix = Matrix.Identity *
             Matrix.CreateScale(1) *
-            Matrix.CreateRotationX(MathHelper.Pi) *
+            Matrix.CreateRotationX(0) *
             Matrix.CreateRotationY(0) *
             Matrix.CreateRotationZ(0) *
             Matrix.CreateTranslation(drawPosition);

@@ -20,17 +20,17 @@ namespace Underlord.Animation
         /// <summary>
         /// Extra data associated with the XNA model
         /// </summary>
-        private ModelExtra modelExtra = null;
+        protected ModelExtra modelExtra = null;
 
         /// <summary>
         /// The model bones
         /// </summary>
-        private List<Bone> bones = new List<Bone>();
+        protected List<Bone> bones = new List<Bone>();
 
         /// <summary>
         /// An associated animation clip player
         /// </summary>
-        private AnimationPlayer player = null;
+        protected AnimationPlayer player = null;
 
         #endregion
 
@@ -48,30 +48,18 @@ namespace Underlord.Animation
 
         #endregion
 
-        #region Construction and Loading
+        #region Construction
 
         /// <summary>
         /// Constructor. Creates the model from an XNA model
         /// </summary>
         /// <param name="assetName">The name of the asset for this model</param>
-        public AnimationModel(string assetName) : base(assetName)
+        public AnimationModel(Model model) : base(model) 
         {
-         
-        }
-
-        /// <summary>
-        /// Load the model asset from content
-        /// </summary>
-        /// <param name="content"></param>
-        public void LoadContent(ContentManager content)
-        {
-            this.model = content.Load<Model>(assetName);
             modelExtra = model.Tag as ModelExtra;
             System.Diagnostics.Debug.Assert(modelExtra != null);
-
             ObtainBones();
         }
-
 
         #endregion
 

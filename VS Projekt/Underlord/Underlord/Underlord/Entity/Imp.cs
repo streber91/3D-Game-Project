@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Underlord.Renderer;
 using Microsoft.Xna.Framework;
+using Underlord.Animation;
 
 namespace Underlord.Entity
 {
@@ -16,7 +17,7 @@ namespace Underlord.Entity
         Logic.Job currentJob;
         Boolean working;
         float actionTimeCounter;
-
+      
         #region Properties
 
         public Stack<Vector2> Path
@@ -25,7 +26,7 @@ namespace Underlord.Entity
             set { path = value; }
         }
 
-        public Logic.Job CurentJob
+        public Logic.Job CurrentJob
         {
             get { return currentJob; }
             set { currentJob = value; }
@@ -73,7 +74,25 @@ namespace Underlord.Entity
 
         override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor)
         {
+            Matrix modelMatrix = Matrix.Identity *
+            Matrix.CreateScale(0.1f) *
+            Matrix.CreateRotationX(MathHelper.PiOver2) *
+            Matrix.CreateRotationY(0) *
+            Matrix.CreateRotationZ(0) *
+            Matrix.CreateTranslation(drawPosition);
 
+            Entity.Vars_Func.getImpModell().Color = drawColor;
+            Entity.Vars_Func.getImpModell().Draw(camera, modelMatrix);
+        }
+
+        public void AnimationJob(GameTime time, Logic.Job job)
+        {
+            Entity.Vars_Func.getImpModell().PlayJobAnimation(time, job);
+        }
+
+        public void AnimationMove(GameTime time)
+        {
+            Entity.Vars_Func.getImpModell().PlayMoveAnimation(time);
         }
     }
 }

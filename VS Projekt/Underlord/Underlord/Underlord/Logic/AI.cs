@@ -16,26 +16,29 @@ namespace Underlord.Logic
             
             {
                 // search Job
-                if (imp.CurentJob.getJobTyp() == Vars_Func.ImpJob.Idle)
+                if (imp.CurrentJob.getJobTyp() == Vars_Func.ImpJob.Idle)
                 {
                     //TODO
                 }
                 // search path to workplace
-                else if(imp.Path.Count == 0) imp.Path = determinePath(imp.Position, imp.CurentJob.getDestination(), map);
+                else if(imp.Path.Count == 0) imp.Path = determinePath(imp.Position, imp.CurrentJob.getDestination(), map);
                 // working
                 else if (imp.Path.Count == 1)
                 {
                     imp.Working = true;
-                    imp.CurentJob.Worktime -= time.ElapsedGameTime.Milliseconds;
-                    if (imp.CurentJob.Worktime <= 0)
+                    imp.CurrentJob.Worktime -= time.ElapsedGameTime.Milliseconds;
+                    imp.AnimationJob(time, imp.CurrentJob);
+
+                    if (imp.CurrentJob.Worktime <= 0)
                     {
                         imp.Working = false;
-                        imp.CurentJob = null;
+                        imp.CurrentJob = null;
                     }
                 }
                 else if (imp.ActionTimeCounter >= 500)
                 {
                     map.move(imp);
+                    imp.AnimationMove(time);
                 }
                 imp.ActionTimeCounter += time.ElapsedGameTime.Milliseconds;
             }

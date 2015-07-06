@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
-
+using Underlord.Animation;
 using Underlord.Basic;
 
 namespace Underlord.Entity
@@ -28,6 +28,7 @@ namespace Underlord.Entity
        static List<Model> UpgradeModels;
        static List<BasicModel> WallModels;
        static List<BasicModel> HexagonModels;
+       static ImpModel ImpModel;
 
        static Texture2D pixel;
 
@@ -36,6 +37,7 @@ namespace Underlord.Entity
        public static Model getUpgradeModell(UpgradeTyp typ) { return UpgradeModels[(int)typ]; }
        public static BasicModel getWallModell(WallTyp typ) { return WallModels[(int)typ]; }
        public static BasicModel getHexagonModell(HexTyp typ) { return HexagonModels[(int)typ]; }
+       public static ImpModel getImpModell() { return ImpModel; }
 
        public static Texture2D getPixel() { return pixel; }
 
@@ -49,11 +51,11 @@ namespace Underlord.Entity
 
            pixel = Content.Load<Texture2D>("TEST");
 
-           WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
-           WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
-           WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
-           WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
-           WallModels.Add(new BasicModel("Models//sandWall_HEX_02"));
+           WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
+           WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
+           WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
+           WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
+           WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
 
            WallModels[(int)WallTyp.Stone].Texture = Content.Load<Texture2D>("Textures//wall_rock_TEXT");
            WallModels[(int)WallTyp.Gold].Texture = Content.Load<Texture2D>("Textures//wall_gold_TEXT");
@@ -71,10 +73,7 @@ namespace Underlord.Entity
 
            NestModels[(int)NestTyp.Beetle].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
 
-           foreach (BasicModel bWall in WallModels)
-           {
-               bWall.LoadContent(Content);
-           }   
+ 
            
            
      

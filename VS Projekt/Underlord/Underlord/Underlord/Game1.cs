@@ -39,17 +39,17 @@ namespace Underlord
         float updateTimeCounter, updates, drawUpdates;
         float frameTimeCounter, frames, drawFrame;
 
-        // Temporary
-            /// <summary>
-            /// The animated model we are displaying
-            /// </summary>
-            private AnimationModel impModel = null;
+        //// Temporary
+        //    /// <summary>
+        //    /// The animated model we are displaying
+        //    /// </summary>
+        //    private AnimationModel impModel = null;
 
-            /// <summary>
-            /// This model is loaded solely for the dance animation
-            /// </summary>
-            private AnimationModel impWalkAnimation = null;
-            private AnimationModel impGrableAnimation = null;
+        //    /// <summary>
+        //    /// This model is loaded solely for the dance animation
+        //    /// </summary>
+        //    private AnimationModel impWalkAnimation = null;
+        //    private AnimationModel impGrableAnimation = null;
 
         public Game1()
         {
@@ -93,23 +93,21 @@ namespace Underlord
             effect = new BasicEffect(GraphicsDevice);
             font = Content.Load<SpriteFont>("font");
 
-            //Temporary
-                // Load the model we will display
-                impModel = new AnimationModel("AnimationModels//minion_ANI_grabbling_01");
-                impModel.LoadContent(Content);
+            ////Temporary
+            //    // Load the model we will display
+            //    impModel = new AnimationModel(Content.Load<Model>("AnimationModels//minion_ANI_grabbling_01"));
 
-                // Load the model that has an animation clip it in
-                impGrableAnimation = new AnimationModel("AnimationModels//minion_ANI_grabbling_01");
-                impGrableAnimation.LoadContent(Content);
+            //    // Load the model that has an animation clip it in
+            //    impGrableAnimation = new AnimationModel(Content.Load<Model>("AnimationModels//minion_ANI_grabbling_01"));
 
-                impWalkAnimation = new AnimationModel("AnimationModels//minion_ANI_walk_simple_02");
-                impWalkAnimation.LoadContent(Content);
+            //    impWalkAnimation = new AnimationModel(Content.Load<Model>("AnimationModels//minion_ANI_walk_simple_02"));
 
-                AnimationClip walkClip = impWalkAnimation.Clips[0];
 
-                // And play the clip
-                AnimationPlayer player = impModel.PlayClip(walkClip);
-                player.Looping = true;
+            //    AnimationClip walkClip = impWalkAnimation.Clips[0];
+
+            //    // And play the clip
+            //    AnimationPlayer player = impModel.PlayClip(walkClip);
+            //    player.Looping = true;
         }
 
         protected override void UnloadContent()
@@ -193,7 +191,7 @@ namespace Underlord
                 /// 
             
 
-                impModel.Update(gameTime);
+                //impModel.Update(gameTime);
             
             base.Update(gameTime);
         }
@@ -229,16 +227,16 @@ namespace Underlord
             //spriteBatch.Draw(test, rec3, Color.Green);
 
             
-             //Temporary
-                Matrix impMatrix = Matrix.Identity *
-                Matrix.CreateScale(0.1f) *
-                Matrix.CreateRotationX(MathHelper.PiOver2) *
-                Matrix.CreateRotationY(0) *
-                Matrix.CreateRotationZ(0) *
-                Matrix.CreateTranslation(new Vector3(0, 0, 0.5f));
+             ////Temporary
+             //   Matrix impMatrix = Matrix.Identity *
+             //   Matrix.CreateScale(0.1f) *
+             //   Matrix.CreateRotationX(MathHelper.PiOver2) *
+             //   Matrix.CreateRotationY(0) *
+             //   Matrix.CreateRotationZ(0) *
+             //   Matrix.CreateTranslation(new Vector3(0, 0, 0.5f));
 
-                /// Draw the knight
-                impModel.Draw(camera, impMatrix);
+             //   /// Draw the knight
+             //   impModel.Draw(camera, impMatrix);
             
             minimap.drawMinimap(spriteBatch);
             

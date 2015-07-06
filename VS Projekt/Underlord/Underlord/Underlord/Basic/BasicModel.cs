@@ -64,29 +64,11 @@ namespace Underlord.Basic
 
         #region Construction and Loading
 
-        /// <summary>
-        /// Constructor. Creates the model from an XNA model.
-        /// </summary>
-        /// <param name="assetName">The name of the asset for this model</param>
-        public BasicModel(string assetName)
-        {
-            this.assetName = assetName;
-        }
-
         public BasicModel(Model model)
         {
             this.model = model;
         }
         
-        /// <summary>
-        /// Load the model asset from content.
-        /// </summary>
-        /// <param name="content">The basic ContentManager</param>
-        public void LoadContent(ContentManager content)
-        {
-            this.model = content.Load<Model>(assetName);
-        }
-
         #endregion
 
         #region Updating

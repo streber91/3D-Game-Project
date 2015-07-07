@@ -12,6 +12,7 @@ namespace Underlord.Logic
         {
             List<Entity.Vars_Func.WallTyp> specials = new List<Entity.Vars_Func.WallTyp>();
             specials.Add(Entity.Vars_Func.WallTyp.HQ);
+            specials.Add(Entity.Vars_Func.WallTyp.HQ);
             Random rand = new Random();
             Vector2 HQ = new Vector2();
             Vector2 EN = new Vector2();
@@ -19,7 +20,7 @@ namespace Underlord.Logic
             int go = gold;
             bool HQplaced = false;
             //determine special walls
-            for (int i = 0 ; i < Math.Pow((size/5),2) - 1; ++i)
+            for (int i = 0 ; i < Math.Pow((size/5),2) - 2; ++i)
             {
                 if (dia > 0)
                 {

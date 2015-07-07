@@ -72,7 +72,7 @@ namespace Underlord.Entity
            NestModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));
 
            NestModels[(int)NestTyp.Beetle].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
-           NestModels[(int)NestTyp.Entrance].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
+           //NestModels[(int)NestTyp.Entrance].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
 
  
            

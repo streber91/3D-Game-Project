@@ -18,8 +18,8 @@ namespace Underlord.Entity
         Stack<Vector2> path;
         Nest home;
         //TODO implement balancing and diferent stats
-        public Creature(Vars_Func.CreatureTyp type, List<Ability> ability, Vector2 pos, Nest home, Vars_Func.ThingTyp allignment)
-        {
+        public Creature(Vars_Func.CreatureTyp type, List<Ability> ability, Vector2 pos, Nest home, Vars_Func.ThingTyp allignment, Environment.Map map)
+        {  
             thingTyp = allignment;
             this.home = home;
             this.type = type;
@@ -31,6 +31,7 @@ namespace Underlord.Entity
             vision = 4;
             hp = 300;
             dmg = 20;
+            map.getHexagonAt(pos).Obj = this;
         }
 
         #region Properties

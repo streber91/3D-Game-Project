@@ -25,13 +25,11 @@ namespace Underlord.Logic
                 // working
                 else if (imp.Path.Count == 1)
                 {
-                    imp.Working = true;
                     imp.CurrentJob.Worktime -= time.ElapsedGameTime.Milliseconds;
                     imp.AnimationJob(time, imp.CurrentJob);
 
                     if (imp.CurrentJob.Worktime <= 0)
                     {
-                        imp.Working = false;
                         imp.CurrentJob = null;
                     }
                 }

@@ -117,7 +117,7 @@ namespace Underlord.Entity
                     queue.Enqueue(tmp);
                     continue;
                 }
-                foreach (Vector2 hex in map.getHexagonAt(tmp).getNeighbors())
+                foreach (Vector2 hex in map.getHexagonAt(tmp).Neighbors)
                 {
                     if (!map.getHexagonAt(hex).Visited)
                     {

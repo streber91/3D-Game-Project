@@ -48,7 +48,7 @@ namespace Underlord.Environment
                         //for all neighbors
                         for (int i = 0; i < 6; ++i)
                         {
-                            Vector2 neighbor = map.getHexagonAt(tmp).getNeighbors()[i];
+                            Vector2 neighbor = map.getHexagonAt(tmp).Neighbors[i];
                             //which weren't visited already
                             if (map.getHexagonAt(neighbor).Visited == false)
                             {

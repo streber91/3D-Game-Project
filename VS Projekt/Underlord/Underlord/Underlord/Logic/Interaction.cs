@@ -14,6 +14,8 @@ namespace Underlord.Logic
         static int radius = 0;
         static int counter = 0;
         static float timeCounter = 0.0f;
+        static Vector2 oldMousePosition;
+        static List<Vector2> toBeRoomPositions = new List<Vector2>();
 
         #region Properties
         public static Vars_Func.GameState GameState
@@ -31,6 +33,7 @@ namespace Underlord.Logic
             {
                 case Vars_Func.GameState.MainMenue:
                     break;
+                #region Ingame
                 case Vars_Func.GameState.Ingame:
                     //colors the hexagon at mouseposition in Ingame mode yellow
                     map.getHexagonAt(mouseover).Color = Color.Yellow;
@@ -68,13 +71,13 @@ namespace Underlord.Logic
                         }
                     }
                     break;
+                #endregion
                 case Vars_Func.GameState.Save:
                     break;
                 case Vars_Func.GameState.Load:
                     break;
+                #region CreateRoom
                 case Vars_Func.GameState.CreateRoom:
-                    //colors the hexagon at mouseposition in CreateRoom mode blue
-                    map.getHexagonAt(mouseover).Color = Color.Blue;
                     //color the hexagons around the coursor too
                     /*Vector2[] neigbors = map.getHexagonAt(mouseover.X, mouseover.Y).getNeighbors();
                     foreach (Vector2 hex in neigbors)
@@ -94,27 +97,49 @@ namespace Underlord.Logic
                             timeCounter = 0;
                         }
                         //first click determines the middle of the new room
-                        if (counter == 0 && mouseState.LeftButton == ButtonState.Pressed)
+                        oldMousePosition = indexOfMiddleHexagonForRoomCreation;
+                        if (counter == 0)
                         {
-                            if ((map.getHexagonAt(mouseover).Obj == null || map.getHexagonAt(mouseover).Obj.getThingTyp() != Vars_Func.ThingTyp.Wall) && map.getHexagonAt(mouseover).RoomNumber == 0)
+                            //colors the hexagon at mouseposition in CreateRoom mode blue
+                            map.getHexagonAt(mouseover).Color = Color.Blue;
+                            if(mouseState.LeftButton == ButtonState.Pressed &&
+                                (map.getHexagonAt(mouseover).Obj == null || map.getHexagonAt(mouseover).Obj.getThingTyp() != Vars_Func.ThingTyp.Wall) && 
+                                map.getHexagonAt(mouseover).RoomNumber == 0)
                             {
                                 indexOfMiddleHexagonForRoomCreation = mouseover;
                                 ++counter;
+                                timeCounter = 0;
                             }
-                            timeCounter = 0;
                         }
-                        //second click determines the radius for the new room and creates the room
-                        else if (counter == 1 && mouseState.LeftButton == ButtonState.Pressed)
+                        //determines the hexagons that the new room would have
+                        else if (counter == 1)
                         {
-                            radius = Vars_Func.computeDistance(indexOfMiddleHexagonForRoomCreation, mouseover, map);
-                            map.Rooms.Add(new Environment.Room(indexOfMiddleHexagonForRoomCreation, radius, map));
-                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
-                            radius = 0;
-                            counter = 0;
-                            timeCounter = 0;
+                            Vector2 newMousePosition = mouseover;
+                            if (oldMousePosition != newMousePosition)
+                            {
+                                oldMousePosition = newMousePosition;
+                                radius = Vars_Func.computeDistance(indexOfMiddleHexagonForRoomCreation, mouseover, map);
+                                toBeRoomPositions = determineToBeRoomPositions(indexOfMiddleHexagonForRoomCreation, radius, map);
+                                foreach (Vector2 pos in toBeRoomPositions)
+                                {
+                                    map.getHexagonAt(pos).Color = Color.Blue;
+                                }
+                            }
+                            //second click determines the radius for the new room and creates the room
+                            if (mouseState.LeftButton == ButtonState.Pressed)
+                            {
+                                radius = Vars_Func.computeDistance(indexOfMiddleHexagonForRoomCreation, mouseover, map);
+                                map.Rooms.Add(new Environment.Room(indexOfMiddleHexagonForRoomCreation, radius, map));
+                                indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                                radius = 0;
+                                counter = 0;
+                                timeCounter = 0;
+                            }
                         }
                     }
                     break;
+                #endregion
+                #region Build
                 case Vars_Func.GameState.Build:
                     //colors the hexagon at mouseposition in Build mode purple
                     map.getHexagonAt(mouseover).Color = Color.Purple;
@@ -137,17 +162,19 @@ namespace Underlord.Logic
                                 bool placeable = true;
                                 for (int i = 0; i < 6; ++i)
                                 {
-                                    if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).getNeighbors()[i]).RoomNumber) placeable = false;
+                                    if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).RoomNumber) placeable = false;
                                 }
                                 if (placeable)
                                 {
-                                    map.Nests.Add(new Nest(Vars_Func.NestTyp.Beetle, mouseover, map.getHexagonAt(mouseover), map, map.getHexagonAt(mouseover).getNeighbors()[3]));
+                                    map.Nests.Add(new Nest(Vars_Func.NestTyp.Beetle, mouseover, map.getHexagonAt(mouseover), map, map.getHexagonAt(mouseover).Neighbors[3]));
                                     map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType = Vars_Func.NestTyp.Beetle;
                                 }
                             }
                         }
                     }
                     break;
+                #endregion
+                #region Mine
                 case Vars_Func.GameState.Mine:
                     //colors the hexagon at mouseposition in Mine mode red
                     map.getHexagonAt(mouseover).Color = Color.Red;
@@ -172,6 +199,8 @@ namespace Underlord.Logic
                         }
                     }
                     break;
+                #endregion
+                #region MergeRooms
                 case Vars_Func.GameState.MergeRooms:
                     //colors the hexagon at mouseposition in MergeRooms mode blue
                     map.getHexagonAt(mouseover).Color = Color.Blue;
@@ -195,13 +224,13 @@ namespace Underlord.Logic
                                     //if the selected hexagon and the neighbor hexagon have different roomnumbers
                                     //and the neighbor hexagon is a room
                                     //and there isn't a nest in the room of the neighbor hexagon
-                                    if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).getNeighbors()[i]).RoomNumber &&
-                                        map.getHexagonAt(map.getHexagonAt(mouseover).getNeighbors()[i]).RoomNumber != 0 &&
-                                        map.Rooms.ElementAt(map.getHexagonAt(map.getHexagonAt(mouseover).getNeighbors()[i]).RoomNumber - 1).NestType == Vars_Func.NestTyp.length)
+                                    if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).RoomNumber &&
+                                        map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).RoomNumber != 0 &&
+                                        map.Rooms.ElementAt(map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).RoomNumber - 1).NestType == Vars_Func.NestTyp.length)
                                     {
                                         //than get the room of the neighbor hexagon
                                         //and merge it in the room of the selected hexagon
-                                        room = map.Rooms.ElementAt(map.getHexagonAt(map.getHexagonAt(mouseover).getNeighbors()[i]).RoomNumber - 1);
+                                        room = map.Rooms.ElementAt(map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).RoomNumber - 1);
                                         map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).mergeRoom(room, map);
                                     }
                                 }
@@ -210,6 +239,8 @@ namespace Underlord.Logic
                         }
                     }
                     break;
+                #endregion
+                #region DeleteRoom
                 case Vars_Func.GameState.DeleteRoom:
                     //colors the hexagon at mouseposition in DeleteRoom mode blue
                     map.getHexagonAt(mouseover).Color = Color.Blue;
@@ -236,7 +267,61 @@ namespace Underlord.Logic
                         }
                     }
                     break;
+                #endregion
             }
+        }
+
+        public static List<Vector2> determineToBeRoomPositions(Vector2 middleHexagonIndexNumber, int radius, Environment.Map map)
+        {
+            List<Vector2> list = new List<Vector2>();
+            //create a list with only the middle hexagon
+            if (radius == 0)
+            {
+                list.Add(middleHexagonIndexNumber);
+            }
+            //create a list through a broad-first-search
+            else
+            {
+                list.Add(middleHexagonIndexNumber); //add middle hexagon
+                Queue<Vector2> queue = new Queue<Vector2>(); //create a queue
+                queue.Enqueue(middleHexagonIndexNumber); //add middle hexagon to queue
+                queue.Enqueue(new Vector2(radius + map.getPlanelength(), 0)); //add dummy-element to queue (x-value is a value that can't be reached with coordinated of the map)
+                map.getHexagonAt(middleHexagonIndexNumber).Visited = true; //set visited for the middle element at true
+                while (queue.Count != 1)
+                {
+                    Vector2 tmp = queue.Dequeue(); //get the first element of the queue
+                    if (tmp.X == map.getPlanelength() + 1) break; //stop if the element is the dummy-element with an x-value that sasy that the radius is reached
+                    //if element is a map-element
+                    else if (tmp.X < map.getPlanelength())
+                    {
+                        //for all neighbors
+                        for (int i = 0; i < 6; ++i)
+                        {
+                            Vector2 neighbor = map.getHexagonAt(tmp).Neighbors[i];
+                            //which weren't visited already
+                            if (map.getHexagonAt(neighbor).Visited == false)
+                            {
+                                map.getHexagonAt(neighbor).Visited = true; //set visited at true
+                                //when there isn't an object on the hexagon or the object isn't a wall
+                                //and the hexagon isn't already a room
+                                if ((map.getHexagonAt(neighbor).Obj == null || map.getHexagonAt(neighbor).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.Wall) && map.getHexagonAt(neighbor).RoomNumber == 0)
+                                {
+                                    queue.Enqueue(neighbor); //add the neighbor to the queue
+                                    list.Add(neighbor); //and add the neighbor to the room
+                                }
+                            }
+                        }
+                    }
+                    //if element is the dummy-element with radius isn't reached
+                    else queue.Enqueue(new Vector2(tmp.X - 1, 0));
+                }
+                //set visited for all hexagon at false (for the next use of searching)
+                foreach (Environment.Hexagon hex in map.getMapHexagons())
+                {
+                    if (hex.Visited == true) hex.Visited = false;
+                }
+            }
+            return list;
         }
     }
 }

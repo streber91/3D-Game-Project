@@ -62,7 +62,7 @@ namespace Underlord.Logic
                 // walk to nearest Enemy and attack if there is one
                 if (nearestEnemy != null)
                 {
-                    if (map.getHexagonAt(creature.Position).getNeighbors().Contains(nearestEnemy[0]))
+                    if (map.getHexagonAt(creature.Position).Neighbors.Contains(nearestEnemy[0]))
                     {
                         if(creature.ActionTimeCounter >= 1000 / creature.getSpeed())
                         {
@@ -144,7 +144,7 @@ namespace Underlord.Logic
                     break;
                 }
 
-                foreach (Vector2 hex in map.getHexagonAt(tmp).getNeighbors())
+                foreach (Vector2 hex in map.getHexagonAt(tmp).Neighbors)
                 {
                     // is the hex a not wall objekt?
                     if (!map.getHexagonAt(hex).Visited && (map.getHexagonAt(hex).Obj == null || map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.Wall))
@@ -188,7 +188,7 @@ namespace Underlord.Logic
             {
                 tmp = queue.Dequeue();
                 if (destination.Contains(tmp)) break;
-                foreach (Vector2 hex in map.getHexagonAt(tmp).getNeighbors())
+                foreach (Vector2 hex in map.getHexagonAt(tmp).Neighbors)
                 {
                     // is the hex a not wall objekt? 
                     if (!map.getHexagonAt(hex).Visited && (map.getHexagonAt(hex).Obj == null ||
@@ -227,13 +227,13 @@ namespace Underlord.Logic
         static private void randomwalk(Creature creature, Environment.Map map)
         {
             //random determination of next step
-            creature.Path.Push(map.getHexagonAt(creature.Position).getNeighbors()[(int)rand.Next(6)]);
+            creature.Path.Push(map.getHexagonAt(creature.Position).Neighbors[(int)rand.Next(6)]);
         }
 
         static private void randomwalk(Imp imp, Environment.Map map)
         {
             //random determination of next step
-            imp.Path.Push(map.getHexagonAt(imp.Position).getNeighbors()[(int)rand.Next(6)]);
+            imp.Path.Push(map.getHexagonAt(imp.Position).Neighbors[(int)rand.Next(6)]);
         }
     }
 }

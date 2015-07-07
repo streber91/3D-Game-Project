@@ -56,7 +56,7 @@ namespace Underlord.Logic
   
                         if (specials[randnum] == Entity.Vars_Func.WallTyp.Diamond || Entity.Vars_Func.WallTyp.Gold == specials[randnum])
                         {
-                            foreach (Vector2 hex in hexmap.getHexagonAt(i, j).getNeighbors())
+                            foreach (Vector2 hex in hexmap.getHexagonAt(i, j).Neighbors)
                             {
                                 new Entity.Wall(new Vector2(hex.X, hex.Y), Underlord.Entity.Vars_Func.WallTyp.Gold, 300, hexmap);
                             }
@@ -74,17 +74,17 @@ namespace Underlord.Logic
                 }
             }
             // room for HQ
-            foreach (Vector2 hex in hexmap.getHexagonAt(HQ.X, HQ.Y).getNeighbors())
+            foreach (Vector2 hex in hexmap.getHexagonAt(HQ.X, HQ.Y).Neighbors)
             {
                 hexmap.getHexagonAt(hex.X, hex.Y).Obj = null;
             }
             // room for entrance
-            foreach (Vector2 hex in hexmap.getHexagonAt(EN.X, EN.Y).getNeighbors())
+            foreach (Vector2 hex in hexmap.getHexagonAt(EN.X, EN.Y).Neighbors)
             {
                 hexmap.getHexagonAt(hex.X, hex.Y).Obj = null;
             }
             // build path from first entrance to HQ
-            while( !hexmap.getHexagonAt(HQ.X, HQ.Y).getNeighbors().Contains(EN))
+            while( !hexmap.getHexagonAt(HQ.X, HQ.Y).Neighbors.Contains(EN))
             {
                 if (HQ.X < EN.X)
                 {

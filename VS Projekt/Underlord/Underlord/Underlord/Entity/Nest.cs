@@ -59,14 +59,14 @@ namespace Underlord.Entity
                     hex.Nest = true;
                     for (int i = 0; i < 6; ++i)
                     {
-                        Vector2 neighbor = hex.getNeighbors()[i];
+                        Vector2 neighbor = hex.Neighbors[i];
                         nestHexagons.Add(neighbor);
                         map.getHexagonAt(neighbor).Typ = Vars_Func.HexTyp.BeetleNest;
                         map.getHexagonAt(neighbor).Building = true;
                         map.getHexagonAt(neighbor).Nest = true;
                         for (int j = 0; j < 6; ++j)
                         {
-                            Vector2 nextNeighbor = hex.getNeighbors()[j];
+                            Vector2 nextNeighbor = hex.Neighbors[j];
                             if (!map.getHexagonAt(nextNeighbor).Nest && map.getHexagonAt(nextNeighbor).RoomNumber == map.getHexagonAt(neighbor).RoomNumber && !possibleNextNestHexagons.Contains(nextNeighbor))
                             {
                                 possibleNextNestHexagons.Add(nextNeighbor);
@@ -77,7 +77,7 @@ namespace Underlord.Entity
             }
             this.typus = typus;
             this.position = position;
-            targetPos = hex.getNeighbors()[3];
+            targetPos = hex.Neighbors[3];
             upgradePos = new List<Vector2>();
             undead = false;
             size = 1;
@@ -108,7 +108,7 @@ namespace Underlord.Entity
                         hex.Nest = true;
                         for (int i = 0; i < 6; ++i)
                         {
-                            Vector2 nextNeighbor = map.getHexagonAt(pos).getNeighbors()[i];
+                            Vector2 nextNeighbor = map.getHexagonAt(pos).Neighbors[i];
                             if (!map.getHexagonAt(nextNeighbor).Nest && map.getHexagonAt(nextNeighbor).RoomNumber == hex.RoomNumber && !possibleNextNestHexagons.Contains(nextNeighbor))
                             {
                                 possibleNextNestHexagons.Add(nextNeighbor);
@@ -150,7 +150,7 @@ namespace Underlord.Entity
             {
                 case Vars_Func.NestTyp.Beetle:
                     //find free position for the new creature through a broad-first-search
-                    Vector2 tmp = map.getHexagonAt(this.position).getNeighbors()[3];
+                    Vector2 tmp = map.getHexagonAt(this.position).Neighbors[3];
                     Queue<Vector2> queue = new Queue<Vector2>();
                     queue.Enqueue(tmp);
                     map.getHexagonAt(tmp).Visited = true;
@@ -162,7 +162,7 @@ namespace Underlord.Entity
                         
                         for (int i = 0; i < 6; ++i)
                         {
-                            Vector2 neighbor = map.getHexagonAt(tmp).getNeighbors()[i];
+                            Vector2 neighbor = map.getHexagonAt(tmp).Neighbors[i];
                             //which weren't visited already
                             if (map.getHexagonAt(neighbor).Visited == false)
                             {

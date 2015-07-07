@@ -207,40 +207,40 @@ namespace Underlord.Environment
                 getHexagonAt(tmp).DrawModel(camera, drawposition);
 
                 //enqueue neigbors
-                if (!getHexagonAt(getHexagonAt(tmp).getNeighbors()[0]).Visited)
+                if (!getHexagonAt(getHexagonAt(tmp).Neighbors[0]).Visited)
                 {
-                    getHexagonAt(getHexagonAt(tmp).getNeighbors()[0]).Visited = true;
-                    queue.Enqueue(getHexagonAt(tmp).getNeighbors()[0]);
+                    getHexagonAt(getHexagonAt(tmp).Neighbors[0]).Visited = true;
+                    queue.Enqueue(getHexagonAt(tmp).Neighbors[0]);
                     vecQueue.Enqueue(drawposition + Vector3.UnitY * 1.75f * hexagonSideLength);
                 }
-                if (!getHexagonAt(getHexagonAt(tmp).getNeighbors()[1]).Visited)
+                if (!getHexagonAt(getHexagonAt(tmp).Neighbors[1]).Visited)
                 {
-                    getHexagonAt(getHexagonAt(tmp).getNeighbors()[1]).Visited = true;
-                    queue.Enqueue(getHexagonAt(tmp).getNeighbors()[1]);
+                    getHexagonAt(getHexagonAt(tmp).Neighbors[1]).Visited = true;
+                    queue.Enqueue(getHexagonAt(tmp).Neighbors[1]);
                     vecQueue.Enqueue(drawposition + (Vector3.UnitY * 0.875f + Vector3.UnitX * 1.5f) * hexagonSideLength);
                 }
-                if (!getHexagonAt(getHexagonAt(tmp).getNeighbors()[2]).Visited)
+                if (!getHexagonAt(getHexagonAt(tmp).Neighbors[2]).Visited)
                 {
-                    getHexagonAt(getHexagonAt(tmp).getNeighbors()[2]).Visited = true;
-                    queue.Enqueue(getHexagonAt(tmp).getNeighbors()[2]);
+                    getHexagonAt(getHexagonAt(tmp).Neighbors[2]).Visited = true;
+                    queue.Enqueue(getHexagonAt(tmp).Neighbors[2]);
                     vecQueue.Enqueue(drawposition + (-Vector3.UnitY * 0.875f + Vector3.UnitX * 1.5f) * hexagonSideLength);
                 }
-                if (!getHexagonAt(getHexagonAt(tmp).getNeighbors()[3]).Visited)
+                if (!getHexagonAt(getHexagonAt(tmp).Neighbors[3]).Visited)
                 {
-                    getHexagonAt(getHexagonAt(tmp).getNeighbors()[3]).Visited = true;
-                    queue.Enqueue(getHexagonAt(tmp).getNeighbors()[3]);
+                    getHexagonAt(getHexagonAt(tmp).Neighbors[3]).Visited = true;
+                    queue.Enqueue(getHexagonAt(tmp).Neighbors[3]);
                     vecQueue.Enqueue(drawposition - Vector3.UnitY * 1.75f * hexagonSideLength);
                 }
-                if (!getHexagonAt(getHexagonAt(tmp).getNeighbors()[4]).Visited)
+                if (!getHexagonAt(getHexagonAt(tmp).Neighbors[4]).Visited)
                 {
-                    getHexagonAt(getHexagonAt(tmp).getNeighbors()[4]).Visited = true;
-                    queue.Enqueue(getHexagonAt(tmp).getNeighbors()[4]);
+                    getHexagonAt(getHexagonAt(tmp).Neighbors[4]).Visited = true;
+                    queue.Enqueue(getHexagonAt(tmp).Neighbors[4]);
                     vecQueue.Enqueue(drawposition + (-Vector3.UnitY * 0.875f - Vector3.UnitX * 1.5f) * hexagonSideLength);
                 }
-                if (!getHexagonAt(getHexagonAt(tmp).getNeighbors()[5]).Visited)
+                if (!getHexagonAt(getHexagonAt(tmp).Neighbors[5]).Visited)
                 {
-                    getHexagonAt(getHexagonAt(tmp).getNeighbors()[5]).Visited = true;
-                    queue.Enqueue(getHexagonAt(tmp).getNeighbors()[5]);
+                    getHexagonAt(getHexagonAt(tmp).Neighbors[5]).Visited = true;
+                    queue.Enqueue(getHexagonAt(tmp).Neighbors[5]);
                     vecQueue.Enqueue(drawposition + (Vector3.UnitY * 0.875f - Vector3.UnitX * 1.5f) * hexagonSideLength);
                 }
             }

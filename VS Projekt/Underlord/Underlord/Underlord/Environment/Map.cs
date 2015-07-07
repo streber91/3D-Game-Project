@@ -108,12 +108,12 @@ namespace Underlord.Environment
 
         public void move(Creature creature)
         {
-            if (getHexagonAt(creature.Path.Peek()) == null)
+            if (creature.Path != null && getHexagonAt(creature.Path.Peek()).Obj == null)
             {
                 getHexagonAt(creature.Position).Obj = null;
                 creature.Position = creature.Path.Pop();
                 getHexagonAt(creature.Position).Obj = creature;
-                creature.ActionTimeCounter -= 1000 / creature.getSpeed();
+                creature.ActionTimeCounter = 0;
             }
         }
         //TODO

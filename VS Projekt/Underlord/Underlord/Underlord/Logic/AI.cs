@@ -56,15 +56,15 @@ namespace Underlord.Logic
                 {
                     if (map.getHexagonAt(creature.Position).getNeighbors().Contains(nearestEnemy[0]))
                     {
-                        while (creature.ActionTimeCounter >= 1000 / creature.getSpeed())
+                        if(creature.ActionTimeCounter >= 1000 / creature.getSpeed())
                         {
                             Creature target = (Creature) map.getHexagonAt(nearestEnemy[0]).Obj;
                             target.decreaseHP(creature.getDmg());
                             if (target.getHP() <= 0) map.remove(target);
-                            creature.ActionTimeCounter -= 1000 / creature.getSpeed();
+                            creature.ActionTimeCounter = 0;
                         }
                     }
-                    else creature.Path = determinePath(creature.Position, nearestEnemy[0], map);
+                    else creature.Path = determinePath(creature.Position, nearestEnemy[0], map, false);
                 }
 
                 // calculate path if creature has non
@@ -72,6 +72,9 @@ namespace Underlord.Logic
                 {
                     if (Entity.Vars_Func.computeDistance(creature.getHome().TargetPos, creature.Position, map) < 5) randomwalk(creature, map);
                     else creature.Path = determinePath(creature.Position, creature.getHome().TargetPos, map);
+                    // herocreature found no path and so burrow throug walls
+                    if (creature.Path == null && creature.getThingTyp() == Vars_Func.ThingTyp.HeroCreature)
+                        creature.Path = determinePath(creature.Position, creature.getHome().TargetPos, map, true, true);
                 }
 
                 // time left for action?
@@ -138,14 +141,14 @@ namespace Underlord.Logic
             return nearesEnemy;
         }
 
-        static private Stack<Vector2> determinePath(Vector2 start, Vector2 destination, Environment.Map map)
+        static private Stack<Vector2> determinePath(Vector2 start, Vector2 destination, Environment.Map map, bool ignoreCreatures = true, bool ignoreWalls = false)
         {
             List<Vector2> des = new List<Vector2>();
             des.Add(destination);
-            return determinePath(start, des, map);
+            return determinePath(start, des, map, ignoreWalls, ignoreCreatures);
         }
 
-        static private Stack<Vector2> determinePath(Vector2 start, List<Vector2> destination , Environment.Map map)
+        static private Stack<Vector2> determinePath(Vector2 start, List<Vector2> destination, Environment.Map map, bool ignoreCreatures = true, bool ignoreWalls = false)
         {
             //return statement
             Stack<Vector2> path = new Stack<Vector2>();
@@ -163,7 +166,12 @@ namespace Underlord.Logic
                 foreach (Vector2 hex in map.getHexagonAt(tmp).getNeighbors())
                 {
                     // is the hex a not wall objekt? 
-                    if (!map.getHexagonAt(hex).Visited && (map.getHexagonAt(hex).Obj == null || map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.Wall))
+                    if (!map.getHexagonAt(hex).Visited && (map.getHexagonAt(hex).Obj == null ||
+                        ((map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.Wall || ignoreWalls) && 
+                        (map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.DungeonCreature || ignoreCreatures) &&
+                        (map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.HeroCreature || ignoreCreatures) &&
+                        (map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.NeutralCreature || ignoreCreatures)
+                        )))
                     {
                         queue.Enqueue(hex);
                         map.getHexagonAt(hex).Visited = true;
@@ -172,12 +180,14 @@ namespace Underlord.Logic
                 }
             }
 
-            //clear Hexmap for next search
+            //push path on stack
+            if (!destination.Contains(tmp)) return null;
             while (tmp != start)
             {
                 path.Push(tmp);
                 tmp = map.getHexagonAt(tmp).Parent;
             }
+            //clear Hexmap for next search
             for (int i = 0; i < map.getPlanelength(); ++i)
             {
                 for (int j = 0; j < map.getPlanelength(); ++j)

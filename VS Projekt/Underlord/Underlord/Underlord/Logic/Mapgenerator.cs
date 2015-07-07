@@ -12,10 +12,10 @@ namespace Underlord.Logic
         {
             List<Entity.Vars_Func.WallTyp> specials = new List<Entity.Vars_Func.WallTyp>();
             specials.Add(Entity.Vars_Func.WallTyp.HQ);
-            specials.Add(Entity.Vars_Func.WallTyp.Entrance);
+            specials.Add(Entity.Vars_Func.WallTyp.HQ);
             Random rand = new Random();
-            Vector2 HQ = new Vector2();
-            Vector2 EN = new Vector2();
+            Vector2 HQ = new Vector2(hexmap.getPlanelength(),0);
+            Vector2 EN = new Vector2(hexmap.getPlanelength(), 0);
             int dia = diamond;
             int go = gold;
             //determine special walls
@@ -46,7 +46,13 @@ namespace Underlord.Logic
                     // special wall
                     if (j % 5 == 0 && i % 5 == 0)
                     {
-                        new Entity.Wall(new Vector2(i, j), specials[randnum], 300, hexmap);
+                        //place specila wall if not entrance
+                        if (specials[randnum] != Entity.Vars_Func.WallTyp.HQ && HQ.X != hexmap.getPlanelength())
+                            new Entity.Wall(new Vector2(i, j), specials[randnum], 300, hexmap);
+                        // if entrance place entrance Nest
+                        else
+                            new Entity.Nest(Entity.Vars_Func.NestTyp.Entrance, new Vector2(i, j), hexmap.getHexagonAt(i, j), hexmap, HQ);
+                        
                         if (specials[randnum] == Entity.Vars_Func.WallTyp.Diamond || Entity.Vars_Func.WallTyp.Gold == specials[randnum])
                         {
                             foreach (Vector2 hex in hexmap.getHexagonAt(i, j).getNeighbors())
@@ -54,8 +60,8 @@ namespace Underlord.Logic
                                 new Entity.Wall(new Vector2(hex.X, hex.Y), Underlord.Entity.Vars_Func.WallTyp.Gold, 300, hexmap);
                             }
                         }
-                        if (specials[randnum] == Entity.Vars_Func.WallTyp.HQ) HQ = new Vector2(i, j);
-                        if (specials[randnum] == Entity.Vars_Func.WallTyp.Entrance) EN = new Vector2(i, j);
+                        if (specials[randnum] == Entity.Vars_Func.WallTyp.HQ && HQ.X == hexmap.getPlanelength()) HQ = new Vector2(i, j);
+                        else if (specials[randnum] == Entity.Vars_Func.WallTyp.HQ) EN = new Vector2(i, j);
                         specials.RemoveAt(randnum);
                     }
                     // fill rest with normal walls

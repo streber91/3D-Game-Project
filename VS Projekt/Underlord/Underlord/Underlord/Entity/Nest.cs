@@ -149,7 +149,34 @@ namespace Underlord.Entity
             switch(typus)
             {
                 case Vars_Func.NestTyp.Beetle:
-                    map.Creatures.Add(new Creature(Vars_Func.CreatureTyp.Beetle, new List<Ability>(), map.getHexagonAt(this.position).getNeighbors()[3], this, Vars_Func.ThingTyp.DungeonCreature));
+                    //find free position for the new creature through a broad-first-search
+                    Vector2 tmp = map.getHexagonAt(this.position).getNeighbors()[3];
+                    Queue<Vector2> queue = new Queue<Vector2>();
+                    queue.Enqueue(tmp);
+                    map.getHexagonAt(tmp).Visited = true;
+                    while (queue.Count != 0)
+                    {
+                        tmp = queue.Dequeue();
+                        if (map.getHexagonAt(tmp).Obj == null) break;
+                        //for all neighbors
+                        
+                        for (int i = 0; i < 6; ++i)
+                        {
+                            Vector2 neighbor = map.getHexagonAt(tmp).getNeighbors()[i];
+                            //which weren't visited already
+                            if (map.getHexagonAt(neighbor).Visited == false)
+                            {
+                                map.getHexagonAt(neighbor).Visited = true; //set visited at true
+                                queue.Enqueue(neighbor); //add the neighbor to the queue
+                            }
+                        }
+                    }
+                    //set visited for all hexagon at false (for the next use of searching)
+                    foreach (Environment.Hexagon hex in map.getMapHexagons())
+                    {
+                        if (hex.Visited == true) hex.Visited = false;
+                    }
+                    map.Creatures.Add(new Creature(Vars_Func.CreatureTyp.Beetle, new List<Ability>(), tmp, this, Vars_Func.ThingTyp.DungeonCreature, map));
                     break;
             }
         }

@@ -23,7 +23,7 @@ namespace Underlord.Entity
 
        public enum ImpJob { Idle, Harvest, Feed, Mine, MineDiamonds, length };
 
-       static List<Model> CreatureModels;
+       static List<AnimationModel> CreatureModels;
        static List<BasicModel> NestModels;
        static List<Model> UpgradeModels;
        static List<BasicModel> WallModels;
@@ -32,7 +32,7 @@ namespace Underlord.Entity
 
        static Texture2D pixel;
 
-       public static Model getCreatureModell(CreatureTyp typ) { return CreatureModels[(int)typ]; }
+       public static AnimationModel getCreatureModell(CreatureTyp typ) { return CreatureModels[(int)typ]; }
        public static BasicModel getNestModell(NestTyp typ) { return NestModels[(int)typ]; }
        public static Model getUpgradeModell(UpgradeTyp typ) { return UpgradeModels[(int)typ]; }
        public static BasicModel getWallModell(WallTyp typ) { return WallModels[(int)typ]; }
@@ -43,7 +43,7 @@ namespace Underlord.Entity
 
        public static void loadContent(ContentManager Content)
        {
-           CreatureModels = new List<Model>();
+           CreatureModels = new List<AnimationModel>();
            NestModels = new List<BasicModel>();
            UpgradeModels = new List<Model>();
            WallModels = new List<BasicModel>();
@@ -74,7 +74,10 @@ namespace Underlord.Entity
            NestModels[(int)NestTyp.Beetle].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
            //NestModels[(int)NestTyp.Entrance].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
 
- 
+
+           CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//minion_ANI_walk_simple_02")));
+           CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//knight_&_sword_ANI_01")));
+
            
            
      

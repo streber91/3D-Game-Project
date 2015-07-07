@@ -57,25 +57,26 @@ namespace Underlord.Logic
             // time for creatur to act?
             if (creature.ActionTimeCounter >= 1000 / creature.getSpeed())
             {
-                List<Vector2> nearestEnemy = computeNearestEnemy(creature, map);
+                Vector2 nearestEnemy = computeNearestEnemy(creature, map);
+                if(creature.Path == null) creature.Path = new Stack<Vector2>();
 
                 // walk to nearest Enemy and attack if there is one
-                if (nearestEnemy != null)
+                if (nearestEnemy.X != map.getPlanelength())
                 {
-                    if (map.getHexagonAt(creature.Position).Neighbors.Contains(nearestEnemy[0]))
+                    if (map.getHexagonAt(creature.Position).getNeighbors().Contains(nearestEnemy))
                     {
                         if(creature.ActionTimeCounter >= 1000 / creature.getSpeed())
                         {
-                            if (map.getHexagonAt(nearestEnemy[0]).Obj.getThingTyp() != Vars_Func.ThingTyp.Imp)
+                            if (map.getHexagonAt(nearestEnemy).Obj.getThingTyp() != Vars_Func.ThingTyp.Imp)
                             {
-                                Creature target = (Creature)map.getHexagonAt(nearestEnemy[0]).Obj;
+                                Creature target = (Creature)map.getHexagonAt(nearestEnemy).Obj;
                                 target.decreaseHP(creature.getDmg());
                                 if (target.getHP() <= 0) map.remove(target);
                                 creature.ActionTimeCounter = 0;
                             }
                             else
                             {
-                                Imp target = (Imp)map.getHexagonAt(nearestEnemy[0]).Obj;
+                                Imp target = (Imp)map.getHexagonAt(nearestEnemy).Obj;
                                 target.decreaseHP(creature.getDmg());
                                 if (target.getHP() <= 0)
                                 {
@@ -87,10 +88,10 @@ namespace Underlord.Logic
                             }
                         }
                     }
-                    else creature.Path = determinePath(creature.Position, nearestEnemy[0], map, false);
+                    else creature.Path = determinePath(creature.Position, nearestEnemy, map, false);
                 }
 
-                // calculate path if creature has non
+                // calculate path if creature has none
                 else if (creature.Path.Count == 0)
                 {
                     if (Entity.Vars_Func.computeDistance(creature.getHome().TargetPos, creature.Position, map) < 5) randomwalk(creature, map);
@@ -109,10 +110,10 @@ namespace Underlord.Logic
             creature.ActionTimeCounter += time.ElapsedGameTime.Milliseconds;
         }
 
-        static private List<Vector2> computeNearestEnemy(Creature creature, Environment.Map map)
+        static private Vector2 computeNearestEnemy(Creature creature, Environment.Map map)
         {
             //return statement
-            List<Vector2> nearesEnemy = new List<Vector2>();
+            Vector2 nearesEnemy = new Vector2(map.getPlanelength(), 0);
 
             //breadth-first search
             Vector2 tmp = new Vector2();
@@ -133,14 +134,12 @@ namespace Underlord.Logic
                     continue;
                 }
                 //contains position an enemy creature?
-                if (((map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.DungeonCreature ||
-                     map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.HeroCreature ||
-                     map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.NeutralCreature) &&
-                     map.getHexagonAt(tmp).Obj.getThingTyp() != creature.getThingTyp()) ||
-                    (map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.Imp &&
-                    creature.getThingTyp() != Vars_Func.ThingTyp.DungeonCreature))
+                if ( map.getHexagonAt(tmp).Obj != null && (((
+                     map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.DungeonCreature || map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.HeroCreature ||
+                     map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.NeutralCreature) && map.getHexagonAt(tmp).Obj.getThingTyp() != creature.getThingTyp()) ||
+                    (map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.Imp && creature.getThingTyp() != Vars_Func.ThingTyp.DungeonCreature)))
                 {
-                    nearesEnemy[0] = tmp;
+                    nearesEnemy = tmp;
                     break;
                 }
 
@@ -227,7 +226,11 @@ namespace Underlord.Logic
         static private void randomwalk(Creature creature, Environment.Map map)
         {
             //random determination of next step
-            creature.Path.Push(map.getHexagonAt(creature.Position).Neighbors[(int)rand.Next(6)]);
+            int random = (int)rand.Next(6);
+            if (map.getHexagonAt(map.getHexagonAt(creature.Position).getNeighbors()[random]).Obj == null)
+            {
+                creature.Path.Push(map.getHexagonAt(creature.Position).getNeighbors()[random]);
+            }
         }
 
         static private void randomwalk(Imp imp, Environment.Map map)

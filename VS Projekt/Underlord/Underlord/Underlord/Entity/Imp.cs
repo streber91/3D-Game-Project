@@ -18,31 +18,26 @@ namespace Underlord.Entity
         float actionTimeCounter;
       
         #region Properties
-
         public Stack<Vector2> Path
         {
             get { return path; }
             set { path = value; }
         }
-
         public Logic.Job CurrentJob
         {
             get { return currentJob; }
             set { currentJob = value; }
         }
-
         public Vector2 Position
         {
             get { return position; }
             set { position = value; }
         }
-
         public float ActionTimeCounter
         {
             get { return actionTimeCounter; }
             set { actionTimeCounter = value; }
         }
-
         #endregion
 
         public int getHP() { return HP; }
@@ -53,7 +48,7 @@ namespace Underlord.Entity
         {
             actionTimeCounter = 0;
             HP = 100;
-            thingTyp = Vars_Func.ThingTyp.DungeonCreature;
+            thingTyp = Vars_Func.ThingTyp.Imp;
             this.position = position;
             path = new Stack<Vector2>();
         }
@@ -75,6 +70,11 @@ namespace Underlord.Entity
 
             Entity.Vars_Func.getImpModell().Color = drawColor;
             Entity.Vars_Func.getImpModell().Draw(camera, modelMatrix);
+        }
+
+        public void decreaseHP(int damage)
+        {
+            if (damage > 0) HP -= damage;
         }
 
         public void AnimationJob(GameTime time, Logic.Job job)

@@ -149,7 +149,7 @@ namespace Underlord.Entity
             switch(typus)
             {
                 case Vars_Func.NestTyp.Beetle:
-                    map.Creatures.Add(new Creature(Vars_Func.CreatureTyp.Beetle, new List<Ability>(), map.getHexagonAt(this.position).getNeighbors()[3], this, Vars_Func.ThingTyp.DungeonCreature));
+                    map.Creatures.Add(new Creature(Vars_Func.CreatureTyp.Beetle, new List<Ability>(), map.getHexagonAt(this.position).getNeighbors()[3], this, Vars_Func.ThingTyp.DungeonCreature, map));
                     break;
             }
         }

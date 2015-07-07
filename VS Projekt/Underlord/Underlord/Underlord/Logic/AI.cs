@@ -18,7 +18,8 @@ namespace Underlord.Logic
                 // search Job
                 if (imp.CurrentJob.getJobTyp() == Vars_Func.ImpJob.Idle)
                 {
-                    //TODO
+                    imp.CurrentJob = map.JobsWaiting.Dequeue();
+                    map.JobsInProgress.Add(imp.CurrentJob);
                 }
                 // search path to workplace
                 else if(imp.Path.Count == 0) imp.Path = determinePath(imp.Position, imp.CurrentJob.getDestination(), map);
@@ -30,6 +31,8 @@ namespace Underlord.Logic
 
                     if (imp.CurrentJob.Worktime <= 0)
                     {
+                        map.JobsInProgress.Remove(imp.CurrentJob);
+                        map.JobsDone.Add(imp.CurrentJob);
                         imp.CurrentJob = null;
                     }
                 }
@@ -56,10 +59,25 @@ namespace Underlord.Logic
                     {
                         if(creature.ActionTimeCounter >= 1000 / creature.getSpeed())
                         {
-                            Creature target = (Creature) map.getHexagonAt(nearestEnemy[0]).Obj;
-                            target.decreaseHP(creature.getDmg());
-                            if (target.getHP() <= 0) map.remove(target);
-                            creature.ActionTimeCounter = 0;
+                            if (map.getHexagonAt(nearestEnemy[0]).Obj.getThingTyp() != Vars_Func.ThingTyp.Imp)
+                            {
+                                Creature target = (Creature)map.getHexagonAt(nearestEnemy[0]).Obj;
+                                target.decreaseHP(creature.getDmg());
+                                if (target.getHP() <= 0) map.remove(target);
+                                creature.ActionTimeCounter = 0;
+                            }
+                            else
+                            {
+                                Imp target = (Imp)map.getHexagonAt(nearestEnemy[0]).Obj;
+                                target.decreaseHP(creature.getDmg());
+                                if (target.getHP() <= 0)
+                                {
+                                    map.JobsWaiting.Enqueue(target.CurrentJob);
+                                    map.JobsInProgress.Remove(target.CurrentJob);
+                                    map.remove(target);
+                                }
+                                creature.ActionTimeCounter = 0;
+                            }
                         }
                     }
                     else creature.Path = determinePath(creature.Position, nearestEnemy[0], map, false);
@@ -100,10 +118,12 @@ namespace Underlord.Logic
             {
                 tmp = queue.Dequeue();
                 //contains position an enemy creature?
-                if ((map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.DungeonCreature ||
+                if (((map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.DungeonCreature ||
                      map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.HeroCreature ||
                      map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.NeutralCreature) &&
-                     map.getHexagonAt(tmp).Obj.getThingTyp() != creature.getThingTyp())
+                     map.getHexagonAt(tmp).Obj.getThingTyp() != creature.getThingTyp()) ||
+                    (map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.Imp &&
+                    creature.getThingTyp() != Vars_Func.ThingTyp.DungeonCreature))
                 {
                     nearesEnemy[0] = tmp;
                     break;

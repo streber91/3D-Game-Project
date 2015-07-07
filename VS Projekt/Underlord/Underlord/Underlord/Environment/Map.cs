@@ -15,6 +15,10 @@ namespace Underlord.Environment
         List<Nest> nests = new List<Nest>();
         List<Creature> creatures = new List<Creature>();
         List<Hexagon> map = new List<Hexagon>();
+        Queue<Logic.Job> jobsWaiting = new Queue<Logic.Job>();
+        List<Logic.Job> jobsInProgress = new List<Logic.Job>();
+        List<Logic.Job> jobsDone = new List<Logic.Job>();
+
         int planeSidelength; // drawWidth, drawHeight, planeside = map size
         float hexagonSideLength;
 
@@ -30,6 +34,18 @@ namespace Underlord.Environment
         public List<Creature> Creatures
         {
             get { return creatures; }
+        }
+         public Queue<Logic.Job> JobsWaiting
+        {
+            get { return jobsWaiting; }
+        }
+         public List<Logic.Job> JobsInProgress
+        {
+            get { return jobsInProgress; }
+        }
+         public List<Logic.Job> JobsDone
+        {
+            get { return jobsDone; }
         }
         #endregion
 

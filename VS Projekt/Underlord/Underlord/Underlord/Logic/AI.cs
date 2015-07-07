@@ -119,11 +119,19 @@ namespace Underlord.Logic
             Queue<Vector2> queue = new Queue<Vector2>();
             queue.Enqueue(creature.Position);
             map.getHexagonAt(creature.Position).Visited = true;
-            queue.Enqueue(new Vector2(map.getPlanelength() + creature.getVision(), 0));
+            queue.Enqueue(new Vector2(map.getPlanelength(), creature.getVision()));
 
             while (queue.Count != 1)
             {
                 tmp = queue.Dequeue();
+
+                if (tmp.X == map.getPlanelength())
+                {
+                    //is vision of creature reached?
+                    if (tmp.Y <= 1) break;
+                    queue.Enqueue((new Vector2(tmp.X, tmp.Y - 1)));
+                    continue;
+                }
                 //contains position an enemy creature?
                 if (((map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.DungeonCreature ||
                      map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.HeroCreature ||
@@ -134,14 +142,6 @@ namespace Underlord.Logic
                 {
                     nearesEnemy[0] = tmp;
                     break;
-                }
-
-                if (tmp.X == map.getPlanelength())
-                {
-                    //is vision of creature reached?
-                    if (tmp.X <= map.getPlanelength() + 1) break;
-                    queue.Enqueue((new Vector2(tmp.X - 1, 0)));
-                    continue;
                 }
 
                 foreach (Vector2 hex in map.getHexagonAt(tmp).getNeighbors())

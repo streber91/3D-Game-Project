@@ -11,7 +11,7 @@ namespace Underlord.Environment
         Vector3 position;
         Vector2 indexNumber;
         Vector2[] neighbors = new Vector2[6]; //[up,right-up,right-down,down,left-down,left-up]
-        //List<Boolean> imps;
+        List<Entity.Imp> imps;
         Entity.Thing obj;
         int roomNumber;
         bool building;
@@ -64,12 +64,15 @@ namespace Underlord.Environment
             get { return typ; }
             set { typ = value; }
         }
+        public List<Entity.Imp> Imps
+        {
+            get { return imps; }
+        }
         #endregion
 
         public Vector3 get3DPosition() { return position; }
         public Vector2 getIndexNumber() { return indexNumber; }
         public Vector2[] getNeighbors() { return neighbors; }
-        //public void getImp() { } //TODO
 
         #region Constructor
         public Hexagon(Vector3 position, Vector2 indexNumber, Vector2[] neighbors, Entity.Vars_Func.HexTyp typ)
@@ -85,11 +88,6 @@ namespace Underlord.Environment
             boneTransforms = new Matrix[Entity.Vars_Func.getHexagonModell(typ).Model.Bones.Count];
         }
         #endregion
-        //TODO
-        //public void addImp()
-        //{
-        //    this.imps.Add(true);
-        //}
 
         public void DrawModel(Renderer.Camera camera, Vector3 drawPosition)
         {

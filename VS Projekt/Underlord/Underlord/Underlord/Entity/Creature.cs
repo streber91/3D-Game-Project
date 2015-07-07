@@ -18,20 +18,6 @@ namespace Underlord.Entity
         Stack<Vector2> path;
         Nest home;
         //TODO implement balancing and diferent stats
-        public Creature(Vars_Func.CreatureTyp type, List<Ability> ability, Vector2 pos, Nest home, Vars_Func.ThingTyp allignment)
-        {
-            thingTyp = allignment;
-            this.home = home;
-            this.type = type;
-            this.abilities = ability;
-            this.position = pos;
-            size = 1;
-            speed = 1;
-            actionTimeCounter = 0;
-            vision = 4;
-            hp = 300;
-            dmg = 20;
-        }
 
         #region Properties
         public Stack<Vector2> Path
@@ -50,6 +36,24 @@ namespace Underlord.Entity
             set { actionTimeCounter = value; }
         }
         #endregion
+
+        #region Constructor
+        public Creature(Vars_Func.CreatureTyp type, List<Ability> ability, Vector2 pos, Nest home, Vars_Func.ThingTyp allignment)
+        {
+            this.type = type;
+            this.abilities = ability;
+            this.position = pos;
+            this.home = home;
+            thingTyp = allignment;
+            size = 1;
+            speed = 1;
+            actionTimeCounter = 0;
+            vision = 4;
+            hp = 300;
+            dmg = 20;
+        }
+        #endregion
+
         // TODO filter funktions and implemnt funktions
         public void increaseHP(int d)
         {

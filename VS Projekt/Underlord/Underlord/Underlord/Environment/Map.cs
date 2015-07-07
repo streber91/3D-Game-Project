@@ -27,6 +27,10 @@ namespace Underlord.Environment
         {
             get { return nests; }
         }
+        public List<Creature> Creatures
+        {
+            get { return creatures; }
+        }
         #endregion
 
         #region Constructor

@@ -11,15 +11,16 @@ namespace Underlord.Environment
 {
     class Map
     {
-        List<Room> rooms = new List<Room>();
-        List<Nest> nests = new List<Nest>();
-        List<Creature> creatures = new List<Creature>();
-        List<Hexagon> map = new List<Hexagon>();
-        Queue<Logic.Job> jobsWaiting = new Queue<Logic.Job>();
-        List<Logic.Job> jobsInProgress = new List<Logic.Job>();
-        List<Logic.Job> jobsDone = new List<Logic.Job>();
+        List<Room> rooms;
+        List<Nest> nests;
+        List<Creature> creatures;
+        List<Hexagon> map;
+        List<Imp> impList;
+        Queue<Logic.Job> jobsWaiting;
+        List<Logic.Job> jobsInProgress;
+        List<Logic.Job> jobsDone;
 
-        int planeSidelength; // drawWidth, drawHeight, planeside = map size
+        int planeSidelength;
         float hexagonSideLength;
 
         #region Properties
@@ -35,23 +36,36 @@ namespace Underlord.Environment
         {
             get { return creatures; }
         }
-         public Queue<Logic.Job> JobsWaiting
+        public Queue<Logic.Job> JobsWaiting
         {
             get { return jobsWaiting; }
         }
-         public List<Logic.Job> JobsInProgress
+        public List<Logic.Job> JobsInProgress
         {
             get { return jobsInProgress; }
         }
-         public List<Logic.Job> JobsDone
+        public List<Logic.Job> JobsDone
         {
             get { return jobsDone; }
+        }
+        public List<Imp> ImpList
+        {
+            get { return impList; }
         }
         #endregion
 
         #region Constructor
         public Map(int sidelength, Entity.Vars_Func.HexTyp typ, Boolean newGame, float hexagonSideLength)
         {
+            rooms = new List<Room>();
+            nests = new List<Nest>();
+            creatures = new List<Creature>();
+            map = new List<Hexagon>();
+            impList = new List<Imp>();
+            jobsWaiting = new Queue<Logic.Job>();
+            jobsInProgress = new List<Logic.Job>();
+            jobsDone = new List<Logic.Job>();
+
             //drawHeight = 2; //how many hexagons are drawn up and down of the middle (+1)
             //drawWidth = 5; //how many hexagons are drawn left and right of the middle (+1)
             this.hexagonSideLength = hexagonSideLength;
@@ -121,10 +135,16 @@ namespace Underlord.Environment
         {
 
         }
-        //TODO
+        
         public void move(Imp imp)
         {
-
+            if (imp.Path != null && getHexagonAt(imp.Path.Peek()).Imps.Count < 6)
+            {
+                getHexagonAt(imp.Position).Imps.Remove(imp);
+                imp.Position = imp.Path.Pop();
+                getHexagonAt(imp.Position).Imps.Add(imp); ;
+                imp.ActionTimeCounter = 0;
+            }
         }
 
         public void move(Creature creature)

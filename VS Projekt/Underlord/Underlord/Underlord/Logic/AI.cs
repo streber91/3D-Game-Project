@@ -10,7 +10,7 @@ namespace Underlord.Logic
     static class AI
     {
         static Random rand = new Random();
-        //TODO
+
         static public void compute(Imp imp, GameTime time, Environment.Map map)
         {
             
@@ -18,8 +18,14 @@ namespace Underlord.Logic
                 // search Job
                 if (imp.CurrentJob.getJobTyp() == Vars_Func.ImpJob.Idle)
                 {
-                    imp.CurrentJob = map.JobsWaiting.Dequeue();
-                    map.JobsInProgress.Add(imp.CurrentJob);
+                    //jobs there?
+                    if (map.JobsWaiting.Peek() != null)
+                    {
+                        imp.CurrentJob = map.JobsWaiting.Dequeue();
+                        map.JobsInProgress.Add(imp.CurrentJob);
+                    }
+                    //else idle
+                    else randomwalk(imp, map);
                 }
                 // search path to workplace
                 else if(imp.Path.Count == 0) imp.Path = determinePath(imp.Position, imp.CurrentJob.getDestination(), map);
@@ -36,7 +42,8 @@ namespace Underlord.Logic
                         imp.CurrentJob = null;
                     }
                 }
-                else if (imp.ActionTimeCounter >= 500)
+                // time left for action?
+                if (imp.ActionTimeCounter >= 500)
                 {
                     map.move(imp);
                     imp.AnimationMove(time);
@@ -221,6 +228,12 @@ namespace Underlord.Logic
         {
             //random determination of next step
             creature.Path.Push(map.getHexagonAt(creature.Position).getNeighbors()[(int)rand.Next(6)]);
+        }
+
+        static private void randomwalk(Imp imp, Environment.Map map)
+        {
+            //random determination of next step
+            imp.Path.Push(map.getHexagonAt(imp.Position).getNeighbors()[(int)rand.Next(6)]);
         }
     }
 }

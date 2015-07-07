@@ -149,7 +149,7 @@ namespace Underlord.Environment
 
         public void move(Creature creature)
         {
-            if (creature.Path != null && getHexagonAt(creature.Path.Peek()).Obj == null)
+            if (creature.Path != null && creature.Path.Count != 0 && getHexagonAt(creature.Path.Peek()).Obj == null)
             {
                 getHexagonAt(creature.Position).Obj = null;
                 creature.Position = creature.Path.Pop();

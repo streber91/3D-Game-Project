@@ -364,6 +364,10 @@ namespace Underlord.Environment
             {
                 n.update(gameTime, this);
             }
+            foreach (Creature c in creatures)
+            {
+                c.update(gameTime, this);
+            }
         }
     }
 }

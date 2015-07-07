@@ -72,11 +72,13 @@ namespace Underlord.Environment
         {
             get { return neighbors; }
         }
+        public Vector2 IndexNumber
+        {
+            get { return indexNumber; }
+        }
         #endregion
 
         public Vector3 get3DPosition() { return position; }
-        public Vector2 getIndexNumber() { return indexNumber; }
-        //public Vector2[] getNeighbors() { return neighbors; }
 
         #region Constructor
         public Hexagon(Vector3 position, Vector2 indexNumber, Vector2[] neighbors, Entity.Vars_Func.HexTyp typ)

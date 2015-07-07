@@ -63,7 +63,7 @@ namespace Underlord.Logic
                 // walk to nearest Enemy and attack if there is one
                 if (nearestEnemy.X != map.getPlanelength())
                 {
-                    if (map.getHexagonAt(creature.Position).getNeighbors().Contains(nearestEnemy))
+                    if (map.getHexagonAt(creature.Position).Neighbors.Contains(nearestEnemy))
                     {
                         if(creature.ActionTimeCounter >= 1000 / creature.getSpeed())
                         {
@@ -227,9 +227,9 @@ namespace Underlord.Logic
         {
             //random determination of next step
             int random = (int)rand.Next(6);
-            if (map.getHexagonAt(map.getHexagonAt(creature.Position).getNeighbors()[random]).Obj == null)
+            if (map.getHexagonAt(map.getHexagonAt(creature.Position).Neighbors[random]).Obj == null)
             {
-                creature.Path.Push(map.getHexagonAt(creature.Position).getNeighbors()[random]);
+                creature.Path.Push(map.getHexagonAt(creature.Position).Neighbors[random]);
             }
         }
 

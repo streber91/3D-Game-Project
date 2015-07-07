@@ -168,6 +168,16 @@ namespace Underlord
                         else if (hex.RoomNumber != 0) hex.Color = Color.Blue;
                     }
                     break;
+                case Vars_Func.GameState.DeleteRoom:
+                    foreach (Hexagon hex in map.getMapHexagons())
+                    {
+                        //colors the room-hexagons in DeleteRoom mode
+                        if (hex.RoomNumber == 1) hex.Color = Color.Red;
+                        else if (hex.RoomNumber == 2) hex.Color = Color.Yellow;
+                        else if (hex.RoomNumber == 3) hex.Color = Color.Green;
+                        else if (hex.RoomNumber != 0) hex.Color = Color.Blue;
+                    }
+                    break;
                 case Vars_Func.GameState.Build:
                     foreach (Hexagon hex in map.getMapHexagons())
                     {

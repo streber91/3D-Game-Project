@@ -12,14 +12,14 @@ namespace Underlord.Logic
         {
             List<Entity.Vars_Func.WallTyp> specials = new List<Entity.Vars_Func.WallTyp>();
             specials.Add(Entity.Vars_Func.WallTyp.HQ);
-            specials.Add(Entity.Vars_Func.WallTyp.HQ);
             Random rand = new Random();
-            Vector2 HQ = new Vector2(hexmap.getPlanelength(),0);
-            Vector2 EN = new Vector2(hexmap.getPlanelength(), 0);
+            Vector2 HQ = new Vector2();
+            Vector2 EN = new Vector2();
             int dia = diamond;
             int go = gold;
+            bool HQplaced = false;
             //determine special walls
-            for (int i = 0 ; i < Math.Pow((size/5),2) - 2; ++i)
+            for (int i = 0 ; i < Math.Pow((size/5),2) - 1; ++i)
             {
                 if (dia > 0)
                 {
@@ -46,13 +46,13 @@ namespace Underlord.Logic
                     // special wall
                     if (j % 5 == 0 && i % 5 == 0)
                     {
-                        //place specila wall if not entrance
-                        if (specials[randnum] != Entity.Vars_Func.WallTyp.HQ && HQ.X != hexmap.getPlanelength())
-                            new Entity.Wall(new Vector2(i, j), specials[randnum], 300, hexmap);
                         // if entrance place entrance Nest
-                        else
+                        if (specials[randnum] == Entity.Vars_Func.WallTyp.HQ && HQplaced)
                             new Entity.Nest(Entity.Vars_Func.NestTyp.Entrance, new Vector2(i, j), hexmap.getHexagonAt(i, j), hexmap, HQ);
-                        
+                        //place specila wall if not entrance
+                        else
+                            new Entity.Wall(new Vector2(i, j), specials[randnum], 300, hexmap);
+  
                         if (specials[randnum] == Entity.Vars_Func.WallTyp.Diamond || Entity.Vars_Func.WallTyp.Gold == specials[randnum])
                         {
                             foreach (Vector2 hex in hexmap.getHexagonAt(i, j).getNeighbors())
@@ -60,7 +60,11 @@ namespace Underlord.Logic
                                 new Entity.Wall(new Vector2(hex.X, hex.Y), Underlord.Entity.Vars_Func.WallTyp.Gold, 300, hexmap);
                             }
                         }
-                        if (specials[randnum] == Entity.Vars_Func.WallTyp.HQ && HQ.X == hexmap.getPlanelength()) HQ = new Vector2(i, j);
+                        if (specials[randnum] == Entity.Vars_Func.WallTyp.HQ && !HQplaced)
+                        {
+                            HQplaced = true;
+                            HQ = new Vector2(i, j); 
+                        }
                         else if (specials[randnum] == Entity.Vars_Func.WallTyp.HQ) EN = new Vector2(i, j);
                         specials.RemoveAt(randnum);
                     }

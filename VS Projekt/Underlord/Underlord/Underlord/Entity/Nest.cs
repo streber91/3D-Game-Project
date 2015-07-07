@@ -94,31 +94,40 @@ namespace Underlord.Entity
             spawnCounter += gameTime.ElapsedGameTime.Milliseconds;
             if (timeCounter > 1000)
             {
-                if (possibleNextNestHexagons.Count != 0)
+                //update a nest
+                if (this.typus != Vars_Func.NestTyp.Entrance)
                 {
-                    Random rand = new Random();
-                    int tmp = rand.Next(possibleNextNestHexagons.Count);
-                    Vector2 pos = possibleNextNestHexagons[tmp];
-                    nestHexagons.Add(pos);
-                    Environment.Hexagon hex = map.getHexagonAt(pos);
-                    hex.Typ = Vars_Func.HexTyp.BeetleNest;
-                    hex.Nest = true;
-                    for (int i = 0; i < 6; ++i)
+                    if (possibleNextNestHexagons.Count != 0)
                     {
-                        Vector2 nextNeighbor = map.getHexagonAt(pos).getNeighbors()[i];
-                        if (!map.getHexagonAt(nextNeighbor).Nest && map.getHexagonAt(nextNeighbor).RoomNumber == hex.RoomNumber && !possibleNextNestHexagons.Contains(nextNeighbor))
+                        Random rand = new Random();
+                        int tmp = rand.Next(possibleNextNestHexagons.Count);
+                        Vector2 pos = possibleNextNestHexagons[tmp];
+                        nestHexagons.Add(pos);
+                        Environment.Hexagon hex = map.getHexagonAt(pos);
+                        hex.Typ = Vars_Func.HexTyp.BeetleNest;
+                        hex.Nest = true;
+                        for (int i = 0; i < 6; ++i)
                         {
-                            possibleNextNestHexagons.Add(nextNeighbor);
+                            Vector2 nextNeighbor = map.getHexagonAt(pos).getNeighbors()[i];
+                            if (!map.getHexagonAt(nextNeighbor).Nest && map.getHexagonAt(nextNeighbor).RoomNumber == hex.RoomNumber && !possibleNextNestHexagons.Contains(nextNeighbor))
+                            {
+                                possibleNextNestHexagons.Add(nextNeighbor);
+                            }
                         }
+                        possibleNextNestHexagons.RemoveAt(tmp);
                     }
-                    possibleNextNestHexagons.RemoveAt(tmp);
+                    timeCounter = 0;
                 }
-                timeCounter = 0;
+                if (spawnCounter > 4000)
+                {
+                    spawnCreature(map);
+                    spawnCounter = 0;
+                }
             }
-            if(spawnCounter > 4000)
+            //update an entrance
+            else
             {
-                spawnCreature();
-                spawnCounter = 0;
+
             }
         }
 
@@ -135,9 +144,14 @@ namespace Underlord.Entity
             Entity.Vars_Func.getNestModell(typus).Draw(camera, modelMatrix);
         }
 
-        public void spawnCreature()
+        public void spawnCreature(Environment.Map map)
         {
-
+            switch(typus)
+            {
+                case Vars_Func.NestTyp.Beetle:
+                    map.Creatures.Add(new Creature(Vars_Func.CreatureTyp.Beetle, new List<Ability>(), map.getHexagonAt(this.position).getNeighbors()[3], this, Vars_Func.ThingTyp.DungeonCreature));
+                    break;
+            }
         }
 
         public void addUpgrade(Upgrade upgrade, Vector2 upgradePosition)

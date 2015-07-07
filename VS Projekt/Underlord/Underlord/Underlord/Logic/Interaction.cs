@@ -60,6 +60,12 @@ namespace Underlord.Logic
                             gameState = Vars_Func.GameState.MergeRooms;
                             timeCounter = 0;
                         }
+                        //switch to MergeRooms Mode if "Z" ist pressed
+                        if (keyboard.IsKeyDown(Keys.Z))
+                        {
+                            gameState = Vars_Func.GameState.DeleteRoom;
+                            timeCounter = 0;
+                        }
                     }
                     break;
                 case Vars_Func.GameState.Save:
@@ -135,7 +141,7 @@ namespace Underlord.Logic
                                 }
                                 if (placeable)
                                 {
-                                    map.Nests.Add(new Nest(Vars_Func.NestTyp.Beetle, mouseover, map.getHexagonAt(mouseover), map));
+                                    map.Nests.Add(new Nest(Vars_Func.NestTyp.Beetle, mouseover, map.getHexagonAt(mouseover), map, map.getHexagonAt(mouseover).getNeighbors()[3]));
                                     map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType = Vars_Func.NestTyp.Beetle;
                                 }
                             }
@@ -166,7 +172,7 @@ namespace Underlord.Logic
                     }
                     break;
                 case Vars_Func.GameState.MergeRooms:
-                    //colors the hexagon at mouseposition in Mine mode blue
+                    //colors the hexagon at mouseposition in MergeRooms mode blue
                     map.getHexagonAt(mouseover).Color = Color.Blue;
                     //only ten clicks per second
                     if (timeCounter > 100)
@@ -198,6 +204,32 @@ namespace Underlord.Logic
                                         map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).mergeRoom(room, map);
                                     }
                                 }
+                            }
+                            timeCounter = 0;
+                        }
+                    }
+                    break;
+                case Vars_Func.GameState.DeleteRoom:
+                    //colors the hexagon at mouseposition in DeleteRoom mode blue
+                    map.getHexagonAt(mouseover).Color = Color.Blue;
+                    if (timeCounter > 100)
+                    {
+                        //back to Ingame Mode
+                        if (keyboard.IsKeyDown(Keys.Escape))
+                        {
+                            gameState = Vars_Func.GameState.Ingame;
+                            timeCounter = 0;
+                        }
+                        //try to delete a room
+                        if (mouseState.LeftButton == ButtonState.Pressed)
+                        {
+                            //if there is a room
+                            //and there isn't a nest in the room
+                            if (map.getHexagonAt(mouseover).RoomNumber != 0 &&
+                                map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType == Vars_Func.NestTyp.length)
+                            {
+                                //then delete that room
+                                map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).deleteRoom(map);
                             }
                             timeCounter = 0;
                         }

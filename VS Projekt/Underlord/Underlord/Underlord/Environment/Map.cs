@@ -13,6 +13,7 @@ namespace Underlord.Environment
     {
         List<Room> rooms = new List<Room>();
         List<Nest> nests = new List<Nest>();
+        List<Creature> creatures = new List<Creature>();
         List<Hexagon> map = new List<Hexagon>();
         int planeSidelength; // drawWidth, drawHeight, planeside = map size
         float hexagonSideLength;

@@ -94,5 +94,22 @@ namespace Underlord.Environment
                 }
             }
         }
+
+        public void deleteRoom(Map map)
+        {
+            int oldRoomNumber = map.getHexagonAt(this.room[0]).RoomNumber;
+            foreach (Vector2 x in this.room)
+            {
+                map.getHexagonAt(x).RoomNumber = 0;
+            }
+            map.Rooms.RemoveAt(oldRoomNumber - 1);
+            for (int i = oldRoomNumber - 1; i < map.Rooms.Count; ++i)
+            {
+                for (int j = 0; j < map.Rooms[i].room.Count; ++j)
+                {
+                    map.getHexagonAt(map.Rooms[i].room[j]).RoomNumber -= 1;
+                }
+            }
+        }
     }
 }

@@ -11,10 +11,9 @@ namespace Underlord.Entity
         Vars_Func.NestTyp typus;
         Upgrade[] upgrades;
         List<Vector2> upgradePos, nestHexagons, possibleNextNestHexagons;
-        float size, nutrition, maxNutrition, growcounter;
+        float size, nutrition, maxNutrition, growcounter, timeCounter, spawnCounter;
         Boolean undead;
         Vector2 targetPos, position;
-        float timeCounter;
 
         #region Properties
         public Boolean Undead
@@ -47,7 +46,7 @@ namespace Underlord.Entity
         #endregion
 
         #region Constructor
-        public Nest(Vars_Func.NestTyp typus, Vector2 position, Environment.Hexagon hex, Environment.Map map)
+        public Nest(Vars_Func.NestTyp typus, Vector2 position, Environment.Hexagon hex, Environment.Map map, Vector2 targetPosition)
         {
             possibleNextNestHexagons = new List<Vector2>();
             nestHexagons = new List<Vector2>();
@@ -92,6 +91,7 @@ namespace Underlord.Entity
         override public void update(GameTime gameTime, Environment.Map map)
         {
             timeCounter += gameTime.ElapsedGameTime.Milliseconds;
+            spawnCounter += gameTime.ElapsedGameTime.Milliseconds;
             if (timeCounter > 1000)
             {
                 if (possibleNextNestHexagons.Count != 0)
@@ -115,6 +115,11 @@ namespace Underlord.Entity
                 }
                 timeCounter = 0;
             }
+            if(spawnCounter > 4000)
+            {
+                spawnCreature();
+                spawnCounter = 0;
+            }
         }
 
         override public void DrawModel(Renderer.Camera camera, Vector3 drawPosition, Color drawColor)
@@ -128,6 +133,11 @@ namespace Underlord.Entity
 
             Entity.Vars_Func.getNestModell(typus).Color = drawColor;
             Entity.Vars_Func.getNestModell(typus).Draw(camera, modelMatrix);
+        }
+
+        public void spawnCreature()
+        {
+
         }
 
         public void addUpgrade(Upgrade upgrade, Vector2 upgradePosition)

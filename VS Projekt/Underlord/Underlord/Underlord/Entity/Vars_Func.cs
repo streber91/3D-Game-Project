@@ -19,7 +19,7 @@ namespace Underlord.Entity
        public enum WallTyp { Stone, Gold, Diamond, Entrance, HQ, length };
        public enum HexTyp { Sand, Stone, BeetleNest, length };
 
-       public enum GameState { MainMenue, Ingame, Save, Load, CreateRoom, Build, Mine, MergeRooms, length };
+       public enum GameState { MainMenue, Ingame, Save, Load, CreateRoom, Build, Mine, MergeRooms, DeleteRoom, length };
 
        public enum ImpJob { Idle, Harvest, Feed, Mine, MineDiamonds, length };
 

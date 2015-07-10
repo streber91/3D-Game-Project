@@ -140,10 +140,13 @@ namespace Underlord.Logic
                 }
                 //contains position an enemy creature?
                 if ( map.getHexagonAt(tmp).Obj != null &&
-                    (((map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.DungeonCreature || map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.HeroCreature ||
-                    map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.NeutralCreature) && map.getHexagonAt(tmp).Obj.getThingTyp() != creature.getThingTyp()) ||
-                    ((map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.Imp ||  map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.HQCreature) &&
-                    (map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.HQCreature || creature.getThingTyp() != Vars_Func.ThingTyp.DungeonCreature))))
+                    // Enemys can attack player creatures
+                    (((map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.Imp || map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.HQCreature ||
+                    map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.HQCreature) &&
+                    (creature.getThingTyp() == Vars_Func.ThingTyp.HQCreature || creature.getThingTyp() != Vars_Func.ThingTyp.DungeonCreature)) ||
+                    // everyone can atack neural and heroes expect themselfe
+                    ((map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.HeroCreature || map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.NeutralCreature) &&
+                    map.getHexagonAt(tmp).Obj.getThingTyp() != creature.getThingTyp())))
                 {
                     nearesEnemy = tmp;
                     break;
@@ -189,7 +192,7 @@ namespace Underlord.Logic
             queue.Enqueue(start);
             map.getHexagonAt(start).Visited = true;
             
-            while (queue.Peek() != null)
+            while (queue.Count != 0)
             {
                 tmp = queue.Dequeue();
                 if (destination.Contains(tmp)) break;

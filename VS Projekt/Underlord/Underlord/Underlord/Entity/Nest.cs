@@ -130,7 +130,7 @@ namespace Underlord.Entity
             else
             {
                 //timer to spawn heroes
-                if (spawnCounter > 10000)
+                if (spawnCounter > 1000)
                 {
                     spawnCreature(map);
                     spawnCounter = 0;
@@ -156,7 +156,7 @@ namespace Underlord.Entity
             switch(typus)
             {
                 case Vars_Func.NestTyp.Entrance:
-                    //new Creature(Vars_Func.CreatureTyp.Knight, new List<Ability>(), map.getHexagonAt(this.position).Neighbors[3], this, Vars_Func.ThingTyp.HeroCreature, map);
+                    new Creature(Vars_Func.CreatureTyp.Knight, new List<Ability>(), map.getHexagonAt(this.position).Neighbors[3], this, Vars_Func.ThingTyp.HeroCreature, map);
                     break;
                 case Vars_Func.NestTyp.Beetle:
                     //find free position for the new creature through a broad-first-search

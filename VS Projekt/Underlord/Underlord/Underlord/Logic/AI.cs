@@ -139,10 +139,11 @@ namespace Underlord.Logic
                     continue;
                 }
                 //contains position an enemy creature?
-                if ( map.getHexagonAt(tmp).Obj != null && (((
-                     map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.DungeonCreature || map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.HeroCreature ||
-                     map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.NeutralCreature) && map.getHexagonAt(tmp).Obj.getThingTyp() != creature.getThingTyp()) ||
-                    (map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.Imp && creature.getThingTyp() != Vars_Func.ThingTyp.DungeonCreature)))
+                if ( map.getHexagonAt(tmp).Obj != null &&
+                    (((map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.DungeonCreature || map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.HeroCreature ||
+                    map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.NeutralCreature) && map.getHexagonAt(tmp).Obj.getThingTyp() != creature.getThingTyp()) ||
+                    ((map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.Imp ||  map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.HQCreature) &&
+                    (map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.HQCreature || creature.getThingTyp() != Vars_Func.ThingTyp.DungeonCreature))))
                 {
                     nearesEnemy = tmp;
                     break;

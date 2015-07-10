@@ -12,13 +12,12 @@ namespace Underlord.Logic
         {
             List<Entity.Vars_Func.WallTyp> specials = new List<Entity.Vars_Func.WallTyp>();
             specials.Add(Entity.Vars_Func.WallTyp.HQ);
-            specials.Add(Entity.Vars_Func.WallTyp.HQ);
+            specials.Add(Entity.Vars_Func.WallTyp.EN);
             Random rand = new Random();
             Vector2 HQ = new Vector2();
             Vector2 EN = new Vector2();
             int dia = diamond;
             int go = gold;
-            bool HQplaced = false;
             //determine special walls
             for (int i = 0 ; i < Math.Pow((size/5),2) - 2; ++i)
             {
@@ -47,8 +46,8 @@ namespace Underlord.Logic
                     // special wall
                     if (j % 5 == 0 && i % 5 == 0)
                     {
-                        // if entrance place entrance Nest
-                        if (specials[randnum] == Entity.Vars_Func.WallTyp.HQ && HQplaced)
+                        // if entrance place entrance
+                        if (specials[randnum] == Entity.Vars_Func.WallTyp.EN)
                             new Entity.Nest(Entity.Vars_Func.NestTyp.Entrance, new Vector2(i, j), hexmap.getHexagonAt(i, j), hexmap, HQ);
                         //place specila wall if not entrance
                         else
@@ -61,12 +60,8 @@ namespace Underlord.Logic
                                 new Entity.Wall(new Vector2(hex.X, hex.Y), Underlord.Entity.Vars_Func.WallTyp.Gold, 300, hexmap);
                             }
                         }
-                        if (specials[randnum] == Entity.Vars_Func.WallTyp.HQ && !HQplaced)
-                        {
-                            HQplaced = true;
-                            HQ = new Vector2(i, j); 
-                        }
-                        else if (specials[randnum] == Entity.Vars_Func.WallTyp.HQ) EN = new Vector2(i, j);
+                        if (specials[randnum] == Entity.Vars_Func.WallTyp.HQ) HQ = new Vector2(i, j);
+                        if (specials[randnum] == Entity.Vars_Func.WallTyp.EN) EN = new Vector2(i, j);
                         specials.RemoveAt(randnum);
                     }
                     // fill rest with normal walls

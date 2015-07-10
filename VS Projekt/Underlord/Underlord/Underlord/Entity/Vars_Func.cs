@@ -75,8 +75,8 @@ namespace Underlord.Entity
            //NestModels[(int)NestTyp.Entrance].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
 
 
-           CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//minion_ANI_walk_simple_02")));
-           CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//knight_&_sword_ANI_01")));
+           CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")));
+           CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//knight_&_sword_ANI_01"), 0.2f, MathHelper.PiOver2));
 
            
            

@@ -32,6 +32,16 @@ namespace Underlord.Animation
         /// </summary>
         protected AnimationPlayer player = null;
 
+        /// <summary>
+        /// The default x rotation.
+        /// </summary>
+        protected float xRotation = -1;
+
+        /// <summary>
+        /// The default scale value.
+        /// </summary>
+        protected float scale = -1;
+
         #endregion
 
         #region Properties
@@ -59,6 +69,16 @@ namespace Underlord.Animation
             modelExtra = model.Tag as ModelExtra;
             System.Diagnostics.Debug.Assert(modelExtra != null);
             ObtainBones();
+        }
+
+        /// <summary>
+        /// Constructor. Creates the model from an XNA model
+        /// </summary>
+        /// <param name="assetName">The name of the asset for this model</param>
+        public AnimationModel(Model model, float scale, float xRotation) : this (model)
+        {
+            this.scale = scale;
+            this.xRotation = xRotation;
         }
 
         #endregion
@@ -144,6 +164,17 @@ namespace Underlord.Animation
         {
             if (model == null)
                 return;
+
+
+            if (xRotation != -1)
+            {
+                world *= Matrix.CreateRotationX(xRotation);      
+            }
+
+            if (scale != -1)
+            {
+                world *= Matrix.CreateScale(scale);
+            }
 
             //
             // Compute all of the bone absolute transforms

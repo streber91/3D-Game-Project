@@ -15,6 +15,7 @@ namespace Underlord.Logic
         {
             
             {
+                if (imp.Path == null) imp.Path = new Stack<Vector2>();
                 // search Job
                 if (imp.CurrentJob.getJobTyp() == Vars_Func.ImpJob.Idle)
                 {
@@ -24,8 +25,6 @@ namespace Underlord.Logic
                         imp.CurrentJob = map.JobsWaiting.Dequeue();
                         map.JobsInProgress.Add(imp.CurrentJob);
                     }
-                    //else idle
-                    else randomwalk(imp, map);
                 }
                 // search path to workplace
                 else if(imp.Path.Count == 0) imp.Path = determinePath(imp.Position, imp.CurrentJob.getDestination(), map);
@@ -42,6 +41,9 @@ namespace Underlord.Logic
                         imp.CurrentJob = null;
                     }
                 }
+                // nothing to do?
+                if (imp.Path == null || imp.Path.Count == 0) randomwalk(imp, map);
+
                 // time left for action?
                 if (imp.ActionTimeCounter >= 500)
                 {
@@ -54,18 +56,21 @@ namespace Underlord.Logic
 
         static public void compute(Creature creature, GameTime time, Environment.Map map)
         {
+            
+
             // time for creatur to act?
             if (creature.ActionTimeCounter >= 1000 / creature.getSpeed())
             {
                 Vector2 nearestEnemy = computeNearestEnemy(creature, map);
                 if(creature.Path == null) creature.Path = new Stack<Vector2>();
-
+                // neutral creatures only randomwalk
+                if (creature.getThingTyp() == Vars_Func.ThingTyp.NeutralCreature) randomwalk(creature, map);
                 // walk to nearest Enemy and attack if there is one
-                if (nearestEnemy.X != map.getPlanelength())
+                else if (nearestEnemy.X != map.getPlanelength())
                 {
                     if (map.getHexagonAt(creature.Position).Neighbors.Contains(nearestEnemy))
                     {
-                        if(creature.ActionTimeCounter >= 1000 / creature.getSpeed())
+                        if (creature.ActionTimeCounter >= 1000 / creature.getSpeed())
                         {
                             if (map.getHexagonAt(nearestEnemy).Obj.getThingTyp() != Vars_Func.ThingTyp.Imp)
                             {

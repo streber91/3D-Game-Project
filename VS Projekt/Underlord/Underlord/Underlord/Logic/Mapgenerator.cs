@@ -72,7 +72,7 @@ namespace Underlord.Logic
                 }
             }
             // set entrance target correct
-            ((Entity.Nest)map.getHexagonAt(EN).Obj).TargetPos = HQ;
+            ((Entity.Nest)map.getHexagonAt(EN).Obj).TargetPosition = HQ;
             // room for HQ
             foreach (Vector2 hex in map.getHexagonAt(HQ.X, HQ.Y).Neighbors)
             {

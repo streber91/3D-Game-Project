@@ -82,11 +82,11 @@ namespace Underlord.Entity
             if(d<0)
             {
             }
-            else { this.hp+=d; }
+            else { this.hp += d; }
         }
         public void decreaseHP(int d)
         {
-            if(d>0)
+            if(d<0)
             {
             }
             else { this.hp -= d; }

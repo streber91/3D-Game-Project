@@ -170,10 +170,17 @@ namespace Underlord.Environment
             }
         }
         //TODO
-        public void remove(Thing thing)
+        public void remove(Creature creature)
         {
-            // delet thing from list
-            // determine position and set map[x][y] = null
+            getHexagonAt(creature.Position).Obj = null;
+            creatures.Remove(creature);
+            heroes.Remove(creature);
+        }
+
+        public void remove(Imp imp)
+        {
+            getHexagonAt(imp.Position).Obj = null;
+            impList.Remove(imp);
         }
         //TODO
         //private void loadSavegame(File savegame)

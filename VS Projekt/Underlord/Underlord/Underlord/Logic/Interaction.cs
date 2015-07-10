@@ -166,7 +166,7 @@ namespace Underlord.Logic
                                 }
                                 if (placeable)
                                 {
-                                    map.Nests.Add(new Nest(Vars_Func.NestTyp.Beetle, mouseover, map.getHexagonAt(mouseover), map, map.getHexagonAt(mouseover).Neighbors[3]));
+                                    new Nest(Vars_Func.NestTyp.Beetle, mouseover, map.getHexagonAt(mouseover), map, map.getHexagonAt(mouseover).Neighbors[3]);
                                     map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType = Vars_Func.NestTyp.Beetle;
                                 }
                             }

@@ -85,6 +85,7 @@ namespace Underlord.Entity
             nutrition = 250f;
             hex.Obj = this;
             thingTyp = Vars_Func.ThingTyp.Nest;
+            map.Nests.Add(this);
         }
         #endregion
 
@@ -155,7 +156,7 @@ namespace Underlord.Entity
             switch(typus)
             {
                 case Vars_Func.NestTyp.Entrance:
-                    map.Creatures.Add(new Creature(Vars_Func.CreatureTyp.Knight, new List<Ability>(), map.getHexagonAt(this.position).Neighbors[3], this, Vars_Func.ThingTyp.HeroCreature, map));
+                    //new Creature(Vars_Func.CreatureTyp.Knight, new List<Ability>(), map.getHexagonAt(this.position).Neighbors[3], this, Vars_Func.ThingTyp.HeroCreature, map);
                     break;
                 case Vars_Func.NestTyp.Beetle:
                     //find free position for the new creature through a broad-first-search
@@ -185,7 +186,7 @@ namespace Underlord.Entity
                     {
                         if (hex.Visited == true) hex.Visited = false;
                     }
-                    map.Creatures.Add(new Creature(Vars_Func.CreatureTyp.Beetle, new List<Ability>(), tmp, this, Vars_Func.ThingTyp.DungeonCreature, map));
+                    new Creature(Vars_Func.CreatureTyp.Beetle, new List<Ability>(), tmp, this, Vars_Func.ThingTyp.DungeonCreature, map);
                     break;
             }
         }

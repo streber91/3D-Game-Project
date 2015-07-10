@@ -13,7 +13,9 @@ namespace Underlord.Environment
     {
         List<Room> rooms;
         List<Nest> nests;
+        List<Nest> entrances;
         List<Creature> creatures;
+        List<Creature> heroes;
         List<Hexagon> map;
         List<Imp> impList;
         Queue<Logic.Job> jobsWaiting;
@@ -32,9 +34,17 @@ namespace Underlord.Environment
         {
             get { return nests; }
         }
+        public List<Nest> Entrances
+        {
+            get { return entrances; }
+        }
         public List<Creature> Creatures
         {
             get { return creatures; }
+        }
+        public List<Creature> Heroes
+        {
+            get { return heroes; }
         }
         public Queue<Logic.Job> JobsWaiting
         {
@@ -59,7 +69,9 @@ namespace Underlord.Environment
         {
             rooms = new List<Room>();
             nests = new List<Nest>();
+            entrances = new List<Nest>();
             creatures = new List<Creature>();
+            heroes = new List<Creature>();
             map = new List<Hexagon>();
             impList = new List<Imp>();
             jobsWaiting = new Queue<Logic.Job>();
@@ -364,9 +376,17 @@ namespace Underlord.Environment
             {
                 n.update(gameTime, this);
             }
+            foreach (Nest e in entrances)
+            {
+                e.update(gameTime, this);
+            }
             foreach (Creature c in creatures)
             {
                 c.update(gameTime, this);
+            }
+            foreach (Creature h in heroes)
+            {
+                h.update(gameTime, this);
             }
         }
     }

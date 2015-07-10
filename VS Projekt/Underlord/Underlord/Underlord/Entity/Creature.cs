@@ -51,6 +51,7 @@ namespace Underlord.Entity
             hp = 300;
             dmg = 20;
 			map.getHexagonAt(pos).Obj = this;
+            map.Creatures.Add(this);
         }
         #endregion
 

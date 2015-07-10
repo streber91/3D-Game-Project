@@ -9,7 +9,7 @@ namespace Underlord.Entity
 {
     class Creature : Thing
     {
-        Vars_Func.CreatureTyp type;
+        Vars_Func.CreatureTyp typ;
         List<Ability> abilities;
         int hp, dmg, vision;
         float size, speed, actionTimeCounter;
@@ -37,21 +37,42 @@ namespace Underlord.Entity
         #endregion
 
         #region Constructor
-        public Creature(Vars_Func.CreatureTyp type, List<Ability> ability, Vector2 pos, Nest home, Vars_Func.ThingTyp allignment, Environment.Map map)
+        public Creature(Vars_Func.CreatureTyp typ, List<Ability> ability, Vector2 pos, Nest home, Vars_Func.ThingTyp allignment, Environment.Map map)
         {
-            this.type = type;
-            this.abilities = ability;
-            this.position = pos;
-            this.home = home;
-            thingTyp = allignment;
-            size = 1;
-            speed = 1;
-            actionTimeCounter = 0;
-            vision = 4;
-            hp = 300;
-            dmg = 20;
-			map.getHexagonAt(pos).Obj = this;
-            map.Creatures.Add(this);
+            switch (typ)
+            {
+                case Vars_Func.CreatureTyp.Beetle:
+                    this.typ = typ;
+                    this.abilities = ability;
+                    this.position = pos;
+                    this.home = home;
+                    thingTyp = allignment;
+                    size = 1;
+                    speed = 1;
+                    actionTimeCounter = 0;
+                    vision = 4;
+                    hp = 300;
+                    dmg = 20;
+			        map.getHexagonAt(pos).Obj = this;
+                    map.Creatures.Add(this);
+                    break;
+                case Vars_Func.CreatureTyp.Knight:
+                    this.typ = typ;
+                    this.abilities = ability;
+                    this.position = pos;
+                    this.home = home;
+                    thingTyp = allignment;
+                    size = 1;
+                    speed = 1;
+                    actionTimeCounter = 0;
+                    vision = 4;
+                    hp = 300;
+                    dmg = 20;
+			        map.getHexagonAt(pos).Obj = this;
+                    map.Heroes.Add(this);
+                    break;
+            }
+            
         }
         #endregion
 
@@ -92,8 +113,8 @@ namespace Underlord.Entity
             Matrix.CreateRotationZ(0) *
             Matrix.CreateTranslation(drawPosition);
 
-            Entity.Vars_Func.getCreatureModell(type).Color = drawColor;
-            Entity.Vars_Func.getCreatureModell(type).Draw(camera, modelMatrix);
+            Entity.Vars_Func.getCreatureModell(typ).Color = drawColor;
+            Entity.Vars_Func.getCreatureModell(typ).Draw(camera, modelMatrix);
         }
     }
 }

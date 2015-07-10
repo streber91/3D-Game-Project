@@ -8,12 +8,12 @@ namespace Underlord.Entity
 {
     class Nest : Thing
     {
-        Vars_Func.NestTyp typus;
+        Vars_Func.NestTyp typ;
         Upgrade[] upgrades;
         List<Vector2> upgradePos, nestHexagons, possibleNextNestHexagons;
         float size, nutrition, maxNutrition, growcounter, timeCounter, spawnCounter;
         Boolean undead;
-        Vector2 targetPos, position;
+        Vector2 targetPosition, position;
 
         #region Properties
         public Boolean Undead
@@ -21,10 +21,10 @@ namespace Underlord.Entity
             get { return undead; }
             set { undead = value; }
         }
-        public Vector2 TargetPos
+        public Vector2 TargetPosition
         {
-            get { return targetPos; }
-            set { targetPos = value; }
+            get { return targetPosition; }
+            set { targetPosition = value; }
         }
         public Vector2 Position
         {
@@ -46,14 +46,19 @@ namespace Underlord.Entity
         #endregion
 
         #region Constructor
-        public Nest(Vars_Func.NestTyp typus, Vector2 position, Environment.Hexagon hex, Environment.Map map, Vector2 targetPosition)
+        public Nest(Vars_Func.NestTyp typ, Vector2 position, Environment.Hexagon hex, Environment.Map map, Vector2 targetPosition)
         {
             possibleNextNestHexagons = new List<Vector2>();
             nestHexagons = new List<Vector2>();
             nestHexagons.Add(position);
-            switch (typus)
+            switch (typ)
             {
-                case (int)Vars_Func.NestTyp.Beetle:
+                case Vars_Func.NestTyp.Entrance:
+                    hex.Building = true;
+                    hex.Nest = true;
+                    map.Entrances.Add(this);
+                    break;
+                case Vars_Func.NestTyp.Beetle:
                     hex.Typ = Vars_Func.HexTyp.BeetleNest;
                     hex.Building = true;
                     hex.Nest = true;
@@ -73,11 +78,12 @@ namespace Underlord.Entity
                             }
                         }
                     }
+                    map.Nests.Add(this);
                     break;
             }
-            this.typus = typus;
+            this.typ = typ;
             this.position = position;
-            targetPos = hex.Neighbors[3];
+            this.targetPosition = targetPosition;
             upgradePos = new List<Vector2>();
             undead = false;
             size = 1;
@@ -85,7 +91,6 @@ namespace Underlord.Entity
             nutrition = 250f;
             hex.Obj = this;
             thingTyp = Vars_Func.ThingTyp.Nest;
-            map.Nests.Add(this);
         }
         #endregion
 
@@ -94,7 +99,7 @@ namespace Underlord.Entity
             timeCounter += gameTime.ElapsedGameTime.Milliseconds;
             spawnCounter += gameTime.ElapsedGameTime.Milliseconds;
             //update a nest
-            if (this.typus != Vars_Func.NestTyp.Entrance)
+            if (this.typ != Vars_Func.NestTyp.Entrance)
             {
                 if (timeCounter > 1000)
                 {
@@ -147,21 +152,46 @@ namespace Underlord.Entity
             Matrix.CreateRotationZ(0) *
             Matrix.CreateTranslation(drawPosition);
 
-            Entity.Vars_Func.getNestModell(typus).Color = drawColor;
-            Entity.Vars_Func.getNestModell(typus).Draw(camera, modelMatrix);
+            Entity.Vars_Func.getNestModell(typ).Color = drawColor;
+            Entity.Vars_Func.getNestModell(typ).Draw(camera, modelMatrix);
         }
 
         public void spawnCreature(Environment.Map map)
         {
-            switch(typus)
+            Vector2 tmp = map.getHexagonAt(this.position).Neighbors[3];
+            Queue<Vector2> queue = new Queue<Vector2>();
+            switch(typ)
             {
                 case Vars_Func.NestTyp.Entrance:
-                    new Creature(Vars_Func.CreatureTyp.Knight, new List<Ability>(), map.getHexagonAt(this.position).Neighbors[3], this, Vars_Func.ThingTyp.HeroCreature, map);
+                    //find free position for the new creature through a broad-first-search
+                    queue.Enqueue(tmp);
+                    map.getHexagonAt(tmp).Visited = true;
+                    while (queue.Count != 0)
+                    {
+                        tmp = queue.Dequeue();
+                        if (map.getHexagonAt(tmp).Obj == null) break;
+                        //for all neighbors
+
+                        for (int i = 0; i < 6; ++i)
+                        {
+                            Vector2 neighbor = map.getHexagonAt(tmp).Neighbors[i];
+                            //which weren't visited already
+                            if (map.getHexagonAt(neighbor).Visited == false)
+                            {
+                                map.getHexagonAt(neighbor).Visited = true; //set visited at true
+                                queue.Enqueue(neighbor); //add the neighbor to the queue
+                            }
+                        }
+                    }
+                    //set visited for all hexagon at false (for the next use of searching)
+                    foreach (Environment.Hexagon hex in map.getMapHexagons())
+                    {
+                        if (hex.Visited == true) hex.Visited = false;
+                    }
+                    new Creature(Vars_Func.CreatureTyp.Knight, new List<Ability>(), tmp, this, Vars_Func.ThingTyp.HeroCreature, map);
                     break;
                 case Vars_Func.NestTyp.Beetle:
                     //find free position for the new creature through a broad-first-search
-                    Vector2 tmp = map.getHexagonAt(this.position).Neighbors[3];
-                    Queue<Vector2> queue = new Queue<Vector2>();
                     queue.Enqueue(tmp);
                     map.getHexagonAt(tmp).Visited = true;
                     while (queue.Count != 0)

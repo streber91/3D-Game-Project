@@ -76,8 +76,8 @@ namespace Underlord.Entity
 
 
            CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")));
-           CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//knight_&_sword_ANI_01"), 0.2f, MathHelper.PiOver2));
-
+           CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")/*, 0.2f, MathHelper.PiOver2*/));
+           CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")));
            
            
      

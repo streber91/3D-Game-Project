@@ -8,7 +8,7 @@ namespace Underlord.Logic
 {
     static class Mapgenerator
     {
-        public static void generateMap(Environment.Map hexmap, int size, int diamond,int gold)
+        public static void generateMap(Environment.Map map, int size, int diamond,int gold)
         {
             List<Entity.Vars_Func.WallTyp> specials = new List<Entity.Vars_Func.WallTyp>();
             specials.Add(Entity.Vars_Func.WallTyp.HQ);
@@ -48,16 +48,19 @@ namespace Underlord.Logic
                     {
                         // if entrance place entrance
                         if (specials[randnum] == Entity.Vars_Func.WallTyp.EN)
-                            new Entity.Nest(Entity.Vars_Func.NestTyp.Entrance, new Vector2(i, j), hexmap.getHexagonAt(i, j), hexmap, HQ);
-                        //place specila wall if not entrance
+                            new Entity.Nest(Entity.Vars_Func.NestTyp.Entrance, new Vector2(i, j), map.getHexagonAt(i, j), map, HQ);
+                        // if HQ place HQ
+                        else if(specials[randnum] == Entity.Vars_Func.WallTyp.HQ)
+                            new Entity.Creature(Entity.Vars_Func.CreatureTyp.HQCreatur, null, new Vector2(i, j), null, Entity.Vars_Func.ThingTyp.HQCreature, map);
+                        //place specila wall if not entrance or HQ
                         else
-                            new Entity.Wall(new Vector2(i, j), specials[randnum], 300, hexmap);
+                            new Entity.Wall(new Vector2(i, j), specials[randnum], 300, map);
   
                         if (specials[randnum] == Entity.Vars_Func.WallTyp.Diamond || Entity.Vars_Func.WallTyp.Gold == specials[randnum])
                         {
-                            foreach (Vector2 hex in hexmap.getHexagonAt(i, j).Neighbors)
+                            foreach (Vector2 hex in map.getHexagonAt(i, j).Neighbors)
                             {
-                                new Entity.Wall(new Vector2(hex.X, hex.Y), Underlord.Entity.Vars_Func.WallTyp.Gold, 300, hexmap);
+                                new Entity.Wall(new Vector2(hex.X, hex.Y), Underlord.Entity.Vars_Func.WallTyp.Gold, 300, map);
                             }
                         }
                         if (specials[randnum] == Entity.Vars_Func.WallTyp.HQ) HQ = new Vector2(i, j);
@@ -65,40 +68,42 @@ namespace Underlord.Logic
                         specials.RemoveAt(randnum);
                     }
                     // fill rest with normal walls
-                    else if(hexmap.getHexagonAt(i, j).Obj == null) new Entity.Wall(new Vector2(i, j), Underlord.Entity.Vars_Func.WallTyp.Stone, 300, hexmap);
+                    else if(map.getHexagonAt(i, j).Obj == null) new Entity.Wall(new Vector2(i, j), Underlord.Entity.Vars_Func.WallTyp.Stone, 300, map);
                 }
             }
+            // set entrance target correct
+            ((Entity.Nest)map.getHexagonAt(EN).Obj).TargetPos = HQ;
             // room for HQ
-            foreach (Vector2 hex in hexmap.getHexagonAt(HQ.X, HQ.Y).Neighbors)
+            foreach (Vector2 hex in map.getHexagonAt(HQ.X, HQ.Y).Neighbors)
             {
-                hexmap.getHexagonAt(hex.X, hex.Y).Obj = null;
+                map.getHexagonAt(hex.X, hex.Y).Obj = null;
             }
             // room for entrance
-            foreach (Vector2 hex in hexmap.getHexagonAt(EN.X, EN.Y).Neighbors)
+            foreach (Vector2 hex in map.getHexagonAt(EN.X, EN.Y).Neighbors)
             {
-                hexmap.getHexagonAt(hex.X, hex.Y).Obj = null;
+                map.getHexagonAt(hex.X, hex.Y).Obj = null;
             }
             // build path from first entrance to HQ
-            while( !hexmap.getHexagonAt(HQ.X, HQ.Y).Neighbors.Contains(EN))
+            while( !map.getHexagonAt(HQ.X, HQ.Y).Neighbors.Contains(EN))
             {
                 if (HQ.X < EN.X)
                 {
-                    hexmap.getHexagonAt(EN.X - 1, EN.Y).Obj = null;
+                    map.getHexagonAt(EN.X - 1, EN.Y).Obj = null;
                     --EN.X; 
                 }
                 else if (HQ.X > EN.X)
                 {
-                    hexmap.getHexagonAt(EN.X + 1, EN.Y).Obj = null;
+                    map.getHexagonAt(EN.X + 1, EN.Y).Obj = null;
                     ++EN.X; 
                 }
                 if (HQ.Y < EN.Y)
                 {
-                    hexmap.getHexagonAt(EN.X, EN.Y - 1).Obj = null;
+                    map.getHexagonAt(EN.X, EN.Y - 1).Obj = null;
                     --EN.Y;
                 }
                 else if (HQ.Y > EN.Y)
                 {
-                    hexmap.getHexagonAt(EN.X, EN.Y + 1).Obj = null;
+                    map.getHexagonAt(EN.X, EN.Y + 1).Obj = null;
                     ++EN.Y;
                 }
             }

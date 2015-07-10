@@ -130,7 +130,7 @@ namespace Underlord.Entity
             else
             {
                 //timer to spawn heroes
-                if (spawnCounter > 1000)
+                if (spawnCounter > 5000)
                 {
                     spawnCreature(map);
                     spawnCounter = 0;

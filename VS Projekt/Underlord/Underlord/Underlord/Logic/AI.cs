@@ -56,10 +56,8 @@ namespace Underlord.Logic
 
         static public void compute(Creature creature, GameTime time, Environment.Map map)
         {
-            
-
-            // time for creatur to act?
-            if (creature.ActionTimeCounter >= 1000 / creature.getSpeed())
+            // time for creatur to act and none HQcreature?
+            if (creature.ActionTimeCounter >= 1000 / creature.getSpeed() && creature.getThingTyp() != Vars_Func.ThingTyp.HQCreature)
             {
                 Vector2 nearestEnemy = computeNearestEnemy(creature, map);
                 if(creature.Path == null) creature.Path = new Stack<Vector2>();
@@ -72,6 +70,7 @@ namespace Underlord.Logic
                     {
                         if (creature.ActionTimeCounter >= 1000 / creature.getSpeed())
                         {
+                            // attack creature
                             if (map.getHexagonAt(nearestEnemy).Obj.getThingTyp() != Vars_Func.ThingTyp.Imp)
                             {
                                 Creature target = (Creature)map.getHexagonAt(nearestEnemy).Obj;
@@ -79,6 +78,7 @@ namespace Underlord.Logic
                                 if (target.getHP() <= 0) map.remove(target);
                                 creature.ActionTimeCounter = 0;
                             }
+                            // attack imp
                             else
                             {
                                 Imp target = (Imp)map.getHexagonAt(nearestEnemy).Obj;
@@ -93,7 +93,8 @@ namespace Underlord.Logic
                             }
                         }
                     }
-                    else creature.Path = determinePath(creature.Position, nearestEnemy, map, false);
+                    // serach path
+                    else creature.Path = determinePath(creature.Position, map.getHexagonAt(nearestEnemy).Neighbors, map, false);
                 }
 
                 // calculate path if creature has none
@@ -141,10 +142,10 @@ namespace Underlord.Logic
                 //contains position an enemy creature?
                 if ( map.getHexagonAt(tmp).Obj != null &&
                     // Enemys can attack player creatures
-                    (((map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.Imp || map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.HQCreature ||
+                    (((map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.Imp || map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.DungeonCreature ||
                     map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.HQCreature) &&
-                    (creature.getThingTyp() == Vars_Func.ThingTyp.HQCreature || creature.getThingTyp() != Vars_Func.ThingTyp.DungeonCreature)) ||
-                    // everyone can atack neural and heroes expect themselfe
+                    (creature.getThingTyp() != Vars_Func.ThingTyp.HQCreature && creature.getThingTyp() != Vars_Func.ThingTyp.DungeonCreature)) ||
+                    // everyone can attack neural and heroes expect themselfe
                     ((map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.HeroCreature || map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.NeutralCreature) &&
                     map.getHexagonAt(tmp).Obj.getThingTyp() != creature.getThingTyp())))
                 {
@@ -178,7 +179,17 @@ namespace Underlord.Logic
         {
             List<Vector2> des = new List<Vector2>();
             des.Add(destination);
-            return determinePath(start, des, map, ignoreWalls, ignoreCreatures);
+            return determinePath(start, des, map, ignoreCreatures, ignoreWalls);
+        }
+
+        static private Stack<Vector2> determinePath(Vector2 start, Vector2[] destination, Environment.Map map, bool ignoreCreatures = true, bool ignoreWalls = false)
+        {
+            List<Vector2> des = new List<Vector2>();
+            foreach(Vector2 vec in destination)
+            {
+                des.Add(vec);
+            }
+            return determinePath(start, des, map, ignoreCreatures, ignoreWalls);
         }
 
         static private Stack<Vector2> determinePath(Vector2 start, List<Vector2> destination, Environment.Map map, bool ignoreCreatures = true, bool ignoreWalls = false)
@@ -203,7 +214,9 @@ namespace Underlord.Logic
                         ((map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.Wall || ignoreWalls) && 
                         (map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.DungeonCreature || ignoreCreatures) &&
                         (map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.HeroCreature || ignoreCreatures) &&
-                        (map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.NeutralCreature || ignoreCreatures)
+                        (map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.NeutralCreature || ignoreCreatures) &&
+                        map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.Nest && map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.Upgrade &&
+                        (map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.HQCreature || map.getHexagonAt(start).Obj.getThingTyp() == Vars_Func.ThingTyp.HeroCreature)
                         )))
                     {
                         queue.Enqueue(hex);
@@ -214,11 +227,14 @@ namespace Underlord.Logic
             }
 
             //push path on stack
-            if (!destination.Contains(tmp)) return null;
-            while (tmp != start)
+            if (!destination.Contains(tmp)) path = null;
+            else
             {
-                path.Push(tmp);
-                tmp = map.getHexagonAt(tmp).Parent;
+                while (tmp != start)
+                {
+                    path.Push(tmp);
+                    tmp = map.getHexagonAt(tmp).Parent;
+                }
             }
             //clear Hexmap for next search
             for (int i = 0; i < map.getPlanelength(); ++i)

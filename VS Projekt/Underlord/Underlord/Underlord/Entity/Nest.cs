@@ -135,7 +135,7 @@ namespace Underlord.Entity
             else
             {
                 //timer to spawn heroes
-                if (spawnCounter > 1000)
+                if (spawnCounter > 10000)
                 {
                     spawnCreature(map);
                     spawnCounter = 0;
@@ -158,15 +158,40 @@ namespace Underlord.Entity
 
         public void spawnCreature(Environment.Map map)
         {
+            Vector2 tmp = map.getHexagonAt(this.position).Neighbors[3];
+            Queue<Vector2> queue = new Queue<Vector2>();
             switch(typ)
             {
                 case Vars_Func.NestTyp.Entrance:
-                    new Creature(Vars_Func.CreatureTyp.Knight, new List<Ability>(), map.getHexagonAt(this.position).Neighbors[3], this, Vars_Func.ThingTyp.HeroCreature, map);
+                    //find free position for the new creature through a broad-first-search
+                    queue.Enqueue(tmp);
+                    map.getHexagonAt(tmp).Visited = true;
+                    while (queue.Count != 0)
+                    {
+                        tmp = queue.Dequeue();
+                        if (map.getHexagonAt(tmp).Obj == null) break;
+                        //for all neighbors
+
+                        for (int i = 0; i < 6; ++i)
+                        {
+                            Vector2 neighbor = map.getHexagonAt(tmp).Neighbors[i];
+                            //which weren't visited already
+                            if (map.getHexagonAt(neighbor).Visited == false)
+                            {
+                                map.getHexagonAt(neighbor).Visited = true; //set visited at true
+                                queue.Enqueue(neighbor); //add the neighbor to the queue
+                            }
+                        }
+                    }
+                    //set visited for all hexagon at false (for the next use of searching)
+                    foreach (Environment.Hexagon hex in map.getMapHexagons())
+                    {
+                        if (hex.Visited == true) hex.Visited = false;
+                    }
+                    new Creature(Vars_Func.CreatureTyp.Knight, new List<Ability>(), tmp, this, Vars_Func.ThingTyp.HeroCreature, map);
                     break;
                 case Vars_Func.NestTyp.Beetle:
                     //find free position for the new creature through a broad-first-search
-                    Vector2 tmp = map.getHexagonAt(this.position).Neighbors[3];
-                    Queue<Vector2> queue = new Queue<Vector2>();
                     queue.Enqueue(tmp);
                     map.getHexagonAt(tmp).Visited = true;
                     while (queue.Count != 0)

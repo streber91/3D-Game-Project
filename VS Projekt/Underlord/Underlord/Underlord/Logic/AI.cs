@@ -99,11 +99,11 @@ namespace Underlord.Logic
                 // calculate path if creature has none
                 else if (creature.Path.Count == 0)
                 {
-                    if (Entity.Vars_Func.computeDistance(creature.getHome().TargetPos, creature.Position, map) < 5) randomwalk(creature, map);
-                    else creature.Path = determinePath(creature.Position, creature.getHome().TargetPos, map);
+                    if (Entity.Vars_Func.computeDistance(creature.getHome().TargetPosition, creature.Position, map) < 5) randomwalk(creature, map);
+                    else creature.Path = determinePath(creature.Position, creature.getHome().TargetPosition, map);
                     // herocreature found no path and so burrow throug walls
                     if (creature.Path == null && creature.getThingTyp() == Vars_Func.ThingTyp.HeroCreature)
-                        creature.Path = determinePath(creature.Position, creature.getHome().TargetPos, map, true, true);
+                        creature.Path = determinePath(creature.Position, creature.getHome().TargetPosition, map, true, true);
                 }
 
                 // time left for action?

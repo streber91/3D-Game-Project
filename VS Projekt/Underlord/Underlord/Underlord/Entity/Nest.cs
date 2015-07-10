@@ -92,10 +92,10 @@ namespace Underlord.Entity
         {
             timeCounter += gameTime.ElapsedGameTime.Milliseconds;
             spawnCounter += gameTime.ElapsedGameTime.Milliseconds;
-            if (timeCounter > 1000)
+            //update a nest
+            if (this.typus != Vars_Func.NestTyp.Entrance)
             {
-                //update a nest
-                if (this.typus != Vars_Func.NestTyp.Entrance)
+                if (timeCounter > 1000)
                 {
                     if (possibleNextNestHexagons.Count != 0)
                     {
@@ -118,7 +118,8 @@ namespace Underlord.Entity
                     }
                     timeCounter = 0;
                 }
-                if (spawnCounter > 4000)
+                //timer to spawn creatures
+                if (spawnCounter > 10000)
                 {
                     spawnCreature(map);
                     spawnCounter = 0;
@@ -127,7 +128,12 @@ namespace Underlord.Entity
             //update an entrance
             else
             {
-
+                //timer to spawn heroes
+                if (spawnCounter > 10000)
+                {
+                    spawnCreature(map);
+                    spawnCounter = 0;
+                }
             }
         }
 
@@ -148,6 +154,9 @@ namespace Underlord.Entity
         {
             switch(typus)
             {
+                case Vars_Func.NestTyp.Entrance:
+                    map.Creatures.Add(new Creature(Vars_Func.CreatureTyp.Knight, new List<Ability>(), map.getHexagonAt(this.position).Neighbors[3], this, Vars_Func.ThingTyp.HeroCreature, map));
+                    break;
                 case Vars_Func.NestTyp.Beetle:
                     //find free position for the new creature through a broad-first-search
                     Vector2 tmp = map.getHexagonAt(this.position).Neighbors[3];

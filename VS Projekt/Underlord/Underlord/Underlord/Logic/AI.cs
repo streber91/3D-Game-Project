@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Underlord.Entity;
+using Underlord.Logic;
 using Microsoft.Xna.Framework;
 
 namespace Underlord.Logic
@@ -13,7 +13,7 @@ namespace Underlord.Logic
 
         static public void compute(Imp imp, GameTime time, Environment.Map map)
         {
-            
+            if (imp.ActionTimeCounter >= 500)
             {
                 if (imp.Path == null) imp.Path = new Stack<Vector2>();
                 // search Job
@@ -50,14 +50,15 @@ namespace Underlord.Logic
                     map.move(imp);
                     imp.AnimationMove(time);
                 }
-                imp.ActionTimeCounter += time.ElapsedGameTime.Milliseconds;
+                imp.ActionTimeCounter = 0;
             }
+            imp.ActionTimeCounter += time.ElapsedGameTime.Milliseconds;
         }
 
         static public void compute(Creature creature, GameTime time, Environment.Map map)
         {
             // time for creatur to act and none HQcreature?
-            if (creature.ActionTimeCounter >= 1000 / creature.getSpeed() && creature.getThingTyp() != Vars_Func.ThingTyp.HQCreature)
+            if (creature.ActionTimeCounter >= 1000 / creature.Speed && creature.getThingTyp() != Vars_Func.ThingTyp.HQCreature)
             {
                 Vector2 nearestEnemy = computeNearestEnemy(creature, map);
                 if(creature.Path == null) creature.Path = new Stack<Vector2>();
@@ -68,22 +69,22 @@ namespace Underlord.Logic
                 {
                     if (map.getHexagonAt(creature.Position).Neighbors.Contains(nearestEnemy))
                     {
-                        if (creature.ActionTimeCounter >= 1000 / creature.getSpeed())
+                        if (creature.ActionTimeCounter >= 1000 / creature.Speed)
                         {
                             // attack creature
                             if (map.getHexagonAt(nearestEnemy).Obj.getThingTyp() != Vars_Func.ThingTyp.Imp)
                             {
                                 Creature target = (Creature)map.getHexagonAt(nearestEnemy).Obj;
-                                target.decreaseHP(creature.getDmg());
-                                if (target.getHP() <= 0) map.remove(target);
+                                target.takeDamage(creature.Damage);
+                                if (target.DamageTaken >= target.HP) map.remove(target);
                                 creature.ActionTimeCounter = 0;
                             }
                             // attack imp
                             else
                             {
                                 Imp target = (Imp)map.getHexagonAt(nearestEnemy).Obj;
-                                target.decreaseHP(creature.getDmg());
-                                if (target.getHP() <= 0)
+                                target.takeDamage(creature.Damage);
+                                if (target.DamageTaken >= target.HP)
                                 {
                                     map.JobsWaiting.Enqueue(target.CurrentJob);
                                     map.JobsInProgress.Remove(target.CurrentJob);
@@ -100,18 +101,19 @@ namespace Underlord.Logic
                 // calculate path if creature has none
                 else if (creature.Path.Count == 0)
                 {
-                    if (Entity.Vars_Func.computeDistance(creature.getHome().TargetPosition, creature.Position, map) < 5) randomwalk(creature, map);
-                    else creature.Path = determinePath(creature.Position, creature.getHome().TargetPosition, map);
+                    if (Logic.Vars_Func.computeDistance(creature.Home.TargetPosition, creature.Position, map) < 5) randomwalk(creature, map);
+                    else creature.Path = determinePath(creature.Position, creature.Home.TargetPosition, map);
                     // herocreature found no path and so burrow throug walls
                     if (creature.Path == null && creature.getThingTyp() == Vars_Func.ThingTyp.HeroCreature)
-                        creature.Path = determinePath(creature.Position, creature.getHome().TargetPosition, map, true, true);
+                        creature.Path = determinePath(creature.Position, creature.Home.TargetPosition, map, true, true);
                 }
 
                 // time left for action?
-                if (creature.ActionTimeCounter >= 1000 / creature.getSpeed())
+                if (creature.ActionTimeCounter >= 1000 / creature.Speed)
                 {
                     map.move(creature);
                 }
+                creature.ActionTimeCounter = 0;
             }
             creature.ActionTimeCounter += time.ElapsedGameTime.Milliseconds;
         }
@@ -126,7 +128,7 @@ namespace Underlord.Logic
             Queue<Vector2> queue = new Queue<Vector2>();
             queue.Enqueue(creature.Position);
             map.getHexagonAt(creature.Position).Visited = true;
-            queue.Enqueue(new Vector2(map.getPlanelength(), creature.getVision()));
+            queue.Enqueue(new Vector2(map.getPlanelength(), creature.Vision));
 
             while (queue.Count != 1)
             {
@@ -156,7 +158,7 @@ namespace Underlord.Logic
                 foreach (Vector2 hex in map.getHexagonAt(tmp).Neighbors)
                 {
                     // is the hex a not wall objekt?
-                    if (!map.getHexagonAt(hex).Visited && (map.getHexagonAt(hex).Obj == null || map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.Wall))
+                    if (!map.getHexagonAt(hex).Visited && (map.getHexagonAt(hex).Obj == null || map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.Wall))
                     {
                         queue.Enqueue(hex);
                         map.getHexagonAt(hex).Visited = true;
@@ -211,12 +213,12 @@ namespace Underlord.Logic
                 {
                     // is the hex a not wall objekt? 
                     if (!map.getHexagonAt(hex).Visited && (map.getHexagonAt(hex).Obj == null ||
-                        ((map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.Wall || ignoreWalls) && 
-                        (map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.DungeonCreature || ignoreCreatures) &&
-                        (map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.HeroCreature || ignoreCreatures) &&
-                        (map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.NeutralCreature || ignoreCreatures) &&
-                        map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.Nest && map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.Upgrade &&
-                        (map.getHexagonAt(hex).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.HQCreature || map.getHexagonAt(start).Obj.getThingTyp() == Vars_Func.ThingTyp.HeroCreature)
+                        ((map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.Wall || ignoreWalls) && 
+                        (map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.DungeonCreature || ignoreCreatures) &&
+                        (map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.HeroCreature || ignoreCreatures) &&
+                        (map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.NeutralCreature || ignoreCreatures) &&
+                        map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.Nest && map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.Upgrade &&
+                        (map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.HQCreature || map.getHexagonAt(start).Obj.getThingTyp() == Vars_Func.ThingTyp.HeroCreature)
                         )))
                     {
                         queue.Enqueue(hex);

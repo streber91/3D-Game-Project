@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
-using Underlord.Entity;
+using Underlord.Logic;
 using Underlord.Renderer;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -22,6 +22,7 @@ namespace Underlord.Environment
         List<Logic.Job> jobsInProgress;
         List<Logic.Job> jobsDone;
 
+        Vector2 hqPosition;
         int planeSidelength;
         float hexagonSideLength;
 
@@ -62,10 +63,15 @@ namespace Underlord.Environment
         {
             get { return impList; }
         }
+        public Vector2 HQPosition
+        {
+            get { return hqPosition; }
+            set { hqPosition = value; }
+        }
         #endregion
 
         #region Constructor
-        public Map(int sidelength, Entity.Vars_Func.HexTyp typ, Boolean newGame, float hexagonSideLength)
+        public Map(int sidelength, Logic.Vars_Func.HexTyp typ, Boolean newGame, float hexagonSideLength)
         {
             map = new Hexagon[sidelength * sidelength];
             rooms = new List<Room>();
@@ -78,6 +84,7 @@ namespace Underlord.Environment
             jobsInProgress = new List<Logic.Job>();
             jobsDone = new List<Logic.Job>();
 
+            hqPosition = new Vector2();
             //drawHeight = 2; //how many hexagons are drawn up and down of the middle (+1)
             //drawWidth = 5; //how many hexagons are drawn left and right of the middle (+1)
             this.hexagonSideLength = hexagonSideLength;
@@ -155,7 +162,6 @@ namespace Underlord.Environment
                 getHexagonAt(imp.Position).Imps.Remove(imp);
                 imp.Position = imp.Path.Pop();
                 getHexagonAt(imp.Position).Imps.Add(imp); ;
-                imp.ActionTimeCounter = 0;
             }
         }
 
@@ -166,7 +172,6 @@ namespace Underlord.Environment
                 getHexagonAt(creature.Position).Obj = null;
                 creature.Position = creature.Path.Pop();
                 getHexagonAt(creature.Position).Obj = creature;
-                creature.ActionTimeCounter = 0;
             }
         }
         //TODO

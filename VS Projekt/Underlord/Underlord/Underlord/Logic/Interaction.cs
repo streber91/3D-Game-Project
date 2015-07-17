@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Underlord.Entity;
+using Underlord.Logic;
 
 namespace Underlord.Logic
 {
@@ -360,7 +360,7 @@ namespace Underlord.Logic
                                 map.getHexagonAt(neighbor).Visited = true; //set visited at true
                                 //when there isn't an object on the hexagon or the object isn't a wall
                                 //and the hexagon isn't already a room
-                                if ((map.getHexagonAt(neighbor).Obj == null || map.getHexagonAt(neighbor).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.Wall) && map.getHexagonAt(neighbor).RoomNumber == 0)
+                                if ((map.getHexagonAt(neighbor).Obj == null || map.getHexagonAt(neighbor).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.Wall) && map.getHexagonAt(neighbor).RoomNumber == 0)
                                 {
                                     queue.Enqueue(neighbor); //add the neighbor to the queue
                                     list.Add(neighbor); //and add the neighbor to the room

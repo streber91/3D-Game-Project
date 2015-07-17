@@ -8,10 +8,10 @@ namespace Underlord.Environment
     class Room
     {
         List<Vector2> room = new List<Vector2>();
-        Entity.Vars_Func.NestTyp nestType;
+        Logic.Vars_Func.NestTyp nestType;
 
         #region Properties
-        public Entity.Vars_Func.NestTyp NestType
+        public Logic.Vars_Func.NestTyp NestType
         {
             get { return nestType; }
             set { nestType = value; }
@@ -21,7 +21,7 @@ namespace Underlord.Environment
         #region Constructor
         public Room(Vector2 middleHexagonIndexNumber, int radius, Map map)
         {
-            nestType = Entity.Vars_Func.NestTyp.length;
+            nestType = Logic.Vars_Func.NestTyp.length;
             //create nest with only the middle hexagon
             if (radius == 0)
             {
@@ -55,7 +55,7 @@ namespace Underlord.Environment
                                 map.getHexagonAt(neighbor).Visited = true; //set visited at true
                                 //when there isn't an object on the hexagon or the object isn't a wall
                                 //and the hexagon isn't already a room
-                                if ((map.getHexagonAt(neighbor).Obj == null || map.getHexagonAt(neighbor).Obj.getThingTyp() != Entity.Vars_Func.ThingTyp.Wall) && map.getHexagonAt(neighbor).RoomNumber == 0)
+                                if ((map.getHexagonAt(neighbor).Obj == null || map.getHexagonAt(neighbor).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.Wall) && map.getHexagonAt(neighbor).RoomNumber == 0)
                                 {
                                     queue.Enqueue(neighbor); //add the neighbor to the queue
                                     map.getHexagonAt(neighbor).RoomNumber = roomNumber; //set the roomNumber of the neighbor

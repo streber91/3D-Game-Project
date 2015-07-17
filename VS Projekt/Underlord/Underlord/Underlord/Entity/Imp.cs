@@ -6,12 +6,12 @@ using Underlord.Renderer;
 using Microsoft.Xna.Framework;
 using Underlord.Animation;
 
-namespace Underlord.Entity
+namespace Underlord.Logic
 {
     class Imp : Thing
     {
         Vars_Func.ThingTyp thingTyp;
-        int HP;
+        int hp, damage;
         Vector2 position;
         Stack<Vector2> path;
         Logic.Job currentJob;
@@ -38,25 +38,38 @@ namespace Underlord.Entity
             get { return actionTimeCounter; }
             set { actionTimeCounter = value; }
         }
+        public int DamageTaken
+        {
+            get { return damage; }
+        }
+        public int HP
+        {
+            get { return hp; }
+        }
         #endregion
 
-        public int getHP() { return HP; }
-        public Vars_Func.ThingTyp getThingTyp() { return thingTyp; }
-
         #region Constructor
-        public Imp(Vector2 position)
+        public Imp(Vector2 position, Environment.Map map)
         {
             actionTimeCounter = 0;
-            HP = 100;
+            hp = 100;
+            damage = 0;
             thingTyp = Vars_Func.ThingTyp.Imp;
             this.position = position;
             path = new Stack<Vector2>();
+            map.getHexagonAt(position).Imps.Add(this);
+            map.ImpList.Add(this);
         }
         #endregion
 
         override public void update(GameTime time, Environment.Map map)
         {
             Logic.AI.compute(this, time, map);
+        }
+
+        public void takeDamage(int damage)
+        {
+            if (damage > 0) hp -= damage;
         }
 
         override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor)
@@ -68,23 +81,18 @@ namespace Underlord.Entity
             Matrix.CreateRotationZ(0) *
             Matrix.CreateTranslation(drawPosition);
 
-            Entity.Vars_Func.getImpModell().Color = drawColor;
-            Entity.Vars_Func.getImpModell().Draw(camera, modelMatrix);
-        }
-
-        public void decreaseHP(int damage)
-        {
-            if (damage > 0) HP -= damage;
+            Logic.Vars_Func.getImpModell().Color = drawColor;
+            Logic.Vars_Func.getImpModell().Draw(camera, modelMatrix);
         }
 
         public void AnimationJob(GameTime time, Logic.Job job)
         {
-            Entity.Vars_Func.getImpModell().PlayJobAnimation(time, job);
+            Logic.Vars_Func.getImpModell().PlayJobAnimation(time, job);
         }
 
         public void AnimationMove(GameTime time)
         {
-            Entity.Vars_Func.getImpModell().PlayMoveAnimation(time);
+            Logic.Vars_Func.getImpModell().PlayMoveAnimation(time);
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Underlord.Entity
+namespace Underlord.Logic
 {
     class Nest : Thing
     {
@@ -172,8 +172,8 @@ namespace Underlord.Entity
             Matrix.CreateRotationZ(0) *
             Matrix.CreateTranslation(drawPosition);
 
-            Entity.Vars_Func.getNestModell(typ).Color = drawColor;
-            Entity.Vars_Func.getNestModell(typ).Draw(camera, modelMatrix);
+            Logic.Vars_Func.getNestModell(typ).Color = drawColor;
+            Logic.Vars_Func.getNestModell(typ).Draw(camera, modelMatrix);
         }
 
         public void spawnCreature(Environment.Map map)
@@ -208,7 +208,7 @@ namespace Underlord.Entity
                     {
                         if (hex.Visited == true) hex.Visited = false;
                     }
-                    new Creature(Vars_Func.CreatureTyp.Knight, new List<Ability>(), tmp, this, Vars_Func.ThingTyp.HeroCreature, map);
+                    new Creature(Vars_Func.CreatureTyp.Knight, tmp, this, Vars_Func.ThingTyp.HeroCreature, map);
                     break;
                 case Vars_Func.NestTyp.Beetle:
                     //find free position for the new creature through a broad-first-search
@@ -236,7 +236,7 @@ namespace Underlord.Entity
                     {
                         if (hex.Visited == true) hex.Visited = false;
                     }
-                    new Creature(Vars_Func.CreatureTyp.Beetle, new List<Ability>(), tmp, this, Vars_Func.ThingTyp.DungeonCreature, map);
+                    new Creature(Vars_Func.CreatureTyp.Beetle, tmp, this, Vars_Func.ThingTyp.DungeonCreature, map);
                     break;
             }
         }

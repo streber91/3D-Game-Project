@@ -16,6 +16,7 @@ namespace Underlord
 {
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        Vars_Func.GameState gamestate;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         BasicEffect effect;
@@ -47,6 +48,8 @@ namespace Underlord
 
         protected override void Initialize()
         {
+            gamestate = Vars_Func.GameState.Ingame;
+
             mapDrawWidth = 10; //dont go over 15
             hexagonSideLength = 1; //do not change
             planeLength = 50; //need an even number!
@@ -57,10 +60,10 @@ namespace Underlord
             updateTimeCounter = 0;
             updates = 0;
             drawUpdates = 0;
+
             Vars_Func.loadContent(Content);
             map = new Map(planeLength, Logic.Vars_Func.HexTyp.Sand, true, hexagonSideLength);
-            Logic.Mapgenerator.generateMap(map, planeLength, (int)(planeLength / 10), (int)(planeLength / 5));
-
+            Mapgenerator.generateMap(map, planeLength, (int)(planeLength / 10), (int)(planeLength / 5));
             camera = new Camera(new Vector3(0, -10, 15), new Vector3(0, 0, 0), Vector3.UnitZ, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f, planeLength, hexagonSideLength);
             view = camera.View;
             projection = camera.Projection;

@@ -16,7 +16,7 @@ namespace Underlord.Environment
         List<Nest> entrances;
         List<Creature> creatures;
         List<Creature> heroes;
-        List<Hexagon> map;
+        Hexagon[] map;
         List<Imp> impList;
         Queue<Logic.Job> jobsWaiting;
         List<Logic.Job> jobsInProgress;
@@ -67,12 +67,12 @@ namespace Underlord.Environment
         #region Constructor
         public Map(int sidelength, Entity.Vars_Func.HexTyp typ, Boolean newGame, float hexagonSideLength)
         {
+            map = new Hexagon[(int)(sidelength * sidelength)];
             rooms = new List<Room>();
             nests = new List<Nest>();
             entrances = new List<Nest>();
             creatures = new List<Creature>();
             heroes = new List<Creature>();
-            map = new List<Hexagon>();
             impList = new List<Imp>();
             jobsWaiting = new Queue<Logic.Job>();
             jobsInProgress = new List<Logic.Job>();
@@ -104,7 +104,7 @@ namespace Underlord.Environment
                             neighbors[3] = new Vector2(indexNumber.X, yDownValue);
                             neighbors[4] = new Vector2(xValue, yDownValue);
                             neighbors[5] = new Vector2(xValue, indexNumber.Y);
-                            map.Add(new Hexagon(new Vector3(i * 3 / 2 * hexagonSideLength + hexagonSideLength * 1.5f, j * 2 * hexagonSideLength * 7 / 8 + hexagonSideLength * 7 / 8, 0), indexNumber, neighbors, typ));
+                            map[(int)(indexNumber.X * sidelength + indexNumber.Y)] = new Hexagon(new Vector3(i * 3 / 2 * hexagonSideLength + hexagonSideLength * 1.5f, j * 2 * hexagonSideLength * 7 / 8 + hexagonSideLength * 7 / 8, 0), indexNumber, neighbors, typ);
                         }
                         //neighbor indices for i uneven
                         else
@@ -119,7 +119,7 @@ namespace Underlord.Environment
                             neighbors[3] = new Vector2(indexNumber.X, yDownValue);
                             neighbors[4] = new Vector2(indexNumber.X - 1, indexNumber.Y);
                             neighbors[5] = new Vector2(indexNumber.X - 1, yUpValue);
-                            map.Add(new Hexagon(new Vector3(i * 3 / 2 * hexagonSideLength + hexagonSideLength * 1.5f, j * 2 * hexagonSideLength * 7 / 8 + hexagonSideLength * 7 / 8 * 2, 0), indexNumber, neighbors, typ));
+                            map[(int)(indexNumber.X * sidelength + indexNumber.Y)] = new Hexagon(new Vector3(i * 3 / 2 * hexagonSideLength + hexagonSideLength * 1.5f, j * 2 * hexagonSideLength * 7 / 8 + hexagonSideLength * 7 / 8 * 2, 0), indexNumber, neighbors, typ);
                         }
                         
                         ++indexNumber.Y;
@@ -137,7 +137,7 @@ namespace Underlord.Environment
         }
         #endregion
 
-        public List<Hexagon> getMapHexagons() { return map; }
+        public Hexagon[] getMapHexagons() { return map; }
         public Hexagon getHexagonAt(float X, float Y) { return map[(int)(X * planeSidelength + Y)]; }
         public Hexagon getHexagonAt(Vector2 pos) { return map[(int)(pos.X * planeSidelength + pos.Y)]; }
         public int getPlanelength() { return planeSidelength; }

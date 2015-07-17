@@ -31,7 +31,7 @@ namespace Underlord.Environment
             Rectangle bg = new Rectangle((int)position.X, (int)position.Y, (int)dimension.X, (int)dimension.Y);
             sb.Draw(Vars_Func.getPixel(), bg, Color.Black);
 
-            for (int i = 0; i < map.getMapHexagons().Count; i++)
+            for (int i = 0; i < map.getMapHexagons().Length; i++)
             {
                 temp = map.getMapHexagons()[i];
 

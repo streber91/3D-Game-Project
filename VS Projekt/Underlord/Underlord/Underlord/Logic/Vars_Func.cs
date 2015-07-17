@@ -23,6 +23,8 @@ namespace Underlord.Logic
 
        public enum ImpJob { Idle, Harvest, Feed, Mine, MineDiamonds, length };
 
+       public enum GUI_ElementTyp { Mine, Room, MergeRoom, DeleteRoom, Build, length };
+
        static List<AnimationModel> CreatureModels;
        static List<BasicModel> NestModels;
        static List<Model> UpgradeModels;
@@ -31,6 +33,7 @@ namespace Underlord.Logic
        static ImpModel ImpModel;
 
        static Texture2D pixel;
+       static List<Texture2D> GUI_Elements;
 
        public static AnimationModel getCreatureModell(CreatureTyp typ) { return CreatureModels[(int)typ]; }
        public static BasicModel getNestModell(NestTyp typ) { return NestModels[(int)typ]; }
@@ -40,6 +43,7 @@ namespace Underlord.Logic
        public static ImpModel getImpModell() { return ImpModel; }
 
        public static Texture2D getPixel() { return pixel; }
+       public static Texture2D getGUI_ElementTextures(GUI_ElementTyp typ) { return GUI_Elements[(int)typ]; }
 
        public static void loadContent(ContentManager Content)
        {
@@ -48,8 +52,15 @@ namespace Underlord.Logic
            UpgradeModels = new List<Model>();
            WallModels = new List<BasicModel>();
            HexagonModels = new List<BasicModel>();
+           GUI_Elements = new List<Texture2D>();
 
            pixel = Content.Load<Texture2D>("TEST");
+
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
 
            WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
            WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));

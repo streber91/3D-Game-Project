@@ -33,13 +33,15 @@ namespace Underlord.Logic
             if (timeCounter > 100)
             {
                 //switch to CreateRoom Mode in "R" is pressed
-                if (keyboard.IsKeyDown(Keys.R))
+                if (keyboard.IsKeyDown(Keys.R) ||
+                    (mouseState.LeftButton == ButtonState.Pressed && GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.Room).Rectangle.Contains(mouseState.X, mouseState.Y)))
                 {
                     gameState = Vars_Func.GameState.CreateRoom;
                     timeCounter = 0;
                 }
                 //switch to Build Mode if "N" ist pressed
-                if (keyboard.IsKeyDown(Keys.N))
+                if (keyboard.IsKeyDown(Keys.N) ||
+                    (mouseState.LeftButton == ButtonState.Pressed && GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.Build).Rectangle.Contains(mouseState.X, mouseState.Y)))
                 {
                     indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                     radius = 0;
@@ -48,7 +50,8 @@ namespace Underlord.Logic
                     timeCounter = 0;
                 }
                 //switch to Mine Mode if "M" ist pressed
-                if (keyboard.IsKeyDown(Keys.M))
+                if (keyboard.IsKeyDown(Keys.M) ||
+                    (mouseState.LeftButton == ButtonState.Pressed && GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.Mine).Rectangle.Contains(mouseState.X, mouseState.Y)))
                 {
                     indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                     radius = 0;
@@ -57,7 +60,8 @@ namespace Underlord.Logic
                     timeCounter = 0;
                 }
                 //switch to MergeRooms Mode if "T" ist pressed
-                if (keyboard.IsKeyDown(Keys.T))
+                if (keyboard.IsKeyDown(Keys.T) ||
+                    (mouseState.LeftButton == ButtonState.Pressed && GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.MergeRoom).Rectangle.Contains(mouseState.X, mouseState.Y)))
                 {
                     indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                     radius = 0;
@@ -66,7 +70,8 @@ namespace Underlord.Logic
                     timeCounter = 0;
                 }
                 //switch to DeleteRoom Mode if "Z" ist pressed
-                if (keyboard.IsKeyDown(Keys.Z))
+                if (keyboard.IsKeyDown(Keys.Z) ||
+                    (mouseState.LeftButton == ButtonState.Pressed && GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.DeleteRoom).Rectangle.Contains(mouseState.X, mouseState.Y)))
                 {
                     indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                     radius = 0;

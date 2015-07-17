@@ -67,6 +67,7 @@ namespace Underlord
             mouseState = Mouse.GetState();
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
             minimap = new Minimap(map, new Vector2(graphics.PreferredBackBufferWidth - minimapSize, 0), new Vector2(minimapSize, minimapSize));
+            GUI.createGUI();
 
             base.Initialize();
         }

@@ -123,6 +123,7 @@
     <Compile Include="Entity\Upgrade.cs" />
     <Compile Include="Entity\Creature.cs" />
     <Compile Include="Entity\Thing.cs" />
+    <Compile Include="Logic\GUI_Element.cs" />
     <Compile Include="Logic\Vars_Func.cs" />
     <Compile Include="Logic\Interaction.cs" />
     <Compile Include="Logic\Job.cs" />
@@ -132,7 +133,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Renderer\Camera.cs" />
-    <Compile Include="Renderer\GUI.cs" />
+    <Compile Include="Logic\GUI.cs" />
     <Compile Include="Renderer\Particle.cs" />
     <Compile Include="Renderer\ParticleGenerator.cs" />
   </ItemGroup>

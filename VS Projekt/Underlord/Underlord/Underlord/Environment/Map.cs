@@ -186,6 +186,11 @@ namespace Underlord.Environment
 
         public void remove(Imp imp)
         {
+            if (imp.CurrentJob != null)
+            {
+                jobsWaiting.Enqueue(imp.CurrentJob);
+                jobsInProgress.Remove(imp.CurrentJob);
+            }
             getHexagonAt(imp.Position).Obj = null;
             impList.Remove(imp);
         }

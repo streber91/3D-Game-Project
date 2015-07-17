@@ -11,11 +11,6 @@ using Microsoft.Xna.Framework.Media;
 using Underlord.Logic;
 using Underlord.Renderer;
 using Underlord.Environment;
-using Underlord.Logic;
-
-// Add temporary Animation
-using Underlord.Animation;
-using AnimationAux;
 
 namespace Underlord
 {
@@ -40,18 +35,6 @@ namespace Underlord
 
         float updateTimeCounter, updates, drawUpdates;
         float frameTimeCounter, frames, drawFrame;
-
-        //// Temporary
-        //    /// <summary>
-        //    /// The animated model we are displaying
-        //    /// </summary>
-        //    private AnimationModel impModel = null;
-
-        //    /// <summary>
-        //    /// This model is loaded solely for the dance animation
-        //    /// </summary>
-        //    private AnimationModel impWalkAnimation = null;
-        //    private AnimationModel impGrableAnimation = null;
 
         public Game1()
         {
@@ -95,22 +78,6 @@ namespace Underlord
             spriteBatch = new SpriteBatch(GraphicsDevice);
             effect = new BasicEffect(GraphicsDevice);
             font = Content.Load<SpriteFont>("font");
-
-            ////Temporary
-            //    // Load the model we will display
-            //    impModel = new AnimationModel(Content.Load<Model>("AnimationModels//minion_ANI_grabbling_01"));
-
-            //    // Load the model that has an animation clip it in
-            //    impGrableAnimation = new AnimationModel(Content.Load<Model>("AnimationModels//minion_ANI_grabbling_01"));
-
-            //    impWalkAnimation = new AnimationModel(Content.Load<Model>("AnimationModels//minion_ANI_walk_simple_02"));
-
-
-            //    AnimationClip walkClip = impWalkAnimation.Clips[0];
-
-            //    // And play the clip
-            //    AnimationPlayer player = impModel.PlayClip(walkClip);
-            //    player.Looping = true;
         }
 
         protected override void UnloadContent()
@@ -120,16 +87,7 @@ namespace Underlord
 
         protected override void Update(GameTime gameTime)
         {
-            // just a test
-            //for (int i = 0; i < 3500000; ++i)
-            //{
-            //    float tmp = 20;
-            //    tmp /= 5;
-            //    tmp += 6;
-            //    tmp *= 11;
-            //    tmp -= 10;
-            //}
-
+            // updates per second
             updateTimeCounter += gameTime.ElapsedGameTime.Milliseconds;
             ++updates;
             if (updateTimeCounter >= 1000)
@@ -139,83 +97,25 @@ namespace Underlord
                 updateTimeCounter -= 1000;
             }
 
-
             keyboard = Keyboard.GetState();
             lastMouseState = mouseState;
             mouseState = Mouse.GetState();
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
+            indexOfMiddleHexagon = Vars_Func.gridColision(camera.Target, planeLength, hexagonSideLength);
+            Vector2 mouseover = Vars_Func.gridColision(mousePosition, planeLength, hexagonSideLength);
+
+            Vars_Func.resetHexagonColors(map);
 
             camera.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, mouseState);
             view = camera.View;
-
-            map.update(gameTime, gameTime.ElapsedGameTime.Milliseconds);
-            //reset the color of all hexagons
-            foreach (Hexagon hex in map.getMapHexagons())
-            {
-                hex.Color = Color.White;
-            }
-            switch(Interaction.GameState)
-            {
-                case Vars_Func.GameState.CreateRoom:
-                    foreach (Hexagon hex in map.getMapHexagons())
-                    {
-                        //colors the room-hexagons in CreateRoom mode
-                        if (hex.RoomNumber == 1) hex.Color = Color.Red;
-                        else if (hex.RoomNumber == 2) hex.Color = Color.Yellow;
-                        else if (hex.RoomNumber == 3) hex.Color = Color.Green;
-                        else if (hex.RoomNumber != 0) hex.Color = Color.Blue;
-                    }
-                    break;
-                case Vars_Func.GameState.MergeRooms:
-                    foreach (Hexagon hex in map.getMapHexagons())
-                    {
-                        //colors the room-hexagons in MergeRooms mode
-                        if (hex.RoomNumber == 1) hex.Color = Color.Red;
-                        else if (hex.RoomNumber == 2) hex.Color = Color.Yellow;
-                        else if (hex.RoomNumber == 3) hex.Color = Color.Green;
-                        else if (hex.RoomNumber != 0) hex.Color = Color.Blue;
-                    }
-                    break;
-                case Vars_Func.GameState.DeleteRoom:
-                    foreach (Hexagon hex in map.getMapHexagons())
-                    {
-                        //colors the room-hexagons in DeleteRoom mode
-                        if (hex.RoomNumber == 1) hex.Color = Color.Red;
-                        else if (hex.RoomNumber == 2) hex.Color = Color.Yellow;
-                        else if (hex.RoomNumber == 3) hex.Color = Color.Green;
-                        else if (hex.RoomNumber != 0) hex.Color = Color.Blue;
-                    }
-                    break;
-                case Vars_Func.GameState.Build:
-                    foreach (Hexagon hex in map.getMapHexagons())
-                    {
-                        //colors the room-hexagons in Build mode
-                        if (hex.RoomNumber == 1) hex.Color = Color.Red;
-                        else if (hex.RoomNumber == 2) hex.Color = Color.Yellow;
-                        else if (hex.RoomNumber == 3) hex.Color = Color.Green;
-                        else if (hex.RoomNumber != 0) hex.Color = Color.Blue;
-                    }
-                    break;
-            }
-            indexOfMiddleHexagon = Vars_Func.gridColision(camera.Target, planeLength, hexagonSideLength);
-            //Color the Hexagon in the middle of the Screen purple
-            //map.getHexagonAt(indexOfMiddleHexagon.X, indexOfMiddleHexagon.Y).Color = Color.Purple;
-
-            Vector2 mouseover = Vars_Func.gridColision(mousePosition, planeLength, hexagonSideLength);
+            map.update(gameTime, gameTime.ElapsedGameTime.Milliseconds); 
             Interaction.Update(gameTime, map, mouseover, mouseState, lastMouseState, keyboard, gui);
-           
-            // Temporary
-                /// Update the knight
-                /// 
-            
-
-                //impModel.Update(gameTime);
-            
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
+            //Frames per second
             frameTimeCounter += gameTime.ElapsedGameTime.Milliseconds;
             ++frames;
             if (frameTimeCounter >= 1000)
@@ -224,38 +124,21 @@ namespace Underlord
                 frames = 0;
                 frameTimeCounter -= 1000;
             }
+
             GraphicsDevice.Clear(Color.Blue);
             effect.View = camera.View;
             effect.Projection = camera.Projection;
             effect.VertexColorEnabled = true;
             effect.CurrentTechnique.Passes[0].Apply();
             map.DrawModel(camera, indexOfMiddleHexagon, camera.Target, mapDrawWidth);
+
+
             spriteBatch.Begin();
             spriteBatch.DrawString(font, mouseState.X.ToString() + " : " + mouseState.Y.ToString(), new Vector2(10, 10), Color.White);
             spriteBatch.DrawString(font, mousePosition.X.ToString() + " : " + mousePosition.Y.ToString() + " : " + mousePosition.Z.ToString(), new Vector2(10, 25), Color.White);
             spriteBatch.DrawString(font, "FPS: " + drawFrame.ToString(), new Vector2(10, 40), Color.White);
             spriteBatch.DrawString(font, "UPS: " + drawUpdates.ToString(), new Vector2(10, 55), Color.White);
 
-            //Texture2D test = Content.Load<Texture2D>("TEST");
-            //Rectangle rec = new Rectangle(0, 0, 1366, 144);
-            //Rectangle rec2 = new Rectangle(0, 144, 180, 624);
-            //Rectangle rec3 = new Rectangle(180, 648, 1186, 120);
-            //spriteBatch.Draw(test, rec, Color.Red);
-            //spriteBatch.Draw(test, rec2, Color.Black);
-            //spriteBatch.Draw(test, rec3, Color.Green);
-
-            
-             ////Temporary
-             //   Matrix impMatrix = Matrix.Identity *
-             //   Matrix.CreateScale(0.1f) *
-             //   Matrix.CreateRotationX(MathHelper.PiOver2) *
-             //   Matrix.CreateRotationY(0) *
-             //   Matrix.CreateRotationZ(0) *
-             //   Matrix.CreateTranslation(new Vector3(0, 0, 0.5f));
-
-             //   /// Draw the knight
-             //   impModel.Draw(camera, impMatrix);
-            
             minimap.drawMinimap(spriteBatch);
             gui.Draw(spriteBatch, font);
 

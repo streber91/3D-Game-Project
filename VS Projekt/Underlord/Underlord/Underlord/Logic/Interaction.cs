@@ -25,10 +25,55 @@ namespace Underlord.Logic
         }
         #endregion
 
-        public static void Update(GameTime gameTime, Environment.Map map, Vector2 mouseover, MouseState mouseState, KeyboardState keyboard)
+        public static void Update(GameTime gameTime, Environment.Map map, Vector2 mouseover, MouseState mouseState, MouseState lastMouseState, KeyboardState keyboard)
         {
             timeCounter += gameTime.ElapsedGameTime.Milliseconds;
-            
+
+            if (timeCounter > 100)
+            {
+                //switch to CreateRoom Mode in "R" is pressed
+                if (keyboard.IsKeyDown(Keys.R))
+                {
+                    gameState = Vars_Func.GameState.CreateRoom;
+                    timeCounter = 0;
+                }
+                //switch to Build Mode if "N" ist pressed
+                if (keyboard.IsKeyDown(Keys.N))
+                {
+                    indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                    radius = 0;
+                    counter = 0;
+                    gameState = Vars_Func.GameState.Build;
+                    timeCounter = 0;
+                }
+                //switch to Mine Mode if "M" ist pressed
+                if (keyboard.IsKeyDown(Keys.M))
+                {
+                    indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                    radius = 0;
+                    counter = 0;
+                    gameState = Vars_Func.GameState.Mine;
+                    timeCounter = 0;
+                }
+                //switch to MergeRooms Mode if "T" ist pressed
+                if (keyboard.IsKeyDown(Keys.T))
+                {
+                    indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                    radius = 0;
+                    counter = 0;
+                    gameState = Vars_Func.GameState.MergeRooms;
+                    timeCounter = 0;
+                }
+                //switch to DeleteRoom Mode if "Z" ist pressed
+                if (keyboard.IsKeyDown(Keys.Z))
+                {
+                    indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                    radius = 0;
+                    counter = 0;
+                    gameState = Vars_Func.GameState.DeleteRoom;
+                    timeCounter = 0;
+                }
+            }
             switch (gameState)
             {
                 case Vars_Func.GameState.MainMenue:
@@ -37,39 +82,6 @@ namespace Underlord.Logic
                 case Vars_Func.GameState.Ingame:
                     //colors the hexagon at mouseposition in Ingame mode yellow
                     map.getHexagonAt(mouseover).Color = Color.Yellow;
-                    if (timeCounter > 100)
-                    {
-                        //switch to CreateRoom Mode in "R" is pressed
-                        if (keyboard.IsKeyDown(Keys.R))
-                        {
-                            gameState = Vars_Func.GameState.CreateRoom;
-                            timeCounter = 0;
-                        }
-                        //switch to Build Mode if "N" ist pressed
-                        if (keyboard.IsKeyDown(Keys.N))
-                        {
-                            gameState = Vars_Func.GameState.Build;
-                            timeCounter = 0;
-                        }
-                        //switch to Mine Mode if "M" ist pressed
-                        if (keyboard.IsKeyDown(Keys.M))
-                        {
-                            gameState = Vars_Func.GameState.Mine;
-                            timeCounter = 0;
-                        }
-                        //switch to MergeRooms Mode if "T" ist pressed
-                        if (keyboard.IsKeyDown(Keys.T))
-                        {
-                            gameState = Vars_Func.GameState.MergeRooms;
-                            timeCounter = 0;
-                        }
-                        //switch to MergeRooms Mode if "Z" ist pressed
-                        if (keyboard.IsKeyDown(Keys.Z))
-                        {
-                            gameState = Vars_Func.GameState.DeleteRoom;
-                            timeCounter = 0;
-                        }
-                    }
                     break;
                 #endregion
                 case Vars_Func.GameState.Save:
@@ -102,7 +114,8 @@ namespace Underlord.Logic
                         {
                             //colors the hexagon at mouseposition in CreateRoom mode blue
                             map.getHexagonAt(mouseover).Color = Color.Blue;
-                            if(mouseState.LeftButton == ButtonState.Pressed &&
+                            if(lastMouseState.LeftButton == ButtonState.Released &&
+                                mouseState.LeftButton == ButtonState.Pressed &&
                                 (map.getHexagonAt(mouseover).Obj == null || map.getHexagonAt(mouseover).Obj.getThingTyp() != Vars_Func.ThingTyp.Wall) && 
                                 map.getHexagonAt(mouseover).RoomNumber == 0)
                             {
@@ -126,7 +139,8 @@ namespace Underlord.Logic
                                 }
                             }
                             //second click determines the radius for the new room and creates the room
-                            if (mouseState.LeftButton == ButtonState.Pressed)
+                            if (lastMouseState.LeftButton == ButtonState.Released && 
+                                mouseState.LeftButton == ButtonState.Pressed)
                             {
                                 radius = Vars_Func.computeDistance(indexOfMiddleHexagonForRoomCreation, mouseover, map);
                                 map.Rooms.Add(new Environment.Room(indexOfMiddleHexagonForRoomCreation, radius, map));
@@ -153,7 +167,8 @@ namespace Underlord.Logic
                             timeCounter = 0;
                         }
                         //try to place a nest at mouseposition
-                        if (mouseState.LeftButton == ButtonState.Pressed)
+                        if (lastMouseState.LeftButton == ButtonState.Released && 
+                            mouseState.LeftButton == ButtonState.Pressed)
                         {
                             //place nest only when there is a room at mouseposition and the room doesn't have a nest already
                             //the neighbors of the hexagon at mouseposition must be in the same room
@@ -214,7 +229,8 @@ namespace Underlord.Logic
                             timeCounter = 0;
                         }
                         //try to merge rooms
-                        if (mouseState.LeftButton == ButtonState.Pressed)
+                        if (lastMouseState.LeftButton == ButtonState.Released && 
+                            mouseState.LeftButton == ButtonState.Pressed)
                         {
                             if (map.getHexagonAt(mouseover).RoomNumber != 0)
                             {
@@ -253,7 +269,8 @@ namespace Underlord.Logic
                             timeCounter = 0;
                         }
                         //try to delete a room
-                        if (mouseState.LeftButton == ButtonState.Pressed)
+                        if (lastMouseState.LeftButton == ButtonState.Released && 
+                            mouseState.LeftButton == ButtonState.Pressed)
                         {
                             //if there is a room
                             //and there isn't a nest in the room

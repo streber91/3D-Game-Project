@@ -48,9 +48,8 @@ namespace Underlord
         protected override void Initialize()
         {
             gamestate = Vars_Func.GameState.Ingame;
-
+            hexagonSideLength = 1; //dont change
             mapDrawWidth = 10; //dont go over 15
-            hexagonSideLength = 1; //do not change
             planeLength = 50; //need an even number!
             minimapSize = 240; //in pixel
             frameTimeCounter = 0;

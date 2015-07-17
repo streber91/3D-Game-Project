@@ -139,7 +139,7 @@ namespace Underlord.Entity
         {
             AI.compute(this, time, map);
             if (thingTyp == Logic.Vars_Func.ThingTyp.DungeonCreature && age > maxAge) map.remove(this);
-            age += time.ElapsedGameTime.Milliseconds / 1000;
+            age += (float)time.ElapsedGameTime.Milliseconds / 1000;
             ageing();
         }
         

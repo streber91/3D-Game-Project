@@ -84,12 +84,7 @@ namespace Underlord.Logic
                             {
                                 Imp target = (Imp)map.getHexagonAt(nearestEnemy).Obj;
                                 target.takeDamage(creature.Damage);
-                                if (target.DamageTaken >= target.HP)
-                                {
-                                    map.JobsWaiting.Enqueue(target.CurrentJob);
-                                    map.JobsInProgress.Remove(target.CurrentJob);
-                                    map.remove(target);
-                                }
+                                if (target.DamageTaken >= target.HP) map.remove(target);
                                 creature.ActionTimeCounter = 0;
                             }
                         }

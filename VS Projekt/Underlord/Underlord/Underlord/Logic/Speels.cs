@@ -34,12 +34,7 @@ namespace Underlord.Logic
                 Imp target = (Imp)map.getHexagonAt(position).Obj;
                 target.takeDamage(100);
                 // is imp dead?
-                if (target.DamageTaken >= target.HP)
-                {
-                    map.JobsWaiting.Enqueue(target.CurrentJob);
-                    map.JobsInProgress.Remove(target.CurrentJob);
-                    map.remove(target);
-                }
+                if (target.DamageTaken >= target.HP) map.remove(target);
             }
             // effects neighbors
             foreach (Vector2 hex in map.getHexagonAt(position).Neighbors)
@@ -61,12 +56,7 @@ namespace Underlord.Logic
                     Imp target = (Imp)map.getHexagonAt(hex).Obj;
                     target.takeDamage(100);
                     // is imp dead?
-                    if (target.DamageTaken >= target.HP)
-                    {
-                        map.JobsWaiting.Enqueue(target.CurrentJob);
-                        map.JobsInProgress.Remove(target.CurrentJob);
-                        map.remove(target);
-                    }
+                    if (target.DamageTaken >= target.HP) map.remove(target);
                 }
             }
         }

@@ -132,10 +132,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Renderer\Camera.cs" />
+    <Compile Include="Renderer\GUI.cs" />
     <Compile Include="Renderer\Particle.cs" />
     <Compile Include="Renderer\ParticleGenerator.cs" />
-    <Compile Include="Renderer\UL_Graphics.cs" />
-    <Compile Include="Renderer\UL_GUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

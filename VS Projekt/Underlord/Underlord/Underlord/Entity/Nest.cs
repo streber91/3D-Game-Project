@@ -16,6 +16,26 @@ namespace Underlord.Entity
         Vector2 targetPosition, position;
 
         #region Properties
+        public Vars_Func.NestTyp Typ
+        {
+            get { return typ; }
+            set { typ = value; }
+        }
+        public float Nutrition
+        {
+            get { return nutrition; }
+            set { nutrition = value; }
+        }
+        public float MaxNutrition
+        {
+            get { return maxNutrition; }
+            set { maxNutrition = value; }
+        }
+        public float Size
+        {
+            get { return size; }
+            set { size = value; }
+        }
         public Boolean Undead
         {
             get { return undead; }

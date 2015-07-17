@@ -25,7 +25,7 @@ namespace Underlord.Logic
         }
         #endregion
 
-        public static void Update(GameTime gameTime, Environment.Map map, Vector2 mouseover, MouseState mouseState, MouseState lastMouseState, KeyboardState keyboard)
+        public static void Update(GameTime gameTime, Environment.Map map, Vector2 mouseover, MouseState mouseState, MouseState lastMouseState, KeyboardState keyboard, Renderer.GUI gui)
         {
             timeCounter += gameTime.ElapsedGameTime.Milliseconds;
 
@@ -82,6 +82,45 @@ namespace Underlord.Logic
                 case Vars_Func.GameState.Ingame:
                     //colors the hexagon at mouseposition in Ingame mode yellow
                     map.getHexagonAt(mouseover).Color = Color.Yellow;
+                    //only ten clicks per second
+                    if (timeCounter > 100)
+                    {
+                        //try to select object that is currently at mouseposition
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed)
+                        {
+                            if (map.getHexagonAt(mouseover).Obj != null)
+                            {
+                                switch ((map.getHexagonAt(mouseover).Obj.getThingTyp()))
+                                {
+                                    case Vars_Func.ThingTyp.Wall:
+                                        gui.SelectedThingTyp = Vars_Func.ThingTyp.Wall;
+                                        gui.Wall = (Wall)map.getHexagonAt(mouseover).Obj;
+                                        break;
+                                    case Vars_Func.ThingTyp.Nest:
+                                        gui.SelectedThingTyp = Vars_Func.ThingTyp.Nest;
+                                        gui.Nest = (Nest)map.getHexagonAt(mouseover).Obj;
+                                        break;
+                                    case Vars_Func.ThingTyp.DungeonCreature:
+                                        gui.SelectedThingTyp = Vars_Func.ThingTyp.DungeonCreature;
+                                        break;
+                                    case Vars_Func.ThingTyp.HeroCreature:
+                                        gui.SelectedThingTyp = Vars_Func.ThingTyp.HeroCreature;
+                                        break;
+                                    case Vars_Func.ThingTyp.NeutralCreature:
+                                        gui.SelectedThingTyp = Vars_Func.ThingTyp.NeutralCreature;
+                                        break;
+                                    case Vars_Func.ThingTyp.HQCreature:
+                                        gui.SelectedThingTyp = Vars_Func.ThingTyp.HQCreature;
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                gui.SelectedThingTyp = Vars_Func.ThingTyp.length;
+                            }
+                        }
+                    }
                     break;
                 #endregion
                 case Vars_Func.GameState.Save:

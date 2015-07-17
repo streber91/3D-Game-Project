@@ -11,6 +11,7 @@ namespace Underlord.Entity
         Vector2 indexPosition;
         Vars_Func.WallTyp typ;
         int hp;
+        int gold;
         // private Matrix[] boneTransforms;
 
         #region Properties
@@ -18,6 +19,16 @@ namespace Underlord.Entity
         {
             set { typ = value; }
             get { return typ; }
+        }
+        public int HP
+        {
+            set { hp = value; }
+            get { return hp; }
+        }
+        public int Gold
+        {
+            set { gold = value; }
+            get { return gold; }
         }
         public Texture2D Texture
         {

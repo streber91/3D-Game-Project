@@ -11,8 +11,8 @@ namespace Underlord.Entity
     {
         Vars_Func.CreatureTyp typ;
         List<Ability> abilities;
-        int hp, dmg, vision;
-        float size, speed, actionTimeCounter;
+        int hp, dmg, vision, maxAge;
+        float size, speed, actionTimeCounter, age;
         Vector2 position;
         Stack<Vector2> path;
         Nest home;
@@ -53,6 +53,8 @@ namespace Underlord.Entity
                     vision = 4;
                     hp = 300;
                     dmg = 20;
+                    age = 0;
+                    maxAge = 100;
 			        map.getHexagonAt(pos).Obj = this;
                     map.Creatures.Add(this);
                     break;
@@ -68,34 +70,42 @@ namespace Underlord.Entity
                     vision = 4;
                     hp = 300;
                     dmg = 20;
+                    age = 0;
 			        map.getHexagonAt(pos).Obj = this;
                     map.Heroes.Add(this);
+                    break;
+                case Vars_Func.CreatureTyp.HQCreatur:
+                    this.typ = typ;
+                    this.abilities = ability;
+                    this.position = pos;
+                    this.home = home;
+                    thingTyp = allignment;
+                    size = 1;
+                    speed = 1;
+                    actionTimeCounter = 0;
+                    vision = 4;
+                    hp = 300;
+                    dmg = 20;
+                    age = 0;
+			        map.getHexagonAt(pos).Obj = this;
+                    map.Creatures.Add(this);
                     break;
             }
             
         }
         #endregion
 
-        // TODO filter funktions and implemnt funktions
-        public void increaseHP(int d)
-        {
-            if(d<0)
-            {
-            }
-            else { this.hp += d; }
-        }
         public void decreaseHP(int d)
         {
-            if(d<0)
-            {
-            }
+            if(d<0){}
             else { this.hp -= d; }
         }
         
         override public void update(GameTime time, Environment.Map map)
         {
             Logic.AI.compute(this, time, map);
-            // update path    update life       update attackCD
+            if (thingTyp == Vars_Func.ThingTyp.DungeonCreature && age > maxAge) map.remove(this);
+            age += time.ElapsedGameTime.Milliseconds / 1000;
         }
         
         public Nest getHome() { return home; }

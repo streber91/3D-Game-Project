@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Underlord.Entity;
+using Underlord.Logic;
 using Underlord.Renderer;
 using Underlord.Environment;
 using Underlord.Logic;
@@ -74,7 +74,7 @@ namespace Underlord
             updates = 0;
             drawUpdates = 0;
             Vars_Func.loadContent(Content);
-            map = new Map(planeLength, Entity.Vars_Func.HexTyp.Sand, true, hexagonSideLength);
+            map = new Map(planeLength, Logic.Vars_Func.HexTyp.Sand, true, hexagonSideLength);
             Logic.Mapgenerator.generateMap(map, planeLength, (int)(planeLength / 10), (int)(planeLength / 5));
 
             camera = new Camera(new Vector3(0, -10, 15), new Vector3(0, 0, 0), Vector3.UnitZ, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f, planeLength, hexagonSideLength);
@@ -136,12 +136,16 @@ namespace Underlord
                 updates = 0;
                 updateTimeCounter -= 1000;
             }
+
+
             keyboard = Keyboard.GetState();
             lastMouseState = mouseState;
             mouseState = Mouse.GetState();
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
+
             camera.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, mouseState);
             view = camera.View;
+
             map.update(gameTime, gameTime.ElapsedGameTime.Milliseconds);
             //reset the color of all hexagons
             foreach (Hexagon hex in map.getMapHexagons())

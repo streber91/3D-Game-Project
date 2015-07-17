@@ -56,11 +56,11 @@ namespace Underlord.Animation
         {
             switch (job.getJobTyp())
             {
-                case Entity.Vars_Func.ImpJob.Harvest:
+                case Logic.Vars_Func.ImpJob.Harvest:
 
                     break;
-                case Entity.Vars_Func.ImpJob.Mine:
-                case Entity.Vars_Func.ImpJob.MineDiamonds:
+                case Logic.Vars_Func.ImpJob.Mine:
+                case Logic.Vars_Func.ImpJob.MineDiamonds:
                     
                     AnimationPlayer player = this.PlayClip(dig.Clips[0]);
                     player.Looping = true;

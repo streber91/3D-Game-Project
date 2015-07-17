@@ -8,11 +8,11 @@ namespace Underlord.Logic
 {
     class Job
     {
-        Entity.Vars_Func.ImpJob jobTyp;
+        Logic.Vars_Func.ImpJob jobTyp;
         List<Vector2> destination;
         float worktime;
 
-        public Job(Entity.Vars_Func.ImpJob jobTyp, List<Vector2> destination, float worktime)
+        public Job(Logic.Vars_Func.ImpJob jobTyp, List<Vector2> destination, float worktime)
         {
             this.jobTyp = jobTyp;
             this.destination = destination;
@@ -29,7 +29,7 @@ namespace Underlord.Logic
 
         #endregion
 
-        public Entity.Vars_Func.ImpJob getJobTyp() { return jobTyp; }
+        public Logic.Vars_Func.ImpJob getJobTyp() { return jobTyp; }
         public List<Vector2> getDestination() { return destination; }
     }
 }

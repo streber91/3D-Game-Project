@@ -10,11 +10,10 @@ namespace Underlord.Logic
     {
         public static void generateMap(Environment.Map map, int size, int diamond,int gold)
         {
-            List<Entity.Vars_Func.WallTyp> specials = new List<Entity.Vars_Func.WallTyp>();
-            specials.Add(Entity.Vars_Func.WallTyp.HQ);
-            specials.Add(Entity.Vars_Func.WallTyp.EN);
+            List<Logic.Vars_Func.WallTyp> specials = new List<Logic.Vars_Func.WallTyp>();
+            specials.Add(Logic.Vars_Func.WallTyp.HQ);
+            specials.Add(Logic.Vars_Func.WallTyp.EN);
             Random rand = new Random();
-            Vector2 HQ = new Vector2();
             Vector2 EN = new Vector2();
             int dia = diamond;
             int go = gold;
@@ -23,17 +22,17 @@ namespace Underlord.Logic
             {
                 if (dia > 0)
                 {
-                    specials.Add(Entity.Vars_Func.WallTyp.Diamond);
+                    specials.Add(Logic.Vars_Func.WallTyp.Diamond);
                     --dia;
                 }
                 else if (go > 0)
                 {
-                    specials.Add(Entity.Vars_Func.WallTyp.Gold);
+                    specials.Add(Logic.Vars_Func.WallTyp.Gold);
                     --go;
                 }
                 else
                 {
-                    specials.Add(Entity.Vars_Func.WallTyp.Stone);
+                    specials.Add(Logic.Vars_Func.WallTyp.Stone);
                 }
                 
             }
@@ -47,34 +46,34 @@ namespace Underlord.Logic
                     if (j % 5 == 0 && i % 5 == 0)
                     {
                         // if entrance place entrance
-                        if (specials[randnum] == Entity.Vars_Func.WallTyp.EN)
-                            new Entity.Nest(Entity.Vars_Func.NestTyp.Entrance, new Vector2(i, j), map.getHexagonAt(i, j), map, HQ);
+                        if (specials[randnum] == Logic.Vars_Func.WallTyp.EN)
+                            new Logic.Nest(Logic.Vars_Func.NestTyp.Entrance, new Vector2(i, j), map.getHexagonAt(i, j), map, map.HQPosition);
                         // if HQ place HQ
-                        else if(specials[randnum] == Entity.Vars_Func.WallTyp.HQ)
-                            new Entity.Creature(Entity.Vars_Func.CreatureTyp.HQCreatur, null, new Vector2(i, j), null, Entity.Vars_Func.ThingTyp.HQCreature, map);
+                        else if(specials[randnum] == Logic.Vars_Func.WallTyp.HQ)
+                            new Logic.Creature(Logic.Vars_Func.CreatureTyp.HQCreatur, new Vector2(i, j), null, Logic.Vars_Func.ThingTyp.HQCreature, map);
                         //place specila wall if not entrance or HQ
                         else
-                            new Entity.Wall(new Vector2(i, j), specials[randnum], 300, map);
+                            new Logic.Wall(new Vector2(i, j), specials[randnum], 300, map);
   
-                        if (specials[randnum] == Entity.Vars_Func.WallTyp.Diamond || Entity.Vars_Func.WallTyp.Gold == specials[randnum])
+                        if (specials[randnum] == Logic.Vars_Func.WallTyp.Diamond || Logic.Vars_Func.WallTyp.Gold == specials[randnum])
                         {
                             foreach (Vector2 hex in map.getHexagonAt(i, j).Neighbors)
                             {
-                                new Entity.Wall(new Vector2(hex.X, hex.Y), Underlord.Entity.Vars_Func.WallTyp.Gold, 300, map);
+                                new Logic.Wall(new Vector2(hex.X, hex.Y), Underlord.Logic.Vars_Func.WallTyp.Gold, 300, map);
                             }
                         }
-                        if (specials[randnum] == Entity.Vars_Func.WallTyp.HQ) HQ = new Vector2(i, j);
-                        if (specials[randnum] == Entity.Vars_Func.WallTyp.EN) EN = new Vector2(i, j);
+                        if (specials[randnum] == Logic.Vars_Func.WallTyp.HQ) map.HQPosition = new Vector2(i, j);
+                        if (specials[randnum] == Logic.Vars_Func.WallTyp.EN) EN = new Vector2(i, j);
                         specials.RemoveAt(randnum);
                     }
                     // fill rest with normal walls
-                    else if(map.getHexagonAt(i, j).Obj == null) new Entity.Wall(new Vector2(i, j), Underlord.Entity.Vars_Func.WallTyp.Stone, 300, map);
+                    else if(map.getHexagonAt(i, j).Obj == null) new Logic.Wall(new Vector2(i, j), Underlord.Logic.Vars_Func.WallTyp.Stone, 300, map);
                 }
             }
             // set entrance target correct
-            ((Entity.Nest)map.getHexagonAt(EN).Obj).TargetPosition = HQ;
+            ((Logic.Nest)map.getHexagonAt(EN).Obj).TargetPosition = map.HQPosition;
             // room for HQ
-            foreach (Vector2 hex in map.getHexagonAt(HQ.X, HQ.Y).Neighbors)
+            foreach (Vector2 hex in map.getHexagonAt(map.HQPosition.X, map.HQPosition.Y).Neighbors)
             {
                 map.getHexagonAt(hex.X, hex.Y).Obj = null;
             }
@@ -84,24 +83,24 @@ namespace Underlord.Logic
                 map.getHexagonAt(hex.X, hex.Y).Obj = null;
             }
             // build path from first entrance to HQ
-            while( !map.getHexagonAt(HQ.X, HQ.Y).Neighbors.Contains(EN))
+            while (!map.getHexagonAt(map.HQPosition.X, map.HQPosition.Y).Neighbors.Contains(EN))
             {
-                if (HQ.X < EN.X)
+                if (map.HQPosition.X < EN.X)
                 {
                     map.getHexagonAt(EN.X - 1, EN.Y).Obj = null;
                     --EN.X; 
                 }
-                else if (HQ.X > EN.X)
+                else if (map.HQPosition.X > EN.X)
                 {
                     map.getHexagonAt(EN.X + 1, EN.Y).Obj = null;
                     ++EN.X; 
                 }
-                if (HQ.Y < EN.Y)
+                if (map.HQPosition.Y < EN.Y)
                 {
                     map.getHexagonAt(EN.X, EN.Y - 1).Obj = null;
                     --EN.Y;
                 }
-                else if (HQ.Y > EN.Y)
+                else if (map.HQPosition.Y > EN.Y)
                 {
                     map.getHexagonAt(EN.X, EN.Y + 1).Obj = null;
                     ++EN.Y;

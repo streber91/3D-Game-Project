@@ -5,13 +5,12 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Underlord.Renderer;
 
-namespace Underlord.Entity
+namespace Underlord.Logic
 {
     class Creature : Thing
     {
         Vars_Func.CreatureTyp typ;
-        List<Ability> abilities;
-        int damageTaken, dmg, vision, maxAge, hp;
+        int damageTaken, damage, vision, maxAge, hp;
         float size, speed, actionTimeCounter, age, ageModifire;
         Vector2 position;
         Stack<Vector2> path;
@@ -34,17 +33,40 @@ namespace Underlord.Entity
             get { return actionTimeCounter; }
             set { actionTimeCounter = value; }
         }
+        public Nest Home
+        {
+            get { return home; }
+        }
+        public int DamageTaken
+        {
+            get { return damageTaken; }
+        }
+        public float Speed
+        {
+            get { return speed; }
+        }
+        public int Vision
+        {
+            get { return vision; }
+        }
+        public int HP
+        {
+            get { return (int)(hp * ageModifire); }
+        }
+        public int Damage
+        {
+            get { return (int)(damage * ageModifire); }
+        }
         #endregion
 
         #region Constructor
-        public Creature(Vars_Func.CreatureTyp typ, List<Ability> ability, Vector2 pos, Nest home, Vars_Func.ThingTyp allignment, Environment.Map map)
+        public Creature(Vars_Func.CreatureTyp typ, Vector2 position, Nest home, Vars_Func.ThingTyp allignment, Environment.Map map)
         {
             switch (typ)
             {
                 case Vars_Func.CreatureTyp.Beetle:
                     this.typ = typ;
-                    this.abilities = ability;
-                    this.position = pos;
+                    this.position = position;
                     this.home = home;
                     thingTyp = allignment;
                     size = 1;
@@ -53,17 +75,16 @@ namespace Underlord.Entity
                     vision = 4;
                     damageTaken = 0;
                     hp = 300;
-                    dmg = 20;
+                    damage = 20;
                     age = 0;
                     maxAge = 100;
                     ageModifire = 1;
-			        map.getHexagonAt(pos).Obj = this;
+			        map.getHexagonAt(position).Obj = this;
                     map.Creatures.Add(this);
                     break;
                 case Vars_Func.CreatureTyp.Knight:
                     this.typ = typ;
-                    this.abilities = ability;
-                    this.position = pos;
+                    this.position = position;
                     this.home = home;
                     thingTyp = allignment;
                     size = 1;
@@ -72,16 +93,15 @@ namespace Underlord.Entity
                     vision = 4;
                     damageTaken = 0;
                     hp = 300;
-                    dmg = 20;
+                    damage = 20;
                     age = 0;
                     ageModifire = 1;
-			        map.getHexagonAt(pos).Obj = this;
+			        map.getHexagonAt(position).Obj = this;
                     map.Heroes.Add(this);
                     break;
                 case Vars_Func.CreatureTyp.HQCreatur:
                     this.typ = typ;
-                    this.abilities = ability;
-                    this.position = pos;
+                    this.position = position;
                     this.home = home;
                     thingTyp = allignment;
                     size = 1;
@@ -90,10 +110,10 @@ namespace Underlord.Entity
                     vision = 4;
                     damageTaken = 0;
                     hp = 300;
-                    dmg = 20;
+                    damage = 20;
                     age = 0;
                     ageModifire = 1;
-			        map.getHexagonAt(pos).Obj = this;
+			        map.getHexagonAt(position).Obj = this;
                     map.Creatures.Add(this);
                     break;
             }
@@ -101,10 +121,9 @@ namespace Underlord.Entity
         }
         #endregion
 
-        public void takeDamage(int d)
+        public void takeDamage(int damage)
         {
-            if(d<=0){}
-            else { this.damageTaken += d; }
+            if (damage > 0) this.damageTaken += damage;
         }
         
         override public void update(GameTime time, Environment.Map map)
@@ -114,13 +133,6 @@ namespace Underlord.Entity
             age += time.ElapsedGameTime.Milliseconds / 1000;
             ageing();
         }
-        
-        public Nest getHome() { return home; }
-        public int getDamageTaken() { return damageTaken; }
-        public int getHP() { return (int)(hp * ageModifire); }
-        public int getVision() { return vision; }
-        public int getDmg() { return (int)(dmg * ageModifire); }
-        public float getSpeed() { return speed; }
         
         private void ageing()
         {
@@ -147,8 +159,8 @@ namespace Underlord.Entity
             Matrix.CreateRotationZ(0) *
             Matrix.CreateTranslation(drawPosition);
 
-            Entity.Vars_Func.getCreatureModell(typ).Color = drawColor;
-            Entity.Vars_Func.getCreatureModell(typ).Draw(camera, modelMatrix);
+            Logic.Vars_Func.getCreatureModell(typ).Color = drawColor;
+            Logic.Vars_Func.getCreatureModell(typ).Draw(camera, modelMatrix);
         }
     }
 }

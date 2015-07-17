@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Underlord.Animation;
 using Underlord.Basic;
 
-namespace Underlord.Entity
+namespace Underlord.Logic
 {
    static class Vars_Func
     {

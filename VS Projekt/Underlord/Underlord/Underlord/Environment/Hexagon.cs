@@ -11,15 +11,15 @@ namespace Underlord.Environment
         Vector3 position;
         Vector2 indexNumber;
         Vector2[] neighbors = new Vector2[6]; //[up,right-up,right-down,down,left-down,left-up]
-        List<Entity.Imp> imps;
-        Entity.Thing obj;
+        List<Logic.Imp> imps;
+        Logic.Thing obj;
         int roomNumber;
         bool building;
         bool nest;
         bool visited; //for breadth-first search
         Vector2 parent; //for breadth-first search
         Color drawColor;
-        Entity.Vars_Func.HexTyp typ;
+        Logic.Vars_Func.HexTyp typ;
        
         private Matrix[] boneTransforms;
 
@@ -29,7 +29,7 @@ namespace Underlord.Environment
             get { return drawColor; }
             set { drawColor = value; }
         }
-        public Entity.Thing Obj
+        public Logic.Thing Obj
         {
             get { return obj; }
             set { obj = value; }
@@ -59,12 +59,12 @@ namespace Underlord.Environment
             get { return nest; }
             set { nest = value; }
         }
-        public Entity.Vars_Func.HexTyp Typ
+        public Logic.Vars_Func.HexTyp Typ
         {
             get { return typ; }
             set { typ = value; }
         }
-        public List<Entity.Imp> Imps
+        public List<Logic.Imp> Imps
         {
             get { return imps; }
         }
@@ -81,7 +81,7 @@ namespace Underlord.Environment
         public Vector3 get3DPosition() { return position; }
 
         #region Constructor
-        public Hexagon(Vector3 position, Vector2 indexNumber, Vector2[] neighbors, Entity.Vars_Func.HexTyp typ)
+        public Hexagon(Vector3 position, Vector2 indexNumber, Vector2[] neighbors, Logic.Vars_Func.HexTyp typ)
         {
             this.position = position;
             this.indexNumber = indexNumber;
@@ -91,7 +91,7 @@ namespace Underlord.Environment
             building = false;
             roomNumber = 0;
             parent = indexNumber;
-            boneTransforms = new Matrix[Entity.Vars_Func.getHexagonModell(typ).Model.Bones.Count];
+            boneTransforms = new Matrix[Logic.Vars_Func.getHexagonModell(typ).Model.Bones.Count];
         }
         #endregion
 
@@ -104,8 +104,8 @@ namespace Underlord.Environment
             Matrix.CreateRotationZ(0) *
             Matrix.CreateTranslation(drawPosition + new Vector3(0.0f, 0.0f, 0));
 
-            Entity.Vars_Func.getHexagonModell(typ).Color = drawColor;
-            Entity.Vars_Func.getHexagonModell(typ).Draw(camera, modelMatrix);
+            Logic.Vars_Func.getHexagonModell(typ).Color = drawColor;
+            Logic.Vars_Func.getHexagonModell(typ).Draw(camera, modelMatrix);
 
             if(obj != null) obj.DrawModel(camera, drawPosition, drawColor);
         }

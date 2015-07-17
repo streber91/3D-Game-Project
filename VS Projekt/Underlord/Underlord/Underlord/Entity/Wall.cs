@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Underlord.Entity
+namespace Underlord.Logic
 {
     class Wall : Thing
     {
@@ -21,7 +21,7 @@ namespace Underlord.Entity
         }
         public Texture2D Texture
         {
-            set { Entity.Vars_Func.getWallModell(typ).Texture = value; }
+            set { Logic.Vars_Func.getWallModell(typ).Texture = value; }
         }
         #endregion
 
@@ -51,8 +51,8 @@ namespace Underlord.Entity
             Matrix.CreateRotationZ(0) *
             Matrix.CreateTranslation(drawPosition);
 
-            Entity.Vars_Func.getWallModell(typ).Color = drawColor;
-            Entity.Vars_Func.getWallModell(typ).Draw(camera, modelMatrix);
+            Logic.Vars_Func.getWallModell(typ).Color = drawColor;
+            Logic.Vars_Func.getWallModell(typ).Draw(camera, modelMatrix);
 
 
             //Entity.Vars_Func.getWallModell(typ).Model.Root.Transform = Matrix.Identity *

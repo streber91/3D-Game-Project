@@ -32,7 +32,6 @@ namespace Underlord
         Vector3 mousePosition;
         Vector2 indexOfMiddleHexagon;
         Minimap minimap;
-        GUI gui;
 
         float updateTimeCounter, updates, drawUpdates;
         float frameTimeCounter, frames, drawFrame;
@@ -71,7 +70,6 @@ namespace Underlord
             mouseState = Mouse.GetState();
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
             minimap = new Minimap(map, new Vector2(graphics.PreferredBackBufferWidth - minimapSize, 0), new Vector2(minimapSize, minimapSize));
-            gui = new GUI();
 
             base.Initialize();
         }
@@ -112,7 +110,7 @@ namespace Underlord
             camera.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, mouseState);
             view = camera.View;
             map.update(gameTime, gameTime.ElapsedGameTime.Milliseconds); 
-            Interaction.Update(gameTime, map, mouseover, mouseState, lastMouseState, keyboard, gui);
+            Interaction.Update(gameTime, map, mouseover, mouseState, lastMouseState, keyboard);
             base.Update(gameTime);
         }
 
@@ -143,7 +141,7 @@ namespace Underlord
             spriteBatch.DrawString(font, "UPS: " + drawUpdates.ToString(), new Vector2(10, 55), Color.White);
 
             minimap.drawMinimap(spriteBatch);
-            gui.Draw(spriteBatch, font);
+            GUI.Draw(spriteBatch, font);
 
             spriteBatch.End();
 

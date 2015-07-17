@@ -19,6 +19,10 @@ namespace Underlord.Entity
         //TODO implement balancing and diferent stats
 
         #region Properties
+        public Vars_Func.CreatureTyp Typ
+        {
+            get { return typ; }
+        }
         public Stack<Vector2> Path
         {
             get { return path; }
@@ -58,6 +62,10 @@ namespace Underlord.Entity
         {
             get { return (int)(damage * ageModifire); }
         }
+        public float Age
+        {
+            get { return age; }
+        }
         #endregion
 
         #region Constructor
@@ -75,8 +83,8 @@ namespace Underlord.Entity
                     actionTimeCounter = 0;
                     vision = 4;
                     damageTaken = 0;
-                    hp = 300;
-                    damage = 20;
+                    hp = 500;
+                    damage = 10;
                     age = 0;
                     maxAge = 100;
                     ageModifire = 1;
@@ -110,8 +118,8 @@ namespace Underlord.Entity
                     actionTimeCounter = 0;
                     vision = 4;
                     damageTaken = 0;
-                    hp = 300;
-                    damage = 20;
+                    hp = 5000;
+                    damage = 25;
                     age = 0;
                     ageModifire = 1;
 			        map.getHexagonAt(position).Obj = this;

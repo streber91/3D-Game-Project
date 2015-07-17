@@ -181,6 +181,7 @@ namespace Underlord.Environment
             getHexagonAt(creature.Position).Obj = null;
             creatures.Remove(creature);
             heroes.Remove(creature);
+            if (GUI.Creature == creature) GUI.Creature = null;
         }
 
         public void remove(Imp imp)

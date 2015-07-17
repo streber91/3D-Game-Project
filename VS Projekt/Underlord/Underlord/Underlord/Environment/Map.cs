@@ -67,7 +67,7 @@ namespace Underlord.Environment
         #region Constructor
         public Map(int sidelength, Entity.Vars_Func.HexTyp typ, Boolean newGame, float hexagonSideLength)
         {
-            map = new Hexagon[(int)(sidelength * sidelength)];
+            map = new Hexagon[sidelength * sidelength];
             rooms = new List<Room>();
             nests = new List<Nest>();
             entrances = new List<Nest>();

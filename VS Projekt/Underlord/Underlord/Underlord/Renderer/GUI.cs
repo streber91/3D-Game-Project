@@ -20,17 +20,17 @@ namespace Underlord.Renderer
             get { return selectedThingTyp; }
             set { selectedThingTyp = value; }
         }
-        public Entity.Wall Wall
+        public Logic.Wall Wall
         {
             get { return wall; }
             set { wall = value; }
         }
-        public Entity.Nest Nest
+        public Logic.Nest Nest
         {
             get { return nest; }
             set { nest = value; }
         }
-        public Entity.Creature Creature
+        public Logic.Creature Creature
         {
             get { return creature; }
             set { creature = value; }

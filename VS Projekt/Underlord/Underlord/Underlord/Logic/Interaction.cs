@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Underlord.Entity;
+using Underlord.Renderer;
 
 namespace Underlord.Logic
 {
@@ -25,7 +26,7 @@ namespace Underlord.Logic
         }
         #endregion
 
-        public static void Update(GameTime gameTime, Environment.Map map, Vector2 mouseover, MouseState mouseState, MouseState lastMouseState, KeyboardState keyboard, Renderer.GUI gui)
+        public static void Update(GameTime gameTime, Environment.Map map, Vector2 mouseover, MouseState mouseState, MouseState lastMouseState, KeyboardState keyboard)
         {
             timeCounter += gameTime.ElapsedGameTime.Milliseconds;
 
@@ -94,30 +95,34 @@ namespace Underlord.Logic
                                 switch ((map.getHexagonAt(mouseover).Obj.getThingTyp()))
                                 {
                                     case Vars_Func.ThingTyp.Wall:
-                                        gui.SelectedThingTyp = Vars_Func.ThingTyp.Wall;
-                                        gui.Wall = (Wall)map.getHexagonAt(mouseover).Obj;
+                                        GUI.SelectedThingTyp = Vars_Func.ThingTyp.Wall;
+                                        GUI.Wall = (Wall)map.getHexagonAt(mouseover).Obj;
                                         break;
                                     case Vars_Func.ThingTyp.Nest:
-                                        gui.SelectedThingTyp = Vars_Func.ThingTyp.Nest;
-                                        gui.Nest = (Nest)map.getHexagonAt(mouseover).Obj;
+                                        GUI.SelectedThingTyp = Vars_Func.ThingTyp.Nest;
+                                        GUI.Nest = (Nest)map.getHexagonAt(mouseover).Obj;
                                         break;
                                     case Vars_Func.ThingTyp.DungeonCreature:
-                                        gui.SelectedThingTyp = Vars_Func.ThingTyp.DungeonCreature;
+                                        GUI.SelectedThingTyp = Vars_Func.ThingTyp.DungeonCreature;
+                                        GUI.Creature = (Creature)map.getHexagonAt(mouseover).Obj;
                                         break;
                                     case Vars_Func.ThingTyp.HeroCreature:
-                                        gui.SelectedThingTyp = Vars_Func.ThingTyp.HeroCreature;
+                                        GUI.SelectedThingTyp = Vars_Func.ThingTyp.HeroCreature;
+                                        GUI.Creature = (Creature)map.getHexagonAt(mouseover).Obj;
                                         break;
                                     case Vars_Func.ThingTyp.NeutralCreature:
-                                        gui.SelectedThingTyp = Vars_Func.ThingTyp.NeutralCreature;
+                                        GUI.SelectedThingTyp = Vars_Func.ThingTyp.NeutralCreature;
+                                        GUI.Creature = (Creature)map.getHexagonAt(mouseover).Obj;
                                         break;
                                     case Vars_Func.ThingTyp.HQCreature:
-                                        gui.SelectedThingTyp = Vars_Func.ThingTyp.HQCreature;
+                                        GUI.SelectedThingTyp = Vars_Func.ThingTyp.HQCreature;
+                                        GUI.Creature = (Creature)map.getHexagonAt(mouseover).Obj;
                                         break;
                                 }
                             }
                             else
                             {
-                                gui.SelectedThingTyp = Vars_Func.ThingTyp.length;
+                                GUI.SelectedThingTyp = Vars_Func.ThingTyp.length;
                             }
                         }
                     }

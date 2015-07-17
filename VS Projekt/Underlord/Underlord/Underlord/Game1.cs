@@ -36,7 +36,6 @@ namespace Underlord
         Vector3 mousePosition;
         Vector2 indexOfMiddleHexagon;
         Minimap minimap;
-        GUI gui;
 
         float updateTimeCounter, updates, drawUpdates;
         float frameTimeCounter, frames, drawFrame;
@@ -85,7 +84,6 @@ namespace Underlord
             mouseState = Mouse.GetState();
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
             minimap = new Minimap(map, new Vector2(graphics.PreferredBackBufferWidth - minimapSize, 0), new Vector2(minimapSize, minimapSize));
-            gui = new GUI();
 
             base.Initialize();
         }
@@ -202,7 +200,7 @@ namespace Underlord
             //map.getHexagonAt(indexOfMiddleHexagon.X, indexOfMiddleHexagon.Y).Color = Color.Purple;
 
             Vector2 mouseover = Vars_Func.gridColision(mousePosition, planeLength, hexagonSideLength);
-            Interaction.Update(gameTime, map, mouseover, mouseState, lastMouseState, keyboard, gui);
+            Interaction.Update(gameTime, map, mouseover, mouseState, lastMouseState, keyboard);
            
             // Temporary
                 /// Update the knight
@@ -257,7 +255,7 @@ namespace Underlord
              //   impModel.Draw(camera, impMatrix);
             
             minimap.drawMinimap(spriteBatch);
-            gui.Draw(spriteBatch, font);
+            GUI.Draw(spriteBatch, font);
 
             spriteBatch.End();
 

@@ -12,7 +12,7 @@ namespace Underlord.Entity
         Vars_Func.NestTyp typ;
         Upgrade[] upgrades;
         List<Vector2> upgradePos, nestHexagons, possibleNextNestHexagons;
-        float size, nutrition, maxNutrition, growcounter, timeCounter, spawnCounter;
+        float nutrition, maxNutrition, growcounter, timeCounter, spawnCounter, foodCounter;
         Boolean undead;
         Vector2 targetPosition, position;
 
@@ -31,11 +31,6 @@ namespace Underlord.Entity
         {
             get { return maxNutrition; }
             set { maxNutrition = value; }
-        }
-        public float Size
-        {
-            get { return size; }
-            set { size = value; }
         }
         public Boolean Undead
         {
@@ -107,7 +102,6 @@ namespace Underlord.Entity
             this.targetPosition = targetPosition;
             upgradePos = new List<Vector2>();
             undead = false;
-            size = 1;
             maxNutrition = 450f;
             nutrition = 250f;
             hex.Obj = this;
@@ -119,9 +113,11 @@ namespace Underlord.Entity
         {
             timeCounter += gameTime.ElapsedGameTime.Milliseconds;
             spawnCounter += gameTime.ElapsedGameTime.Milliseconds;
+            foodCounter += gameTime.ElapsedGameTime.Milliseconds;
             //update a nest
             if (this.typ != Vars_Func.NestTyp.Entrance)
             {
+                //timer for growth of the nest
                 if (timeCounter > 1000)
                 {
                     if (possibleNextNestHexagons.Count != 0)
@@ -144,6 +140,12 @@ namespace Underlord.Entity
                         possibleNextNestHexagons.RemoveAt(tmp);
                     }
                     timeCounter = 0;
+                }
+                //timer to decrease the nutrition of the nest
+                if (foodCounter > 1000)
+                {
+                    decreaseNutrition(1.0f);
+                    foodCounter = 0;
                 }
                 //timer to spawn creatures
                 if (spawnCounter > 10000)

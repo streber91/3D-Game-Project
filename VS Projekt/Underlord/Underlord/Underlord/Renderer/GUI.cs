@@ -9,65 +9,83 @@ using Underlord.Logic;
 
 namespace Underlord.Renderer
 {
-    class GUI
+    static class GUI
     {
-        Vars_Func.ThingTyp selectedThingTyp;
-        Nest nest;
-        Wall wall;
-        Creature creature;
+        static Vars_Func.ThingTyp selectedThingTyp = Vars_Func.ThingTyp.length;
+        static Nest nest;
+        static Wall wall;
+        static Creature creature;
 
         #region Properties
-        public Vars_Func.ThingTyp SelectedThingTyp
+        public static Vars_Func.ThingTyp SelectedThingTyp
         {
-            get { return selectedThingTyp; }
             set { selectedThingTyp = value; }
         }
-        public Wall Wall
+        public static Wall Wall
         {
-            get { return wall; }
             set { wall = value; }
         }
-        public Nest Nest
+        public static Nest Nest
         {
-            get { return nest; }
             set { nest = value; }
         }
-        public Creature Creature
+        public static Creature Creature
         {
             get { return creature; }
             set { creature = value; }
         }
         #endregion
 
-        #region Constructor
-        public GUI()
-        {
-            selectedThingTyp = Vars_Func.ThingTyp.length;
-        }
-        #endregion
-
-        public void Draw(SpriteBatch spriteBatch, SpriteFont font)
+        public static void Draw(SpriteBatch spriteBatch, SpriteFont font)
         {
             //draw different values for other types of selected objects
             switch (selectedThingTyp)
             {
                 case Vars_Func.ThingTyp.Wall:
-                    spriteBatch.DrawString(font, "Typ: " + wall.Typ.ToString(), new Vector2(10, 80), Color.White);
-                    spriteBatch.DrawString(font, "HP: " + wall.HP.ToString(), new Vector2(10, 95), Color.White);
-                    spriteBatch.DrawString(font, "Gold: " + wall.Gold.ToString(), new Vector2(10, 110), Color.White);
+                    if (wall != null)
+                    {
+                        spriteBatch.DrawString(font, "Typ: " + wall.Typ.ToString(), new Vector2(10, 80), Color.White);
+                        spriteBatch.DrawString(font, "HP: " + wall.HP.ToString(), new Vector2(10, 95), Color.White);
+                        spriteBatch.DrawString(font, "Gold: " + wall.Gold.ToString(), new Vector2(10, 110), Color.White);
+                    }
                     break;
                 case Vars_Func.ThingTyp.Nest:
                     spriteBatch.DrawString(font, "Typ: " + nest.Typ.ToString(), new Vector2(10, 80), Color.White);
-                    spriteBatch.DrawString(font, "Size: " + nest.Size.ToString(), new Vector2(10, 95), Color.White);
-                    spriteBatch.DrawString(font, "Nutrition: " + nest.Nutrition.ToString() + "/" + nest.MaxNutrition.ToString(), new Vector2(10, 110), Color.White);
+                    spriteBatch.DrawString(font, "Nutrition: " + nest.Nutrition.ToString() + "/" + nest.MaxNutrition.ToString(), new Vector2(10, 95), Color.White);
                     break;
                 case Vars_Func.ThingTyp.DungeonCreature:
+                    if (creature != null)
+                    {
+                        spriteBatch.DrawString(font, "Typ: " + creature.Typ.ToString(), new Vector2(10, 80), Color.White);
+                        spriteBatch.DrawString(font, "HP: " + (creature.HP - creature.DamageTaken).ToString(), new Vector2(10, 95), Color.White);
+                        spriteBatch.DrawString(font, "Damage: " + creature.Damage.ToString(), new Vector2(10, 110), Color.White);
+                        spriteBatch.DrawString(font, "Age: " + creature.Age.ToString(), new Vector2(10, 125), Color.White);
+                    }
                     break;
                 case Vars_Func.ThingTyp.HeroCreature:
+                    if (creature != null)
+                    {
+                        spriteBatch.DrawString(font, "Typ: " + creature.Typ.ToString(), new Vector2(10, 80), Color.White);
+                        spriteBatch.DrawString(font, "HP: " + (creature.HP - creature.DamageTaken).ToString(), new Vector2(10, 95), Color.White);
+                        spriteBatch.DrawString(font, "Damage: " + creature.Damage.ToString(), new Vector2(10, 110), Color.White);
+                        spriteBatch.DrawString(font, "Age: " + creature.Age.ToString(), new Vector2(10, 125), Color.White);
+                    }
                     break;
                 case Vars_Func.ThingTyp.NeutralCreature:
+                    if (creature != null)
+                    {
+                        spriteBatch.DrawString(font, "Typ: " + creature.Typ.ToString(), new Vector2(10, 80), Color.White);
+                        spriteBatch.DrawString(font, "HP: " + (creature.HP - creature.DamageTaken).ToString(), new Vector2(10, 95), Color.White);
+                        spriteBatch.DrawString(font, "Damage: " + creature.Damage.ToString(), new Vector2(10, 110), Color.White);
+                    }
                     break;
                 case Vars_Func.ThingTyp.HQCreature:
+                    if (creature != null)
+                    {
+                        spriteBatch.DrawString(font, "Typ: " + creature.Typ.ToString(), new Vector2(10, 80), Color.White);
+                        spriteBatch.DrawString(font, "HP: " + (creature.HP - creature.DamageTaken).ToString(), new Vector2(10, 95), Color.White);
+                        spriteBatch.DrawString(font, "Damage: " + creature.Damage.ToString(), new Vector2(10, 110), Color.White);
+                    }
                     break;
                 case Vars_Func.ThingTyp.length:
                     break;

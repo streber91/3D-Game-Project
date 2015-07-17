@@ -9,28 +9,28 @@ namespace Underlord.Renderer
 {
     class GUI
     {
-        Entity.Vars_Func.ThingTyp selectedThingTyp;
-        Entity.Nest nest;
-        Entity.Wall wall;
-        Entity.Creature creature;
+        Logic.Vars_Func.ThingTyp selectedThingTyp;
+        Logic.Nest nest;
+        Logic.Wall wall;
+        Logic.Creature creature;
 
         #region Properties
-        public Entity.Vars_Func.ThingTyp SelectedThingTyp
+        public Logic.Vars_Func.ThingTyp SelectedThingTyp
         {
             get { return selectedThingTyp; }
             set { selectedThingTyp = value; }
         }
-        public Entity.Wall Wall
+        public Logic.Wall Wall
         {
             get { return wall; }
             set { wall = value; }
         }
-        public Entity.Nest Nest
+        public Logic.Nest Nest
         {
             get { return nest; }
             set { nest = value; }
         }
-        public Entity.Creature Creature
+        public Logic.Creature Creature
         {
             get { return creature; }
             set { creature = value; }
@@ -40,7 +40,7 @@ namespace Underlord.Renderer
         #region Constructor
         public GUI()
         {
-            selectedThingTyp = Entity.Vars_Func.ThingTyp.length;
+            selectedThingTyp = Logic.Vars_Func.ThingTyp.length;
         }
         #endregion
 
@@ -49,25 +49,25 @@ namespace Underlord.Renderer
             //draw different values for other types of selected objects
             switch (selectedThingTyp)
             {
-                case Entity.Vars_Func.ThingTyp.Wall:
+                case Logic.Vars_Func.ThingTyp.Wall:
                     spriteBatch.DrawString(font, "Typ: " + wall.Typ.ToString(), new Vector2(10, 80), Color.White);
                     spriteBatch.DrawString(font, "HP: " + wall.HP.ToString(), new Vector2(10, 95), Color.White);
                     spriteBatch.DrawString(font, "Gold: " + wall.Gold.ToString(), new Vector2(10, 110), Color.White);
                     break;
-                case Entity.Vars_Func.ThingTyp.Nest:
+                case Logic.Vars_Func.ThingTyp.Nest:
                     spriteBatch.DrawString(font, "Typ: " + nest.Typ.ToString(), new Vector2(10, 80), Color.White);
                     spriteBatch.DrawString(font, "Size: " + nest.Size.ToString(), new Vector2(10, 95), Color.White);
                     spriteBatch.DrawString(font, "Nutrition: " + nest.Nutrition.ToString() + "/" + nest.MaxNutrition.ToString(), new Vector2(10, 110), Color.White);
                     break;
-                case Entity.Vars_Func.ThingTyp.DungeonCreature:
+                case Logic.Vars_Func.ThingTyp.DungeonCreature:
                     break;
-                case Entity.Vars_Func.ThingTyp.HeroCreature:
+                case Logic.Vars_Func.ThingTyp.HeroCreature:
                     break;
-                case Entity.Vars_Func.ThingTyp.NeutralCreature:
+                case Logic.Vars_Func.ThingTyp.NeutralCreature:
                     break;
-                case Entity.Vars_Func.ThingTyp.HQCreature:
+                case Logic.Vars_Func.ThingTyp.HQCreature:
                     break;
-                case Entity.Vars_Func.ThingTyp.length:
+                case Logic.Vars_Func.ThingTyp.length:
                     break;
             }
         }

@@ -155,7 +155,6 @@ namespace Underlord.Environment
                 getHexagonAt(imp.Position).Imps.Remove(imp);
                 imp.Position = imp.Path.Pop();
                 getHexagonAt(imp.Position).Imps.Add(imp); ;
-                imp.ActionTimeCounter = 0;
             }
         }
 
@@ -166,7 +165,6 @@ namespace Underlord.Environment
                 getHexagonAt(creature.Position).Obj = null;
                 creature.Position = creature.Path.Pop();
                 getHexagonAt(creature.Position).Obj = creature;
-                creature.ActionTimeCounter = 0;
             }
         }
         //TODO

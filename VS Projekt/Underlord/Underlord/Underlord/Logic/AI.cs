@@ -13,7 +13,7 @@ namespace Underlord.Logic
 
         static public void compute(Imp imp, GameTime time, Environment.Map map)
         {
-            
+            if (imp.ActionTimeCounter >= 500)
             {
                 if (imp.Path == null) imp.Path = new Stack<Vector2>();
                 // search Job
@@ -50,8 +50,9 @@ namespace Underlord.Logic
                     map.move(imp);
                     imp.AnimationMove(time);
                 }
-                imp.ActionTimeCounter += time.ElapsedGameTime.Milliseconds;
+                imp.ActionTimeCounter = 0;
             }
+            imp.ActionTimeCounter += time.ElapsedGameTime.Milliseconds;
         }
 
         static public void compute(Creature creature, GameTime time, Environment.Map map)
@@ -74,8 +75,8 @@ namespace Underlord.Logic
                             if (map.getHexagonAt(nearestEnemy).Obj.getThingTyp() != Vars_Func.ThingTyp.Imp)
                             {
                                 Creature target = (Creature)map.getHexagonAt(nearestEnemy).Obj;
-                                target.decreaseHP(creature.getDmg());
-                                if (target.getHP() <= 0) map.remove(target);
+                                target.takeDamage(creature.getDmg());
+                                if (target.getDamageTaken() >= target.getHP()) map.remove(target);
                                 creature.ActionTimeCounter = 0;
                             }
                             // attack imp
@@ -112,6 +113,7 @@ namespace Underlord.Logic
                 {
                     map.move(creature);
                 }
+                creature.ActionTimeCounter = 0;
             }
             creature.ActionTimeCounter += time.ElapsedGameTime.Milliseconds;
         }

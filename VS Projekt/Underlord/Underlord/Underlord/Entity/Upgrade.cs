@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using Underlord.Renderer;
 using Microsoft.Xna.Framework;
+using Underlord.Logic;
 
-namespace Underlord.Logic
+namespace Underlord.Entity
 {
     class Upgrade : Thing
     {

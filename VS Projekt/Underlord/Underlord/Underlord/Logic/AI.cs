@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Underlord.Logic;
+using Underlord.Entity;
 using Microsoft.Xna.Framework;
 
 namespace Underlord.Logic

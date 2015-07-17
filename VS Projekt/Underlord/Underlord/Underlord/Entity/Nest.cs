@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Underlord.Logic;
 
-namespace Underlord.Logic
+namespace Underlord.Entity
 {
     class Nest : Thing
     {
@@ -172,8 +173,8 @@ namespace Underlord.Logic
             Matrix.CreateRotationZ(0) *
             Matrix.CreateTranslation(drawPosition);
 
-            Logic.Vars_Func.getNestModell(typ).Color = drawColor;
-            Logic.Vars_Func.getNestModell(typ).Draw(camera, modelMatrix);
+            Vars_Func.getNestModell(typ).Color = drawColor;
+            Vars_Func.getNestModell(typ).Draw(camera, modelMatrix);
         }
 
         public void spawnCreature(Environment.Map map)

@@ -5,8 +5,9 @@ using System.Text;
 using Underlord.Renderer;
 using Microsoft.Xna.Framework;
 using Underlord.Animation;
+using Underlord.Logic;
 
-namespace Underlord.Logic
+namespace Underlord.Entity
 {
     class Imp : Thing
     {
@@ -64,7 +65,7 @@ namespace Underlord.Logic
 
         override public void update(GameTime time, Environment.Map map)
         {
-            Logic.AI.compute(this, time, map);
+            AI.compute(this, time, map);
         }
 
         public void takeDamage(int damage)
@@ -85,14 +86,14 @@ namespace Underlord.Logic
             Logic.Vars_Func.getImpModell().Draw(camera, modelMatrix);
         }
 
-        public void AnimationJob(GameTime time, Logic.Job job)
+        public void AnimationJob(GameTime time, Job job)
         {
-            Logic.Vars_Func.getImpModell().PlayJobAnimation(time, job);
+            Vars_Func.getImpModell().PlayJobAnimation(time, job);
         }
 
         public void AnimationMove(GameTime time)
         {
-            Logic.Vars_Func.getImpModell().PlayMoveAnimation(time);
+            Vars_Func.getImpModell().PlayMoveAnimation(time);
         }
     }
 }

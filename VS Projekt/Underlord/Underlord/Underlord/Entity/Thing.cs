@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Underlord.Logic;
 
-namespace Underlord.Logic
+namespace Underlord.Entity
 {
     abstract class Thing
     {

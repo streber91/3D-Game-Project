@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Underlord.Logic;
+using Underlord.Entity;
 
 namespace Underlord.Logic
 {

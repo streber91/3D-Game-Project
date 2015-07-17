@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Underlord.Renderer;
+using Underlord.Logic;
 
-namespace Underlord.Logic
+namespace Underlord.Entity
 {
     class Creature : Thing
     {
@@ -128,8 +129,8 @@ namespace Underlord.Logic
         
         override public void update(GameTime time, Environment.Map map)
         {
-            Logic.AI.compute(this, time, map);
-            if (thingTyp == Vars_Func.ThingTyp.DungeonCreature && age > maxAge) map.remove(this);
+            AI.compute(this, time, map);
+            if (thingTyp == Logic.Vars_Func.ThingTyp.DungeonCreature && age > maxAge) map.remove(this);
             age += time.ElapsedGameTime.Milliseconds / 1000;
             ageing();
         }
@@ -159,8 +160,8 @@ namespace Underlord.Logic
             Matrix.CreateRotationZ(0) *
             Matrix.CreateTranslation(drawPosition);
 
-            Logic.Vars_Func.getCreatureModell(typ).Color = drawColor;
-            Logic.Vars_Func.getCreatureModell(typ).Draw(camera, modelMatrix);
+            Vars_Func.getCreatureModell(typ).Color = drawColor;
+            Vars_Func.getCreatureModell(typ).Draw(camera, modelMatrix);
         }
     }
 }

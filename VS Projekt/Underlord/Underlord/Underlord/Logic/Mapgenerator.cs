@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Underlord.Entity;
 
 namespace Underlord.Logic
 {
@@ -10,9 +11,9 @@ namespace Underlord.Logic
     {
         public static void generateMap(Environment.Map map, int size, int diamond,int gold)
         {
-            List<Logic.Vars_Func.WallTyp> specials = new List<Logic.Vars_Func.WallTyp>();
-            specials.Add(Logic.Vars_Func.WallTyp.HQ);
-            specials.Add(Logic.Vars_Func.WallTyp.EN);
+            List<Vars_Func.WallTyp> specials = new List<Vars_Func.WallTyp>();
+            specials.Add(Vars_Func.WallTyp.HQ);
+            specials.Add(Vars_Func.WallTyp.EN);
             Random rand = new Random();
             Vector2 EN = new Vector2();
             int dia = diamond;
@@ -22,17 +23,17 @@ namespace Underlord.Logic
             {
                 if (dia > 0)
                 {
-                    specials.Add(Logic.Vars_Func.WallTyp.Diamond);
+                    specials.Add(Vars_Func.WallTyp.Diamond);
                     --dia;
                 }
                 else if (go > 0)
                 {
-                    specials.Add(Logic.Vars_Func.WallTyp.Gold);
+                    specials.Add(Vars_Func.WallTyp.Gold);
                     --go;
                 }
                 else
                 {
-                    specials.Add(Logic.Vars_Func.WallTyp.Stone);
+                    specials.Add(Vars_Func.WallTyp.Stone);
                 }
                 
             }
@@ -46,32 +47,32 @@ namespace Underlord.Logic
                     if (j % 5 == 0 && i % 5 == 0)
                     {
                         // if entrance place entrance
-                        if (specials[randnum] == Logic.Vars_Func.WallTyp.EN)
-                            new Logic.Nest(Logic.Vars_Func.NestTyp.Entrance, new Vector2(i, j), map.getHexagonAt(i, j), map, map.HQPosition);
+                        if (specials[randnum] == Vars_Func.WallTyp.EN)
+                            new Nest(Vars_Func.NestTyp.Entrance, new Vector2(i, j), map.getHexagonAt(i, j), map, map.HQPosition);
                         // if HQ place HQ
-                        else if(specials[randnum] == Logic.Vars_Func.WallTyp.HQ)
-                            new Logic.Creature(Logic.Vars_Func.CreatureTyp.HQCreatur, new Vector2(i, j), null, Logic.Vars_Func.ThingTyp.HQCreature, map);
+                        else if(specials[randnum] == Vars_Func.WallTyp.HQ)
+                            new Creature(Vars_Func.CreatureTyp.HQCreatur, new Vector2(i, j), null, Vars_Func.ThingTyp.HQCreature, map);
                         //place specila wall if not entrance or HQ
                         else
-                            new Logic.Wall(new Vector2(i, j), specials[randnum], 300, map);
+                            new Wall(new Vector2(i, j), specials[randnum], 300, map);
   
-                        if (specials[randnum] == Logic.Vars_Func.WallTyp.Diamond || Logic.Vars_Func.WallTyp.Gold == specials[randnum])
+                        if (specials[randnum] == Vars_Func.WallTyp.Diamond || Vars_Func.WallTyp.Gold == specials[randnum])
                         {
                             foreach (Vector2 hex in map.getHexagonAt(i, j).Neighbors)
                             {
-                                new Logic.Wall(new Vector2(hex.X, hex.Y), Underlord.Logic.Vars_Func.WallTyp.Gold, 300, map);
+                                new Wall(new Vector2(hex.X, hex.Y), Vars_Func.WallTyp.Gold, 300, map);
                             }
                         }
-                        if (specials[randnum] == Logic.Vars_Func.WallTyp.HQ) map.HQPosition = new Vector2(i, j);
-                        if (specials[randnum] == Logic.Vars_Func.WallTyp.EN) EN = new Vector2(i, j);
+                        if (specials[randnum] == Vars_Func.WallTyp.HQ) map.HQPosition = new Vector2(i, j);
+                        if (specials[randnum] == Vars_Func.WallTyp.EN) EN = new Vector2(i, j);
                         specials.RemoveAt(randnum);
                     }
                     // fill rest with normal walls
-                    else if(map.getHexagonAt(i, j).Obj == null) new Logic.Wall(new Vector2(i, j), Underlord.Logic.Vars_Func.WallTyp.Stone, 300, map);
+                    else if(map.getHexagonAt(i, j).Obj == null) new Wall(new Vector2(i, j), Vars_Func.WallTyp.Stone, 300, map);
                 }
             }
             // set entrance target correct
-            ((Logic.Nest)map.getHexagonAt(EN).Obj).TargetPosition = map.HQPosition;
+            ((Nest)map.getHexagonAt(EN).Obj).TargetPosition = map.HQPosition;
             // room for HQ
             foreach (Vector2 hex in map.getHexagonAt(map.HQPosition.X, map.HQPosition.Y).Neighbors)
             {

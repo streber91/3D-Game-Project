@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Underlord.Entity;
 
 namespace Underlord.Environment
 {
@@ -11,8 +12,8 @@ namespace Underlord.Environment
         Vector3 position;
         Vector2 indexNumber;
         Vector2[] neighbors = new Vector2[6]; //[up,right-up,right-down,down,left-down,left-up]
-        List<Logic.Imp> imps;
-        Logic.Thing obj;
+        List<Imp> imps;
+        Thing obj;
         int roomNumber;
         bool building;
         bool nest;
@@ -29,7 +30,7 @@ namespace Underlord.Environment
             get { return drawColor; }
             set { drawColor = value; }
         }
-        public Logic.Thing Obj
+        public Thing Obj
         {
             get { return obj; }
             set { obj = value; }
@@ -64,7 +65,7 @@ namespace Underlord.Environment
             get { return typ; }
             set { typ = value; }
         }
-        public List<Logic.Imp> Imps
+        public List<Imp> Imps
         {
             get { return imps; }
         }

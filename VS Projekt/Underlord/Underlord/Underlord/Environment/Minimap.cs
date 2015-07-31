@@ -36,8 +36,14 @@ namespace Underlord.Environment
             for (int i = 0; i < map.getMapHexagons().Length; i++)
             {
                 temp = map.getMapHexagons()[i];
-
-                if (temp.Obj != null && temp.Obj.getThingTyp().Equals(Vars_Func.ThingTyp.Wall))
+                if (temp.Obj == null) continue;
+                else if (temp.Obj.getThingTyp().Equals(Vars_Func.ThingTyp.HeroCreature)) drawHex(temp.IndexNumber, Color.Red, spritebatch);
+                else if (temp.Obj.getThingTyp().Equals(Vars_Func.ThingTyp.DungeonCreature)) drawHex(temp.IndexNumber, Color.Blue, spritebatch);
+                else if (temp.Obj.getThingTyp().Equals(Vars_Func.ThingTyp.NeutralCreature)) drawHex(temp.IndexNumber, Color.Gray, spritebatch);
+                else if (temp.Obj.getThingTyp().Equals(Vars_Func.ThingTyp.HQCreature)) drawHex(temp.IndexNumber, Color.White, spritebatch);
+                else if (temp.Obj.getThingTyp().Equals(Vars_Func.ThingTyp.Nest) && ((Nest)temp.Obj).Typ.Equals(Vars_Func.NestTyp.Entrance)) drawHex(temp.IndexNumber, Color.Crimson, spritebatch);
+                else if (temp.Obj.getThingTyp().Equals(Vars_Func.ThingTyp.Nest) || temp.Obj.getThingTyp().Equals(Vars_Func.ThingTyp.Upgrade)) drawHex(temp.IndexNumber, Color.Brown, spritebatch);
+                else if (temp.Obj.getThingTyp().Equals(Vars_Func.ThingTyp.Wall))
                 {
                     //abfrage welche art von Wall vorliegt
                     Wall tmp = (Wall)temp.Obj;

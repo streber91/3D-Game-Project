@@ -38,10 +38,21 @@ namespace Underlord.Logic
 
         #endregion
 
+        public void updateJob(Environment.Map map)
+        {
+ 
+        }
+
         public void endJob(Environment.Map map)
         {
             switch(jobTyp)
             {
+                case Vars_Func.ImpJob.Harvest:
+                    break;
+
+                case Vars_Func.ImpJob.Feed:
+                    break;
+
                 case Vars_Func.ImpJob.Mine:
                     map.MineJobs.Remove(destination);
                     map.getHexagonAt(destination).Obj = null;
@@ -57,12 +68,6 @@ namespace Underlord.Logic
                     map.MineJobs.Remove(destination);
                     map.getHexagonAt(destination).Obj = null;
                     Player.Gold += 100;
-                    break;
-
-                case Vars_Func.ImpJob.Feed:
-                    break;
-
-                case Vars_Func.ImpJob.Harvest:
                     break;
             }
             map.JobsDone.Remove(this);

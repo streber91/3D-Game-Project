@@ -38,14 +38,13 @@ namespace Underlord.Logic
                 // working
                 if (imp.CurrentJob.JobTyp != Vars_Func.ImpJob.Idle && map.getHexagonAt(imp.Position).Neighbors.Contains(imp.CurrentJob.Destination))
                 {
-                    imp.CurrentJob.Worktime -= imp.ActionTimeCounter;
-                    imp.ActionTimeCounter = 0;
+                    imp.CurrentJob.updateJob(map, imp);
                     imp.AnimationJob(time, imp.CurrentJob);
 
                     if (imp.CurrentJob.Worktime <= 0)
                     {
                         map.JobsInProgress.Remove(imp.CurrentJob);
-                        map.JobsDone.Add(imp.CurrentJob);
+                        map.JobsWaiting.Enqueue(imp.CurrentJob);
                         imp.CurrentJob = new Job(Vars_Func.ImpJob.Idle);
                     }
                 }
@@ -115,6 +114,19 @@ namespace Underlord.Logic
                 if (creature.ActionTimeCounter >= 1000 / creature.Speed)
                 {
                     map.move(creature);
+                    if (creature.Path == null)
+                    {
+                        foreach (Vector2 v in map.getHexagonAt(creature.Position).Neighbors)
+                        {
+                            if (map.getHexagonAt(v).Obj == null)
+                            {
+                                creature.Path = new Stack<Vector2>();
+                                creature.Path.Push(v);
+                                map.move(creature);
+                                break;
+                            }
+                        }
+                    }
                 }
                 creature.ActionTimeCounter = 0;
             }

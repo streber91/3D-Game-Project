@@ -188,6 +188,7 @@ namespace Underlord.Environment
                 creature.Position = creature.Path.Pop();
                 getHexagonAt(creature.Position).Obj = creature;
             }
+            else creature.Path = null;
         }
         
         public void remove(Creature creature)

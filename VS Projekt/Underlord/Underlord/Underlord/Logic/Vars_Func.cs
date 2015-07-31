@@ -211,55 +211,35 @@ namespace Underlord.Logic
             {
                 hex.Color = Color.White;
             }
-           switch (Interaction.GameState)
+           //colors the room-hexagons in CreateRoom mode, MergeRooms mode, DeleteRoom mode, Build  mode, BuildUpgrade mode
+           if(Interaction.GameState == Vars_Func.GameState.CreateRoom ||
+               Interaction.GameState == Vars_Func.GameState.MergeRooms ||
+               Interaction.GameState == Vars_Func.GameState.DeleteRoom ||
+               Interaction.GameState == Vars_Func.GameState.Build ||
+               Interaction.GameState == Vars_Func.GameState.BuildUpgrade)
            {
-               case Vars_Func.GameState.CreateRoom:
-                   foreach (Environment.Hexagon hex in map.getMapHexagons())
-                   {
-                       //colors the room-hexagons in CreateRoom mode
-                       if (hex.RoomNumber == 0) { }
-                       else if (hex.RoomNumber % 10 == 0) hex.Color = Color.Red;
-                       else if (hex.RoomNumber % 10 == 1) hex.Color = Color.Yellow;
-                       else if (hex.RoomNumber % 10 == 2) hex.Color = Color.Blue;
-                       else if (hex.RoomNumber % 10 == 3) hex.Color = Color.Black;
-                       else if (hex.RoomNumber % 10 == 4) hex.Color = Color.Green;
-                       else if (hex.RoomNumber % 10 == 5) hex.Color = Color.Purple;
-                       else if (hex.RoomNumber % 10 == 6) hex.Color = Color.Lerp(Color.Black, Color.Green, 0.5f);
-                       else if (hex.RoomNumber % 10 == 7) hex.Color = Color.Lerp(Color.Black, Color.Green, 0.5f);
-                       else if (hex.RoomNumber % 10 == 8) hex.Color = Color.Lerp(Color.Black, Color.Green, 0.5f);
-                       else if (hex.RoomNumber % 10 == 9) hex.Color = Color.Lerp(Color.Black, Color.Green, 0.5f);
-                   }
-                   break;
-               case Vars_Func.GameState.MergeRooms:
-                   foreach (Environment.Hexagon hex in map.getMapHexagons())
-                   {
-                       //colors the room-hexagons in MergeRooms mode
-                       if (hex.RoomNumber == 1) hex.Color = Color.Red;
-                       else if (hex.RoomNumber == 2) hex.Color = Color.Yellow;
-                       else if (hex.RoomNumber == 3) hex.Color = Color.Green;
-                       else if (hex.RoomNumber != 0) hex.Color = Color.Blue;
-                   }
-                   break;
-               case Vars_Func.GameState.DeleteRoom:
-                   foreach (Environment.Hexagon hex in map.getMapHexagons())
-                   {
-                       //colors the room-hexagons in DeleteRoom mode
-                       if (hex.RoomNumber == 1) hex.Color = Color.Red;
-                       else if (hex.RoomNumber == 2) hex.Color = Color.Yellow;
-                       else if (hex.RoomNumber == 3) hex.Color = Color.Green;
-                       else if (hex.RoomNumber != 0) hex.Color = Color.Blue;
-                   }
-                   break;
-               case Vars_Func.GameState.Build:
-                   foreach (Environment.Hexagon hex in map.getMapHexagons())
-                   {
-                       //colors the room-hexagons in Build mode
-                       if (hex.RoomNumber == 1) hex.Color = Color.Red;
-                       else if (hex.RoomNumber == 2) hex.Color = Color.Yellow;
-                       else if (hex.RoomNumber == 3) hex.Color = Color.Green;
-                       else if (hex.RoomNumber != 0) hex.Color = Color.Blue;
-                   }
-                   break;
+               foreach (Environment.Hexagon hex in map.getMapHexagons())
+               {
+                   if (hex.RoomNumber == 0) { }
+                   else if (hex.RoomNumber % 10 == 0) hex.Color = Color.Red;
+                   else if (hex.RoomNumber % 10 == 1) hex.Color = Color.Yellow;
+                   else if (hex.RoomNumber % 10 == 2) hex.Color = Color.Blue;
+                   else if (hex.RoomNumber % 10 == 3) hex.Color = Color.Black;
+                   else if (hex.RoomNumber % 10 == 4) hex.Color = Color.Green;
+                   else if (hex.RoomNumber % 10 == 5) hex.Color = Color.Purple;
+                   else if (hex.RoomNumber % 10 == 6) hex.Color = Color.Lerp(Color.Black, Color.Green, 0.5f);
+                   else if (hex.RoomNumber % 10 == 7) hex.Color = Color.Lerp(Color.Black, Color.Green, 0.5f);
+                   else if (hex.RoomNumber % 10 == 8) hex.Color = Color.Lerp(Color.Black, Color.Green, 0.5f);
+                   else if (hex.RoomNumber % 10 == 9) hex.Color = Color.Lerp(Color.Black, Color.Green, 0.5f);
+               }
+           }
+           //colors the hexagons which are in the mineJobs list
+           else if (Interaction.GameState == Vars_Func.GameState.Mine)
+           {
+               foreach(Vector2 pos in map.MineJobs)
+               {
+                   map.getHexagonAt(pos).Color = Color.Purple;
+               }
            }
        }
     }

@@ -179,16 +179,19 @@
       <Name>flag_Deg_GEO_01</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
+      <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
     </Compile>
     <Compile Include="Models\flag_Lve_GEO_01.fbx">
       <Name>flag_Lve_GEO_01</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
+      <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
     </Compile>
     <Compile Include="Models\flag_Spd_GEO_01.fbx">
       <Name>flag_Spd_GEO_01</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
+      <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
     </Compile>
   </ItemGroup>
   <ItemGroup>

@@ -89,13 +89,9 @@ namespace Underlord.Logic
            NestModels[(int)NestTyp.Beetle].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
            //NestModels[(int)NestTyp.Entrance].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
 
-           UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));
-           UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));
-           UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));
-
-           UpgradeModels[(int)UpgradeTyp.Damage].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
-           UpgradeModels[(int)UpgradeTyp.Life].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
-           UpgradeModels[(int)UpgradeTyp.Speed].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
+           UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models//flag_Deg_GEO_01")));
+           UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models//flag_Lve_GEO_01")));
+           UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models//flag_Spd_GEO_01")));
 
            CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")));
            CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")/*, 0.2f, MathHelper.PiOver2*/));

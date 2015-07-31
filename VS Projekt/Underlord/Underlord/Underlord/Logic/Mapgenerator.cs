@@ -51,7 +51,7 @@ namespace Underlord.Logic
                             new Nest(Vars_Func.NestTyp.Entrance, new Vector2(i, j), map.getHexagonAt(i, j), map, map.HQPosition);
                         // if HQ place HQ
                         else if(specials[randnum] == Vars_Func.WallTyp.HQ)
-                            new Creature(Vars_Func.CreatureTyp.HQCreatur, new Vector2(i, j), null, Vars_Func.ThingTyp.HQCreature, map);
+                            new Creature(Vars_Func.CreatureTyp.HQCreatur, new Vector2(i, j), null, Vars_Func.ThingTyp.HQCreature, map, new int[3]);
                         //place specila wall if not entrance or HQ
                         else
                             new Wall(new Vector2(i, j), specials[randnum], 300, map);

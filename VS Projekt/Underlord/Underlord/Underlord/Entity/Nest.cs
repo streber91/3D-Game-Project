@@ -10,13 +10,18 @@ namespace Underlord.Entity
     class Nest : Thing
     {
         Vars_Func.NestTyp typ;
-        Upgrade[] upgrades;
-        List<Vector2> upgradePos, nestHexagons, possibleNextNestHexagons;
+        List<Upgrade> upgrades;
+        int[] upgradeCount = new int[3];
+        List<Vector2> nestHexagons, possibleNextNestHexagons;
         float nutrition, maxNutrition, growcounter, timeCounter, spawnCounter, foodCounter;
         Boolean undead;
         Vector2 targetPosition, position;
 
         #region Properties
+        public List<Vector2> PossibleNextNestHexagons
+        {
+            get { return possibleNextNestHexagons; }
+        }
         public Vars_Func.NestTyp Typ
         {
             get { return typ; }
@@ -51,19 +56,20 @@ namespace Underlord.Entity
         {
             get { return nestHexagons; }
         }
-        public Upgrade[] Upgrades
+        public int[] UpgradeCount
         {
-            get { return upgrades; }
-        }
-        public List<Vector2> UpgradePos
-        {
-            get { return upgradePos; }
+            get { return upgradeCount; }
         }
         #endregion
 
         #region Constructor
         public Nest(Vars_Func.NestTyp typ, Vector2 position, Environment.Hexagon hex, Environment.Map map, Vector2 targetPosition)
         {
+            if (typ != Vars_Func.NestTyp.Entrance)
+            {
+                map.Rooms.ElementAt(map.getHexagonAt(position).RoomNumber - 1).NestType = typ;
+                map.Rooms.ElementAt(map.getHexagonAt(position).RoomNumber - 1).NestNumber = map.Nests.Count;
+            }
             possibleNextNestHexagons = new List<Vector2>();
             nestHexagons = new List<Vector2>();
             nestHexagons.Add(position);
@@ -100,7 +106,7 @@ namespace Underlord.Entity
             this.typ = typ;
             this.position = position;
             this.targetPosition = targetPosition;
-            upgradePos = new List<Vector2>();
+            upgrades = new List<Upgrade>();
             undead = false;
             maxNutrition = 450f;
             nutrition = 250f;
@@ -168,6 +174,11 @@ namespace Underlord.Entity
 
         override public void DrawModel(Renderer.Camera camera, Vector3 drawPosition, Color drawColor)
         {
+            //drawing all upgrades which belong to the nest
+            foreach (Upgrade u in upgrades)
+            {
+                u.DrawModel(camera, drawPosition, drawColor);
+            }
             Matrix modelMatrix = Matrix.Identity *
             Matrix.CreateScale(1) *
             Matrix.CreateRotationX(0) *
@@ -211,7 +222,7 @@ namespace Underlord.Entity
                     {
                         if (hex.Visited == true) hex.Visited = false;
                     }
-                    new Creature(Vars_Func.CreatureTyp.Knight, tmp, this, Vars_Func.ThingTyp.HeroCreature, map);
+                    new Creature(Vars_Func.CreatureTyp.Knight, tmp, this, Vars_Func.ThingTyp.HeroCreature, map, upgradeCount);
                     break;
                 case Vars_Func.NestTyp.Beetle:
                     //find free position for the new creature through a broad-first-search
@@ -239,16 +250,28 @@ namespace Underlord.Entity
                     {
                         if (hex.Visited == true) hex.Visited = false;
                     }
-                    new Creature(Vars_Func.CreatureTyp.Beetle, tmp, this, Vars_Func.ThingTyp.DungeonCreature, map);
+                    new Creature(Vars_Func.CreatureTyp.Beetle, tmp, this, Vars_Func.ThingTyp.DungeonCreature, map, upgradeCount);
                     break;
             }
         }
 
-        public void addUpgrade(Upgrade upgrade, Vector2 upgradePosition)
+        public void addUpgrade(Vars_Func.UpgradeTyp typ, Vector2 position, Environment.Hexagon hex, Environment.Map map)
         {
-            //upgrades.Add(upgrade);
-            upgradePos.Add(upgradePosition);
+            upgrades.Add(new Upgrade(typ, position, hex, map));
+            switch (typ)
+            {
+                case Vars_Func.UpgradeTyp.Damage:
+                    ++upgradeCount[0];
+                    break;
+                case Vars_Func.UpgradeTyp.Life:
+                    ++upgradeCount[1];
+                    break;
+                case Vars_Func.UpgradeTyp.Speed:
+                    ++upgradeCount[2];
+                    break;
+            }
         }
+
         public void increaseNutrition(float d)
         {
             if (nutrition + d <= maxNutrition)
@@ -260,6 +283,7 @@ namespace Underlord.Entity
                 nutrition = maxNutrition;
             }
         }
+
         public void decreaseNutrition(float d)
         {
             nutrition -= d;

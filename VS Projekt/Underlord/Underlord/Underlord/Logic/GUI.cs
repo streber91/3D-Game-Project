@@ -11,6 +11,7 @@ namespace Underlord.Logic
     static class GUI
     {
         static Vars_Func.ThingTyp selectedThingTyp = Vars_Func.ThingTyp.length;
+        static int selectedNestIndex;
         static Nest nest;
         static Wall wall;
         static Creature creature;
@@ -18,11 +19,15 @@ namespace Underlord.Logic
 
         public static void createGUI()
         {
-            elements.Add(new GUI_Element(new Rectangle(100, 700, 48, 48), "M", Vars_Func.GUI_ElementTyp.Mine));
-            elements.Add(new GUI_Element(new Rectangle(170, 700, 48, 48), "R", Vars_Func.GUI_ElementTyp.Room));
-            elements.Add(new GUI_Element(new Rectangle(240, 700, 48, 48), "T", Vars_Func.GUI_ElementTyp.MergeRoom));
-            elements.Add(new GUI_Element(new Rectangle(310, 700, 48, 48), "Z", Vars_Func.GUI_ElementTyp.DeleteRoom));
-            elements.Add(new GUI_Element(new Rectangle(380, 700, 48, 48), "N", Vars_Func.GUI_ElementTyp.Build));
+            elements.Add(new GUI_Element(new Rectangle(100, 700, 48, 48), "Mine(M)", Vars_Func.GUI_ElementTyp.Mine));
+            elements.Add(new GUI_Element(new Rectangle(200, 700, 48, 48), "Room(R)", Vars_Func.GUI_ElementTyp.Room));
+            elements.Add(new GUI_Element(new Rectangle(300, 700, 48, 48), "Merge(T)", Vars_Func.GUI_ElementTyp.MergeRoom));
+            elements.Add(new GUI_Element(new Rectangle(400, 700, 48, 48), "Delete(Z)", Vars_Func.GUI_ElementTyp.DeleteRoom));
+            elements.Add(new GUI_Element(new Rectangle(500, 700, 48, 48), "Nest(N)", Vars_Func.GUI_ElementTyp.Build));
+
+            elements.Add(new GUI_Element(new Rectangle(660, 700, 48, 48), "Dmg", Vars_Func.GUI_ElementTyp.DamageUpgrade));
+            elements.Add(new GUI_Element(new Rectangle(730, 700, 48, 48), "Live", Vars_Func.GUI_ElementTyp.LifeUpgrade));
+            elements.Add(new GUI_Element(new Rectangle(800, 700, 48, 48), "Speed", Vars_Func.GUI_ElementTyp.SpeedUpgrade));
         }
         
 
@@ -37,7 +42,13 @@ namespace Underlord.Logic
         }
         public static Vars_Func.ThingTyp SelectedThingTyp
         {
+            get { return selectedThingTyp; }
             set { selectedThingTyp = value; }
+        }
+        public static int SelectedNestIndex
+        {
+            get { return selectedNestIndex; }
+            set { selectedNestIndex = value; }
         }
         public static Wall Wall
         {
@@ -45,6 +56,7 @@ namespace Underlord.Logic
         }
         public static Nest Nest
         {
+            get { return nest; }
             set { nest = value; }
         }
         public static Creature Creature
@@ -76,6 +88,10 @@ namespace Underlord.Logic
                 case Vars_Func.ThingTyp.Nest:
                     spriteBatch.DrawString(font, "Typ: " + nest.Typ.ToString(), new Vector2(10, 80), Color.White);
                     spriteBatch.DrawString(font, "Nutrition: " + nest.Nutrition.ToString() + "/" + nest.MaxNutrition.ToString(), new Vector2(10, 95), Color.White);
+                    spriteBatch.DrawString(font, "Upgrades:", new Vector2(10, 110), Color.White);
+                    spriteBatch.DrawString(font, "Dmg: " + nest.UpgradeCount[0], new Vector2(10, 125), Color.White);
+                    spriteBatch.DrawString(font, "Live: " + nest.UpgradeCount[1], new Vector2(10, 140), Color.White);
+                    spriteBatch.DrawString(font, "Speed: " + nest.UpgradeCount[2], new Vector2(10, 155), Color.White);
                     break;
                 case Vars_Func.ThingTyp.DungeonCreature:
                     if (creature != null)

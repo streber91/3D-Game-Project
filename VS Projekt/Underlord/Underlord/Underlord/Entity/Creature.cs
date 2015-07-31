@@ -69,7 +69,7 @@ namespace Underlord.Entity
         #endregion
 
         #region Constructor
-        public Creature(Vars_Func.CreatureTyp typ, Vector2 position, Nest home, Vars_Func.ThingTyp allignment, Environment.Map map)
+        public Creature(Vars_Func.CreatureTyp typ, Vector2 position, Nest home, Vars_Func.ThingTyp allignment, Environment.Map map, int[] upgrades)
         {
             switch (typ)
             {
@@ -79,12 +79,12 @@ namespace Underlord.Entity
                     this.home = home;
                     thingTyp = allignment;
                     size = 1;
-                    speed = 1;
+                    speed = 1 + upgrades[2] * 0.1f;
                     actionTimeCounter = 0;
                     vision = 4;
                     damageTaken = 0;
-                    hp = 500;
-                    damage = 10;
+                    hp = 500 + upgrades[1] * 100;
+                    damage = 10 + upgrades[0] * 2;
                     age = 0;
                     maxAge = 100;
                     ageModifire = 1;

@@ -15,19 +15,19 @@ namespace Underlord.Logic
        public enum ThingTyp { Wall, Upgrade, Nest, DungeonCreature, HeroCreature, NeutralCreature, HQCreature, Imp,length };
        public enum CreatureTyp {Beetle, Knight, HQCreatur, length };
        public enum NestTyp { Beetle, Entrance, length };
-       public enum UpgradeTyp {Arcane, Training, length };
+       public enum UpgradeTyp {Damage, Life, Speed, length };
        public enum WallTyp { Stone, Gold, Diamond, HQ, EN, length };
        public enum HexTyp { Sand, Stone, BeetleNest, length };
 
-       public enum GameState { MainMenue, Ingame, Save, Load, CreateRoom, Build, Mine, MergeRooms, DeleteRoom, length };
+       public enum GameState { MainMenue, Ingame, Save, Load, CreateRoom, Build, Mine, MergeRooms, DeleteRoom, BuildUpgrade, length };
 
        public enum ImpJob { Idle, Harvest, Feed, Mine, MineDiamonds, length };
 
-       public enum GUI_ElementTyp { Mine, Room, MergeRoom, DeleteRoom, Build, length };
+       public enum GUI_ElementTyp { Mine, Room, MergeRoom, DeleteRoom, Build, DamageUpgrade, LifeUpgrade, SpeedUpgrade, length };
 
        static List<AnimationModel> CreatureModels;
        static List<BasicModel> NestModels;
-       static List<Model> UpgradeModels;
+       static List<BasicModel> UpgradeModels;
        static List<BasicModel> WallModels;
        static List<BasicModel> HexagonModels;
        static ImpModel ImpModel;
@@ -37,7 +37,7 @@ namespace Underlord.Logic
 
        public static AnimationModel getCreatureModell(CreatureTyp typ) { return CreatureModels[(int)typ]; }
        public static BasicModel getNestModell(NestTyp typ) { return NestModels[(int)typ]; }
-       public static Model getUpgradeModell(UpgradeTyp typ) { return UpgradeModels[(int)typ]; }
+       public static BasicModel getUpgradeModell(UpgradeTyp typ) { return UpgradeModels[(int)typ]; }
        public static BasicModel getWallModell(WallTyp typ) { return WallModels[(int)typ]; }
        public static BasicModel getHexagonModell(HexTyp typ) { return HexagonModels[(int)typ]; }
        public static ImpModel getImpModell() { return ImpModel; }
@@ -49,13 +49,16 @@ namespace Underlord.Logic
        {
            CreatureModels = new List<AnimationModel>();
            NestModels = new List<BasicModel>();
-           UpgradeModels = new List<Model>();
+           UpgradeModels = new List<BasicModel>();
            WallModels = new List<BasicModel>();
            HexagonModels = new List<BasicModel>();
            GUI_Elements = new List<Texture2D>();
 
            pixel = Content.Load<Texture2D>("TEST");
 
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
@@ -85,6 +88,13 @@ namespace Underlord.Logic
            NestModels[(int)NestTyp.Beetle].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
            //NestModels[(int)NestTyp.Entrance].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
 
+           UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));
+           UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));
+           UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));
+
+           UpgradeModels[(int)UpgradeTyp.Damage].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
+           UpgradeModels[(int)UpgradeTyp.Life].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
+           UpgradeModels[(int)UpgradeTyp.Speed].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
 
            CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")));
            CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")/*, 0.2f, MathHelper.PiOver2*/));

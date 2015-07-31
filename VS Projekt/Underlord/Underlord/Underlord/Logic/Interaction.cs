@@ -17,6 +17,7 @@ namespace Underlord.Logic
         static float timeCounter = 0.0f;
         static Vector2 oldMousePosition;
         static List<Vector2> toBeRoomPositions = new List<Vector2>();
+        static Vars_Func.UpgradeTyp upgradeTyp = Vars_Func.UpgradeTyp.length;
 
         #region Properties
         public static Vars_Func.GameState GameState
@@ -32,16 +33,20 @@ namespace Underlord.Logic
 
             if (timeCounter > 100)
             {
-                //switch to CreateRoom Mode in "R" is pressed
+                //switch to CreateRoom Mode in "R" or the "CreateRoom-Button" is pressed
                 if (keyboard.IsKeyDown(Keys.R) ||
-                    (mouseState.LeftButton == ButtonState.Pressed && GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.Room).Rectangle.Contains(mouseState.X, mouseState.Y)))
+                    (lastMouseState.LeftButton == ButtonState.Released &&
+                    mouseState.LeftButton == ButtonState.Pressed &&
+                    GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.Room).Rectangle.Contains(mouseState.X, mouseState.Y)))
                 {
                     gameState = Vars_Func.GameState.CreateRoom;
                     timeCounter = 0;
                 }
-                //switch to Build Mode if "N" ist pressed
+                //switch to Build Mode if "N" or the "Build-Button" is pressed
                 if (keyboard.IsKeyDown(Keys.N) ||
-                    (mouseState.LeftButton == ButtonState.Pressed && GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.Build).Rectangle.Contains(mouseState.X, mouseState.Y)))
+                    (lastMouseState.LeftButton == ButtonState.Released &&
+                    mouseState.LeftButton == ButtonState.Pressed &&
+                    GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.Build).Rectangle.Contains(mouseState.X, mouseState.Y)))
                 {
                     indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                     radius = 0;
@@ -49,9 +54,11 @@ namespace Underlord.Logic
                     gameState = Vars_Func.GameState.Build;
                     timeCounter = 0;
                 }
-                //switch to Mine Mode if "M" ist pressed
+                //switch to Mine Mode if "M" or the "Mine-Button" is pressed
                 if (keyboard.IsKeyDown(Keys.M) ||
-                    (mouseState.LeftButton == ButtonState.Pressed && GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.Mine).Rectangle.Contains(mouseState.X, mouseState.Y)))
+                    (lastMouseState.LeftButton == ButtonState.Released &&
+                    mouseState.LeftButton == ButtonState.Pressed &&
+                    GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.Mine).Rectangle.Contains(mouseState.X, mouseState.Y)))
                 {
                     indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                     radius = 0;
@@ -59,9 +66,11 @@ namespace Underlord.Logic
                     gameState = Vars_Func.GameState.Mine;
                     timeCounter = 0;
                 }
-                //switch to MergeRooms Mode if "T" ist pressed
+                //switch to MergeRooms Mode if "T" or the "MergeRooms-Button" is pressed
                 if (keyboard.IsKeyDown(Keys.T) ||
-                    (mouseState.LeftButton == ButtonState.Pressed && GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.MergeRoom).Rectangle.Contains(mouseState.X, mouseState.Y)))
+                    (lastMouseState.LeftButton == ButtonState.Released &&
+                    mouseState.LeftButton == ButtonState.Pressed &&
+                    GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.MergeRoom).Rectangle.Contains(mouseState.X, mouseState.Y)))
                 {
                     indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                     radius = 0;
@@ -69,14 +78,55 @@ namespace Underlord.Logic
                     gameState = Vars_Func.GameState.MergeRooms;
                     timeCounter = 0;
                 }
-                //switch to DeleteRoom Mode if "Z" ist pressed
+                //switch to DeleteRoom Mode if "Z" or the "DeleteRoom-Button" is pressed
                 if (keyboard.IsKeyDown(Keys.Z) ||
-                    (mouseState.LeftButton == ButtonState.Pressed && GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.DeleteRoom).Rectangle.Contains(mouseState.X, mouseState.Y)))
+                    (lastMouseState.LeftButton == ButtonState.Released &&
+                    mouseState.LeftButton == ButtonState.Pressed &&
+                    GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.DeleteRoom).Rectangle.Contains(mouseState.X, mouseState.Y)))
                 {
                     indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                     radius = 0;
                     counter = 0;
                     gameState = Vars_Func.GameState.DeleteRoom;
+                    timeCounter = 0;
+                }
+                //switch to BuildUpgrade Mode if the "DamageUpgrade-Button" is pressed and a nest is selected
+                if (lastMouseState.LeftButton == ButtonState.Released &&
+                    mouseState.LeftButton == ButtonState.Pressed &&
+                    GUI.SelectedThingTyp == Vars_Func.ThingTyp.Nest &&
+                    GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.DamageUpgrade).Rectangle.Contains(mouseState.X, mouseState.Y))
+                {
+                    upgradeTyp = Vars_Func.UpgradeTyp.Damage;
+                    indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                    radius = 0;
+                    counter = 0;
+                    gameState = Vars_Func.GameState.BuildUpgrade;
+                    timeCounter = 0;
+                }
+                //switch to BuildUpgrade Mode if the "LifeUpgrade-Button" is pressed and a nest is selected
+                if (lastMouseState.LeftButton == ButtonState.Released &&
+                    mouseState.LeftButton == ButtonState.Pressed &&
+                    GUI.SelectedThingTyp == Vars_Func.ThingTyp.Nest &&
+                    GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.LifeUpgrade).Rectangle.Contains(mouseState.X, mouseState.Y))
+                {
+                    upgradeTyp = Vars_Func.UpgradeTyp.Life;
+                    indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                    radius = 0;
+                    counter = 0;
+                    gameState = Vars_Func.GameState.BuildUpgrade;
+                    timeCounter = 0;
+                }
+                //switch to BuildUpgrade Mode if the "SpeedUpgrade-Button" is pressed and a nest is selected
+                if (lastMouseState.LeftButton == ButtonState.Released &&
+                    mouseState.LeftButton == ButtonState.Pressed &&
+                    GUI.SelectedThingTyp == Vars_Func.ThingTyp.Nest &&
+                    GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.SpeedUpgrade).Rectangle.Contains(mouseState.X, mouseState.Y))
+                {
+                    upgradeTyp = Vars_Func.UpgradeTyp.Speed;
+                    indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                    radius = 0;
+                    counter = 0;
+                    gameState = Vars_Func.GameState.BuildUpgrade;
                     timeCounter = 0;
                 }
             }
@@ -106,6 +156,7 @@ namespace Underlord.Logic
                                     case Vars_Func.ThingTyp.Nest:
                                         GUI.SelectedThingTyp = Vars_Func.ThingTyp.Nest;
                                         GUI.Nest = (Nest)map.getHexagonAt(mouseover).Obj;
+                                        if(GUI.Nest.Typ != Vars_Func.NestTyp.Entrance) GUI.SelectedNestIndex = map.Rooms[map.getHexagonAt(mouseover).RoomNumber - 1].NestNumber;
                                         break;
                                     case Vars_Func.ThingTyp.DungeonCreature:
                                         GUI.SelectedThingTyp = Vars_Func.ThingTyp.DungeonCreature;
@@ -220,9 +271,9 @@ namespace Underlord.Logic
                             mouseState.LeftButton == ButtonState.Pressed)
                         {
                             //place nest only when there is a room at mouseposition and the room doesn't have a nest already
-                            //the neighbors of the hexagon at mouseposition must be in the same room
                             if (map.getHexagonAt(mouseover).RoomNumber != 0 && map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType == Vars_Func.NestTyp.length)
                             {
+                                //the neighbors of the hexagon at mouseposition must be in the same room
                                 bool placeable = true;
                                 for (int i = 0; i < 6; ++i)
                                 {
@@ -231,7 +282,6 @@ namespace Underlord.Logic
                                 if (placeable)
                                 {
                                     new Nest(Vars_Func.NestTyp.Beetle, mouseover, map.getHexagonAt(mouseover), map, map.getHexagonAt(mouseover).Neighbors[3]);
-                                    map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType = Vars_Func.NestTyp.Beetle;
                                 }
                             }
                         }
@@ -330,6 +380,52 @@ namespace Underlord.Logic
                                 map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).deleteRoom(map);
                             }
                             timeCounter = 0;
+                        }
+                    }
+                    break;
+                #endregion
+                #region BuildUpgrade
+                case Vars_Func.GameState.BuildUpgrade:
+                    //colors the hexagon at mouseposition in BuildUpgrade mode purple
+                    map.getHexagonAt(mouseover).Color = Color.Purple;
+                    //only ten clicks per second
+                    if (timeCounter > 100)
+                    {
+                        //back to Ingame Mode
+                        if (keyboard.IsKeyDown(Keys.Escape))
+                        {
+                            gameState = Vars_Func.GameState.Ingame;
+                            timeCounter = 0;
+                        }
+                        //try to place an upgrade at mouseposition
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed)
+                        {
+                            //place upgrade only when there is a room at mouseposition
+                            //and there isn't an object already
+                            //and that room is the same room which the selected nest belong to
+                            //and the nest has grown to that position
+                            if (map.getHexagonAt(mouseover).RoomNumber != 0 &&
+                                map.getHexagonAt(mouseover).Obj == null &&
+                                map.Rooms[map.getHexagonAt(mouseover).RoomNumber - 1].NestNumber == GUI.SelectedNestIndex &&
+                                map.getHexagonAt(mouseover).Nest == true)
+                            {
+                                //the neighbors of the hexagon at mouseposition must be in the same room
+                                //and must be free for buildings
+                                //and the nest must have grown to that positions
+                                bool placeable = true;
+                                for (int i = 0; i < 6; ++i)
+                                {
+                                    if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).RoomNumber ||
+                                        map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).Nest == false ||
+                                        map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).Building == true)
+                                        placeable = false;
+                                }
+                                if (placeable)
+                                {
+                                    map.Nests[GUI.SelectedNestIndex].addUpgrade(upgradeTyp, mouseover, map.getHexagonAt(mouseover), map);
+                                }
+                            }
                         }
                     }
                     break;

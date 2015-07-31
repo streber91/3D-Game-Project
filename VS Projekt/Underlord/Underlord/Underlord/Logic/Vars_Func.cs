@@ -18,10 +18,11 @@ namespace Underlord.Logic
        public enum UpgradeTyp {Damage, Life, Speed, length };
        public enum WallTyp { Stone, Gold, Diamond, HQ, EN, length };
        public enum HexTyp { Sand, Stone, BeetleNest, length };
+       public enum SpellType { SummonImp, Fireball, length  }
 
-       public enum GameState { MainMenue, Ingame, Save, Load, CreateRoom, Build, Mine, MergeRooms, DeleteRoom, BuildUpgrade, length };
+       public enum GameState { MainMenue, Ingame, Save, Load, CreateRoom, Build, Mine, MergeRooms, DeleteRoom, BuildUpgrade, Spellcasting, length };
 
-       public enum ImpJob { Idle, Harvest, Feed, Mine, MineDiamonds, length };
+       public enum ImpJob { Idle, Harvest, Feed, Mine, MineDiamonds, MineGold, length };
 
        public enum GUI_ElementTyp { Mine, Room, MergeRoom, DeleteRoom, Build, DamageUpgrade, LifeUpgrade, SpeedUpgrade, length };
 
@@ -99,8 +100,8 @@ namespace Underlord.Logic
            CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")));
            CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")/*, 0.2f, MathHelper.PiOver2*/));
            CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")));
-           
-           
+
+           ImpModel = new ImpModel(Content.Load<Model>("AnimationModels//minion_ANI_grabbling_01"));
      
        }
 

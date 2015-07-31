@@ -51,7 +51,7 @@ namespace Underlord
             hexagonSideLength = 1; //dont change
             mapDrawWidth = 10; //dont go over 15
             planeLength = 50; //need an even number!
-            minimapSize = 240; //in pixel
+            minimapSize = 5 * planeLength; //in pixel
             frameTimeCounter = 0;
             frames = 0;
             drawFrame = 0;
@@ -98,18 +98,24 @@ namespace Underlord
                 updateTimeCounter -= 1000;
             }
 
+            //// DON'T TOUCH THIS////
             keyboard = Keyboard.GetState();
             lastMouseState = mouseState;
             mouseState = Mouse.GetState();
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
+            camera.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, mouseState);
+            view = camera.View;
+            map.update(gameTime, gameTime.ElapsedGameTime.Milliseconds);
+            //// DON'T TOUCH THIS////
+
+
             indexOfMiddleHexagon = Vars_Func.gridColision(camera.Target, planeLength, hexagonSideLength);
             Vector2 mouseover = Vars_Func.gridColision(mousePosition, planeLength, hexagonSideLength);
 
             Vars_Func.resetHexagonColors(map);
 
-            camera.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, mouseState);
-            view = camera.View;
-            map.update(gameTime, gameTime.ElapsedGameTime.Milliseconds); 
+
+
             Interaction.Update(gameTime, map, mouseover, mouseState, lastMouseState, keyboard);
             base.Update(gameTime);
         }
@@ -126,7 +132,7 @@ namespace Underlord
                 frameTimeCounter -= 1000;
             }
 
-            GraphicsDevice.Clear(Color.Blue);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
             effect.View = camera.View;
             effect.Projection = camera.Projection;
             effect.VertexColorEnabled = true;
@@ -140,7 +146,7 @@ namespace Underlord
             spriteBatch.DrawString(font, "FPS: " + drawFrame.ToString(), new Vector2(10, 40), Color.White);
             spriteBatch.DrawString(font, "UPS: " + drawUpdates.ToString(), new Vector2(10, 55), Color.White);
 
-            minimap.drawMinimap(spriteBatch);
+            minimap.drawMinimap(spriteBatch, indexOfMiddleHexagon);
             GUI.Draw(spriteBatch, font);
 
             spriteBatch.End();

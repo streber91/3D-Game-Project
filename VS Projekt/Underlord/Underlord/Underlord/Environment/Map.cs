@@ -19,9 +19,11 @@ namespace Underlord.Environment
         List<Creature> heroes;
         Hexagon[] map;
         List<Imp> impList;
-        Queue<Logic.Job> jobsWaiting;
-        List<Logic.Job> jobsInProgress;
-        List<Logic.Job> jobsDone;
+        Queue<Job> jobsWaiting;
+        List<Job> jobsInProgress;
+        List<Job> jobsDone;
+        List<Vector2> mineJobs;
+        List<Creature> dyingCreatures;
 
         Vector2 hqPosition;
         int planeSidelength;
@@ -48,17 +50,25 @@ namespace Underlord.Environment
         {
             get { return heroes; }
         }
-        public Queue<Logic.Job> JobsWaiting
+        public List<Creature> DyingCreatures
+        {
+            get { return dyingCreatures; }
+        }
+        public Queue<Job> JobsWaiting
         {
             get { return jobsWaiting; }
         }
-        public List<Logic.Job> JobsInProgress
+        public List<Job> JobsInProgress
         {
             get { return jobsInProgress; }
         }
-        public List<Logic.Job> JobsDone
+        public List<Job> JobsDone
         {
             get { return jobsDone; }
+        }
+        public List<Vector2> MineJobs
+        {
+            get { return mineJobs; }
         }
         public List<Imp> ImpList
         {
@@ -81,9 +91,11 @@ namespace Underlord.Environment
             creatures = new List<Creature>();
             heroes = new List<Creature>();
             impList = new List<Imp>();
-            jobsWaiting = new Queue<Logic.Job>();
-            jobsInProgress = new List<Logic.Job>();
-            jobsDone = new List<Logic.Job>();
+            jobsWaiting = new Queue<Job>();
+            jobsInProgress = new List<Job>();
+            jobsDone = new List<Job>();
+            mineJobs = new List<Vector2>();
+            dyingCreatures = new List<Creature>();
 
             hqPosition = new Vector2();
             //drawHeight = 2; //how many hexagons are drawn up and down of the middle (+1)
@@ -149,7 +161,7 @@ namespace Underlord.Environment
         public Hexagon getHexagonAt(float X, float Y) { return map[(int)(X * planeSidelength + Y)]; }
         public Hexagon getHexagonAt(Vector2 pos) { return map[(int)(pos.X * planeSidelength + pos.Y)]; }
         public int getPlanelength() { return planeSidelength; }
-        //TODO implement list for things AND implement konsistens in all remove and constructors
+        
         //TODO
         public void saveGame()
         {
@@ -158,7 +170,7 @@ namespace Underlord.Environment
         
         public void move(Imp imp)
         {
-            if (imp.Path != null && getHexagonAt(imp.Path.Peek()).Imps.Count < 6)
+            if (imp.Path != null && imp.Path.Count != 0 && getHexagonAt(imp.Path.Peek()).Imps.Count < 6)
             {
                 getHexagonAt(imp.Position).Imps.Remove(imp);
                 imp.Position = imp.Path.Pop();
@@ -168,14 +180,16 @@ namespace Underlord.Environment
 
         public void move(Creature creature)
         {
-            if (creature.Path != null && creature.Path.Count != 0 && getHexagonAt(creature.Path.Peek()).Obj == null)
+            if (creature.Path != null && creature.Path.Count != 0 &&
+                (getHexagonAt(creature.Path.Peek()).Obj == null ||
+                getHexagonAt(creature.Path.Peek()).Obj.getThingTyp() == Vars_Func.ThingTyp.Wall))
             {
                 getHexagonAt(creature.Position).Obj = null;
                 creature.Position = creature.Path.Pop();
                 getHexagonAt(creature.Position).Obj = creature;
             }
         }
-        //TODO
+        
         public void remove(Creature creature)
         {
             getHexagonAt(creature.Position).Obj = null;
@@ -391,6 +405,10 @@ namespace Underlord.Environment
 
         public void update(GameTime gameTime, float timeSinceLastUpdate)
         {
+            while (jobsDone.Count > 0)
+            {
+                jobsDone[0].endJob(this);
+            }
             foreach (Nest n in nests)
             {
                 n.update(gameTime, this);
@@ -406,6 +424,14 @@ namespace Underlord.Environment
             foreach (Creature h in heroes)
             {
                 h.update(gameTime, this);
+            }
+            foreach (Imp i in impList)
+            {
+                i.update(gameTime, this);
+            }
+            while (dyingCreatures.Count > 0)
+            {
+                remove(dyingCreatures[0]);
             }
         }
     }

@@ -60,6 +60,7 @@ namespace Underlord.Entity
             path = new Stack<Vector2>();
             map.getHexagonAt(position).Imps.Add(this);
             map.ImpList.Add(this);
+            currentJob = new Job(Vars_Func.ImpJob.Idle);
         }
         #endregion
 

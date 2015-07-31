@@ -84,6 +84,7 @@ namespace Underlord.Environment
         #region Constructor
         public Hexagon(Vector3 position, Vector2 indexNumber, Vector2[] neighbors, Logic.Vars_Func.HexTyp typ)
         {
+            imps = new List<Imp>();
             this.position = position;
             this.indexNumber = indexNumber;
             this.neighbors = neighbors;
@@ -109,6 +110,7 @@ namespace Underlord.Environment
             Logic.Vars_Func.getHexagonModell(typ).Draw(camera, modelMatrix);
 
             if(obj != null) obj.DrawModel(camera, drawPosition, drawColor);
+            if(obj == null && imps.Count > 0) imps[0].DrawModel(camera, drawPosition, drawColor);
         }
     }
 }

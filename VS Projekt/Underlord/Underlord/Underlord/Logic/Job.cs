@@ -9,27 +9,64 @@ namespace Underlord.Logic
     class Job
     {
         Logic.Vars_Func.ImpJob jobTyp;
-        List<Vector2> destination;
+        Vector2 destination;
         float worktime;
 
-        public Job(Logic.Vars_Func.ImpJob jobTyp, List<Vector2> destination, float worktime)
+        #region Properties
+        public float Worktime
+        {
+            get { return worktime; }
+            set { worktime = value; }
+        }
+        public Logic.Vars_Func.ImpJob JobTyp
+        {
+            get { return jobTyp; }
+        }
+        public Vector2 Destination
+        {
+            get { return destination; }
+        }
+        #endregion
+
+        #region Constructor
+        public Job(Logic.Vars_Func.ImpJob jobTyp, Vector2 destination = new Vector2(), float worktime = 0)
         {
             this.jobTyp = jobTyp;
             this.destination = destination;
             this.worktime = worktime;
         }
 
-        #region Properties
-
-        public float Worktime
-        {
-            get { return worktime; }
-            set { worktime = value; }
-        }
-
         #endregion
 
-        public Logic.Vars_Func.ImpJob getJobTyp() { return jobTyp; }
-        public List<Vector2> getDestination() { return destination; }
+        public void endJob(Environment.Map map)
+        {
+            switch(jobTyp)
+            {
+                case Vars_Func.ImpJob.Mine:
+                    map.MineJobs.Remove(destination);
+                    map.getHexagonAt(destination).Obj = null;
+                    Player.Gold += 5;
+                    break;
+
+                case Vars_Func.ImpJob.MineDiamonds:
+                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineDiamonds, this.destination, 5000));
+                    Player.Gold += 100;
+                    break;
+
+                case Vars_Func.ImpJob.MineGold:
+                    map.MineJobs.Remove(destination);
+                    map.getHexagonAt(destination).Obj = null;
+                    Player.Gold += 100;
+                    break;
+
+                case Vars_Func.ImpJob.Feed:
+                    break;
+
+                case Vars_Func.ImpJob.Harvest:
+                    break;
+            }
+            map.JobsDone.Remove(this);
+        }
+
     }
 }

@@ -68,7 +68,7 @@ namespace Underlord.Logic
                         specials.RemoveAt(randnum);
                     }
                     // fill rest with normal walls
-                    else if(map.getHexagonAt(i, j).Obj == null) new Wall(new Vector2(i, j), Vars_Func.WallTyp.Stone, 300, map);
+                    else if(map.getHexagonAt(i, j).Obj == null) new Wall(new Vector2(i, j), Vars_Func.WallTyp.Stone, 40, map);
                 }
             }
             // set entrance target correct

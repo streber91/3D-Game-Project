@@ -79,9 +79,9 @@ namespace Underlord.Logic
                 map.getHexagonAt(hex.X, hex.Y).Obj = null;
             }
             //creat start imps
-            Speels.summonImp(map);
-            Speels.summonImp(map);
-            Speels.summonImp(map);
+            Spells.castSpell(Vars_Func.SpellType.SummonImp, map.getHexagonAt(map.HQPosition).Neighbors[3],map);
+            Spells.castSpell(Vars_Func.SpellType.SummonImp, map.getHexagonAt(map.HQPosition).Neighbors[3], map);
+            Spells.castSpell(Vars_Func.SpellType.SummonImp, map.getHexagonAt(map.HQPosition).Neighbors[3], map);
             // room for entrance
             foreach (Vector2 hex in map.getHexagonAt(EN.X, EN.Y).Neighbors)
             {

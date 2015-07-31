@@ -16,21 +16,22 @@ namespace Underlord.Environment
         Map map;
         Vector2 position, dimension;
 
-        public Minimap(Map map, Vector2 pos, Vector2 dimen)
+        public Minimap(Map map, Vector2 position, Vector2 dimension)
         {
-            this.map = map;
-            this.position = pos;
-            this.dimension = dimen;
-
             this.hexsize = (int)(dimension.X / map.getPlanelength());
+            this.map = map;
+            this.position = position;
+            this.dimension = dimension;
+
+            
         }
 
-        public void drawMinimap(SpriteBatch sb)
+        public void drawMinimap(SpriteBatch spritebatch, Vector2 cameraPosition)
         {
             Hexagon temp;
 
-            Rectangle bg = new Rectangle((int)position.X, (int)position.Y, (int)dimension.X, (int)dimension.Y);
-            sb.Draw(Vars_Func.getPixel(), bg, Color.Black);
+            //Rectangle background = new Rectangle((int)position.X, (int)position.Y, (int)dimension.X, (int)dimension.Y);
+            //spritebatch.Draw(Vars_Func.getPixel(), background, Color.Black);
 
             for (int i = 0; i < map.getMapHexagons().Length; i++)
             {
@@ -38,19 +39,21 @@ namespace Underlord.Environment
 
                 if (temp.Obj != null && temp.Obj.getThingTyp().Equals(Vars_Func.ThingTyp.Wall))
                 {
-                    //abfrage welche art von Wall vorliegt (sry brauchte ich zum debugen)
+                    //abfrage welche art von Wall vorliegt
                     Wall tmp = (Wall)temp.Obj;
-                    if (tmp.Typ.Equals(Vars_Func.WallTyp.Stone)) drawHex(temp.IndexNumber, Color.Orange, sb);
-                    if (tmp.Typ.Equals(Vars_Func.WallTyp.Gold)) drawHex(temp.IndexNumber, Color.Yellow, sb);
-                    if (tmp.Typ.Equals(Vars_Func.WallTyp.Diamond)) drawHex(temp.IndexNumber, Color.Green, sb);
+                    if (tmp.Typ.Equals(Vars_Func.WallTyp.Stone)) drawHex(temp.IndexNumber, Color.Orange, spritebatch);
+                    if (tmp.Typ.Equals(Vars_Func.WallTyp.Gold)) drawHex(temp.IndexNumber, Color.Yellow, spritebatch);
+                    if (tmp.Typ.Equals(Vars_Func.WallTyp.Diamond)) drawHex(temp.IndexNumber, Color.Green, spritebatch);
                 }
             }
+            drawHex(cameraPosition, Color.Purple, spritebatch);
         }
 
-        public void drawHex(Vector2 pos, Color c , SpriteBatch sb)
+        public void drawHex(Vector2 position, Color color , SpriteBatch spritebatch)
         {
-            Rectangle rec = new Rectangle((int)(position.X + pos.X * hexsize), (int)(position.Y + (hexsize * map.getPlanelength() - pos.Y * hexsize -1) - (pos.X % 2) * (0.5f * hexsize)), hexsize, hexsize);
-            sb.Draw(Vars_Func.getPixel(), rec, c);
+            Rectangle pixelRectangle = new Rectangle((int)(this.position.X + position.X * hexsize),
+                                                        (int)(this.position.Y + (hexsize * map.getPlanelength() - position.Y * hexsize -1) - (position.X % 2) * (0.5f * hexsize)), hexsize, hexsize);
+            spritebatch.Draw(Vars_Func.getPixel(), pixelRectangle, color);
         }
 
     }

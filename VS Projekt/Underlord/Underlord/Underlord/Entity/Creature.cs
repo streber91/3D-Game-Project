@@ -138,7 +138,7 @@ namespace Underlord.Entity
         override public void update(GameTime time, Environment.Map map)
         {
             AI.compute(this, time, map);
-            if (thingTyp == Logic.Vars_Func.ThingTyp.DungeonCreature && age > maxAge) map.remove(this);
+            if (thingTyp == Logic.Vars_Func.ThingTyp.DungeonCreature && age > maxAge) map.DyingCreatures.Add(this);
             age += (float)time.ElapsedGameTime.Milliseconds / 1000;
             ageing();
         }

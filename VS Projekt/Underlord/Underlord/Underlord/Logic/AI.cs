@@ -80,21 +80,21 @@ namespace Underlord.Logic
                         if (creature.ActionTimeCounter >= 1000 / creature.Speed)
                         {
                             // attack creature
-                            if (map.getHexagonAt(nearestEnemy).Obj.getThingTyp() != Vars_Func.ThingTyp.Imp)
+                            if (map.getHexagonAt(nearestEnemy).Obj != null)
                             {
                                 Creature target = (Creature)map.getHexagonAt(nearestEnemy).Obj;
                                 target.takeDamage(creature.Damage);
-                                if (target.DamageTaken >= target.HP) map.remove(target);
+                                if (target.DamageTaken >= target.HP) map.DyingCreatures.Add(target);
                                 creature.ActionTimeCounter = 0;
                             }
-                            // attack imp
-                            else
-                            {
-                                Imp target = (Imp)map.getHexagonAt(nearestEnemy).Obj;
-                                target.takeDamage(creature.Damage);
-                                if (target.DamageTaken >= target.HP) map.remove(target);
-                                creature.ActionTimeCounter = 0;
-                            }
+                            //// attack imp
+                            //else
+                            //{
+                            //    Imp target = map.getHexagonAt(nearestEnemy).Imps[0];
+                            //    target.takeDamage(creature.Damage);
+                            //    if (target.DamageTaken >= target.HP) map.remove(target);
+                            //    creature.ActionTimeCounter = 0;
+                            //}
                         }
                     }
                     // serach path
@@ -147,7 +147,7 @@ namespace Underlord.Logic
                 //contains position an enemy creature?
                 if ( map.getHexagonAt(tmp).Obj != null &&
                     // Enemys can attack player creatures
-                    (((map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.Imp || map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.DungeonCreature ||
+                    (((/*map.getHexagonAt(tmp).Imps.Count > 0 || */map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.DungeonCreature ||
                     map.getHexagonAt(tmp).Obj.getThingTyp() == Vars_Func.ThingTyp.HQCreature) &&
                     (creature.getThingTyp() != Vars_Func.ThingTyp.HQCreature && creature.getThingTyp() != Vars_Func.ThingTyp.DungeonCreature)) ||
                     // everyone can attack neural and heroes expect themselfe

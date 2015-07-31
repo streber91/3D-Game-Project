@@ -18,8 +18,9 @@ namespace Underlord.Logic
        public enum UpgradeTyp {Arcane, Training, length };
        public enum WallTyp { Stone, Gold, Diamond, HQ, EN, length };
        public enum HexTyp { Sand, Stone, BeetleNest, length };
+       public enum SpellType { SummonImp, Fireball, length  }
 
-       public enum GameState { MainMenue, Ingame, Save, Load, CreateRoom, Build, Mine, MergeRooms, DeleteRoom, length };
+       public enum GameState { MainMenue, Ingame, Save, Load, CreateRoom, Build, Mine, MergeRooms, DeleteRoom, Spellcasting, length };
 
        public enum ImpJob { Idle, Harvest, Feed, Mine, MineDiamonds, MineGold, length };
 

@@ -23,6 +23,7 @@ namespace Underlord.Environment
         List<Job> jobsInProgress;
         List<Job> jobsDone;
         List<Vector2> mineJobs;
+        List<Creature> dyingCreatures;
 
         Vector2 hqPosition;
         int planeSidelength;
@@ -48,6 +49,10 @@ namespace Underlord.Environment
         public List<Creature> Heroes
         {
             get { return heroes; }
+        }
+        public List<Creature> DyingCreatures
+        {
+            get { return dyingCreatures; }
         }
         public Queue<Job> JobsWaiting
         {
@@ -90,6 +95,7 @@ namespace Underlord.Environment
             jobsInProgress = new List<Job>();
             jobsDone = new List<Job>();
             mineJobs = new List<Vector2>();
+            dyingCreatures = new List<Creature>();
 
             hqPosition = new Vector2();
             //drawHeight = 2; //how many hexagons are drawn up and down of the middle (+1)
@@ -155,7 +161,7 @@ namespace Underlord.Environment
         public Hexagon getHexagonAt(float X, float Y) { return map[(int)(X * planeSidelength + Y)]; }
         public Hexagon getHexagonAt(Vector2 pos) { return map[(int)(pos.X * planeSidelength + pos.Y)]; }
         public int getPlanelength() { return planeSidelength; }
-        //TODO implement list for things AND implement konsistens in all remove and constructors
+        
         //TODO
         public void saveGame()
         {
@@ -399,9 +405,9 @@ namespace Underlord.Environment
 
         public void update(GameTime gameTime, float timeSinceLastUpdate)
         {
-            foreach (Job j in jobsDone)
+            while (jobsDone.Count > 0)
             {
-                j.endJob(this);
+                jobsDone[0].endJob(this);
             }
             foreach (Nest n in nests)
             {
@@ -422,6 +428,10 @@ namespace Underlord.Environment
             foreach (Imp i in impList)
             {
                 i.update(gameTime, this);
+            }
+            while (dyingCreatures.Count > 0)
+            {
+                remove(dyingCreatures[0]);
             }
         }
     }

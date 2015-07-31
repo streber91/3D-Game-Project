@@ -51,7 +51,7 @@ namespace Underlord
             hexagonSideLength = 1; //dont change
             mapDrawWidth = 10; //dont go over 15
             planeLength = 50; //need an even number!
-            minimapSize = 240; //in pixel
+            minimapSize = 5 * planeLength; //in pixel
             frameTimeCounter = 0;
             frames = 0;
             drawFrame = 0;
@@ -140,7 +140,7 @@ namespace Underlord
             spriteBatch.DrawString(font, "FPS: " + drawFrame.ToString(), new Vector2(10, 40), Color.White);
             spriteBatch.DrawString(font, "UPS: " + drawUpdates.ToString(), new Vector2(10, 55), Color.White);
 
-            minimap.drawMinimap(spriteBatch);
+            minimap.drawMinimap(spriteBatch, indexOfMiddleHexagon);
             GUI.Draw(spriteBatch, font);
 
             spriteBatch.End();

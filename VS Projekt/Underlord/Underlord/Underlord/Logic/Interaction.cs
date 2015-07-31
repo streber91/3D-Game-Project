@@ -353,6 +353,11 @@ namespace Underlord.Logic
                     }
                     break;
                 #endregion
+                //#region Spellcasting
+                case Vars_Func.GameState.Spellcasting:
+                    break;
+                //#endregion
+
             }
         }
 

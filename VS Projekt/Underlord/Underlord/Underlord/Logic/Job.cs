@@ -45,14 +45,18 @@ namespace Underlord.Logic
                 case Vars_Func.ImpJob.Mine:
                     map.MineJobs.Remove(destination);
                     map.getHexagonAt(destination).Obj = null;
+                    Player.Gold += 5;
                     break;
 
                 case Vars_Func.ImpJob.MineDiamonds:
+                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineDiamonds, this.destination, 5000));
+                    Player.Gold += 100;
                     break;
 
                 case Vars_Func.ImpJob.MineGold:
                     map.MineJobs.Remove(destination);
                     map.getHexagonAt(destination).Obj = null;
+                    Player.Gold += 100;
                     break;
 
                 case Vars_Func.ImpJob.Feed:
@@ -61,6 +65,7 @@ namespace Underlord.Logic
                 case Vars_Func.ImpJob.Harvest:
                     break;
             }
+            map.JobsDone.Remove(this);
         }
 
     }

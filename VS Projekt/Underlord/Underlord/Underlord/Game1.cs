@@ -98,18 +98,24 @@ namespace Underlord
                 updateTimeCounter -= 1000;
             }
 
+            //// DON'T TOUCH THIS////
             keyboard = Keyboard.GetState();
             lastMouseState = mouseState;
             mouseState = Mouse.GetState();
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
+            camera.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, mouseState);
+            view = camera.View;
+            map.update(gameTime, gameTime.ElapsedGameTime.Milliseconds);
+            //// DON'T TOUCH THIS////
+
+
             indexOfMiddleHexagon = Vars_Func.gridColision(camera.Target, planeLength, hexagonSideLength);
             Vector2 mouseover = Vars_Func.gridColision(mousePosition, planeLength, hexagonSideLength);
 
             Vars_Func.resetHexagonColors(map);
 
-            camera.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, mouseState);
-            view = camera.View;
-            map.update(gameTime, gameTime.ElapsedGameTime.Milliseconds); 
+
+
             Interaction.Update(gameTime, map, mouseover, mouseState, lastMouseState, keyboard);
             base.Update(gameTime);
         }

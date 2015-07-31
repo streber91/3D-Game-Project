@@ -126,7 +126,7 @@ namespace Underlord
                 frameTimeCounter -= 1000;
             }
 
-            GraphicsDevice.Clear(Color.Blue);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
             effect.View = camera.View;
             effect.Projection = camera.Projection;
             effect.VertexColorEnabled = true;

@@ -54,20 +54,20 @@ namespace Underlord.Animation
         /// <param name="gameTime"></param>
         public void PlayJobAnimation(GameTime gameTime, Logic.Job job)
         {
-            switch (job.getJobTyp())
-            {
-                case Logic.Vars_Func.ImpJob.Harvest:
+            //switch (job.JobTyp)
+            //{
+            //    case Logic.Vars_Func.ImpJob.Harvest:
 
-                    break;
-                case Logic.Vars_Func.ImpJob.Mine:
-                case Logic.Vars_Func.ImpJob.MineDiamonds:
+            //        break;
+            //    case Logic.Vars_Func.ImpJob.Mine:
+            //    case Logic.Vars_Func.ImpJob.MineDiamonds:
                     
-                    AnimationPlayer player = this.PlayClip(dig.Clips[0]);
-                    player.Looping = true;
-                    break;
-            }
+            //        AnimationPlayer player = this.PlayClip(dig.Clips[0]);
+            //        player.Looping = true;
+            //        break;
+            //}
             
-            this.Update(gameTime);
+            //this.Update(gameTime);
         }
 
         /// <summary>
@@ -76,10 +76,10 @@ namespace Underlord.Animation
         /// <param name="gameTime"></param>
         public void PlayMoveAnimation(GameTime gameTime)
         {
-            AnimationPlayer player = this.PlayClip(walk.Clips[0]);
-            player.Looping = true;
+            //AnimationPlayer player = this.PlayClip(walk.Clips[0]);
+            //player.Looping = true;
 
-            this.Update(gameTime);
+            //this.Update(gameTime);
         }
 
         #endregion

@@ -17,28 +17,36 @@ namespace Underlord.Logic
             {
                 if (imp.Path == null) imp.Path = new Stack<Vector2>();
                 // search Job
-                if (imp.CurrentJob.getJobTyp() == Vars_Func.ImpJob.Idle)
+                if (imp.CurrentJob.JobTyp == Vars_Func.ImpJob.Idle)
                 {
                     //jobs there?
-                    if (map.JobsWaiting.Peek() != null)
+                    if (map.JobsWaiting.Count != 0)
                     {
                         imp.CurrentJob = map.JobsWaiting.Dequeue();
                         map.JobsInProgress.Add(imp.CurrentJob);
                     }
                 }
                 // search path to workplace
-                else if(imp.Path.Count == 0) imp.Path = determinePath(imp.Position, imp.CurrentJob.getDestination(), map);
-                // working
-                else if (imp.Path.Count == 1)
+                if(imp.Path.Count == 0 && imp.CurrentJob.JobTyp != Vars_Func.ImpJob.Idle) imp.Path = determinePath(imp.Position, imp.CurrentJob.Destination, map);
+                //job not reachable enque job 
+                if (imp.Path == null)
                 {
-                    imp.CurrentJob.Worktime -= time.ElapsedGameTime.Milliseconds;
+                    map.JobsInProgress.Remove(imp.CurrentJob);
+                    map.JobsWaiting.Enqueue(imp.CurrentJob);
+                    imp.CurrentJob = new Job(Vars_Func.ImpJob.Idle);
+                }
+                // working
+                if (imp.CurrentJob.JobTyp != Vars_Func.ImpJob.Idle && map.getHexagonAt(imp.Position).Neighbors.Contains(imp.CurrentJob.Destination))
+                {
+                    imp.CurrentJob.Worktime -= imp.ActionTimeCounter;
+                    imp.ActionTimeCounter = 0;
                     imp.AnimationJob(time, imp.CurrentJob);
 
                     if (imp.CurrentJob.Worktime <= 0)
                     {
                         map.JobsInProgress.Remove(imp.CurrentJob);
                         map.JobsDone.Add(imp.CurrentJob);
-                        imp.CurrentJob = null;
+                        imp.CurrentJob = new Job(Vars_Func.ImpJob.Idle);
                     }
                 }
                 // nothing to do?
@@ -208,12 +216,12 @@ namespace Underlord.Logic
                 {
                     // is the hex a not wall objekt? 
                     if (!map.getHexagonAt(hex).Visited && (map.getHexagonAt(hex).Obj == null ||
-                        ((map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.Wall || ignoreWalls) && 
+                        ((map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.Wall || ignoreWalls || (destination.Contains(hex))) && 
                         (map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.DungeonCreature || ignoreCreatures) &&
                         (map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.HeroCreature || ignoreCreatures) &&
                         (map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.NeutralCreature || ignoreCreatures) &&
                         map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.Nest && map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.Upgrade &&
-                        (map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.HQCreature || map.getHexagonAt(start).Obj.getThingTyp() == Vars_Func.ThingTyp.HeroCreature)
+                        (map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.HQCreature ||(map.getHexagonAt(start).Obj != null && map.getHexagonAt(start).Obj.getThingTyp() == Vars_Func.ThingTyp.HeroCreature))
                         )))
                     {
                         queue.Enqueue(hex);
@@ -258,7 +266,13 @@ namespace Underlord.Logic
         static private void randomwalk(Imp imp, Environment.Map map)
         {
             //random determination of next step
-            imp.Path.Push(map.getHexagonAt(imp.Position).Neighbors[(int)rand.Next(6)]);
+            int random = (int)rand.Next(6);
+            if (map.getHexagonAt(map.getHexagonAt(imp.Position).Neighbors[random]).Obj == null
+                || map.getHexagonAt(map.getHexagonAt(imp.Position).Neighbors[random]).Obj.getThingTyp() != Vars_Func.ThingTyp.Wall)
+            {
+                if (imp.Path == null) imp.Path = new Stack<Vector2>();
+                imp.Path.Push(map.getHexagonAt(imp.Position).Neighbors[random]);
+            }
         }
     }
 }

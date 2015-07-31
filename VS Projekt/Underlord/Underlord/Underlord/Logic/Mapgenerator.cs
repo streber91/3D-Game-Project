@@ -78,6 +78,10 @@ namespace Underlord.Logic
             {
                 map.getHexagonAt(hex.X, hex.Y).Obj = null;
             }
+            //creat start imps
+            Speels.summonImp(map);
+            Speels.summonImp(map);
+            Speels.summonImp(map);
             // room for entrance
             foreach (Vector2 hex in map.getHexagonAt(EN.X, EN.Y).Neighbors)
             {

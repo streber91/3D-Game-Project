@@ -26,6 +26,9 @@ namespace Underlord.Logic
 
        public enum GUI_ElementTyp { Mine, Room, MergeRoom, DeleteRoom, Build, DamageUpgrade, LifeUpgrade, SpeedUpgrade, length };
 
+       public enum ImpState { Walking, Digging, Nothing, length };
+       public enum CreatureState { Walking, Fightling, Nothing, length };
+
        static List<AnimationModel> CreatureModels;
        static List<BasicModel> NestModels;
        static List<BasicModel> UpgradeModels;
@@ -36,6 +39,8 @@ namespace Underlord.Logic
        static Texture2D pixel;
        static List<Texture2D> GUI_Elements;
 
+       static Vector3[] CreaturParamters = { new Vector3(0,1,0), new Vector3(0.5f, 0.1f, MathHelper.PiOver2), new Vector3(0,1,0), new Vector3(0,1,0) };
+
        public static AnimationModel getCreatureModell(CreatureTyp typ) { return CreatureModels[(int)typ]; }
        public static BasicModel getNestModell(NestTyp typ) { return NestModels[(int)typ]; }
        public static BasicModel getUpgradeModell(UpgradeTyp typ) { return UpgradeModels[(int)typ]; }
@@ -45,6 +50,8 @@ namespace Underlord.Logic
 
        public static Texture2D getPixel() { return pixel; }
        public static Texture2D getGUI_ElementTextures(GUI_ElementTyp typ) { return GUI_Elements[(int)typ]; }
+
+       public static Vector3 getCreatureParams(CreatureTyp typ) { return CreaturParamters[(int)typ]; }
 
        public static void loadContent(ContentManager Content)
        {
@@ -94,11 +101,14 @@ namespace Underlord.Logic
            UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models//flag_Spd_GEO_01")));
 
            CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")));
-           CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")/*, 0.2f, MathHelper.PiOver2*/));
+           CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//knight_&_sword_ANI_01")/*, 0.2f, MathHelper.PiOver2*/));
+           
+
+
            CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")));
 
-           ImpModel = new ImpModel(Content.Load<Model>("AnimationModels//minion_ANI_grabbling_01"));
-     
+           ImpModel = new ImpModel(Content.Load<Model>("AnimationModels//minion_ANI_walk_simple_02"));
+           ImpModel.AddClip(new AnimationModel (Content.Load<Model>("AnimationModels//minion_ANI_grabbling_01")));
        }
 
        public static Vector3 mousepos(GraphicsDevice graphics, MouseState mousestate, Matrix projection, Matrix view)

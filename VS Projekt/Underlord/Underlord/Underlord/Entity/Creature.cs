@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Underlord.Renderer;
 using Underlord.Logic;
+using Underlord.Animation;
 
 namespace Underlord.Entity
 {
@@ -16,7 +17,11 @@ namespace Underlord.Entity
         Vector2 position;
         Stack<Vector2> path;
         Nest home;
+
+        AnimationModel model; 
         //TODO implement balancing and diferent stats
+
+        Boolean wasSet = false;
 
         #region Properties
         public Vars_Func.CreatureTyp Typ
@@ -126,7 +131,7 @@ namespace Underlord.Entity
                     map.Creatures.Add(this);
                     break;
             }
-            
+            this.model = new AnimationModel(Vars_Func.getCreatureModell(typ).Model);
         }
         #endregion
 
@@ -141,6 +146,8 @@ namespace Underlord.Entity
             if (thingTyp == Logic.Vars_Func.ThingTyp.DungeonCreature && age > maxAge) map.DyingCreatures.Add(this);
             age += (float)time.ElapsedGameTime.Milliseconds / 1000;
             ageing();
+
+            this.Animation(time);
         }
         
         private void ageing()
@@ -159,17 +166,32 @@ namespace Underlord.Entity
             }
         }
 
+        private void Animation(GameTime time) {
+
+            if (!wasSet)
+            {
+                AnimationPlayer player = this.model.PlayClip(this.model.Clips[0]);
+                player.Looping = true;
+                wasSet = true;
+            }
+            this.model.Update(time);
+        }
+
         override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor)
         {
+            drawPosition = new Vector3(drawPosition.X, drawPosition.Y, drawPosition.Z + Vars_Func.getCreatureParams(typ).X);
+
             Matrix modelMatrix = Matrix.Identity *
-            Matrix.CreateScale(1) *
-            Matrix.CreateRotationX(0) *
+            Matrix.CreateScale(Vars_Func.getCreatureParams(typ).Y) *
+            Matrix.CreateRotationX(Vars_Func.getCreatureParams(typ).Z) *
             Matrix.CreateRotationY(0) *
             Matrix.CreateRotationZ(0) *
             Matrix.CreateTranslation(drawPosition);
 
-            Vars_Func.getCreatureModell(typ).Color = drawColor;
-            Vars_Func.getCreatureModell(typ).Draw(camera, modelMatrix);
+            //Vars_Func.getCreatureModell(typ).Color = drawColor;
+            //Vars_Func.getCreatureModell(typ).Draw(camera, modelMatrix);
+            this.model.Color = drawColor;
+            this.model.Draw(camera, modelMatrix);
         }
     }
 }

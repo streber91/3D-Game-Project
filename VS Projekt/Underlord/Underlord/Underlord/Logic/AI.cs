@@ -39,7 +39,6 @@ namespace Underlord.Logic
                 if (imp.CurrentJob.JobTyp != Vars_Func.ImpJob.Idle && map.getHexagonAt(imp.Position).Neighbors.Contains(imp.CurrentJob.Destination))
                 {
                     imp.CurrentJob.updateJob(map, imp);
-                    imp.AnimationJob(time, imp.CurrentJob);
 
                     if (imp.CurrentJob.Worktime <= 0)
                     {
@@ -55,7 +54,6 @@ namespace Underlord.Logic
                 if (imp.ActionTimeCounter >= 500)
                 {
                     map.move(imp);
-                    imp.AnimationMove(time);
                 }
                 imp.ActionTimeCounter = 0;
             }

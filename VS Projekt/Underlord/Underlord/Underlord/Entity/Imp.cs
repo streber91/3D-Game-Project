@@ -17,36 +17,25 @@ namespace Underlord.Entity
         Stack<Vector2> path;
         Logic.Job currentJob;
         float actionTimeCounter;
-      
+
+        AnimationModel model;
+        Vars_Func.ImpState state = Vars_Func.ImpState.Walking;
+        Vars_Func.ImpState oldState = Vars_Func.ImpState.Nothing;
+
         #region Properties
-        public Stack<Vector2> Path
-        {
-            get { return path; }
-            set { path = value; }
-        }
-        public Logic.Job CurrentJob
-        {
-            get { return currentJob; }
-            set { currentJob = value; }
-        }
-        public Vector2 Position
-        {
-            get { return position; }
-            set { position = value; }
-        }
-        public float ActionTimeCounter
-        {
-            get { return actionTimeCounter; }
-            set { actionTimeCounter = value; }
-        }
-        public int DamageTaken
-        {
-            get { return damage; }
-        }
-        public int HP
-        {
-            get { return hp; }
-        }
+        public Stack<Vector2> Path { get { return path; } set { path = value; } }
+      
+        public Logic.Job CurrentJob { get { return currentJob; } set { currentJob = value; } }
+
+        public Vector2 Position { get { return position; } set { position = value; } }
+
+        public float ActionTimeCounter  { get { return actionTimeCounter; } set { actionTimeCounter = value; } }
+
+        public int DamageTaken { get { return damage; } }
+
+        public int HP { get { return hp; } }
+
+        public Vars_Func.ImpState State { set { state = value; } }
         #endregion
 
         #region Constructor
@@ -61,12 +50,38 @@ namespace Underlord.Entity
             map.getHexagonAt(position).Imps.Add(this);
             map.ImpList.Add(this);
             currentJob = new Job(Vars_Func.ImpJob.Idle);
+            this.model = new AnimationModel(Vars_Func.getImpModell().Model, Vars_Func.getImpModell().AnimationClip);
         }
         #endregion
 
         override public void update(GameTime time, Environment.Map map)
         {
             AI.compute(this, time, map);
+
+            if (oldState != state)
+            {
+                AnimationPlayer player = null;
+                switch (state)
+                {
+                    case Vars_Func.ImpState.Walking:
+                        player = this.model.PlayClip( this.model.AnimationClip[0]);
+                        player.Looping = true;
+
+                        break;
+                    case Vars_Func.ImpState.Digging:
+
+                        break;
+                }
+
+                if (player != null)
+                {
+                    player.Looping = true;
+                }
+
+                oldState = state;
+            }
+            
+            this.model.Update(time);          
         }
 
         public void takeDamage(int damage)
@@ -76,25 +91,17 @@ namespace Underlord.Entity
 
         override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor)
         {
+            drawPosition = new Vector3(drawPosition.X, drawPosition.Y, drawPosition.Z + 0.5f);
+            
             Matrix modelMatrix = Matrix.Identity *
-            Matrix.CreateScale(0.1f) *
+            Matrix.CreateScale(0.05f) *
             Matrix.CreateRotationX(MathHelper.PiOver2) *
             Matrix.CreateRotationY(0) *
             Matrix.CreateRotationZ(0) *
             Matrix.CreateTranslation(drawPosition);
 
-            Logic.Vars_Func.getImpModell().Color = drawColor;
-            Logic.Vars_Func.getImpModell().Draw(camera, modelMatrix);
-        }
-
-        public void AnimationJob(GameTime time, Job job)
-        {
-            Vars_Func.getImpModell().PlayJobAnimation(time, job);
-        }
-
-        public void AnimationMove(GameTime time)
-        {
-            Vars_Func.getImpModell().PlayMoveAnimation(time);
+            this.model.Color = drawColor;
+            this.model.Draw(camera, modelMatrix);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Underlord.Logic
 {
     static class Player
     {
-        static int gold = 0, mana = 0;
+        static int gold = 0, mana = 0, food = 0;
 
         #region Properties
         public static int Gold
@@ -20,6 +20,29 @@ namespace Underlord.Logic
             get { return mana; }
             set { mana = value; }
         }
+        public static int Food
+        {
+            get { return food; }
+            set { food = value; }
+        }
         #endregion
+
+        public static bool enoughFood(int foodneeded)
+        {
+            if (foodneeded <= food) return true;
+            else return false;
+        }
+
+        public static bool enoughGold(int goldneeded)
+        {
+            if (goldneeded <= gold) return true;
+            else return false;
+        }
+
+        public static bool enoughMana(int mananeeded)
+        {
+            if (mananeeded <= mana) return true;
+            else return false;
+        }
     }
 }

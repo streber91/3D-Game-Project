@@ -47,8 +47,13 @@ namespace Underlord.Logic
             {
                 case Vars_Func.ImpJob.Harvest:
                     break;
-
+                    //TODO
                 case Vars_Func.ImpJob.Feed:
+                    if (Player.enoughFood(10))
+                    {
+                        Player.Food -= 10;
+                        ((Entity.Nest)map.getHexagonAt(destination).Obj).increaseNutrition(10);
+                    }
                     break;
 
                 case Vars_Func.ImpJob.Mine:

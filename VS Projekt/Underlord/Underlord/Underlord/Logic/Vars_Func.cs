@@ -75,6 +75,8 @@ namespace Underlord.Logic
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
 
            GUI_Elements.Add(Content.Load<Texture2D>("Left_HUD_Test"));
            GUI_Elements.Add(Content.Load<Texture2D>("Right_HUD_Test"));

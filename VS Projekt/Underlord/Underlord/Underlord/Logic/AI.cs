@@ -39,9 +39,11 @@ namespace Underlord.Logic
                 if (imp.CurrentJob.JobTyp != Vars_Func.ImpJob.Idle && map.getHexagonAt(imp.Position).Neighbors.Contains(imp.CurrentJob.Destination))
                 {
                     imp.CurrentJob.updateJob(map, imp);
+                    imp.CurrentJob.Worktime -= time.ElapsedGameTime.Milliseconds;
 
                     if (imp.CurrentJob.Worktime <= 0)
                     {
+                        imp.CurrentJob.Worktime = 5000;
                         map.JobsInProgress.Remove(imp.CurrentJob);
                         map.JobsWaiting.Enqueue(imp.CurrentJob);
                         imp.CurrentJob = new Job(Vars_Func.ImpJob.Idle);

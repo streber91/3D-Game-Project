@@ -311,22 +311,22 @@ namespace Underlord.Logic
                                 if (((Wall)map.getHexagonAt(mouseover).Obj).Typ == Vars_Func.WallTyp.Stone)
                                 {
                                     map.MineJobs.Add(mouseover);
-                                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.Mine, mouseover, 2000));
+                                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.Mine, mouseover));
                                 }
                                 else if (((Wall)map.getHexagonAt(mouseover).Obj).Typ == Vars_Func.WallTyp.Gold)
                                 {
                                     map.MineJobs.Add(mouseover);
-                                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineGold, mouseover, 5000));
+                                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineGold, mouseover));
                                 }
                                 else if (((Wall)map.getHexagonAt(mouseover).Obj).Typ == Vars_Func.WallTyp.Diamond)
                                 {
                                     map.MineJobs.Add(mouseover);
-                                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineDiamonds, mouseover, 5000));
-                                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineDiamonds, mouseover, 5000));
-                                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineDiamonds, mouseover, 5000));
-                                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineDiamonds, mouseover, 5000));
-                                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineDiamonds, mouseover, 5000));
-                                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineDiamonds, mouseover, 5000));
+                                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineDiamonds, mouseover));
+                                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineDiamonds, mouseover));
+                                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineDiamonds, mouseover));
+                                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineDiamonds, mouseover));
+                                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineDiamonds, mouseover));
+                                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineDiamonds, mouseover));
                                 }
                             }
                         }

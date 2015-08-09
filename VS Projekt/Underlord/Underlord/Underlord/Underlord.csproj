@@ -112,6 +112,7 @@
     <Compile Include="Animation\Bone.cs" />
     <Compile Include="Animation\ImpModel.cs" />
     <Compile Include="Basic\BasicModel.cs" />
+    <Compile Include="Entity\Farm.cs" />
     <Compile Include="Entity\Nest.cs" />
     <Compile Include="Entity\Wall.cs" />
     <Compile Include="Environment\Hexagon.cs" />

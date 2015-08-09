@@ -68,7 +68,7 @@ namespace Underlord.Entity
             if (typ != Vars_Func.NestTyp.Entrance)
             {
                 map.Rooms.ElementAt(map.getHexagonAt(position).RoomNumber - 1).NestType = typ;
-                map.Rooms.ElementAt(map.getHexagonAt(position).RoomNumber - 1).NestNumber = map.Nests.Count;
+                map.Rooms.ElementAt(map.getHexagonAt(position).RoomNumber - 1).RoomObject = this;
             }
             possibleNextNestHexagons = new List<Vector2>();
             nestHexagons = new List<Vector2>();

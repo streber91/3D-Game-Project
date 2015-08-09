@@ -114,6 +114,7 @@
     <Compile Include="Basic\BasicModel.cs" />
     <Compile Include="Entity\Farm.cs" />
     <Compile Include="Entity\Nest.cs" />
+    <Compile Include="Entity\Temple.cs" />
     <Compile Include="Entity\Wall.cs" />
     <Compile Include="Environment\Hexagon.cs" />
     <Compile Include="Entity\Imp.cs" />

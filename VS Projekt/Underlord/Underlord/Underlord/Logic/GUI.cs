@@ -11,7 +11,6 @@ namespace Underlord.Logic
     static class GUI
     {
         static Vars_Func.ThingTyp selectedThingTyp = Vars_Func.ThingTyp.length;
-        static int selectedNestIndex;
         static Nest nest;
         static Wall wall;
         static Creature creature;
@@ -44,11 +43,6 @@ namespace Underlord.Logic
         {
             get { return selectedThingTyp; }
             set { selectedThingTyp = value; }
-        }
-        public static int SelectedNestIndex
-        {
-            get { return selectedNestIndex; }
-            set { selectedNestIndex = value; }
         }
         public static Wall Wall
         {

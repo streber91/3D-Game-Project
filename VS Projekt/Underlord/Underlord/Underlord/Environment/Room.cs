@@ -9,7 +9,7 @@ namespace Underlord.Environment
     {
         List<Vector2> room = new List<Vector2>();
         Logic.Vars_Func.NestTyp nestType;
-        int nestNumber;
+        Entity.Thing roomObject;
 
         #region Properties
         public Logic.Vars_Func.NestTyp NestType
@@ -17,10 +17,10 @@ namespace Underlord.Environment
             get { return nestType; }
             set { nestType = value; }
         }
-        public int NestNumber
+        public Entity.Thing RoomObject
         {
-            get { return nestNumber; }
-            set { nestNumber = value; }
+            get { return roomObject; }
+            set { roomObject = value; }
         }
         #endregion
 
@@ -28,7 +28,6 @@ namespace Underlord.Environment
         public Room(Vector2 middleHexagonIndexNumber, int radius, Map map)
         {
             nestType = Logic.Vars_Func.NestTyp.length;
-            nestNumber = 0;
             //create nest with only the middle hexagon
             if (radius == 0)
             {
@@ -98,9 +97,11 @@ namespace Underlord.Environment
                 for (int j = 0; j < 6; ++j)
                 {
                     Vector2 nextNeighbor = hex.Neighbors[j];
-                    if (map.getHexagonAt(nextNeighbor).Nest && map.getHexagonAt(nextNeighbor).RoomNumber == newRoomNumber && !map.Nests.ElementAt(nestNumber).PossibleNextNestHexagons.Contains(x))
+                    if (map.getHexagonAt(nextNeighbor).Nest &&
+                        map.getHexagonAt(nextNeighbor).RoomNumber == newRoomNumber &&
+                        !(((Entity.Nest)RoomObject).PossibleNextNestHexagons.Contains(x)))
                     {
-                        map.Nests.ElementAt(nestNumber).PossibleNextNestHexagons.Add(x);
+                        ((Entity.Nest)RoomObject).PossibleNextNestHexagons.Add(x);
                     }
                 }
                 map.getHexagonAt(x).RoomNumber = newRoomNumber;

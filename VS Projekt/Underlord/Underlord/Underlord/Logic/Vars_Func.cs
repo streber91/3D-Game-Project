@@ -12,7 +12,7 @@ namespace Underlord.Logic
 {
    static class Vars_Func
     {
-       public enum ThingTyp { Wall, Upgrade, Nest, DungeonCreature, HeroCreature, NeutralCreature, HQCreature, Imp,length };
+       public enum ThingTyp { Wall, Upgrade, Nest, DungeonCreature, HeroCreature, NeutralCreature, HQCreature, Imp, Farm, Temple, length };
        public enum CreatureTyp {Beetle, Knight, HQCreatur, length };
        public enum NestTyp { Beetle, Entrance, length };
        public enum UpgradeTyp {Damage, Life, Speed, length };
@@ -20,11 +20,11 @@ namespace Underlord.Logic
        public enum HexTyp { Sand, Stone, BeetleNest, length };
        public enum SpellType { SummonImp, Fireball, length  }
 
-       public enum GameState { MainMenue, Ingame, Save, Load, CreateRoom, Build, Mine, MergeRooms, DeleteRoom, BuildUpgrade, Spellcasting, length };
+       public enum GameState { MainMenue, Ingame, Save, Load, CreateRoom, Build, Mine, MergeRooms, DeleteRoom, BuildUpgrade, Spellcasting, PlaceFarm, PlaceTemple, length };
 
        public enum ImpJob { Idle, Harvest, Feed, Mine, MineDiamonds, MineGold, length };
 
-       public enum GUI_ElementTyp { Mine, Room, MergeRoom, DeleteRoom, Build, DamageUpgrade, LifeUpgrade, SpeedUpgrade, length };
+       public enum GUI_ElementTyp { Mine, Room, MergeRoom, DeleteRoom, Build, DamageUpgrade, LifeUpgrade, SpeedUpgrade, PlaceFarm, PlaceTemple, length };
 
        public enum ImpState { Walking, Digging, Nothing, length };
        public enum CreatureState { Walking, Fightling, Nothing, length };

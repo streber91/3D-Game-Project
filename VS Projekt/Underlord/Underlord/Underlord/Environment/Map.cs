@@ -15,6 +15,7 @@ namespace Underlord.Environment
         List<Room> rooms;
         List<Nest> nests;
         List<Farm> farms;
+        List<Temple> temples;
         List<Nest> entrances;
         List<Creature> creatures;
         List<Creature> heroes;
@@ -42,6 +43,10 @@ namespace Underlord.Environment
         public List<Farm> Farms
         {
             get { return farms; }
+        }
+        public List<Temple> Temples
+        {
+            get { return temples; }
         }
         public List<Nest> Entrances
         {
@@ -92,6 +97,7 @@ namespace Underlord.Environment
             map = new Hexagon[sidelength * sidelength];
             rooms = new List<Room>();
             nests = new List<Nest>();
+            temples = new List<Temple>();
             farms = new List<Farm>();
             entrances = new List<Nest>();
             creatures = new List<Creature>();
@@ -420,6 +426,10 @@ namespace Underlord.Environment
             foreach (Nest n in nests)
             {
                 n.update(gameTime, this);
+            }
+            foreach (Farm f in farms)
+            {
+                f.update(gameTime, this);
             }
             foreach (Nest e in entrances)
             {

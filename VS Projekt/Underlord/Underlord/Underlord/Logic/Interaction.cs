@@ -156,7 +156,7 @@ namespace Underlord.Logic
                                     case Vars_Func.ThingTyp.Nest:
                                         GUI.SelectedThingTyp = Vars_Func.ThingTyp.Nest;
                                         GUI.Nest = (Nest)map.getHexagonAt(mouseover).Obj;
-                                        if(GUI.Nest.Typ != Vars_Func.NestTyp.Entrance) GUI.SelectedNestIndex = map.Rooms[map.getHexagonAt(mouseover).RoomNumber - 1].NestNumber;
+                                        if(GUI.Nest.Typ != Vars_Func.NestTyp.Entrance) GUI.Nest = (Nest)map.Rooms[map.getHexagonAt(mouseover).RoomNumber - 1].RoomObject;
                                         break;
                                     case Vars_Func.ThingTyp.DungeonCreature:
                                         GUI.SelectedThingTyp = Vars_Func.ThingTyp.DungeonCreature;
@@ -426,7 +426,7 @@ namespace Underlord.Logic
                             //and the nest has grown to that position
                             if (map.getHexagonAt(mouseover).RoomNumber != 0 &&
                                 map.getHexagonAt(mouseover).Obj == null &&
-                                map.Rooms[map.getHexagonAt(mouseover).RoomNumber - 1].NestNumber == GUI.SelectedNestIndex &&
+                                map.Rooms[map.getHexagonAt(mouseover).RoomNumber - 1].RoomObject == GUI.Nest &&
                                 map.getHexagonAt(mouseover).Nest == true)
                             {
                                 //the neighbors of the hexagon at mouseposition must be in the same room
@@ -442,7 +442,7 @@ namespace Underlord.Logic
                                 }
                                 if (placeable)
                                 {
-                                    map.Nests[GUI.SelectedNestIndex].addUpgrade(upgradeTyp, mouseover, map.getHexagonAt(mouseover), map);
+                                    GUI.Nest.addUpgrade(upgradeTyp, mouseover, map.getHexagonAt(mouseover), map);
                                 }
                             }
                         }

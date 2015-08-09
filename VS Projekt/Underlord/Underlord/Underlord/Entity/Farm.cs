@@ -34,10 +34,12 @@ namespace Underlord.Entity
         public Farm(Vector2 position, Environment.Map map)
         {
             this.position = position;
+            thingTyp = Logic.Vars_Func.ThingTyp.Farm;
             food = 0;
             getsHarvested = false;
             foodCounter = 0;
 
+            map.getHexagonAt(position).Obj = this;
             map.Farms.Add(this);
         }
         #endregion

@@ -15,7 +15,6 @@ namespace Underlord.Entity
         int cost;
 
         #region Properties
-
         #endregion
 
         #region Constructor

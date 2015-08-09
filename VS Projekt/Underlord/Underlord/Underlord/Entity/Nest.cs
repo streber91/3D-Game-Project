@@ -174,11 +174,6 @@ namespace Underlord.Entity
 
         override public void DrawModel(Renderer.Camera camera, Vector3 drawPosition, Color drawColor)
         {
-            //drawing all upgrades which belong to the nest
-            foreach (Upgrade u in upgrades)
-            {
-                u.DrawModel(camera, drawPosition, drawColor);
-            }
             Matrix modelMatrix = Matrix.Identity *
             Matrix.CreateScale(1) *
             Matrix.CreateRotationX(0) *

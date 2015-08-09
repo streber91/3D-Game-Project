@@ -152,7 +152,7 @@ namespace Underlord.Entity
                 {
                     decreaseNutrition(1.0f);
                     foodCounter = 0;
-                    if (nutrition < 0.4 * maxNutrition)
+                    if (nutrition < 0.4 * maxNutrition && getsFeeded == false)
                     {
                         getsFeeded = true;
                         map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.Feed, position));
@@ -171,7 +171,7 @@ namespace Underlord.Entity
                 //timer to spawn heroes
                 if (spawnCounter > 5000)
                 {
-                    spawnCreature(map);
+                    //spawnCreature(map);
                     spawnCounter = 0;
                 }
             }

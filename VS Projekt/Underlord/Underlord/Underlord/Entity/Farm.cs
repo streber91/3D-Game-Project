@@ -50,7 +50,7 @@ namespace Underlord.Entity
             {
                 food++;
                 foodCounter = 0;
-                if (food >= 100)
+                if (food >= 100 && getsHarvested == false)
                 {
                     getsHarvested = true;
                     map.JobsWaiting.Enqueue(new Logic.Job(Logic.Vars_Func.ImpJob.Harvest, position));

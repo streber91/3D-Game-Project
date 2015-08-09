@@ -227,8 +227,8 @@ namespace Underlord.Logic
                 foreach (Vector2 hex in map.getHexagonAt(tmp).Neighbors)
                 {
                     // is the hex a not wall objekt? 
-                    if (!map.getHexagonAt(hex).Visited && (map.getHexagonAt(hex).Obj == null ||
-                        ((map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.Wall || ignoreWalls || (destination.Contains(hex))) && 
+                    if (!map.getHexagonAt(hex).Visited && (map.getHexagonAt(hex).Obj == null || (destination.Contains(hex)) ||
+                        ((map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.Wall || ignoreWalls) && 
                         (map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.DungeonCreature || ignoreCreatures) &&
                         (map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.HeroCreature || ignoreCreatures) &&
                         (map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.NeutralCreature || ignoreCreatures) &&

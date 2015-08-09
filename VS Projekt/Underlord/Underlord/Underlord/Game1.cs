@@ -141,13 +141,14 @@ namespace Underlord
 
 
             spriteBatch.Begin();
-            spriteBatch.DrawString(font, mouseState.X.ToString() + " : " + mouseState.Y.ToString(), new Vector2(10, 10), Color.White);
-            spriteBatch.DrawString(font, mousePosition.X.ToString() + " : " + mousePosition.Y.ToString() + " : " + mousePosition.Z.ToString(), new Vector2(10, 25), Color.White);
-            spriteBatch.DrawString(font, "FPS: " + drawFrame.ToString(), new Vector2(10, 40), Color.White);
-            spriteBatch.DrawString(font, "UPS: " + drawUpdates.ToString(), new Vector2(10, 55), Color.White);
+            GUI.Draw(spriteBatch, font);
+            spriteBatch.DrawString(font, mouseState.X.ToString() + " : " + mouseState.Y.ToString(), new Vector2(20, 200), Color.Black);
+            spriteBatch.DrawString(font, mousePosition.X.ToString() + " : " + mousePosition.Y.ToString() + " : " + mousePosition.Z.ToString(), new Vector2(20, 220), Color.Black);
+            spriteBatch.DrawString(font, "FPS: " + drawFrame.ToString(), new Vector2(20, 240), Color.Black);
+            spriteBatch.DrawString(font, "UPS: " + drawUpdates.ToString(), new Vector2(20, 260), Color.Black);
 
             minimap.drawMinimap(spriteBatch, indexOfMiddleHexagon);
-            GUI.Draw(spriteBatch, font);
+            
 
             spriteBatch.End();
 

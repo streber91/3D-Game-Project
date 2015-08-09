@@ -37,7 +37,7 @@ namespace Underlord.Logic
                 if (keyboard.IsKeyDown(Keys.R) ||
                     (lastMouseState.LeftButton == ButtonState.Released &&
                     mouseState.LeftButton == ButtonState.Pressed &&
-                    GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.Room).Rectangle.Contains(mouseState.X, mouseState.Y)))
+                    GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.Room).Rectangle.Contains(mouseState.X, mouseState.Y)))
                 {
                     gameState = Vars_Func.GameState.CreateRoom;
                     timeCounter = 0;
@@ -46,7 +46,7 @@ namespace Underlord.Logic
                 if (keyboard.IsKeyDown(Keys.N) ||
                     (lastMouseState.LeftButton == ButtonState.Released &&
                     mouseState.LeftButton == ButtonState.Pressed &&
-                    GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.Build).Rectangle.Contains(mouseState.X, mouseState.Y)))
+                    GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.Build).Rectangle.Contains(mouseState.X, mouseState.Y)))
                 {
                     indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                     radius = 0;
@@ -58,7 +58,7 @@ namespace Underlord.Logic
                 if (keyboard.IsKeyDown(Keys.M) ||
                     (lastMouseState.LeftButton == ButtonState.Released &&
                     mouseState.LeftButton == ButtonState.Pressed &&
-                    GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.Mine).Rectangle.Contains(mouseState.X, mouseState.Y)))
+                    GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.Mine).Rectangle.Contains(mouseState.X, mouseState.Y)))
                 {
                     indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                     radius = 0;
@@ -70,7 +70,7 @@ namespace Underlord.Logic
                 if (keyboard.IsKeyDown(Keys.T) ||
                     (lastMouseState.LeftButton == ButtonState.Released &&
                     mouseState.LeftButton == ButtonState.Pressed &&
-                    GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.MergeRoom).Rectangle.Contains(mouseState.X, mouseState.Y)))
+                    GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.MergeRoom).Rectangle.Contains(mouseState.X, mouseState.Y)))
                 {
                     indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                     radius = 0;
@@ -82,7 +82,7 @@ namespace Underlord.Logic
                 if (keyboard.IsKeyDown(Keys.Z) ||
                     (lastMouseState.LeftButton == ButtonState.Released &&
                     mouseState.LeftButton == ButtonState.Pressed &&
-                    GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.DeleteRoom).Rectangle.Contains(mouseState.X, mouseState.Y)))
+                    GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.DeleteRoom).Rectangle.Contains(mouseState.X, mouseState.Y)))
                 {
                     indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                     radius = 0;
@@ -94,7 +94,7 @@ namespace Underlord.Logic
                 if (lastMouseState.LeftButton == ButtonState.Released &&
                     mouseState.LeftButton == ButtonState.Pressed &&
                     GUI.SelectedThingTyp == Vars_Func.ThingTyp.Nest &&
-                    GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.DamageUpgrade).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    GUI.getGUI_UpgradeButton(Vars_Func.GUI_ElementTyp.DamageUpgrade).Rectangle.Contains(mouseState.X, mouseState.Y))
                 {
                     upgradeTyp = Vars_Func.UpgradeTyp.Damage;
                     indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
@@ -107,7 +107,7 @@ namespace Underlord.Logic
                 if (lastMouseState.LeftButton == ButtonState.Released &&
                     mouseState.LeftButton == ButtonState.Pressed &&
                     GUI.SelectedThingTyp == Vars_Func.ThingTyp.Nest &&
-                    GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.LifeUpgrade).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    GUI.getGUI_UpgradeButton(Vars_Func.GUI_ElementTyp.LifeUpgrade).Rectangle.Contains(mouseState.X, mouseState.Y))
                 {
                     upgradeTyp = Vars_Func.UpgradeTyp.Life;
                     indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
@@ -120,7 +120,7 @@ namespace Underlord.Logic
                 if (lastMouseState.LeftButton == ButtonState.Released &&
                     mouseState.LeftButton == ButtonState.Pressed &&
                     GUI.SelectedThingTyp == Vars_Func.ThingTyp.Nest &&
-                    GUI.getGUI_Element(Vars_Func.GUI_ElementTyp.SpeedUpgrade).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    GUI.getGUI_UpgradeButton(Vars_Func.GUI_ElementTyp.SpeedUpgrade).Rectangle.Contains(mouseState.X, mouseState.Y))
                 {
                     upgradeTyp = Vars_Func.UpgradeTyp.Speed;
                     indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);

@@ -14,7 +14,7 @@ namespace Underlord.Entity
         int[] upgradeCount = new int[3];
         List<Vector2> nestHexagons, possibleNextNestHexagons;
         float nutrition, maxNutrition, growcounter, timeCounter, spawnCounter, foodCounter;
-        Boolean undead;
+        Boolean getsFeeded;
         Vector2 targetPosition, position;
 
         #region Properties
@@ -37,10 +37,10 @@ namespace Underlord.Entity
             get { return maxNutrition; }
             set { maxNutrition = value; }
         }
-        public Boolean Undead
+        public Boolean GetsFedded
         {
-            get { return undead; }
-            set { undead = value; }
+            get { return getsFeeded; }
+            set { getsFeeded = value; }
         }
         public Vector2 TargetPosition
         {
@@ -107,7 +107,7 @@ namespace Underlord.Entity
             this.position = position;
             this.targetPosition = targetPosition;
             upgrades = new List<Upgrade>();
-            undead = false;
+            getsFeeded = false;
             maxNutrition = 450f;
             nutrition = 250f;
             hex.Obj = this;
@@ -124,7 +124,7 @@ namespace Underlord.Entity
             if (this.typ != Vars_Func.NestTyp.Entrance)
             {
                 //timer for growth of the nest
-                if (timeCounter > 1000)
+                if (timeCounter > 1000 && nutrition > 0)
                 {
                     if (possibleNextNestHexagons.Count != 0)
                     {
@@ -152,9 +152,14 @@ namespace Underlord.Entity
                 {
                     decreaseNutrition(1.0f);
                     foodCounter = 0;
+                    if (nutrition < 0.4 * maxNutrition && getsFeeded == false)
+                    {
+                        getsFeeded = true;
+                        map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.Feed, position));
+                    }
                 }
                 //timer to spawn creatures
-                if (spawnCounter > 10000)
+                if (spawnCounter > 10000 && nutrition > 0)
                 {
                     spawnCreature(map);
                     spawnCounter = 0;
@@ -166,7 +171,7 @@ namespace Underlord.Entity
                 //timer to spawn heroes
                 if (spawnCounter > 5000)
                 {
-                    spawnCreature(map);
+                    //spawnCreature(map);
                     spawnCounter = 0;
                 }
             }
@@ -286,7 +291,6 @@ namespace Underlord.Entity
             if (nutrition <= 0)
             {
                 nutrition = 0;
-                Undead = true;
             }
         }
     }

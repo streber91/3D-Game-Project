@@ -29,7 +29,7 @@ namespace Underlord.Logic
         #endregion
 
         #region Constructor
-        public Job(Logic.Vars_Func.ImpJob jobTyp, Vector2 destination = new Vector2(), float worktime = 0)
+        public Job(Logic.Vars_Func.ImpJob jobTyp, Vector2 destination = new Vector2(), float worktime = 5000)
         {
             this.jobTyp = jobTyp;
             this.destination = destination;
@@ -46,13 +46,30 @@ namespace Underlord.Logic
             switch (jobTyp)
             {
                 case Vars_Func.ImpJob.Harvest:
-                    break;
-                    //TODO
-                case Vars_Func.ImpJob.Feed:
-                    if (Player.enoughFood(10))
+                    Player.Food += Math.Min(20, ((Entity.Farm)map.getHexagonAt(destination).Obj).Food);
+                    ((Entity.Farm)map.getHexagonAt(destination).Obj).Food -= Math.Min(20, ((Entity.Farm)map.getHexagonAt(destination).Obj).Food);
+
+                    if (((Entity.Farm)map.getHexagonAt(destination).Obj).Food <= 0)
                     {
-                        Player.Food -= 10;
-                        ((Entity.Nest)map.getHexagonAt(destination).Obj).increaseNutrition(10);
+                        map.JobsDone.Add(this);
+                        map.JobsInProgress.Remove(this);
+                        imp.CurrentJob = new Job(Vars_Func.ImpJob.Idle);
+                    }
+                    break;
+
+                case Vars_Func.ImpJob.Feed:
+                    int feedvalue = (int)Math.Min(10, ((Entity.Nest)map.getHexagonAt(destination).Obj).MaxNutrition - ((Entity.Nest)map.getHexagonAt(destination).Obj).Nutrition);
+                    if (Player.enoughFood(feedvalue))
+                    {  
+                        Player.Food -= feedvalue;
+                        ((Entity.Nest)map.getHexagonAt(destination).Obj).increaseNutrition(feedvalue);
+                    }
+
+                    if(((Entity.Nest)map.getHexagonAt(destination).Obj).Nutrition == ((Entity.Nest)map.getHexagonAt(destination).Obj).MaxNutrition)
+                    {
+                        map.JobsDone.Add(this);
+                        map.JobsInProgress.Remove(this);
+                        imp.CurrentJob = new Job(Vars_Func.ImpJob.Idle);
                     }
                     break;
 
@@ -95,9 +112,11 @@ namespace Underlord.Logic
             switch(jobTyp)
             {
                 case Vars_Func.ImpJob.Harvest:
+                    ((Entity.Farm)(map.getHexagonAt(destination).Obj)).GetsHarvested = false;
                     break;
 
                 case Vars_Func.ImpJob.Feed:
+                    ((Entity.Nest)(map.getHexagonAt(destination).Obj)).GetsFedded = false;
                     break;
 
                 case Vars_Func.ImpJob.Mine:

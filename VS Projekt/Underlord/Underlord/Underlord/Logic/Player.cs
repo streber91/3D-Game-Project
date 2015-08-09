@@ -7,7 +7,7 @@ namespace Underlord.Logic
 {
     static class Player
     {
-        static int gold = 0, mana = 0, food = 0;
+        static int gold = 10000, mana = 10000, food = 10000000;
 
         #region Properties
         public static int Gold

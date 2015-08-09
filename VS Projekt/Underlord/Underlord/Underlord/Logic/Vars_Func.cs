@@ -24,7 +24,9 @@ namespace Underlord.Logic
 
        public enum ImpJob { Idle, Harvest, Feed, Mine, MineDiamonds, MineGold, length };
 
-       public enum GUI_ElementTyp { Mine, Room, MergeRoom, DeleteRoom, Build, DamageUpgrade, LifeUpgrade, SpeedUpgrade, length };
+       public enum GUI_ElementTyp { Mine, Room, MergeRoom, DeleteRoom, Build, DamageUpgrade, LifeUpgrade, SpeedUpgrade,
+                                    LeftHUD, RightHUD, BottomHUD, TopHUD, RessoucesHUD, InfoHUD,
+                                    Menu, StartGame, QuitGame, Highscore, length };
 
        public enum ImpState { Walking, Digging, Nothing, length };
        public enum CreatureState { Walking, Fightling, Nothing, length };
@@ -73,6 +75,18 @@ namespace Underlord.Logic
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
 
+           GUI_Elements.Add(Content.Load<Texture2D>("Left_HUD_Test"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Right_HUD_Test"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Bottom_HUD_Test"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Top_HUD_Test"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Ressouces_HUD_Test"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Info_HUD_Test"));
+
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+
            WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
            WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
            WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
@@ -91,7 +105,7 @@ namespace Underlord.Logic
            HexagonModels[(int)HexTyp.BeetleNest].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
 
            NestModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));
-           NestModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));
+           NestModels.Add(new BasicModel(Content.Load<Model>("Models//tempel_HQ_GEO_01")));
 
            NestModels[(int)NestTyp.Beetle].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
            //NestModels[(int)NestTyp.Entrance].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
@@ -102,9 +116,6 @@ namespace Underlord.Logic
 
            CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")));
            CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//knight_&_sword_ANI_01")/*, 0.2f, MathHelper.PiOver2*/));
-           
-
-
            CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")));
 
            ImpModel = new ImpModel(Content.Load<Model>("AnimationModels//minion_ANI_walk_simple_02"));

@@ -201,6 +201,76 @@
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\fungus_HQ_GEO_02.fbx">
+      <Name>fungus_HQ_GEO_02</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\graveyard_GEO_01.fbx">
+      <Name>graveyard_GEO_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\tempel_GEO_01.fbx">
+      <Name>tempel_GEO_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\tempel_HQ_GEO_01.fbx">
+      <Name>tempel_HQ_GEO_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bottom_HUD_Test.bmp">
+      <Name>Bottom_HUD_Test</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Ressouces_HUD_Test.bmp">
+      <Name>Ressouces_HUD_Test</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Info_HUD_Test.bmp">
+      <Name>Info_HUD_Test</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Left_HUD_Test.bmp">
+      <Name>Left_HUD_Test</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Top_HUD_Test.bmp">
+      <Name>Top_HUD_Test</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Right_HUD_Test.bmp">
+      <Name>Right_HUD_Test</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -33,7 +33,8 @@ namespace Underlord.Logic
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont font)
         {
-            spriteBatch.Draw(Vars_Func.getGUI_ElementTextures(elementTyp), new Vector2(rectangle.X, rectangle.Y), Color.White);
+            if (elementTyp == Vars_Func.GUI_ElementTyp.BottomHUD) spriteBatch.Draw(Vars_Func.getGUI_ElementTextures(elementTyp), new Vector2(rectangle.X, rectangle.Y), Color.Red);
+            else spriteBatch.Draw(Vars_Func.getGUI_ElementTextures(elementTyp), new Vector2(rectangle.X, rectangle.Y), Color.White);
             spriteBatch.DrawString(font, text, new Vector2(rectangle.X, rectangle.Y), Color.Black);
         }
     }

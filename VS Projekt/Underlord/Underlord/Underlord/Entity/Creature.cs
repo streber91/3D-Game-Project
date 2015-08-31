@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Underlord.Renderer;
 using Underlord.Logic;
 using Underlord.Animation;
+using Underlord.Environment;
 
 namespace Underlord.Entity
 {
@@ -18,7 +19,16 @@ namespace Underlord.Entity
         Stack<Vector2> path;
         Nest home;
 
-        AnimationModel model; 
+        Hexagon startHex, currentHex, oldHex, targetHex, oldTargetHex;
+        Vector3 targetPosition, tempPosition, fightPosition, startPosition;
+        float positionLerpCounter, fightLerpCounter, startLerpCounter;
+        float degree;
+        float tempZ;
+
+        AnimationModel model;
+        Vars_Func.CreatureState currentState = Vars_Func.CreatureState.Walking;
+        Vars_Func.CreatureState oldState = Vars_Func.CreatureState.Nothing;
+        bool updatePlayer, reachGround; 
         //TODO implement balancing and diferent stats
 
         Boolean wasSet = false;
@@ -71,6 +81,28 @@ namespace Underlord.Entity
         {
             get { return age; }
         }
+        public Vars_Func.CreatureState State { set { updatePlayer = true; currentState = value; } }
+
+        public Hexagon CurrentHexagon { set { positionLerpCounter = 0; oldHex = currentHex; currentHex = value; } }
+
+        public Vector3 TempDrawPositon
+        {
+            get
+            {
+                if (currentState == Vars_Func.CreatureState.Fighting)
+                {
+                    return fightPosition;
+                }
+                else
+                {
+                    return tempPosition;
+                }
+            }
+        }
+
+        public Hexagon TargetHexagon { set { targetHex = value; } }
+
+        public Vector3 TargetPosition { set { targetPosition = value; } }
         #endregion
 
         #region Constructor
@@ -112,6 +144,10 @@ namespace Underlord.Entity
                     ageModifire = 1;
 			        map.getHexagonAt(position).Obj = this;
                     map.Heroes.Add(this);
+                    currentState = Vars_Func.CreatureState.Starting;
+                    startHex = map.getHexagonAt(home.Position);
+                    startLerpCounter = 0;
+                    reachGround = false;
                     break;
                 case Vars_Func.CreatureTyp.HQCreatur:
                     this.typ = typ;
@@ -129,9 +165,19 @@ namespace Underlord.Entity
                     ageModifire = 1;
 			        map.getHexagonAt(position).Obj = this;
                     map.Creatures.Add(this);
+                    map.getHexagonAt(position).IsHQ = true;
+                    map.getHexagonAt(position).EnlightendHexagon(map);
+                    currentState = Vars_Func.CreatureState.PingPong;
                     break;
             }
             this.model = new AnimationModel(Vars_Func.getCreatureModell(typ).Model);
+            model.AnimationClip = Vars_Func.getCreatureModell(typ).AnimationClip;
+            updatePlayer = true;
+            currentHex = map.getHexagonAt(position);
+            oldHex = map.getHexagonAt(position);
+            targetHex = null;
+            oldTargetHex = null;
+            tempZ = 0;
         }
         #endregion
 
@@ -147,7 +193,40 @@ namespace Underlord.Entity
             age += (float)time.ElapsedGameTime.Milliseconds / 1000;
             ageing();
 
-            this.Animation(time);
+            if (typ != Vars_Func.CreatureTyp.HQCreatur)
+            {
+
+                if (tempPosition != currentHex.getDrawPosition())
+                {
+                    positionLerpCounter += (float)time.ElapsedGameTime.Milliseconds;
+                    if ((positionLerpCounter / (1000 * 1 / speed)) > 1)
+                    {
+                        positionLerpCounter = (1000 * 1 / speed);
+                    }
+                    tempPosition = Vector3.Lerp(oldHex.getDrawPosition(), currentHex.getDrawPosition(), (positionLerpCounter / (1000 * 1 / speed)));
+                    degree = this.Rotate(oldHex.getDrawPosition(), currentHex.getDrawPosition());
+                }
+                this.UpdateState(time);
+                this.model.Update(time);
+            }
+            else
+            {
+                if (currentState == Vars_Func.CreatureState.OpenMouth && (positionLerpCounter / (1000 * 1 / speed)) < 1)
+                {
+                    positionLerpCounter += (float)time.ElapsedGameTime.Milliseconds;
+                    tempZ = positionLerpCounter / (500 * 1 / speed) * 0.3f;
+                }
+                else if (currentState == Vars_Func.CreatureState.CloseMouth && (positionLerpCounter / (500 * 1 / speed)) > 0)
+                {
+                    positionLerpCounter -= (float)time.ElapsedGameTime.Milliseconds;
+                    tempZ = positionLerpCounter / (500 * 1 / speed) * 0.3f;
+                }
+                else if (currentState == Vars_Func.CreatureState.PingPong)
+                {
+                    positionLerpCounter += (float)time.ElapsedGameTime.Milliseconds;
+                    tempZ = ((float)(0.5f * Math.Cos(positionLerpCounter / 500 * (1 / speed) + MathHelper.PiOver2)) + 0.5f) * 0.3f;
+                }
+            }
         }
         
         private void ageing()
@@ -166,32 +245,228 @@ namespace Underlord.Entity
             }
         }
 
-        private void Animation(GameTime time) {
 
-            if (!wasSet)
-            {
-                AnimationPlayer player = this.model.PlayClip(this.model.Clips[0]);
-                player.Looping = true;
-                wasSet = true;
-            }
-            this.model.Update(time);
-        }
 
-        override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor)
+        private void UpdateState(GameTime time)
         {
-            drawPosition = new Vector3(drawPosition.X, drawPosition.Y, drawPosition.Z + Vars_Func.getCreatureParams(typ).X);
-
-            Matrix modelMatrix = Matrix.Identity *
-            Matrix.CreateScale(Vars_Func.getCreatureParams(typ).Y) *
-            Matrix.CreateRotationX(Vars_Func.getCreatureParams(typ).Z) *
-            Matrix.CreateRotationY(0) *
-            Matrix.CreateRotationZ(0) *
-            Matrix.CreateTranslation(drawPosition);
-
-            //Vars_Func.getCreatureModell(typ).Color = drawColor;
-            //Vars_Func.getCreatureModell(typ).Draw(camera, modelMatrix);
-            this.model.Color = drawColor;
-            this.model.Draw(camera, modelMatrix);
+            switch (currentState)
+            {
+                case Vars_Func.CreatureState.Walking:
+                    this.WalkingBehaviour(time);
+                    break;
+                case Vars_Func.CreatureState.Fighting:
+                    this.FightingBehaviour(time);
+                    break;
+                case Vars_Func.CreatureState.Starting:
+                    this.StartingBehaviour(time);
+                    break;
+            }
         }
+
+        private void WalkingBehaviour(GameTime time)
+        {
+            this.UpdateClip(0);
+            if (fightLerpCounter > 0)
+            {
+                fightLerpCounter = 0;
+            }
+        }
+
+        private void FightingBehaviour(GameTime time)
+        {
+            if (targetHex != null && targetHex.Neighbors.Contains(position) && tempPosition == currentHex.getDrawPosition())
+            {
+                if (targetHex.Obj != null && targetHex.Obj is Creature)
+                {
+                    targetPosition = ((Creature)targetHex.Obj).TempDrawPositon;
+                }
+
+                fightLerpCounter += (float)time.ElapsedGameTime.Milliseconds;
+                if ((fightLerpCounter / (1000 * 1 / speed)) > 1)
+                {
+                    fightLerpCounter = (1000 * 1 / speed);
+                    this.UpdateClip(1);
+                }
+                fightPosition = Vector3.Lerp(currentHex.getDrawPosition(), targetPosition, (fightLerpCounter / (1000 * 1 / speed)) * 0.4f);
+                degree = this.Rotate(currentHex.getDrawPosition(), targetPosition);
+
+                if (oldTargetHex != targetHex)
+                {
+                    fightLerpCounter = 0;
+                    oldTargetHex = targetHex;
+                }
+            }
+        }
+
+        private void StartingBehaviour(GameTime time)
+        {
+            if (typ == Vars_Func.CreatureTyp.Knight)
+            {
+                if (oldHex == currentHex)
+                {
+                    startLerpCounter += (float)time.ElapsedGameTime.Milliseconds;
+                    if ((startLerpCounter / 500) > 1)
+                    {
+                        startLerpCounter = 500;
+                    }
+
+                    if (startPosition == startHex.getDrawPosition() && !reachGround)
+                    {
+                        reachGround = true;
+                        startLerpCounter = 0;
+                        updatePlayer = true;
+                        this.UpdateClip(0);
+                    }
+
+                    if (reachGround)
+                    {
+                        startPosition = Vector3.Lerp(startHex.getDrawPosition(), currentHex.getDrawPosition(), startLerpCounter / 500);
+                        degree = this.Rotate(startHex.getDrawPosition(), currentHex.getDrawPosition());
+                    }
+                    else
+                    {
+                        this.UpdateClip(2);
+                        Vector3 nestPostion = new Vector3(startHex.getDrawPosition().X, startHex.getDrawPosition().Y, startHex.getDrawPosition().Z + 3f);
+                        startPosition = Vector3.Lerp(nestPostion, startHex.getDrawPosition(), startLerpCounter / 500);
+                        degree = 0;
+                    }
+                }
+            }
+        }
+
+        private void UpdateClip(int index)
+        {
+            if (updatePlayer)
+            {
+                AnimationPlayer player = this.model.PlayClip(this.model.AnimationClip[index]);
+                player.Looping = true;
+                updatePlayer = false;
+            }
+        }
+
+        private float Rotate(Vector3 source, Vector3 target)
+        {
+            float valueY = target.Y - source.Y;
+            float valueX = target.X - source.X;
+
+            if (valueX == 0)
+            {
+                if (valueY < 0)
+                {
+                    return 0;
+                }
+                else if (valueY > 0)
+                {
+                    return 2 * MathHelper.PiOver2;
+                }
+            }
+            if (valueY == 0)
+            {
+                if (valueX < 0)
+                {
+                    return MathHelper.PiOver2;
+                }
+                else if (valueX > 0)
+                {
+                    return 3 * MathHelper.PiOver2;
+                }
+            }
+            if (valueX < 0)
+            {
+                if (valueY < 0)
+                {
+                    return -MathHelper.PiOver4;
+                }
+                else if (valueY > 0)
+                {
+                    return -3 * MathHelper.PiOver4;
+                }
+            }
+            else if (valueX > 0)
+            {
+                if (valueY < 0)
+                {
+                    return MathHelper.PiOver4;
+                }
+                else if (valueY > 0)
+                {
+                    return 3 * MathHelper.PiOver4;
+                }
+            }
+            return 0;
+        }
+
+        override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor, bool isEnlightend, float lightPower)
+        {
+            if (typ == Vars_Func.CreatureTyp.HQCreatur)
+            {
+                tempPosition = drawPosition;
+                drawPosition = new Vector3(drawPosition.X, drawPosition.Y, drawPosition.Z + Vars_Func.getCreatureParams(typ).X);
+                Matrix modelMatrix = Matrix.Identity *
+                Matrix.CreateScale(Vars_Func.getCreatureParams(typ).Y) *
+                Matrix.CreateRotationX(Vars_Func.getCreatureParams(typ).Z) *
+                Matrix.CreateRotationY(0) *
+                Matrix.CreateRotationZ(camera.Rotation) *
+                Matrix.CreateTranslation(drawPosition);
+                this.model.Color = drawColor;
+                this.model.Draw(camera, modelMatrix, false, isEnlightend, lightPower);
+
+                drawPosition = new Vector3(drawPosition.X, drawPosition.Y, drawPosition.Z + Vars_Func.getCreatureParams(typ).X + tempZ);
+                Matrix mouthMatrix = Matrix.Identity *
+                Matrix.CreateScale(Vars_Func.getCreatureParams(typ).Y) *
+                Matrix.CreateRotationX(Vars_Func.getCreatureParams(typ).Z) *
+                Matrix.CreateRotationY(0) *
+                Matrix.CreateRotationZ(camera.Rotation) *
+                Matrix.CreateTranslation(drawPosition);
+                Vars_Func.getHQMouthModel().Color = drawColor;
+                Vars_Func.getHQMouthModel().Draw(camera, mouthMatrix, false, isEnlightend, lightPower);
+            }
+            else
+            {
+                if (currentState == Vars_Func.CreatureState.Fighting)
+                {
+                    drawPosition = fightPosition;
+                }
+                else if (currentState == Vars_Func.CreatureState.Starting)
+                {
+                    drawPosition = startPosition;
+                }
+                else
+                {
+                    drawPosition = tempPosition;
+                }
+
+                drawPosition = new Vector3(drawPosition.X, drawPosition.Y, drawPosition.Z + Vars_Func.getCreatureParams(typ).X);
+                Matrix modelMatrix = Matrix.Identity *
+                Matrix.CreateScale(Vars_Func.getCreatureParams(typ).Y) *
+                Matrix.CreateRotationX(Vars_Func.getCreatureParams(typ).Z) *
+                Matrix.CreateRotationY(0) *
+                Matrix.CreateRotationZ(degree) *
+                Matrix.CreateTranslation(drawPosition);
+
+                //Vars_Func.getCreatureModell(typ).Color = drawColor;
+                //Vars_Func.getCreatureModell(typ).Draw(camera, modelMatrix);
+                this.model.Color = drawColor;
+                this.model.Draw(camera, modelMatrix, false, isEnlightend, lightPower);
+                Vars_Func.getCreatureShadow(typ).Draw(camera, modelMatrix, false, isEnlightend, lightPower);
+            }
+        }
+
+        //override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor)
+        //{
+        //    drawPosition = new Vector3(drawPosition.X, drawPosition.Y, drawPosition.Z + Vars_Func.getCreatureParams(typ).X);
+
+        //    Matrix modelMatrix = Matrix.Identity *
+        //    Matrix.CreateScale(Vars_Func.getCreatureParams(typ).Y) *
+        //    Matrix.CreateRotationX(Vars_Func.getCreatureParams(typ).Z) *
+        //    Matrix.CreateRotationY(0) *
+        //    Matrix.CreateRotationZ(0) *
+        //    Matrix.CreateTranslation(drawPosition);
+
+        //    //Vars_Func.getCreatureModell(typ).Color = drawColor;
+        //    //Vars_Func.getCreatureModell(typ).Draw(camera, modelMatrix);
+        //    this.model.Color = drawColor;
+        //    this.model.Draw(camera, modelMatrix);
+        //}
     }
 }

@@ -33,6 +33,7 @@ namespace Underlord
         Vector2 indexOfMiddleHexagon;
         Minimap minimap;
 
+        Vector3 temp;
         float updateTimeCounter, updates, drawUpdates;
         float frameTimeCounter, frames, drawFrame;
 
@@ -62,7 +63,7 @@ namespace Underlord
             Vars_Func.loadContent(Content);
             map = new Map(planeLength, Logic.Vars_Func.HexTyp.Sand, true, hexagonSideLength);
             Mapgenerator.generateMap(map, planeLength, (int)(planeLength / 10), (int)(planeLength / 5));
-            camera = new Camera(new Vector3(0, -10, 15), new Vector3(0, 0, 0), Vector3.UnitZ, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f, planeLength, hexagonSideLength);
+            camera = new Camera(new Vector3(0, -10, 11), new Vector3(0, 0, 0), Vector3.UnitZ, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f, planeLength, hexagonSideLength);
             view = camera.View;
             projection = camera.Projection;
             keyboard = Keyboard.GetState();
@@ -70,6 +71,9 @@ namespace Underlord
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
             minimap = new Minimap(map, new Vector2(graphics.PreferredBackBufferWidth - minimapSize, 0), new Vector2(minimapSize, minimapSize));
             GUI.createGUI();
+            System.Diagnostics.Debug.WriteLine("HQ " + map.HQPosition);
+
+            //camera.Position = new Vector3(1.6f*map.HQPosition.X, 1.45f*map.HQPosition.Y, camera.Position.Z);
 
             base.Initialize();
         }
@@ -78,7 +82,7 @@ namespace Underlord
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             effect = new BasicEffect(GraphicsDevice);
-            font = Content.Load<SpriteFont>("font");
+            font = Content.Load<SpriteFont>("Fonts/Augusta");
         }
 
         protected override void UnloadContent()
@@ -88,6 +92,11 @@ namespace Underlord
 
         protected override void Update(GameTime gameTime)
         {
+            if (temp != map.HQDrawPositon)
+            {
+                //System.Diagnostics.Debug.WriteLine("HQ " + map.HQDrawPositon);
+                temp = map.HQDrawPositon;
+            }
             // updates per second
             updateTimeCounter += gameTime.ElapsedGameTime.Milliseconds;
             ++updates;
@@ -141,7 +150,9 @@ namespace Underlord
 
 
             spriteBatch.Begin();
-            GUI.Draw(spriteBatch, font);
+
+
+            GUI.Draw(spriteBatch, font, mouseState);
             spriteBatch.DrawString(font, mouseState.X.ToString() + " : " + mouseState.Y.ToString(), new Vector2(20, 200), Color.Black);
             spriteBatch.DrawString(font, mousePosition.X.ToString() + " : " + mousePosition.Y.ToString() + " : " + mousePosition.Z.ToString(), new Vector2(20, 220), Color.Black);
             spriteBatch.DrawString(font, "FPS: " + drawFrame.ToString(), new Vector2(20, 240), Color.Black);

@@ -58,7 +58,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="font.spritefont">
+    <Compile Include="Fonts\font.spritefont">
       <Name>font</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
@@ -97,20 +97,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnimationModels\knight_&amp;_sword_ANI_01.fbx">
-      <Name>knight_&amp;_sword_ANI_01</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimationProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Textures\wall_gold_TEXT.png">
-      <Name>wall_gold_TEXT</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\AnimationAux\AnimationAux.csproj">
       <Project>{F2F7FA8C-1FC7-42CC-93D8-E5DFF48AC09B}</Project>
       <Name>AnimationAux</Name>
@@ -119,27 +105,6 @@
       <Project>{FF2FBE94-50B5-4E78-9592-B95F32A8881E}</Project>
       <Name>AnimationPipeline</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AnimationModels\minion_ANI_walk_simple_02.fbx">
-      <Name>minion_ANI_walk_simple_02</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimationProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AnimationModels\minion_ANI_grabbling_01.fbx">
-      <Name>minion_ANI_grabbling_01</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimationProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Textures\wall_rock_TEXT.png">
-      <Name>wall_rock_TEXT</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Textures\floor_stone_TEXT.png">
@@ -154,11 +119,6 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Textures\wall_diamond_TEXT.png">
-      <Name>wall_diamond_TEXT</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\nest_HEX_01.fbx">
@@ -168,26 +128,19 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnimationModels\ant_GEO_01.fbx">
-      <Name>ant_GEO_01</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimationProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Models\flag_Deg_GEO_01.fbx">
+    <Compile Include="Models\Flags\flag_Deg_GEO_01.fbx">
       <Name>flag_Deg_GEO_01</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
       <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
     </Compile>
-    <Compile Include="Models\flag_Lve_GEO_01.fbx">
+    <Compile Include="Models\Flags\flag_Lve_GEO_01.fbx">
       <Name>flag_Lve_GEO_01</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
       <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
     </Compile>
-    <Compile Include="Models\flag_Spd_GEO_01.fbx">
+    <Compile Include="Models\Flags\flag_Spd_GEO_01.fbx">
       <Name>flag_Spd_GEO_01</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
@@ -267,6 +220,294 @@
   <ItemGroup>
     <Compile Include="Right_HUD_Test.bmp">
       <Name>Right_HUD_Test</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\GUI\Scrolls\scroll_bottom_01.png">
+      <Name>scroll_bottom_01</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\GUI\Scrolls\scroll_middle_01.png">
+      <Name>scroll_middle_01</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\GUI\Scrolls\scroll_top_01.png">
+      <Name>scroll_top_01</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Torch\torch_fire_HEX_01.fbx">
+      <Name>torch_fire_HEX_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
+    </Compile>
+    <Compile Include="Models\Torch\torch_pillar_HEX_01.fbx">
+      <Name>torch_pillar_HEX_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Wall\sand_Wall_HEX_01.fbx">
+      <Name>sand_Wall_HEX_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Entrance\entrance_GEO_01.fbx">
+      <Name>entrance_GEO_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
+    </Compile>
+    <Compile Include="Models\Entrance\entrance_rays_GEO_01.fbx">
+      <Name>entrance_rays_GEO_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AnimationModels\Skeleton\skeleton_shadow_GEO_01.fbx">
+      <Name>skeleton_shadow_GEO_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="AnimationModels\Skeleton\skeleton_simple_fight_ANI_01.fbx">
+      <Name>skeleton_simple_fight_ANI_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimationProcessor</Processor>
+    </Compile>
+    <Compile Include="AnimationModels\Skeleton\skeleton_simple_walk_ANI_01.fbx">
+      <Name>skeleton_simple_walk_ANI_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimationProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AnimationModels\Ant\ant_shadow_GEO_01.fbx">
+      <Name>ant_shadow_GEO_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="AnimationModels\Ant\ant_simple_fight_ANI_01.fbx">
+      <Name>ant_simple_fight_ANI_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimationProcessor</Processor>
+    </Compile>
+    <Compile Include="AnimationModels\Ant\ant_simple_walk_ANI_01.fbx">
+      <Name>ant_simple_walk_ANI_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimationProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AnimationModels\Imp\imp_shadow_GEO_01.fbx">
+      <Name>imp_shadow_GEO_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="AnimationModels\Imp\imp_simple_grab_ANI_01.fbx">
+      <Name>imp_simple_grab_ANI_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimationProcessor</Processor>
+    </Compile>
+    <Compile Include="AnimationModels\Imp\imp_simple_harvesting_ANI_01.fbx">
+      <Name>imp_simple_harvesting_ANI_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimationProcessor</Processor>
+    </Compile>
+    <Compile Include="AnimationModels\Imp\imp_simple_praying_ANI_01.fbx">
+      <Name>imp_simple_praying_ANI_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimationProcessor</Processor>
+    </Compile>
+    <Compile Include="AnimationModels\Imp\imp_simple_walk_ANI_01.fbx">
+      <Name>imp_simple_walk_ANI_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimationProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AnimationModels\HQ\devil_head_GEO_01.fbx">
+      <Name>devil_head_GEO_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimationProcessor</Processor>
+    </Compile>
+    <Compile Include="AnimationModels\HQ\devil_mouth_GEO_01.fbx">
+      <Name>devil_mouth_GEO_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AnimationModels\Knight\knight_shadow_GEO_01.fbx">
+      <Name>knight_shadow_GEO_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="AnimationModels\Knight\knight_simple_fight_ANI_01.fbx">
+      <Name>knight_simple_fight_ANI_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimationProcessor</Processor>
+    </Compile>
+    <Compile Include="AnimationModels\Knight\knight_simple_flying_ANI_01.fbx">
+      <Name>knight_simple_flying_ANI_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimationProcessor</Processor>
+    </Compile>
+    <Compile Include="AnimationModels\Knight\knight_simple_walk_ANI_01.fbx">
+      <Name>knight_simple_walk_ANI_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimationProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Diamond\wall_diamond_broken_01_TEXT.png">
+      <Name>wall_diamond_broken_01_TEXT</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\Diamond\wall_diamond_broken_02_TEXT.png">
+      <Name>wall_diamond_broken_02_TEXT</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\Diamond\wall_diamond_broken_03_TEXT.png">
+      <Name>wall_diamond_broken_03_TEXT</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\Diamond\wall_diamond_TEXT.png">
+      <Name>wall_diamond_TEXT</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Gold\wall_gold_broken_01_TEXT.png">
+      <Name>wall_gold_broken_01_TEXT</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\Gold\wall_gold_broken_02_TEXT.png">
+      <Name>wall_gold_broken_02_TEXT</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\Gold\wall_gold_broken_03_TEXT.png">
+      <Name>wall_gold_broken_03_TEXT</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\Gold\wall_gold_TEXT.png">
+      <Name>wall_gold_TEXT</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Rock\wall_rock_broken_01_TEXT.png">
+      <Name>wall_rock_broken_01_TEXT</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\Rock\wall_rock_broken_02_TEXT.png">
+      <Name>wall_rock_broken_02_TEXT</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\Rock\wall_rock_broken_03_TEXT.png">
+      <Name>wall_rock_broken_03_TEXT</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\Rock\wall_rock_TEXT.png">
+      <Name>wall_rock_TEXT</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\GUI\Scrolls\scroll_delete.png">
+      <Name>scroll_delete</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\GUI\Scrolls\scroll_merge.png">
+      <Name>scroll_merge</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\GUI\Scrolls\scroll_mine.png">
+      <Name>scroll_mine</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\GUI\Scrolls\scroll_room.png">
+      <Name>scroll_room</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\GUI\Scrolls\scroll_88.png">
+      <Name>scroll_88</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Fonts\Augusta.spritefont">
+      <Name>Augusta</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+      <SubType>Designer</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\HUD\Screen\screen_background_01.png">
+      <Name>screen_background_01</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\HUD\Minimap\minimap_background_01.png">
+      <Name>minimap_background_01</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\HUD\Minimap\minimap_background_02.png">
+      <Name>minimap_background_02</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\HUD\Ressources\scroll_foot.png">
+      <Name>scroll_foot</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\HUD\Ressources\scroll_gold.png">
+      <Name>scroll_gold</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\HUD\Ressources\scroll_mana.png">
+      <Name>scroll_mana</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

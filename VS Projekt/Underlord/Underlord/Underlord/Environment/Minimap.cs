@@ -57,8 +57,8 @@ namespace Underlord.Environment
 
         public void drawHex(Vector2 position, Color color , SpriteBatch spritebatch)
         {
-            Rectangle pixelRectangle = new Rectangle((int)(this.position.X + position.X * hexsize),
-                                                        (int)(this.position.Y + (hexsize * map.getPlanelength() - position.Y * hexsize -1) - (position.X % 2) * (0.5f * hexsize)), hexsize, hexsize);
+            Rectangle pixelRectangle = new Rectangle((int)(this.position.X + position.X * hexsize)-18,
+                                                        (int)(this.position.Y + (hexsize * map.getPlanelength() - position.Y * hexsize - 1) - (position.X % 2) * (0.5f * hexsize)) + 18, hexsize, hexsize);
             spritebatch.Draw(Vars_Func.getPixel(), pixelRectangle, color);
         }
 

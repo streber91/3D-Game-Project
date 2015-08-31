@@ -207,6 +207,7 @@ namespace Underlord.Logic
                             counter = 0;
                             gameState = Vars_Func.GameState.Ingame;
                             timeCounter = 0;
+                            System.Diagnostics.Debug.WriteLine("Escape");
                         }
                         //first click determines the middle of the new room
                         oldMousePosition = indexOfMiddleHexagonForRoomCreation;

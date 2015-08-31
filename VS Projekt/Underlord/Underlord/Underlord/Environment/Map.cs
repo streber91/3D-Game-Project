@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+using Underlord.Basic;
 using Underlord.Logic;
 using Underlord.Entity;
 using Underlord.Renderer;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Underlord.Environment
 {
@@ -26,6 +28,8 @@ namespace Underlord.Environment
         List<Job> jobsDone;
         List<Vector2> mineJobs;
         List<Creature> dyingCreatures;
+        List<FireModel> fires;
+        LightModel light;
 
         Vector2 hqPosition;
         int planeSidelength;
@@ -89,6 +93,20 @@ namespace Underlord.Environment
             get { return hqPosition; }
             set { hqPosition = value; }
         }
+
+        public Vector3 HQDrawPositon
+        {
+            get { return this.getHexagonAt(hqPosition).getDrawPosition(); }
+        }
+
+        public List<FireModel> Fires
+        {
+            get { return fires; }
+        }
+        public LightModel Light
+        {
+            set { light = value; }
+        }
         #endregion
 
         #region Constructor
@@ -107,6 +125,7 @@ namespace Underlord.Environment
             jobsInProgress = new List<Job>();
             jobsDone = new List<Job>();
             mineJobs = new List<Vector2>();
+            fires = new List<FireModel>();
             dyingCreatures = new List<Creature>();
 
             hqPosition = new Vector2();
@@ -186,6 +205,7 @@ namespace Underlord.Environment
             {
                 getHexagonAt(imp.Position).Imps.Remove(imp);
                 imp.Position = imp.Path.Pop();
+                imp.CurrentHexagon = getHexagonAt(imp.Position);
                 getHexagonAt(imp.Position).Imps.Add(imp); ;
             }
         }
@@ -198,6 +218,7 @@ namespace Underlord.Environment
             {
                 getHexagonAt(creature.Position).Obj = null;
                 creature.Position = creature.Path.Pop();
+                creature.CurrentHexagon = getHexagonAt(creature.Position);
                 getHexagonAt(creature.Position).Obj = creature;
             }
             else creature.Path = null;
@@ -227,6 +248,17 @@ namespace Underlord.Environment
         //{
 
         //}
+
+        public Vector3 getDrawPosition(Camera camera, Vector3 position)
+        {
+            Vector3 cameraTarget = camera.Target;
+            Vector3 drawposition = position;
+            if (drawposition.X - cameraTarget.X <= 1.5f * hexagonSideLength) drawposition += Vector3.UnitX * 1.5f * hexagonSideLength * planeSidelength;
+            if (drawposition.X - cameraTarget.X >= 1.5f * hexagonSideLength) drawposition -= Vector3.UnitX * 1.5f * hexagonSideLength * planeSidelength;
+            if (drawposition.Y - cameraTarget.Y <= 1.5f * hexagonSideLength) drawposition += Vector3.UnitY * 1.75f * hexagonSideLength * planeSidelength;
+            if (drawposition.Y - cameraTarget.Y >= 1.5f * hexagonSideLength) drawposition -= Vector3.UnitY * 1.75f * hexagonSideLength * planeSidelength;
+            return drawposition;
+        }
 
         public void DrawModel(Camera camera, Vector2 indexOfMiddleHexagon, Vector3 cameraTarget, int drawWidth)
         {
@@ -447,6 +479,11 @@ namespace Underlord.Environment
             {
                 i.update(gameTime, this);
             }
+            foreach (FireModel f in fires)
+            {
+                f.Update(gameTime);
+            }
+            light.Update(gameTime);
             while (dyingCreatures.Count > 0)
             {
                 remove(dyingCreatures[0]);

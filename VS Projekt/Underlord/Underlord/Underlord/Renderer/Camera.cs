@@ -68,13 +68,6 @@ namespace Underlord.Renderer
             keyboard = Keyboard.GetState();
             if (counter > 100)
             {
-
-
-                /*if (mouseState.X < 5)
-                {
-                    System.Diagnostics.Debug.WriteLine("Output");
-                }*/
-
                 if (keyboard.IsKeyDown(Keys.W))
                 {
                     Vector3 positionchange = (cameraTarget - cameraPosition) + Vector3.UnitZ * cameraPosition.Z;
@@ -84,6 +77,7 @@ namespace Underlord.Renderer
                     cameraPosition = newPosition;
                     cameraTarget = newTarget;
                     counter = 0;
+                    //System.Diagnostics.Debug.WriteLine(cameraTarget);
                 }
                 else if (keyboard.IsKeyDown(Keys.S))
                 {
@@ -94,6 +88,7 @@ namespace Underlord.Renderer
                     cameraPosition = newPosition;
                     cameraTarget = newTarget;
                     counter = 0;
+                    //System.Diagnostics.Debug.WriteLine(cameraPosition);
                 }
                 else if (keyboard.IsKeyDown(Keys.A))
                 {
@@ -121,15 +116,16 @@ namespace Underlord.Renderer
                 {
                     Vector3 newCameraPosition = Vector3.Transform(cameraPosition - cameraTarget, Matrix.CreateFromAxisAngle(Vector3.UnitZ, gameTime.ElapsedGameTime.Milliseconds * 0.01f)) + cameraTarget;
                     cameraPosition = newCameraPosition;
+                    cameraRotation += (Vector3.UnitZ * gameTime.ElapsedGameTime.Milliseconds * 0.01f).Z;
                     counter = 0;
                 }
                 else if (keyboard.IsKeyDown(Keys.Q))
                 {
                     Vector3 newCameraPosition = Vector3.Transform(cameraPosition - cameraTarget, Matrix.CreateFromAxisAngle(Vector3.UnitZ, -gameTime.ElapsedGameTime.Milliseconds * 0.01f)) + cameraTarget;
                     cameraPosition = newCameraPosition;
+                    cameraRotation -= (Vector3.UnitZ * gameTime.ElapsedGameTime.Milliseconds * 0.01f).Z;
                     counter = 0;
                 }
-
 
                 if (cameraTarget.Y >= planelength * 1.75f * hexagonsidelength)
                 {

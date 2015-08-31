@@ -14,7 +14,7 @@ namespace Underlord.Logic
     {
        public enum ThingTyp { Wall, Upgrade, Nest, DungeonCreature, HeroCreature, NeutralCreature, HQCreature, Imp, Farm, Temple, length };
        public enum CreatureTyp {Beetle, Knight, HQCreatur, length };
-       public enum NestTyp { Beetle, Entrance, length };
+       public enum NestTyp { Beetle, Entrance, Temple, Farm, length };
        public enum UpgradeTyp {Damage, Life, Speed, length };
        public enum WallTyp { Stone, Gold, Diamond, HQ, EN, length };
        public enum HexTyp { Sand, Stone, BeetleNest, length };

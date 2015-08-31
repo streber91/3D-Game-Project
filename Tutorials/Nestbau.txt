@@ -1,0 +1,6 @@
+Von links anch rechts:
+Käfernest: Produziert Ameisen
+Friedhof: Produziert Skelette
+Tempel: Produziert Mana
+Farm: Produziert Nahrung
+Tor: Läst weitere Helden in euer Reich eindringen

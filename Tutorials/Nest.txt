@@ -1,0 +1,4 @@
+Nester produzieren automatisch Einheiten und schiken sie zu ihrem Zielpunkt der per Rechtsklick geändert werden kann.
+Damit Nester produzieren benötigen sie Nahrung.
+Nester wachsen mit der Zeit wenn genügend Platz in ihrem Raum und ausreichend Nahrung verfügbar sind.
+Wenn Nester genügend gewachsen sind lassen sie sich mit Upgrades aufwerten.

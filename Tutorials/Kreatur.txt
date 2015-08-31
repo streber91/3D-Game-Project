@@ -1,0 +1,5 @@
+Kreaturen sind entweder Feindlich oder einem euere Nester zugehörig.
+Sie lassen sich nie direkt steuer und greifen alle Feinde in Reichweite an.
+Kreaturen altern mit der Zeit.
+Wärend dies eure eigen Kreaturen zunächst stärkt, dann schwächt und schlussendlich Tötet,
+werden Helden mit dem Alter immer nur noch mächtiger.

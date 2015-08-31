@@ -1,0 +1,2 @@
+Hier wird die Zeit bis zur nächsten Heldenwelle angezeigt.
+Nutzt sie gut!

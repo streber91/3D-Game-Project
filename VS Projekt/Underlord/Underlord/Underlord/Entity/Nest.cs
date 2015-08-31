@@ -101,6 +101,12 @@ namespace Underlord.Entity
                     hex.Typ = Vars_Func.HexTyp.BeetleNest;
                     hex.Building = true;
                     hex.Nest = true;
+                    getsFeeded = false;
+                    maxNutrition = 500f;
+                    nutrition = 250f;
+                    upgrades = new List<Upgrade>();
+                    thingTyp = Vars_Func.ThingTyp.Nest;
+
                     for (int i = 0; i < 6; ++i)
                     {
                         Vector2 neighbor = hex.Neighbors[i];
@@ -108,11 +114,6 @@ namespace Underlord.Entity
                         map.getHexagonAt(neighbor).Typ = Vars_Func.HexTyp.BeetleNest;
                         map.getHexagonAt(neighbor).Building = true;
                         map.getHexagonAt(neighbor).Nest = true;
-                        getsFeeded = false;
-                        maxNutrition = 500f;
-                        nutrition = 250f;
-                        upgrades = new List<Upgrade>();
-                        thingTyp = Vars_Func.ThingTyp.Nest;
                         for (int j = 0; j < 6; ++j)
                         {
                             Vector2 nextNeighbor = hex.Neighbors[j];
@@ -129,6 +130,12 @@ namespace Underlord.Entity
                     hex.Typ = Vars_Func.HexTyp.Graveyard;
                     hex.Building = true;
                     hex.Nest = true;
+                    getsFeeded = false;
+                    maxNutrition = 500f;
+                    nutrition = 250f;
+                    upgrades = new List<Upgrade>();
+                    thingTyp = Vars_Func.ThingTyp.Nest;
+
                     for (int i = 0; i < 6; ++i)
                     {
                         Vector2 neighbor = hex.Neighbors[i];
@@ -136,11 +143,6 @@ namespace Underlord.Entity
                         map.getHexagonAt(neighbor).Typ = Vars_Func.HexTyp.Graveyard;
                         map.getHexagonAt(neighbor).Building = true;
                         map.getHexagonAt(neighbor).Nest = true;
-                        getsFeeded = false;
-                        maxNutrition = 500f;
-                        nutrition = 250f;
-                        upgrades = new List<Upgrade>();
-                        thingTyp = Vars_Func.ThingTyp.Nest;
                         for (int j = 0; j < 6; ++j)
                         {
                             Vector2 nextNeighbor = hex.Neighbors[j];
@@ -157,14 +159,17 @@ namespace Underlord.Entity
                     hex.Typ = Vars_Func.HexTyp.Farm;
                     hex.Building = true;
                     hex.Nest = true;
+                    nutrition = 1;
+                    maxNutrition = 1;
+                    thingTyp = Vars_Func.ThingTyp.Farm;
+
                     for (int i = 0; i < 6; ++i)
                     {
                         Vector2 neighbor = hex.Neighbors[i];
                         nestHexagons.Add(neighbor);
                         map.getHexagonAt(neighbor).Typ = Vars_Func.HexTyp.Farm;
                         map.getHexagonAt(neighbor).Building = true;
-                        map.getHexagonAt(neighbor).Nest = true;
-                        thingTyp = Vars_Func.ThingTyp.Farm;
+                        map.getHexagonAt(neighbor).Nest = true; 
                         for (int j = 0; j < 6; ++j)
                         {
                             Vector2 nextNeighbor = hex.Neighbors[j];
@@ -181,7 +186,10 @@ namespace Underlord.Entity
                     hex.Typ = Vars_Func.HexTyp.Temple;
                     hex.Building = true;
                     hex.Nest = true;
+                    nutrition = 1;
+                    maxNutrition = 1;
                     thingTyp = Vars_Func.ThingTyp.Temple;
+
                     for (int i = 0; i < 6; ++i)
                     {
                         Vector2 neighbor = hex.Neighbors[i];

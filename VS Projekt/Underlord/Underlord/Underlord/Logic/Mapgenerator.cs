@@ -10,7 +10,7 @@ namespace Underlord.Logic
     static class Mapgenerator
     {
         public static int counter = 0;
-        public static void generateMap(Environment.Map map, int size, int diamond,int gold)
+        public static void generateMap(Environment.Map map, int size, int diamond, int gold)
         {
             List<Vars_Func.WallTyp> specials = new List<Vars_Func.WallTyp>();
             specials.Add(Vars_Func.WallTyp.HQ);
@@ -49,7 +49,7 @@ namespace Underlord.Logic
                     {
                         // if entrance place entrance
                         if (specials[randnum] == Vars_Func.WallTyp.EN)
-                            new Nest(Vars_Func.NestTyp.Entrance, new Vector2(i, j), map.getHexagonAt(i, j), map, map.HQPosition);
+                            new Nest(Vars_Func.NestTyp.Entrance, new Vector2(i, j), map, map.HQPosition);
                         // if HQ place HQ
                         else if(specials[randnum] == Vars_Func.WallTyp.HQ)
                             new Creature(Vars_Func.CreatureTyp.HQCreatur, new Vector2(i, j), null, Vars_Func.ThingTyp.HQCreature, map, new int[3]);
@@ -82,7 +82,7 @@ namespace Underlord.Logic
             //creat start imps
             Spells.castSpell(Vars_Func.SpellType.SummonImp, map.getHexagonAt(map.HQPosition).Neighbors[3],map);
             Spells.castSpell(Vars_Func.SpellType.SummonImp, map.getHexagonAt(map.HQPosition).Neighbors[3], map);
-            Spells.castSpell(Vars_Func.SpellType.SummonImp, map.getHexagonAt(map.HQPosition).Neighbors[3], map);
+            Spells.castSpell(Vars_Func.SpellType.SummonImp, map.getHexagonAt(map.HQPosition).Neighbors[3], map); 
             // room for entrance
             foreach (Vector2 hex in map.getHexagonAt(EN.X, EN.Y).Neighbors)
             {

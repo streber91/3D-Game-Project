@@ -46,10 +46,10 @@ namespace Underlord.Logic
             switch (jobTyp)
             {
                 case Vars_Func.ImpJob.Harvest:
-                    Player.Food += Math.Min(20, ((Entity.Farm)map.getHexagonAt(destination).Obj).Food);
-                    ((Entity.Farm)map.getHexagonAt(destination).Obj).Food -= Math.Min(20, ((Entity.Farm)map.getHexagonAt(destination).Obj).Food);
+                    Player.Food += Math.Min(20, ((Entity.Nest)map.getHexagonAt(destination).Obj).Food);
+                    ((Entity.Nest)map.getHexagonAt(destination).Obj).Food -= Math.Min(20, ((Entity.Nest)map.getHexagonAt(destination).Obj).Food);
 
-                    if (((Entity.Farm)map.getHexagonAt(destination).Obj).Food <= 0)
+                    if (((Entity.Nest)map.getHexagonAt(destination).Obj).Food <= 0)
                     {
                         map.JobsDone.Add(this);
                         map.JobsInProgress.Remove(this);
@@ -112,7 +112,7 @@ namespace Underlord.Logic
             switch(jobTyp)
             {
                 case Vars_Func.ImpJob.Harvest:
-                    ((Entity.Farm)(map.getHexagonAt(destination).Obj)).GetsHarvested = false;
+                    ((Entity.Nest)(map.getHexagonAt(destination).Obj)).GetsHarvested = false;
                     break;
 
                 case Vars_Func.ImpJob.Feed:

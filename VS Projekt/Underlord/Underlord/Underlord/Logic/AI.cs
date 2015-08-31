@@ -121,9 +121,9 @@ namespace Underlord.Logic
                 {
                     if (Logic.Vars_Func.computeDistance(creature.Home.TargetPosition, creature.Position, map) < 5) randomwalk(creature, map);
                     else creature.Path = determinePath(creature.Position, creature.Home.TargetPosition, map);
-                    // herocreature found no path and so burrow throug walls
-                    if (creature.Path == null && creature.getThingTyp() == Vars_Func.ThingTyp.HeroCreature)
-                        creature.Path = determinePath(creature.Position, creature.Home.TargetPosition, map, true, true);
+                    //// herocreature found no path and so burrow throug walls
+                    //if (creature.Path == null && creature.getThingTyp() == Vars_Func.ThingTyp.HeroCreature)
+                    //    creature.Path = determinePath(creature.Position, creature.Home.TargetPosition, map, true, true);
                 }
 
                 // time left for action?

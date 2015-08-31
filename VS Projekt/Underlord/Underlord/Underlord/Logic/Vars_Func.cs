@@ -14,10 +14,10 @@ namespace Underlord.Logic
     {
        public enum ThingTyp { Wall, Upgrade, Nest, DungeonCreature, HeroCreature, NeutralCreature, HQCreature, Imp, Farm, Temple, length };
        public enum CreatureTyp { Beetle, Knight, HQCreatur, Skeleton, length };
-       public enum NestTyp { Beetle, Entrance, length };
+       public enum NestTyp { Beetle, Entrance, Temple, Farm, Skeleton, length };
        public enum UpgradeTyp {Damage, Life, Speed, length };
        public enum WallTyp { Stone, Gold, Diamond, HQ, EN, length };
-       public enum HexTyp { Sand, Stone, BeetleNest, length };
+       public enum HexTyp { Sand, Stone, BeetleNest, Farm, Temple, Graveyard, length };
        public enum SpellType { SummonImp, Fireball, length  }
 
        public enum GameState { MainMenu, Ingame, Highscore, Tutorial, CreateRoom, Build, Mine, MergeRooms, DeleteRoom, BuildUpgrade, Spellcasting, PlaceAnts, PlaceSkeletons, PlaceFarm, PlaceTemple, PlaceEntrance, ReturnToMainMenu, length };
@@ -163,13 +163,21 @@ namespace Underlord.Logic
            HexagonModels.Add(new BasicModel(Content.Load<Model>("Models//floorSand_HEX_03")));
            HexagonModels.Add(new BasicModel(Content.Load<Model>("Models//floorSand_HEX_03")));
            HexagonModels.Add(new BasicModel(Content.Load<Model>("Models//floorSand_HEX_03")));
+           HexagonModels.Add(new BasicModel(Content.Load<Model>("Models//floorSand_HEX_03")));
+           HexagonModels.Add(new BasicModel(Content.Load<Model>("Models//floorSand_HEX_03")));
+           HexagonModels.Add(new BasicModel(Content.Load<Model>("Models//floorSand_HEX_03")));
 
            HexagonModels[(int)HexTyp.Sand].Texture = Content.Load<Texture2D>("Textures//floor_stone_TEXT");
            HexagonModels[(int)HexTyp.Stone].Texture = Content.Load<Texture2D>("Textures//floor_stone_TEXT");
            HexagonModels[(int)HexTyp.BeetleNest].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
+           HexagonModels[(int)HexTyp.BeetleNest].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
+           HexagonModels[(int)HexTyp.BeetleNest].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
 
-           NestModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));
+           NestModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));    
            NestModels.Add(new BasicModel(Content.Load<Model>("Models/Entrance//entrance_GEO_01")));
+           NestModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));
+           NestModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));
+           NestModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));
 
            NestModels[(int)NestTyp.Beetle].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
            //NestModels[(int)NestTyp.Entrance].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");

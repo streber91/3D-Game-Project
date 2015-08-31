@@ -13,8 +13,9 @@ namespace Underlord.Entity
         List<Upgrade> upgrades;
         int[] upgradeCount = new int[3];
         List<Vector2> nestHexagons, possibleNextNestHexagons;
-        float nutrition, maxNutrition, growcounter, timeCounter, spawnCounter, foodCounter;
-        Boolean getsFeeded;
+        float nutrition, maxNutrition, growCounter, spawnCounter, foodCounter;
+        int food;
+        Boolean getsFeeded, getsHarvested;
         Vector2 targetPosition, position;
 
         #region Properties
@@ -60,11 +61,22 @@ namespace Underlord.Entity
         {
             get { return upgradeCount; }
         }
+        public int Food
+        {
+            get { return food; }
+            set { food = value; }
+        }
+        public Boolean GetsHarvested
+        {
+            get { return getsHarvested; }
+            set { getsHarvested = value; }
+        }
         #endregion
 
         #region Constructor
-        public Nest(Vars_Func.NestTyp typ, Vector2 position, Environment.Hexagon hex, Environment.Map map, Vector2 targetPosition)
+        public Nest(Vars_Func.NestTyp typ, Vector2 position, Environment.Map map, Vector2 targetPosition)
         {
+            Environment.Hexagon hex = map.getHexagonAt(position);
             if (typ != Vars_Func.NestTyp.Entrance)
             {
                 map.Rooms.ElementAt(map.getHexagonAt(position).RoomNumber - 1).NestType = typ;
@@ -82,7 +94,9 @@ namespace Underlord.Entity
                     hex.IsEntrance = true;
                     hex.EnlightendHexagon(map);
                     map.Light = Vars_Func.getEntranceRayModel();
+                    thingTyp = Vars_Func.ThingTyp.Nest;
                     break;
+
                 case Vars_Func.NestTyp.Beetle:
                     hex.Typ = Vars_Func.HexTyp.BeetleNest;
                     hex.Building = true;
@@ -94,6 +108,11 @@ namespace Underlord.Entity
                         map.getHexagonAt(neighbor).Typ = Vars_Func.HexTyp.BeetleNest;
                         map.getHexagonAt(neighbor).Building = true;
                         map.getHexagonAt(neighbor).Nest = true;
+                        getsFeeded = false;
+                        maxNutrition = 500f;
+                        nutrition = 250f;
+                        upgrades = new List<Upgrade>();
+                        thingTyp = Vars_Func.ThingTyp.Nest;
                         for (int j = 0; j < 6; ++j)
                         {
                             Vector2 nextNeighbor = hex.Neighbors[j];
@@ -105,29 +124,103 @@ namespace Underlord.Entity
                     }
                     map.Nests.Add(this);
                     break;
+
+                case Vars_Func.NestTyp.Skeleton:
+                    hex.Typ = Vars_Func.HexTyp.Graveyard;
+                    hex.Building = true;
+                    hex.Nest = true;
+                    for (int i = 0; i < 6; ++i)
+                    {
+                        Vector2 neighbor = hex.Neighbors[i];
+                        nestHexagons.Add(neighbor);
+                        map.getHexagonAt(neighbor).Typ = Vars_Func.HexTyp.Graveyard;
+                        map.getHexagonAt(neighbor).Building = true;
+                        map.getHexagonAt(neighbor).Nest = true;
+                        getsFeeded = false;
+                        maxNutrition = 500f;
+                        nutrition = 250f;
+                        upgrades = new List<Upgrade>();
+                        thingTyp = Vars_Func.ThingTyp.Nest;
+                        for (int j = 0; j < 6; ++j)
+                        {
+                            Vector2 nextNeighbor = hex.Neighbors[j];
+                            if (!map.getHexagonAt(nextNeighbor).Nest && map.getHexagonAt(nextNeighbor).RoomNumber == map.getHexagonAt(neighbor).RoomNumber && !possibleNextNestHexagons.Contains(nextNeighbor))
+                            {
+                                possibleNextNestHexagons.Add(nextNeighbor);
+                            }
+                        }
+                    }
+                    map.Nests.Add(this);
+                    break;
+
+                case Vars_Func.NestTyp.Farm:
+                    hex.Typ = Vars_Func.HexTyp.Farm;
+                    hex.Building = true;
+                    hex.Nest = true;
+                    for (int i = 0; i < 6; ++i)
+                    {
+                        Vector2 neighbor = hex.Neighbors[i];
+                        nestHexagons.Add(neighbor);
+                        map.getHexagonAt(neighbor).Typ = Vars_Func.HexTyp.Farm;
+                        map.getHexagonAt(neighbor).Building = true;
+                        map.getHexagonAt(neighbor).Nest = true;
+                        thingTyp = Vars_Func.ThingTyp.Farm;
+                        for (int j = 0; j < 6; ++j)
+                        {
+                            Vector2 nextNeighbor = hex.Neighbors[j];
+                            if (!map.getHexagonAt(nextNeighbor).Nest && map.getHexagonAt(nextNeighbor).RoomNumber == map.getHexagonAt(neighbor).RoomNumber && !possibleNextNestHexagons.Contains(nextNeighbor))
+                            {
+                                possibleNextNestHexagons.Add(nextNeighbor);
+                            }
+                        }
+                    }
+                    map.Farms.Add(this);
+                    break;
+
+                case Vars_Func.NestTyp.Temple:
+                    hex.Typ = Vars_Func.HexTyp.Temple;
+                    hex.Building = true;
+                    hex.Nest = true;
+                    thingTyp = Vars_Func.ThingTyp.Temple;
+                    for (int i = 0; i < 6; ++i)
+                    {
+                        Vector2 neighbor = hex.Neighbors[i];
+                        nestHexagons.Add(neighbor);
+                        map.getHexagonAt(neighbor).Typ = Vars_Func.HexTyp.Temple;
+                        map.getHexagonAt(neighbor).Building = true;
+                        map.getHexagonAt(neighbor).Nest = true;
+                        food = 0;
+                        getsHarvested = false;
+                        foodCounter = 0;
+                        for (int j = 0; j < 6; ++j)
+                        {
+                            Vector2 nextNeighbor = hex.Neighbors[j];
+                            if (!map.getHexagonAt(nextNeighbor).Nest && map.getHexagonAt(nextNeighbor).RoomNumber == map.getHexagonAt(neighbor).RoomNumber && !possibleNextNestHexagons.Contains(nextNeighbor))
+                            {
+                                possibleNextNestHexagons.Add(nextNeighbor);
+                            }
+                        }
+                    }
+                    map.Temples.Add(this);
+                    break;
             }
             this.typ = typ;
             this.position = position;
             this.targetPosition = targetPosition;
-            upgrades = new List<Upgrade>();
-            getsFeeded = false;
-            maxNutrition = 450f;
-            nutrition = 250f;
             hex.Obj = this;
-            thingTyp = Vars_Func.ThingTyp.Nest;
         }
         #endregion
 
         override public void update(GameTime gameTime, Environment.Map map)
         {
-            timeCounter += gameTime.ElapsedGameTime.Milliseconds;
+            growCounter += gameTime.ElapsedGameTime.Milliseconds;
             spawnCounter += gameTime.ElapsedGameTime.Milliseconds;
             foodCounter += gameTime.ElapsedGameTime.Milliseconds;
             //update a nest
             if (this.typ != Vars_Func.NestTyp.Entrance)
             {
                 //timer for growth of the nest
-                if (timeCounter > 1000 && nutrition > 0)
+                if (growCounter > 1000 && nutrition > 0)
                 {
                     if (possibleNextNestHexagons.Count != 0)
                     {
@@ -148,24 +241,52 @@ namespace Underlord.Entity
                         }
                         possibleNextNestHexagons.RemoveAt(tmp);
                     }
-                    timeCounter = 0;
+                    growCounter = 0;
                 }
-                //timer to decrease the nutrition of the nest
-                if (foodCounter > 1000)
+                if (this.typ == Vars_Func.NestTyp.Temple)
                 {
-                    decreaseNutrition(1.0f);
-                    foodCounter = 0;
-                    if (nutrition < 0.4 * maxNutrition && getsFeeded == false)
+                    foodCounter += gameTime.ElapsedGameTime.Milliseconds;
+
+                    if (foodCounter > 1000 / this.nestHexagons.Count)
                     {
-                        getsFeeded = true;
-                        map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.Feed, position));
-                    }
+                        Player.Mana++;
+                        foodCounter = 0;
+                    } 
                 }
-                //timer to spawn creatures
-                if (spawnCounter > 10000 && nutrition > 0)
+                else if (this.typ == Vars_Func.NestTyp.Farm)
                 {
-                    spawnCreature(map);
-                    spawnCounter = 0;
+                    foodCounter += gameTime.ElapsedGameTime.Milliseconds;
+
+                    if (foodCounter > 1000 / this.nestHexagons.Count)
+                    {
+                        food++;
+                        foodCounter = 0;
+                        if (food >= 100 && getsHarvested == false)
+                        {
+                            getsHarvested = true;
+                            map.JobsWaiting.Enqueue(new Logic.Job(Logic.Vars_Func.ImpJob.Harvest, position));
+                        }
+                    } 
+                }
+                else
+                {
+                    //timer to decrease the nutrition of the nest
+                    if (foodCounter > 1000)
+                    {
+                        decreaseNutrition(1.0f);
+                        foodCounter = 0;
+                        if (nutrition < 0.4 * maxNutrition && getsFeeded == false)
+                        {
+                            getsFeeded = true;
+                            map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.Feed, position));
+                        }
+                    }
+                    //timer to spawn creatures
+                    if (spawnCounter > 10000 && nutrition > 0)
+                    {
+                        spawnCreature(map);
+                        spawnCounter = 0;
+                    }
                 }
             }
             //update an entrance
@@ -242,6 +363,7 @@ namespace Underlord.Entity
                     }
                     new Creature(Vars_Func.CreatureTyp.Knight, tmp, this, Vars_Func.ThingTyp.HeroCreature, map, upgradeCount);
                     break;
+
                 case Vars_Func.NestTyp.Beetle:
                     //find free position for the new creature through a broad-first-search
                     queue.Enqueue(tmp);
@@ -269,6 +391,35 @@ namespace Underlord.Entity
                         if (hex.Visited == true) hex.Visited = false;
                     }
                     new Creature(Vars_Func.CreatureTyp.Beetle, tmp, this, Vars_Func.ThingTyp.DungeonCreature, map, upgradeCount);
+                    break;
+
+                case Vars_Func.NestTyp.Skeleton:
+                    //find free position for the new creature through a broad-first-search
+                    queue.Enqueue(tmp);
+                    map.getHexagonAt(tmp).Visited = true;
+                    while (queue.Count != 0)
+                    {
+                        tmp = queue.Dequeue();
+                        if (map.getHexagonAt(tmp).Obj == null) break;
+                        //for all neighbors
+
+                        for (int i = 0; i < 6; ++i)
+                        {
+                            Vector2 neighbor = map.getHexagonAt(tmp).Neighbors[i];
+                            //which weren't visited already
+                            if (map.getHexagonAt(neighbor).Visited == false)
+                            {
+                                map.getHexagonAt(neighbor).Visited = true; //set visited at true
+                                queue.Enqueue(neighbor); //add the neighbor to the queue
+                            }
+                        }
+                    }
+                    //set visited for all hexagon at false (for the next use of searching)
+                    foreach (Environment.Hexagon hex in map.getMapHexagons())
+                    {
+                        if (hex.Visited == true) hex.Visited = false;
+                    }
+                    new Creature(Vars_Func.CreatureTyp.Skeleton, tmp, this, Vars_Func.ThingTyp.DungeonCreature, map, upgradeCount);
                     break;
             }
         }

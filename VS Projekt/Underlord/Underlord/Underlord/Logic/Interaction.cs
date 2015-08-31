@@ -427,11 +427,6 @@ namespace Underlord.Logic
                                 {
                                     map.MineJobs.Add(mouseover);
                                     map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineDiamonds, mouseover));
-                                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineDiamonds, mouseover));
-                                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineDiamonds, mouseover));
-                                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineDiamonds, mouseover));
-                                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineDiamonds, mouseover));
-                                    map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineDiamonds, mouseover));
                                 }
                             }
                         }

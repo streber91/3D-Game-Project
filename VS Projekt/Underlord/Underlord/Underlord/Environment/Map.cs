@@ -16,8 +16,8 @@ namespace Underlord.Environment
     {
         List<Room> rooms;
         List<Nest> nests;
-        List<Farm> farms;
-        List<Temple> temples;
+        List<Nest> farms;
+        List<Nest> temples;
         List<Nest> entrances;
         List<Creature> creatures;
         List<Creature> heroes;
@@ -44,11 +44,11 @@ namespace Underlord.Environment
         {
             get { return nests; }
         }
-        public List<Farm> Farms
+        public List<Nest> Farms
         {
             get { return farms; }
         }
-        public List<Temple> Temples
+        public List<Nest> Temples
         {
             get { return temples; }
         }
@@ -115,8 +115,8 @@ namespace Underlord.Environment
             map = new Hexagon[sidelength * sidelength];
             rooms = new List<Room>();
             nests = new List<Nest>();
-            temples = new List<Temple>();
-            farms = new List<Farm>();
+            temples = new List<Nest>();
+            farms = new List<Nest>();
             entrances = new List<Nest>();
             creatures = new List<Creature>();
             heroes = new List<Creature>();
@@ -213,8 +213,8 @@ namespace Underlord.Environment
         public void move(Creature creature)
         {
             if (creature.Path != null && creature.Path.Count != 0 &&
-                (getHexagonAt(creature.Path.Peek()).Obj == null ||
-                getHexagonAt(creature.Path.Peek()).Obj.getThingTyp() == Vars_Func.ThingTyp.Wall))
+                (getHexagonAt(creature.Path.Peek()).Obj == null/* ||
+                getHexagonAt(creature.Path.Peek()).Obj.getThingTyp() == Vars_Func.ThingTyp.Wall*/))
             {
                 getHexagonAt(creature.Position).Obj = null;
                 creature.Position = creature.Path.Pop();
@@ -223,7 +223,44 @@ namespace Underlord.Environment
             }
             else creature.Path = null;
         }
-        
+
+        public void removeMineJob(Vector2 position)
+        {
+            Job tmp = null;
+            if (mineJobs.Contains(position))
+            {  
+                foreach (Job j in jobsWaiting)
+                {
+                    if (j.Destination == position) tmp = j;
+                }
+                if (tmp != null)
+                {
+                    while (jobsWaiting.Peek() != tmp)
+                    {
+                        jobsWaiting.Enqueue(jobsWaiting.Dequeue());
+                    }
+                    jobsWaiting.Dequeue();
+                    mineJobs.Remove(position);
+                }
+                else
+                {
+                    foreach (Job j in jobsInProgress)
+                    {
+                        if (j.Destination == position) tmp = j;
+                    }
+                    if (tmp != null)
+                    {
+                        foreach (Imp i in impList)
+                        {
+                            if (i.CurrentJob == tmp) i.CurrentJob = null;
+                        }
+                        jobsInProgress.Remove(tmp);
+                        mineJobs.Remove(position);
+                    }
+                }
+            }
+        }
+
         public void remove(Creature creature)
         {
             getHexagonAt(creature.Position).Obj = null;
@@ -243,11 +280,6 @@ namespace Underlord.Environment
             getHexagonAt(imp.Position).Obj = null;
             impList.Remove(imp);
         }
-        //TODO
-        //private void loadSavegame(File savegame)
-        //{
-
-        //}
 
         public Vector3 getDrawPosition(Camera camera, Vector3 position)
         {
@@ -459,9 +491,13 @@ namespace Underlord.Environment
             {
                 n.update(gameTime, this);
             }
-            foreach (Farm f in farms)
+            foreach (Nest f in farms)
             {
                 f.update(gameTime, this);
+            }
+            foreach (Nest t in temples)
+            {
+                t.update(gameTime, this);
             }
             foreach (Nest e in entrances)
             {
@@ -486,6 +522,10 @@ namespace Underlord.Environment
             light.Update(gameTime);
             while (dyingCreatures.Count > 0)
             {
+                if (dyingCreatures[0].getThingTyp() == Vars_Func.ThingTyp.HeroCreature)
+                {
+                    Player.Score++;
+                }
                 remove(dyingCreatures[0]);
             }
         }

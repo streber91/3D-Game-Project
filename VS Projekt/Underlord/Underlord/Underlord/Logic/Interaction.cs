@@ -282,7 +282,7 @@ namespace Underlord.Logic
                                 }
                                 if (placeable)
                                 {
-                                    new Nest(Vars_Func.NestTyp.Beetle, mouseover, map.getHexagonAt(mouseover), map, map.getHexagonAt(mouseover).Neighbors[3]);
+                                    new Nest(Vars_Func.NestTyp.Beetle, mouseover, map, map.getHexagonAt(mouseover).Neighbors[3]);
                                 }
                             }
                         }

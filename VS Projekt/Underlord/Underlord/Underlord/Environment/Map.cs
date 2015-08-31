@@ -16,8 +16,8 @@ namespace Underlord.Environment
     {
         List<Room> rooms;
         List<Nest> nests;
-        List<Farm> farms;
-        List<Temple> temples;
+        List<Nest> farms;
+        List<Nest> temples;
         List<Nest> entrances;
         List<Creature> creatures;
         List<Creature> heroes;
@@ -44,11 +44,11 @@ namespace Underlord.Environment
         {
             get { return nests; }
         }
-        public List<Farm> Farms
+        public List<Nest> Farms
         {
             get { return farms; }
         }
-        public List<Temple> Temples
+        public List<Nest> Temples
         {
             get { return temples; }
         }
@@ -115,8 +115,8 @@ namespace Underlord.Environment
             map = new Hexagon[sidelength * sidelength];
             rooms = new List<Room>();
             nests = new List<Nest>();
-            temples = new List<Temple>();
-            farms = new List<Farm>();
+            temples = new List<Nest>();
+            farms = new List<Nest>();
             entrances = new List<Nest>();
             creatures = new List<Creature>();
             heroes = new List<Creature>();
@@ -213,8 +213,8 @@ namespace Underlord.Environment
         public void move(Creature creature)
         {
             if (creature.Path != null && creature.Path.Count != 0 &&
-                (getHexagonAt(creature.Path.Peek()).Obj == null ||
-                getHexagonAt(creature.Path.Peek()).Obj.getThingTyp() == Vars_Func.ThingTyp.Wall))
+                (getHexagonAt(creature.Path.Peek()).Obj == null/* ||
+                getHexagonAt(creature.Path.Peek()).Obj.getThingTyp() == Vars_Func.ThingTyp.Wall*/))
             {
                 getHexagonAt(creature.Position).Obj = null;
                 creature.Position = creature.Path.Pop();
@@ -459,9 +459,13 @@ namespace Underlord.Environment
             {
                 n.update(gameTime, this);
             }
-            foreach (Farm f in farms)
+            foreach (Nest f in farms)
             {
                 f.update(gameTime, this);
+            }
+            foreach (Nest t in temples)
+            {
+                t.update(gameTime, this);
             }
             foreach (Nest e in entrances)
             {
@@ -486,6 +490,10 @@ namespace Underlord.Environment
             light.Update(gameTime);
             while (dyingCreatures.Count > 0)
             {
+                if (dyingCreatures[0].getThingTyp() == Vars_Func.ThingTyp.HeroCreature)
+                {
+                    Player.Score++;
+                }
                 remove(dyingCreatures[0]);
             }
         }

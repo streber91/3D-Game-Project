@@ -689,6 +689,25 @@ namespace Underlord.Logic
                             gameState = Vars_Func.GameState.PlaceEntrance;
                             timeCounter = 0;
                         }
+                        //try to place a nest at mouseposition
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed)
+                        {
+                            //place nest only when there is a room at mouseposition and the room doesn't have a nest already
+                            if (map.getHexagonAt(mouseover).RoomNumber != 0 && map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType == Vars_Func.NestTyp.length)
+                            {
+                                //the neighbors of the hexagon at mouseposition must be in the same room
+                                bool placeable = true;
+                                for (int i = 0; i < 6; ++i)
+                                {
+                                    if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).RoomNumber) placeable = false;
+                                }
+                                if (placeable)
+                                {
+                                    new Nest(Vars_Func.NestTyp.Skeleton, mouseover, map, map.getHexagonAt(mouseover).Neighbors[3]);
+                                }
+                            }
+                        }
                     }
                     break;
                 #endregion
@@ -748,6 +767,25 @@ namespace Underlord.Logic
                             counter = 0;
                             gameState = Vars_Func.GameState.PlaceEntrance;
                             timeCounter = 0;
+                        }
+                        //try to place a nest at mouseposition
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed)
+                        {
+                            //place nest only when there is a room at mouseposition and the room doesn't have a nest already
+                            if (map.getHexagonAt(mouseover).RoomNumber != 0 && map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType == Vars_Func.NestTyp.length)
+                            {
+                                //the neighbors of the hexagon at mouseposition must be in the same room
+                                bool placeable = true;
+                                for (int i = 0; i < 6; ++i)
+                                {
+                                    if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).RoomNumber) placeable = false;
+                                }
+                                if (placeable)
+                                {
+                                    new Nest(Vars_Func.NestTyp.Farm, mouseover, map, map.getHexagonAt(mouseover).Neighbors[3]);
+                                }
+                            }
                         }
                     }
                     break;
@@ -820,6 +858,25 @@ namespace Underlord.Logic
                             gameState = Vars_Func.GameState.PlaceEntrance;
                             timeCounter = 0;
                         }
+                        //try to place a nest at mouseposition
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed)
+                        {
+                            //place nest only when there is a room at mouseposition and the room doesn't have a nest already
+                            if (map.getHexagonAt(mouseover).RoomNumber != 0 && map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType == Vars_Func.NestTyp.length)
+                            {
+                                //the neighbors of the hexagon at mouseposition must be in the same room
+                                bool placeable = true;
+                                for (int i = 0; i < 6; ++i)
+                                {
+                                    if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).RoomNumber) placeable = false;
+                                }
+                                if (placeable)
+                                {
+                                    new Nest(Vars_Func.NestTyp.Temple, mouseover, map, map.getHexagonAt(mouseover).Neighbors[3]);
+                                }
+                            }
+                        }
                     }
                     break;
                 #endregion
@@ -890,6 +947,20 @@ namespace Underlord.Logic
                             counter = 0;
                             gameState = Vars_Func.GameState.PlaceEntrance;
                             timeCounter = 0;
+                        }
+                        //try to place a nest at mouseposition
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed)
+                        {
+                            //place entrance only when there isn't a room at mouseposition and there isn't an object at the position
+                            if (map.getHexagonAt(mouseover).RoomNumber == 0 &&
+                                map.getHexagonAt(mouseover).Obj == null &&
+                                (map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[3]).Obj == null ||
+                                map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[3]).Obj.getThingTyp() != Vars_Func.ThingTyp.Wall ||
+                                map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[3]).Obj.getThingTyp() != Vars_Func.ThingTyp.HQCreature))
+                            {
+                                new Nest(Vars_Func.NestTyp.Entrance, mouseover, map, map.HQPosition);
+                            }
                         }
                     }
                     break;

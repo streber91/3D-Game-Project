@@ -56,7 +56,7 @@ namespace Underlord.Logic
        //static Vector3[] CreaturParamters = { new Vector3(0,1,0), new Vector3(0.5f, 0.1f, MathHelper.PiOver2), new Vector3(0,1,0), new Vector3(0,1,0) };
 
        static Vector3[] CreaturParamters = { new Vector3(0, 0.07f, MathHelper.PiOver2), new Vector3(0f, 0.04f, MathHelper.PiOver2), new Vector3(0, 1.5f, MathHelper.PiOver2), new Vector3(0, 1, 0) };
-       static Vector3[] NestParamters = { new Vector3(0, 1, 0), new Vector3(0, 1, 0) };
+       static Vector3[] NestParamters = { new Vector3(0, 1, 0), new Vector3(0, 1, 0), new Vector3(0, 1, 0), new Vector3(0, 1, 0), new Vector3(0, 1, 0) };
 
        public static AnimationModel getCreatureModell(CreatureTyp typ) { return CreatureModels[(int)typ]; }
        public static BasicModel getCreatureShadow(CreatureTyp typ) { return CreatureShadows[(int)typ]; }

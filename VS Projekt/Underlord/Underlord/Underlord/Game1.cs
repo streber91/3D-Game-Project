@@ -16,7 +16,6 @@ namespace Underlord
 {
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        Vars_Func.GameState gamestate;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         BasicEffect effect;
@@ -48,7 +47,6 @@ namespace Underlord
 
         protected override void Initialize()
         {
-            gamestate = Vars_Func.GameState.Ingame;
             hexagonSideLength = 1; //dont change
             mapDrawWidth = 10; //dont go over 15
             planeLength = 50; //need an even number!
@@ -71,13 +69,45 @@ namespace Underlord
             keyboard = Keyboard.GetState();
             mouseState = Mouse.GetState();
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
-            minimap = new Minimap(map, new Vector2(graphics.PreferredBackBufferWidth - minimapSize, 0), new Vector2(minimapSize, minimapSize));
+            //minimap = new Minimap(map, new Vector2(graphics.PreferredBackBufferWidth - minimapSize, 0), new Vector2(minimapSize, minimapSize));
             GUI.createGUI();
             System.Diagnostics.Debug.WriteLine("HQ " + map.HQPosition);
 
             //camera.Position = new Vector3(1.6f*map.HQPosition.X, 1.45f*map.HQPosition.Y, camera.Position.Z);
 
             base.Initialize();
+            Interaction.Game = this;
+        }
+
+        public void reinitialize()
+        {
+            GUI.SelectedThingTyp = Vars_Func.ThingTyp.length;
+            hexagonSideLength = 1; //dont change
+            mapDrawWidth = 10; //dont go over 15
+            planeLength = 50; //need an even number!
+            minimapSize = 5 * planeLength; //in pixel
+            frameTimeCounter = 0;
+            frames = 0;
+            drawFrame = 0;
+            updateTimeCounter = 0;
+            updates = 0;
+            drawUpdates = 0;
+
+            map = new Map(planeLength, Logic.Vars_Func.HexTyp.Sand, true, hexagonSideLength);
+            Mapgenerator.generateMap(map, planeLength, (int)(planeLength / 10), (int)(planeLength / 5));
+            camera = new Camera(new Vector3((map.HQPosition.X * 1.5f) + 1, (map.HQPosition.Y * 1.75f) - 10 + 0.875f, 11), new Vector3((map.HQPosition.X * 1.5f) + 1, (map.HQPosition.Y * 1.75f) + 0.875f, 0),
+                                Vector3.UnitZ, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f, planeLength, hexagonSideLength);
+            view = camera.View;
+            projection = camera.Projection;
+            keyboard = Keyboard.GetState();
+            mouseState = Mouse.GetState();
+            mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
+            minimap = new Minimap(map, new Vector2(graphics.PreferredBackBufferWidth - minimapSize, 2), new Vector2(minimapSize, minimapSize));
+            System.Diagnostics.Debug.WriteLine("HQ " + map.HQPosition);
+
+            base.Initialize();
+            Interaction.Game = this;
+            GC.Collect();
         }
 
         protected override void LoadContent()
@@ -153,15 +183,17 @@ namespace Underlord
 
             spriteBatch.Begin();
 
-
+            if (Interaction.GameState != Vars_Func.GameState.MainMenu &&
+                Interaction.GameState != Vars_Func.GameState.Highscore &&
+                Interaction.GameState != Vars_Func.GameState.Tutorial)
+            {
+                minimap.drawMinimap(spriteBatch, indexOfMiddleHexagon);
+            }
             GUI.Draw(spriteBatch, font, mouseState);
             spriteBatch.DrawString(font, mouseState.X.ToString() + " : " + mouseState.Y.ToString(), new Vector2(20, 200), Color.Black);
             spriteBatch.DrawString(font, mousePosition.X.ToString() + " : " + mousePosition.Y.ToString() + " : " + mousePosition.Z.ToString(), new Vector2(20, 220), Color.Black);
             spriteBatch.DrawString(font, "FPS: " + drawFrame.ToString(), new Vector2(20, 240), Color.Black);
             spriteBatch.DrawString(font, "UPS: " + drawUpdates.ToString(), new Vector2(20, 260), Color.Black);
-
-            minimap.drawMinimap(spriteBatch, indexOfMiddleHexagon);
-            
 
             spriteBatch.End();
 

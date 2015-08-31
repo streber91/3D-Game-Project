@@ -20,14 +20,15 @@ namespace Underlord.Logic
        public enum HexTyp { Sand, Stone, BeetleNest, Farm, Temple, Graveyard, length };
        public enum SpellType { SummonImp, Fireball, length  }
 
-       public enum GameState { MainMenue, Ingame, Save, Load, CreateRoom, Build, Mine, MergeRooms, DeleteRoom, BuildUpgrade, Spellcasting, PlaceFarm, PlaceTemple, length };
+       public enum GameState { MainMenu, Ingame, Highscore, Tutorial, CreateRoom, Build, Mine, MergeRooms, DeleteRoom, BuildUpgrade, Spellcasting, PlaceAnts, PlaceSkeletons, PlaceFarm, PlaceTemple, PlaceEntrance, ReturnToMainMenu, length };
 
        public enum ImpJob { Idle, Harvest, Feed, Mine, MineDiamonds, MineGold, length };
 
-       public enum GUI_ElementTyp { BackgroundHUD, MinimapHUD, FoodHUD, GoldHUD, ManaHUD, Mine, Room, MergeRoom, DeleteRoom, Build, PlaceFarm, PlaceTemple,
+       public enum GUI_ElementTyp { BackgroundHUD, MinimapHUD, FoodHUD, GoldHUD, ManaHUD, Mine, Room, MergeRoom, DeleteRoom, Build, PlaceAnts, PlaceSkeletons, PlaceFarm, PlaceTemple, PlaceEntrance,
 									DamageUpgrade, LifeUpgrade, SpeedUpgrade,
                                     LeftHUD, RightHUD, BottomHUD, TopHUD, RessoucesHUD, InfoHUD,
-                                    Menu, StartGame, QuitGame, Highscore, length };
+                                    Menu, StartGame, QuitGame, Highscore, Tutorial,
+                                    ReturnAccept, ReturnDecline, length };
 
        public enum ImpState { Walking, Digging, Praying, Harvesting, Nothing, length };
        public enum CreatureState { Walking, Fighting, Nothing, Starting, OpenMouth, CloseMouth, PingPong, length };
@@ -55,7 +56,7 @@ namespace Underlord.Logic
        //static Vector3[] CreaturParamters = { new Vector3(0,1,0), new Vector3(0.5f, 0.1f, MathHelper.PiOver2), new Vector3(0,1,0), new Vector3(0,1,0) };
 
        static Vector3[] CreaturParamters = { new Vector3(0, 0.07f, MathHelper.PiOver2), new Vector3(0f, 0.04f, MathHelper.PiOver2), new Vector3(0, 1.5f, MathHelper.PiOver2), new Vector3(0, 1, 0) };
-       static Vector3[] NestParamters = { new Vector3(0, 1, 0), new Vector3(0, 1, 0) };
+       static Vector3[] NestParamters = { new Vector3(0, 1, 0), new Vector3(0, 1, 0), new Vector3(0, 1, 0), new Vector3(0, 1, 0), new Vector3(0, 1, 0) };
 
        public static AnimationModel getCreatureModell(CreatureTyp typ) { return CreatureModels[(int)typ]; }
        public static BasicModel getCreatureShadow(CreatureTyp typ) { return CreatureShadows[(int)typ]; }
@@ -105,11 +106,14 @@ namespace Underlord.Logic
            GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_merge"));
            GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_delete"));
            GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
-           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
-           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
-           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
-           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
-           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
 
            GUI_Elements.Add(Content.Load<Texture2D>("Left_HUD_Test"));
            GUI_Elements.Add(Content.Load<Texture2D>("Right_HUD_Test"));
@@ -118,6 +122,9 @@ namespace Underlord.Logic
            GUI_Elements.Add(Content.Load<Texture2D>("Ressouces_HUD_Test"));
            GUI_Elements.Add(Content.Load<Texture2D>("Info_HUD_Test"));
 
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));

@@ -23,13 +23,14 @@ namespace Underlord.Logic
             get { return rectangle; }
         }
         #endregion
-
+        #region Constructor
         public GUI_Element(Rectangle rectangle, String text, Vars_Func.GUI_ElementTyp elementTyp)
         {
             this.rectangle = rectangle;
             this.text = text;
             this.elementTyp = elementTyp;
         }
+        #endregion
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont font, Color spriteColor)
         {

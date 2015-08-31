@@ -1,2 +1,2 @@
-Dieser Zauber beschwört einen weiteren Imp in der nähe des Hauptgebäudes.
+Dieser Zauber beschwört einen weiteren Imp in der Nähe des Hauptgebäudes.
 Die Kosten sind abhängig von der Anzahl vorhandener Imps.

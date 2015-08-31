@@ -139,6 +139,14 @@ namespace Underlord.Logic
                         gameState = Vars_Func.GameState.BuildUpgrade;
                         timeCounter = 0;
                     }
+                    //change the target for the nest to the clicked mouseposition
+                    if(lastMouseState.RightButton == ButtonState.Released &&
+                        mouseState.RightButton == ButtonState.Pressed &&
+                        GUI.SelectedThingTyp == Vars_Func.ThingTyp.Nest &&
+                        GUI.Nest.Typ != Vars_Func.NestTyp.Entrance)
+                    {
+                        GUI.Nest.TargetPosition = mouseover;
+                    }
                 }
             }
             switch (gameState)

@@ -223,7 +223,44 @@ namespace Underlord.Environment
             }
             else creature.Path = null;
         }
-        
+
+        public void removeMineJob(Vector2 position)
+        {
+            Job tmp = null;
+            if (mineJobs.Contains(position))
+            {  
+                foreach (Job j in jobsWaiting)
+                {
+                    if (j.Destination == position) tmp = j;
+                }
+                if (tmp != null)
+                {
+                    while (jobsWaiting.Peek() != tmp)
+                    {
+                        jobsWaiting.Enqueue(jobsWaiting.Dequeue());
+                    }
+                    jobsWaiting.Dequeue();
+                    mineJobs.Remove(position);
+                }
+                else
+                {
+                    foreach (Job j in jobsInProgress)
+                    {
+                        if (j.Destination == position) tmp = j;
+                    }
+                    if (tmp != null)
+                    {
+                        foreach (Imp i in impList)
+                        {
+                            if (i.CurrentJob == tmp) i.CurrentJob = null;
+                        }
+                        jobsInProgress.Remove(tmp);
+                        mineJobs.Remove(position);
+                    }
+                }
+            }
+        }
+
         public void remove(Creature creature)
         {
             getHexagonAt(creature.Position).Obj = null;
@@ -243,11 +280,6 @@ namespace Underlord.Environment
             getHexagonAt(imp.Position).Obj = null;
             impList.Remove(imp);
         }
-        //TODO
-        //private void loadSavegame(File savegame)
-        //{
-
-        //}
 
         public Vector3 getDrawPosition(Camera camera, Vector3 position)
         {

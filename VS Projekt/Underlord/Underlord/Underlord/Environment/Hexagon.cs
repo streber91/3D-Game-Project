@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 using Underlord.Entity;
+using Underlord.Basic;
 
 namespace Underlord.Environment
 {
@@ -23,6 +25,12 @@ namespace Underlord.Environment
         Logic.Vars_Func.HexTyp typ;
        
         private Matrix[] boneTransforms;
+
+        FireModel[] fireModels;
+        bool isEnlightend, isEntrance, isHQ, isStartLight;
+        float lightPower;
+        Vector3 currentDrawPosition;
+        Random randomValue;
 
         #region Properties 
         public Color Color
@@ -77,9 +85,31 @@ namespace Underlord.Environment
         {
             get { return indexNumber; }
         }
+        public bool IsEnlightend
+        {
+            set { isEnlightend = value; }
+        }
+        public bool IsEntrance
+        {
+            set { isEntrance = value; }
+        }
+        public bool IsHQ
+        {
+            set { isHQ = value; }
+        }
+        public float LightPower
+        {
+            set { lightPower = value; }
+        }
+        public bool IsStartLight
+        {
+            get { return isStartLight; }
+        }
         #endregion
 
         public Vector3 get3DPosition() { return position; }
+
+        public Vector3 getDrawPosition() { return currentDrawPosition; }
 
         #region Constructor
         public Hexagon(Vector3 position, Vector2 indexNumber, Vector2[] neighbors, Logic.Vars_Func.HexTyp typ)
@@ -94,11 +124,76 @@ namespace Underlord.Environment
             roomNumber = 0;
             parent = indexNumber;
             boneTransforms = new Matrix[Logic.Vars_Func.getHexagonModell(typ).Model.Bones.Count];
+            currentDrawPosition = Vector3.Zero;
+            isEnlightend = false;
+            isStartLight = false;
+            isEntrance = false;
+            isHQ = false;
+            lightPower = 0;
+            fireModels = new FireModel[3];
+            randomValue = new Random();
         }
         #endregion
 
+        #region Lighting
+        public void EnlightendHexagon(Map map)
+        {
+            for (int index = 0; index < fireModels.Length; ++index)
+            {
+                float randomBonus = randomValue.Next(0, 100);
+                fireModels[index] = new FireModel(Logic.Vars_Func.getTorchFireModel(), 0.01f + randomBonus / 3000);
+                map.Fires.Add(fireModels[index]);
+            }
+
+            for (int i = 0; i < 6; ++i)
+            {
+                Vector2 neighbor = neighbors[i];
+                map.getHexagonAt(neighbor).isEnlightend = true;
+                map.getHexagonAt(neighbor).lightPower += 0.1f;
+
+                for (int j = 0; j < 6; ++j)
+                {
+                    Vector2 secondDegreeNeighbor = map.getHexagonAt(neighbor).Neighbors[j];
+                    map.getHexagonAt(secondDegreeNeighbor).isEnlightend = true;
+                    map.getHexagonAt(secondDegreeNeighbor).lightPower += 0.07f;
+                    for (int k = 0; k < 6; ++k)
+                    {
+                        Vector2 thirdDegreeNeighbor = map.getHexagonAt(secondDegreeNeighbor).Neighbors[k];
+                        map.getHexagonAt(thirdDegreeNeighbor).isEnlightend = true;
+                        map.getHexagonAt(thirdDegreeNeighbor).lightPower += 0.05f;
+                        if (map.getHexagonAt(thirdDegreeNeighbor).lightPower > 0.7f)
+                        {
+                            map.getHexagonAt(thirdDegreeNeighbor).lightPower = 0.7f;
+                        }
+
+                    }
+                    if (map.getHexagonAt(secondDegreeNeighbor).lightPower > 0.7f)
+                    {
+                        map.getHexagonAt(secondDegreeNeighbor).lightPower = 0.7f;
+                    }
+                }
+                if (map.getHexagonAt(neighbor).lightPower > 0.7f)
+                {
+                    map.getHexagonAt(neighbor).lightPower = 0.7f;
+                }
+            }
+            isStartLight = true;
+            isEnlightend = true;
+            lightPower += 0.3f;
+            if (lightPower > 0.9f)
+            {
+                lightPower = 0.9f;
+            }
+        }
+        #endregion
+
+        #region Drawing
         public void DrawModel(Renderer.Camera camera, Vector3 drawPosition)
         {
+            if (currentDrawPosition != drawPosition)
+            {
+                currentDrawPosition = drawPosition;
+            }
             Matrix modelMatrix = Matrix.Identity *
             Matrix.CreateScale(1) *
             Matrix.CreateRotationX(0) *
@@ -107,10 +202,59 @@ namespace Underlord.Environment
             Matrix.CreateTranslation(drawPosition + new Vector3(0.0f, 0.0f, 0));
 
             Logic.Vars_Func.getHexagonModell(typ).Color = drawColor;
-            Logic.Vars_Func.getHexagonModell(typ).Draw(camera, modelMatrix);
+            Logic.Vars_Func.getHexagonModell(typ).Draw(camera, modelMatrix, !(drawColor.Equals(Color.White)), isEnlightend, lightPower);
 
-            if(obj != null) obj.DrawModel(camera, drawPosition, drawColor);
-            if(obj == null && imps.Count > 0) imps[0].DrawModel(camera, drawPosition, drawColor);
+            if (obj != null) obj.DrawModel(camera, drawPosition, drawColor, isEnlightend, lightPower);
+            if (obj == null && imps.Count > 0) imps[0].DrawModel(camera, drawPosition, drawColor, isEnlightend, lightPower);
+            //if (obj != null && imps.Count > 0) imps[0].DrawModel(camera, drawPosition, drawColor, isEnlightend, lightPower);
+
+            if (!isEntrance && !isHQ)
+            {
+                foreach (FireModel fire in fireModels)
+                {
+                    if (fire != null)
+                    {
+                        Matrix fireModelMatrix = Matrix.Identity *
+                        Matrix.CreateScale(1) *
+                        Matrix.CreateRotationX(0) *
+                        Matrix.CreateRotationY(0) *
+                        Matrix.CreateRotationZ(0) *
+                        Matrix.CreateTranslation(drawPosition + new Vector3(0.0f, 0.0f, fire.Z));
+                        fire.Draw(camera, fireModelMatrix);
+                    }
+                }
+                if (isStartLight)
+                {
+                    Logic.Vars_Func.getTorchModel().Draw(camera, modelMatrix, !(drawColor.Equals(Color.White)), isEnlightend, lightPower / 2);
+                }
+            }
+            else if (isEntrance)
+            {
+                //Draw God's Ray
+                Matrix rayModelMatrix = Matrix.Identity *
+                Matrix.CreateScale(Logic.Vars_Func.getEntranceRayModel().Scale) *
+                Matrix.CreateRotationX(0) *
+                Matrix.CreateRotationY(0) *
+                Matrix.CreateRotationZ(camera.Rotation + Logic.Vars_Func.getEntranceRayModel().RotationZ) *
+                Matrix.CreateTranslation(drawPosition + new Vector3(0.0f, 0.0f, Logic.Vars_Func.getEntranceRayModel().PositionZ));
+                Logic.Vars_Func.getEntranceRayModel().Draw(camera, rayModelMatrix);
+            }
         }
+        #endregion
+        //public void DrawModel(Renderer.Camera camera, Vector3 drawPosition)
+        //{
+        //    Matrix modelMatrix = Matrix.Identity *
+        //    Matrix.CreateScale(1) *
+        //    Matrix.CreateRotationX(0) *
+        //    Matrix.CreateRotationY(0) *
+        //    Matrix.CreateRotationZ(0) *
+        //    Matrix.CreateTranslation(drawPosition + new Vector3(0.0f, 0.0f, 0));
+
+        //    Logic.Vars_Func.getHexagonModell(typ).Color = drawColor;
+        //    Logic.Vars_Func.getHexagonModell(typ).Draw(camera, modelMatrix);
+
+        //    if(obj != null) obj.DrawModel(camera, drawPosition, drawColor);
+        //    if(obj == null && imps.Count > 0) imps[0].DrawModel(camera, drawPosition, drawColor);
+        //}
     }
 }

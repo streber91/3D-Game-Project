@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Underlord.Entity;
 
 namespace Underlord.Logic
@@ -28,18 +29,26 @@ namespace Underlord.Logic
             menuButtons.Add(new GUI_Element(new Rectangle(100, 700, 48, 48), "Highscore", Vars_Func.GUI_ElementTyp.Highscore));
             menuButtons.Add(new GUI_Element(new Rectangle(100, 700, 48, 48), "Quit", Vars_Func.GUI_ElementTyp.QuitGame));
 
-            elements.Add(new GUI_Element(new Rectangle(0, 200, 480, 10), "", Vars_Func.GUI_ElementTyp.LeftHUD));
-            elements.Add(new GUI_Element(new Rectangle(1356, 250, 430, 10), "", Vars_Func.GUI_ElementTyp.RightHUD));
-            elements.Add(new GUI_Element(new Rectangle(0, 680, 1116, 88), "", Vars_Func.GUI_ElementTyp.BottomHUD));
-            elements.Add(new GUI_Element(new Rectangle(200, 0, 10, 916), "", Vars_Func.GUI_ElementTyp.TopHUD));
-            elements.Add(new GUI_Element(new Rectangle(0, 0, 200, 200), "", Vars_Func.GUI_ElementTyp.RessoucesHUD));
+
+            elements.Add(new GUI_Element(new Rectangle(0, 0, 1366, 768), "", Vars_Func.GUI_ElementTyp.BackgroundHUD));
+            elements.Add(new GUI_Element(new Rectangle(1093, 13, 260, 265), "", Vars_Func.GUI_ElementTyp.MinimapHUD));
+
+
+            //elements.Add(new GUI_Element(new Rectangle(0, 200, 480, 10), "", Vars_Func.GUI_ElementTyp.LeftHUD));
+            //elements.Add(new GUI_Element(new Rectangle(1356, 250, 430, 10), "", Vars_Func.GUI_ElementTyp.RightHUD));
+            //elements.Add(new GUI_Element(new Rectangle(0, 680, 1116, 88), "", Vars_Func.GUI_ElementTyp.BottomHUD));
+            //elements.Add(new GUI_Element(new Rectangle(200, 0, 10, 916), "", Vars_Func.GUI_ElementTyp.TopHUD));
+            elements.Add(new GUI_Element(new Rectangle(13, 13, 400, 200), "", Vars_Func.GUI_ElementTyp.RessoucesHUD));
+            elements.Add(new GUI_Element(new Rectangle(10, 10, 88, 88), "", Vars_Func.GUI_ElementTyp.GoldHUD));
+            elements.Add(new GUI_Element(new Rectangle(130, 10, 88, 88), "", Vars_Func.GUI_ElementTyp.ManaHUD));
+            elements.Add(new GUI_Element(new Rectangle(250, 10, 88, 88), "", Vars_Func.GUI_ElementTyp.FoodHUD));
             elements.Add(new GUI_Element(new Rectangle(1116, 600, 250, 168), "", Vars_Func.GUI_ElementTyp.InfoHUD));
 
-            buttons.Add(new GUI_Element(new Rectangle(100, 700, 48, 48), "Mine(M)", Vars_Func.GUI_ElementTyp.Mine));
-            buttons.Add(new GUI_Element(new Rectangle(200, 700, 48, 48), "Room(R)", Vars_Func.GUI_ElementTyp.Room));
-            buttons.Add(new GUI_Element(new Rectangle(300, 700, 48, 48), "Merge(T)", Vars_Func.GUI_ElementTyp.MergeRoom));
-            buttons.Add(new GUI_Element(new Rectangle(400, 700, 48, 48), "Delete(Z)", Vars_Func.GUI_ElementTyp.DeleteRoom));
-            buttons.Add(new GUI_Element(new Rectangle(500, 700, 48, 48), "Nest(N)", Vars_Func.GUI_ElementTyp.Build));
+            buttons.Add(new GUI_Element(new Rectangle(100, 680, 88, 76), "  Mine(M)", Vars_Func.GUI_ElementTyp.Mine));
+            buttons.Add(new GUI_Element(new Rectangle(200, 680, 88, 76), "  Room(R)", Vars_Func.GUI_ElementTyp.Room));
+            buttons.Add(new GUI_Element(new Rectangle(300, 680, 88, 76), "  Merge(T)", Vars_Func.GUI_ElementTyp.MergeRoom));
+            buttons.Add(new GUI_Element(new Rectangle(400, 680, 88, 76), "  Delete(Z)", Vars_Func.GUI_ElementTyp.DeleteRoom));
+            buttons.Add(new GUI_Element(new Rectangle(500, 680, 88, 76), "  Nest(N)", Vars_Func.GUI_ElementTyp.Build));
 
             upgradeButtons.Add(new GUI_Element(new Rectangle(660, 700, 48, 48), "Dmg", Vars_Func.GUI_ElementTyp.DamageUpgrade));
             upgradeButtons.Add(new GUI_Element(new Rectangle(730, 700, 48, 48), "Live", Vars_Func.GUI_ElementTyp.LifeUpgrade));
@@ -90,22 +99,30 @@ namespace Underlord.Logic
 
         }
 
-        public static void Draw(SpriteBatch spriteBatch, SpriteFont font)
+        public static void Draw(SpriteBatch spriteBatch, SpriteFont font, MouseState mouseState)
         {
             //draw the GUI_elements
             foreach (GUI_Element e in elements)
             {
-                e.Draw(spriteBatch, font);
+                e.Draw(spriteBatch, font, Color.White);
             }
             //draw the buttons
             foreach (GUI_Element b in buttons)
             {
-                b.Draw(spriteBatch, font);
+                if (b.Rectangle.Contains(mouseState.X, mouseState.Y))
+                {
+                    b.Draw(spriteBatch, font, Color.Gray);
+                }
+                else
+                {
+                    b.Draw(spriteBatch, font, Color.White);
+                }
+                
             }
             //draw the player ressources
-            spriteBatch.DrawString(font, "Gold: " + Player.Gold, new Vector2(10, 10), Color.Black);
-            spriteBatch.DrawString(font, "Mana: " + Player.Mana, new Vector2(10, 30), Color.Black);
-            spriteBatch.DrawString(font, "Food: " + Player.Food, new Vector2(10, 50), Color.Black);
+            spriteBatch.DrawString(font, "Gold: " + Player.Gold, new Vector2(10, 85), Color.Black);
+            spriteBatch.DrawString(font, "Mana: " + Player.Mana, new Vector2(130, 85), Color.Black);
+            spriteBatch.DrawString(font, "Food: " + Player.Food, new Vector2(250, 85), Color.Black);
             //draw different values for other types of selected objects
             #region Selected Object
             switch (selectedThingTyp)
@@ -124,7 +141,7 @@ namespace Underlord.Logic
                         //draw the upgradeButtons
                         foreach (GUI_Element b in upgradeButtons)
                         {
-                            b.Draw(spriteBatch, font);
+                            b.Draw(spriteBatch, font, Color.White);
                         }
                         spriteBatch.DrawString(font, "Typ: " + nest.Typ.ToString(), new Vector2(1121, 600), Color.Black);
                         spriteBatch.DrawString(font, "Nutrition: " + nest.Nutrition.ToString() + "/" + nest.MaxNutrition.ToString(), new Vector2(1121, 620), Color.Black);

@@ -13,7 +13,7 @@ namespace Underlord.Logic
    static class Vars_Func
     {
        public enum ThingTyp { Wall, Upgrade, Nest, DungeonCreature, HeroCreature, NeutralCreature, HQCreature, Imp, Farm, Temple, length };
-       public enum CreatureTyp {Beetle, Knight, HQCreatur, length };
+       public enum CreatureTyp { Beetle, Knight, HQCreatur, Skeleton, length };
        public enum NestTyp { Beetle, Entrance, length };
        public enum UpgradeTyp {Damage, Life, Speed, length };
        public enum WallTyp { Stone, Gold, Diamond, HQ, EN, length };
@@ -24,54 +24,87 @@ namespace Underlord.Logic
 
        public enum ImpJob { Idle, Harvest, Feed, Mine, MineDiamonds, MineGold, length };
 
-       public enum GUI_ElementTyp { Mine, Room, MergeRoom, DeleteRoom, Build, PlaceFarm, PlaceTemple,
+       public enum GUI_ElementTyp { BackgroundHUD, MinimapHUD, FoodHUD, GoldHUD, ManaHUD, Mine, Room, MergeRoom, DeleteRoom, Build, PlaceFarm, PlaceTemple,
 									DamageUpgrade, LifeUpgrade, SpeedUpgrade,
                                     LeftHUD, RightHUD, BottomHUD, TopHUD, RessoucesHUD, InfoHUD,
                                     Menu, StartGame, QuitGame, Highscore, length };
 
-       public enum ImpState { Walking, Digging, Nothing, length };
-       public enum CreatureState { Walking, Fightling, Nothing, length };
+       public enum ImpState { Walking, Digging, Praying, Harvesting, Nothing, length };
+       public enum CreatureState { Walking, Fighting, Nothing, Starting, OpenMouth, CloseMouth, PingPong, length };
 
        static List<AnimationModel> CreatureModels;
+       static List<BasicModel> CreatureShadows;
        static List<BasicModel> NestModels;
        static List<BasicModel> UpgradeModels;
        static List<BasicModel> WallModels;
        static List<BasicModel> HexagonModels;
        static ImpModel ImpModel;
+       static BasicModel ImpShadow;
+       static BasicModel TorchModel;
+       static Model TorchFireModel;
+       static BasicModel HQMouthModel;
+       static LightModel EntranceRayModel;
 
        static Texture2D pixel;
        static List<Texture2D> GUI_Elements;
 
-       static Vector3[] CreaturParamters = { new Vector3(0,1,0), new Vector3(0.5f, 0.1f, MathHelper.PiOver2), new Vector3(0,1,0), new Vector3(0,1,0) };
+       static List<Texture2D> Rock_Texture;
+       static List<Texture2D> Gold_Texture;
+       static List<Texture2D> Diamond_Texture;
+
+       //static Vector3[] CreaturParamters = { new Vector3(0,1,0), new Vector3(0.5f, 0.1f, MathHelper.PiOver2), new Vector3(0,1,0), new Vector3(0,1,0) };
+
+       static Vector3[] CreaturParamters = { new Vector3(0, 0.07f, MathHelper.PiOver2), new Vector3(0f, 0.04f, MathHelper.PiOver2), new Vector3(0, 1.5f, MathHelper.PiOver2), new Vector3(0, 1, 0) };
+       static Vector3[] NestParamters = { new Vector3(0, 1, 0), new Vector3(0, 1, 0) };
 
        public static AnimationModel getCreatureModell(CreatureTyp typ) { return CreatureModels[(int)typ]; }
+       public static BasicModel getCreatureShadow(CreatureTyp typ) { return CreatureShadows[(int)typ]; }
        public static BasicModel getNestModell(NestTyp typ) { return NestModels[(int)typ]; }
        public static BasicModel getUpgradeModell(UpgradeTyp typ) { return UpgradeModels[(int)typ]; }
        public static BasicModel getWallModell(WallTyp typ) { return WallModels[(int)typ]; }
        public static BasicModel getHexagonModell(HexTyp typ) { return HexagonModels[(int)typ]; }
        public static ImpModel getImpModell() { return ImpModel; }
+       public static BasicModel getImpShadow() { return ImpShadow; }
+       public static BasicModel getTorchModel() { return TorchModel; }
+       public static Model getTorchFireModel() { return TorchFireModel; }
+       public static BasicModel getHQMouthModel() { return HQMouthModel; }
+       public static LightModel getEntranceRayModel() { return EntranceRayModel; }
 
        public static Texture2D getPixel() { return pixel; }
        public static Texture2D getGUI_ElementTextures(GUI_ElementTyp typ) { return GUI_Elements[(int)typ]; }
 
+       public static Texture2D getWall_RockTexture(int index) { return Rock_Texture[index]; }
+       public static Texture2D getWall_GoldTexture(int index) { return Gold_Texture[index]; }
+       public static Texture2D getWall_DiamondTexture(int index) { return Diamond_Texture[index]; }
+
        public static Vector3 getCreatureParams(CreatureTyp typ) { return CreaturParamters[(int)typ]; }
+       public static Vector3 getNestParams(NestTyp typ) { return NestParamters[(int)typ]; }
 
        public static void loadContent(ContentManager Content)
        {
            CreatureModels = new List<AnimationModel>();
+           CreatureShadows = new List<BasicModel>();
            NestModels = new List<BasicModel>();
            UpgradeModels = new List<BasicModel>();
            WallModels = new List<BasicModel>();
            HexagonModels = new List<BasicModel>();
            GUI_Elements = new List<Texture2D>();
+           Rock_Texture = new List<Texture2D>();
+           Gold_Texture = new List<Texture2D>();
+           Diamond_Texture = new List<Texture2D>();
 
            pixel = Content.Load<Texture2D>("TEST");
 
-           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
-           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
-           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
-           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
-           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Screen//screen_background_01"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Minimap//minimap_background_02"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Ressources//scroll_foot"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Ressources//scroll_gold"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Ressources//scroll_mana"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_mine"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_room"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_merge"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_delete"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
@@ -90,14 +123,35 @@ namespace Underlord.Logic
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
 
-           WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
-           WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
-           WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
-           WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
+           Rock_Texture.Add(Content.Load<Texture2D>("Textures/Rock//wall_rock_broken_01_TEXT"));
+           Rock_Texture.Add(Content.Load<Texture2D>("Textures/Rock//wall_rock_broken_02_TEXT"));
+           Rock_Texture.Add(Content.Load<Texture2D>("Textures/Rock//wall_rock_broken_03_TEXT"));
 
-           WallModels[(int)WallTyp.Stone].Texture = Content.Load<Texture2D>("Textures//wall_rock_TEXT");
-           WallModels[(int)WallTyp.Gold].Texture = Content.Load<Texture2D>("Textures//wall_gold_TEXT");
-           WallModels[(int)WallTyp.Diamond].Texture = Content.Load<Texture2D>("Textures//wall_diamond_TEXT");
+           Gold_Texture.Add(Content.Load<Texture2D>("Textures/Gold//wall_gold_broken_01_TEXT"));
+           Gold_Texture.Add(Content.Load<Texture2D>("Textures/Gold//wall_gold_broken_02_TEXT"));
+           Gold_Texture.Add(Content.Load<Texture2D>("Textures/Gold//wall_gold_broken_03_TEXT"));
+
+           Diamond_Texture.Add(Content.Load<Texture2D>("Textures/Diamond//wall_diamond_broken_01_TEXT"));
+           Diamond_Texture.Add(Content.Load<Texture2D>("Textures/Diamond//wall_diamond_broken_02_TEXT"));
+           Diamond_Texture.Add(Content.Load<Texture2D>("Textures/Diamond//wall_diamond_broken_03_TEXT"));
+
+           //WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
+           //WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
+           //WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
+           //WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
+
+           WallModels.Add(new BasicModel(Content.Load<Model>("Models/Wall/sand_Wall_HEX_01")));
+           WallModels.Add(new BasicModel(Content.Load<Model>("Models/Wall/sand_Wall_HEX_01")));
+           WallModels.Add(new BasicModel(Content.Load<Model>("Models/Wall/sand_Wall_HEX_01")));
+           WallModels.Add(new BasicModel(Content.Load<Model>("Models/Wall/sand_Wall_HEX_01")));
+
+           //WallModels[(int)WallTyp.Stone].Texture = Content.Load<Texture2D>("Textures//wall_rock_TEXT");
+           //WallModels[(int)WallTyp.Gold].Texture = Content.Load<Texture2D>("Textures//wall_gold_TEXT");
+           //WallModels[(int)WallTyp.Diamond].Texture = Content.Load<Texture2D>("Textures//wall_diamond_TEXT");
+
+           WallModels[(int)WallTyp.Stone].Texture = Content.Load<Texture2D>("Textures/Rock//wall_rock_TEXT");
+           WallModels[(int)WallTyp.Gold].Texture = Content.Load<Texture2D>("Textures/Gold//wall_gold_TEXT");
+           WallModels[(int)WallTyp.Diamond].Texture = Content.Load<Texture2D>("Textures/Diamond//wall_diamond_TEXT");
 
            HexagonModels.Add(new BasicModel(Content.Load<Model>("Models//floorSand_HEX_03")));
            HexagonModels.Add(new BasicModel(Content.Load<Model>("Models//floorSand_HEX_03")));
@@ -108,21 +162,58 @@ namespace Underlord.Logic
            HexagonModels[(int)HexTyp.BeetleNest].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
 
            NestModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));
-           NestModels.Add(new BasicModel(Content.Load<Model>("Models//tempel_HQ_GEO_01")));
+           NestModels.Add(new BasicModel(Content.Load<Model>("Models/Entrance//entrance_GEO_01")));
 
            NestModels[(int)NestTyp.Beetle].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
            //NestModels[(int)NestTyp.Entrance].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
 
-           UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models//flag_Deg_GEO_01")));
-           UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models//flag_Lve_GEO_01")));
-           UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models//flag_Spd_GEO_01")));
+           UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models/Flags//flag_Deg_GEO_01")));
+           UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models/Flags//flag_Lve_GEO_01")));
+           UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models/Flags//flag_Spd_GEO_01")));
 
-           CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")));
-           CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//knight_&_sword_ANI_01")/*, 0.2f, MathHelper.PiOver2*/));
-           CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")));
+           //CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")));
+           //CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//knight_&_sword_ANI_01")/*, 0.2f, MathHelper.PiOver2*/));
+           //CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")));
 
-           ImpModel = new ImpModel(Content.Load<Model>("AnimationModels//minion_ANI_walk_simple_02"));
-           ImpModel.AddClip(new AnimationModel (Content.Load<Model>("AnimationModels//minion_ANI_grabbling_01")));
+           //ImpModel = new ImpModel(Content.Load<Model>("AnimationModels//minion_ANI_walk_simple_02"));
+           //ImpModel.AddClip(new AnimationModel (Content.Load<Model>("AnimationModels//minion_ANI_grabbling_01")));
+
+           // Add ant character
+           AnimationModel ant = new AnimationModel(Content.Load<Model>("AnimationModels/Ant//ant_simple_walk_ANI_01"));
+           ant.AddClip(new AnimationModel(Content.Load<Model>("AnimationModels/Ant//ant_simple_fight_ANI_01")));
+           CreatureModels.Add(ant);
+           CreatureShadows.Add(new BasicModel(Content.Load<Model>("AnimationModels/Ant//ant_shadow_GEO_01")));
+
+           // Add knight character
+           AnimationModel knight = new AnimationModel(Content.Load<Model>("AnimationModels/Knight//knight_simple_walk_ANI_01"));
+           knight.AddClip(new AnimationModel(Content.Load<Model>("AnimationModels/Knight//knight_simple_fight_ANI_01")));
+           knight.AddClip(new AnimationModel(Content.Load<Model>("AnimationModels/Knight//knight_simple_flying_ANI_01")));
+           CreatureModels.Add(knight);
+           CreatureShadows.Add(new BasicModel(Content.Load<Model>("AnimationModels/Knight//knight_shadow_GEO_01")));
+
+           // Add HQ character
+           CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels/HQ//devil_head_GEO_01")));
+           HQMouthModel = new BasicModel(Content.Load<Model>("AnimationModels/HQ//devil_mouth_GEO_01"));
+
+           // Add skeleton character
+           AnimationModel skeleton = new AnimationModel(Content.Load<Model>("AnimationModels/Skeleton//skeleton_simple_walk_ANI_01"));
+           skeleton.AddClip(new AnimationModel(Content.Load<Model>("AnimationModels/Skeleton//skeleton_simple_fight_ANI_01")));
+           CreatureModels.Add(skeleton);
+           CreatureShadows.Add(new BasicModel(Content.Load<Model>("AnimationModels/Skeleton//skeleton_shadow_GEO_01")));
+
+           // Add imp character
+           ImpModel = new ImpModel(Content.Load<Model>("AnimationModels/Imp//imp_simple_walk_ANI_01"));
+           ImpModel.AddClip(new AnimationModel(Content.Load<Model>("AnimationModels/Imp//imp_simple_grab_ANI_01")));
+           ImpModel.AddClip(new AnimationModel(Content.Load<Model>("AnimationModels/Imp//imp_simple_praying_ANI_01")));
+           ImpModel.AddClip(new AnimationModel(Content.Load<Model>("AnimationModels/Imp//imp_simple_harvesting_ANI_01")));
+           ImpShadow = new BasicModel(Content.Load<Model>("AnimationModels/Imp//imp_shadow_GEO_01"));
+
+           // Add torch model
+           TorchModel = new BasicModel(Content.Load<Model>("Models/Torch//torch_pillar_HEX_01"));
+           // Add torch fire model
+           TorchFireModel = Content.Load<Model>("Models/Torch//torch_fire_HEX_01");
+           // Add god' ray model
+           EntranceRayModel = new LightModel(Content.Load<Model>("Models/Entrance/entrance_rays_GEO_01"));
        }
 
        public static Vector3 mousepos(GraphicsDevice graphics, MouseState mousestate, Matrix projection, Matrix view)

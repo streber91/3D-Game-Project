@@ -79,6 +79,9 @@ namespace Underlord.Entity
                     hex.Building = true;
                     hex.Nest = true;
                     map.Entrances.Add(this);
+                    hex.IsEntrance = true;
+                    hex.EnlightendHexagon(map);
+                    map.Light = Vars_Func.getEntranceRayModel();
                     break;
                 case Vars_Func.NestTyp.Beetle:
                     hex.Typ = Vars_Func.HexTyp.BeetleNest;
@@ -171,24 +174,39 @@ namespace Underlord.Entity
                 //timer to spawn heroes
                 if (spawnCounter > 5000)
                 {
-                    //spawnCreature(map);
+                    spawnCreature(map);
                     spawnCounter = 0;
                 }
             }
         }
 
-        override public void DrawModel(Renderer.Camera camera, Vector3 drawPosition, Color drawColor)
+        override public void DrawModel(Renderer.Camera camera, Vector3 drawPosition, Color drawColor, bool isEnlightend, float lightPower)
         {
+            drawPosition = new Vector3(drawPosition.X, drawPosition.Y, drawPosition.Z + Vars_Func.getNestParams(typ).X);
+
             Matrix modelMatrix = Matrix.Identity *
-            Matrix.CreateScale(1) *
-            Matrix.CreateRotationX(0) *
+            Matrix.CreateScale(Vars_Func.getNestParams(typ).Y) *
+            Matrix.CreateRotationX(Vars_Func.getNestParams(typ).Z) *
             Matrix.CreateRotationY(0) *
             Matrix.CreateRotationZ(0) *
             Matrix.CreateTranslation(drawPosition);
 
             Vars_Func.getNestModell(typ).Color = drawColor;
-            Vars_Func.getNestModell(typ).Draw(camera, modelMatrix);
+            Vars_Func.getNestModell(typ).Draw(camera, modelMatrix, false, isEnlightend, lightPower);
         }
+
+        //override public void DrawModel(Renderer.Camera camera, Vector3 drawPosition, Color drawColor)
+        //{
+        //    Matrix modelMatrix = Matrix.Identity *
+        //    Matrix.CreateScale(1) *
+        //    Matrix.CreateRotationX(0) *
+        //    Matrix.CreateRotationY(0) *
+        //    Matrix.CreateRotationZ(0) *
+        //    Matrix.CreateTranslation(drawPosition);
+
+        //    Vars_Func.getNestModell(typ).Color = drawColor;
+        //    Vars_Func.getNestModell(typ).Draw(camera, modelMatrix);
+        //}
 
         public void spawnCreature(Environment.Map map)
         {

@@ -9,6 +9,7 @@ namespace Underlord.Logic
 {
     static class Mapgenerator
     {
+        public static int counter = 0;
         public static void generateMap(Environment.Map map, int size, int diamond,int gold)
         {
             List<Vars_Func.WallTyp> specials = new List<Vars_Func.WallTyp>();
@@ -90,25 +91,42 @@ namespace Underlord.Logic
             // build path from first entrance to HQ
             while (!map.getHexagonAt(map.HQPosition.X, map.HQPosition.Y).Neighbors.Contains(EN))
             {
+                Vector2 tempPos = Vector2.Zero;
                 if (map.HQPosition.X < EN.X)
                 {
                     map.getHexagonAt(EN.X - 1, EN.Y).Obj = null;
-                    --EN.X; 
+                    tempPos = new Vector2(EN.X - 1, EN.Y);
+                    counter++;
+                    --EN.X;
                 }
                 else if (map.HQPosition.X > EN.X)
                 {
                     map.getHexagonAt(EN.X + 1, EN.Y).Obj = null;
-                    ++EN.X; 
+                    tempPos = new Vector2(EN.X + 1, EN.Y);
+                    counter++;
+                    ++EN.X;
                 }
                 if (map.HQPosition.Y < EN.Y)
                 {
                     map.getHexagonAt(EN.X, EN.Y - 1).Obj = null;
+                    tempPos = new Vector2(EN.X, EN.Y - 1);
+                    counter++;
                     --EN.Y;
                 }
                 else if (map.HQPosition.Y > EN.Y)
                 {
                     map.getHexagonAt(EN.X, EN.Y + 1).Obj = null;
+                    tempPos = new Vector2(EN.X, EN.Y + 1);
+                    counter++;
                     ++EN.Y;
+                }
+                if (tempPos != Vector2.Zero)
+                {
+                    if (counter == 8)
+                    {
+                        map.getHexagonAt(tempPos).EnlightendHexagon(map);
+                        counter = 0;
+                    }
                 }
             }
         }

@@ -41,6 +41,17 @@ namespace Underlord.Logic
                     imp.CurrentJob.updateJob(map, imp);
                     imp.CurrentJob.Worktime -= time.ElapsedGameTime.Milliseconds;
 
+                    switch (imp.CurrentJob.JobTyp)
+                    {
+                        case Vars_Func.ImpJob.Mine:
+                        case Vars_Func.ImpJob.MineDiamonds:
+                        case Vars_Func.ImpJob.MineGold:
+                            //imp.ExternalTarget = 
+                            imp.State = Vars_Func.ImpState.Digging;
+                            imp.TargetHexagon = map.getHexagonAt(imp.CurrentJob.Destination);
+                            break;
+                    }
+
                     if (imp.CurrentJob.Worktime <= 0)
                     {
                         imp.CurrentJob.Worktime = 5000;
@@ -55,6 +66,7 @@ namespace Underlord.Logic
                 // time left for action?
                 if (imp.ActionTimeCounter >= 500)
                 {
+                    imp.State = Vars_Func.ImpState.Walking;
                     map.move(imp);
                 }
                 imp.ActionTimeCounter = 0;
@@ -81,7 +93,11 @@ namespace Underlord.Logic
                             // attack creature
                             if (map.getHexagonAt(nearestEnemy).Obj != null)
                             {
+                                creature.State = Vars_Func.CreatureState.Fighting;
+                                creature.TargetHexagon = map.getHexagonAt(nearestEnemy);
+
                                 Creature target = (Creature)map.getHexagonAt(nearestEnemy).Obj;
+                                creature.TargetPosition = target.TempDrawPositon;
                                 target.takeDamage(creature.Damage);
                                 if (target.DamageTaken >= target.HP) map.DyingCreatures.Add(target);
                                 creature.ActionTimeCounter = 0;
@@ -113,6 +129,7 @@ namespace Underlord.Logic
                 // time left for action?
                 if (creature.ActionTimeCounter >= 1000 / creature.Speed)
                 {
+                    creature.State = Vars_Func.CreatureState.Walking;
                     map.move(creature);
                     if (creature.Path == null)
                     {

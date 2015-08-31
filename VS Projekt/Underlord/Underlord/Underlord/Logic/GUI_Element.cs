@@ -31,11 +31,11 @@ namespace Underlord.Logic
             this.elementTyp = elementTyp;
         }
 
-        public void Draw(SpriteBatch spriteBatch, SpriteFont font)
+        public void Draw(SpriteBatch spriteBatch, SpriteFont font, Color spriteColor)
         {
             if (elementTyp == Vars_Func.GUI_ElementTyp.BottomHUD) spriteBatch.Draw(Vars_Func.getGUI_ElementTextures(elementTyp), new Vector2(rectangle.X, rectangle.Y), Color.Red);
-            else spriteBatch.Draw(Vars_Func.getGUI_ElementTextures(elementTyp), new Vector2(rectangle.X, rectangle.Y), Color.White);
-            spriteBatch.DrawString(font, text, new Vector2(rectangle.X, rectangle.Y), Color.Black);
+            else spriteBatch.Draw(Vars_Func.getGUI_ElementTextures(elementTyp), new Vector2(rectangle.X, rectangle.Y), spriteColor);
+            spriteBatch.DrawString(font, text, new Vector2(rectangle.X, rectangle.Y+30), Color.Black);
         }
     }
 }

@@ -33,6 +33,7 @@ namespace Underlord.Environment
             {
                 room.Add(middleHexagonIndexNumber);
                 map.getHexagonAt(middleHexagonIndexNumber).RoomNumber = map.Rooms.Count + 1;
+                map.getHexagonAt(middleHexagonIndexNumber).EnlightendHexagon(map);
             }
             //create nest through a broad-first-search
             else
@@ -44,6 +45,7 @@ namespace Underlord.Environment
                 map.getHexagonAt(middleHexagonIndexNumber).Visited = true; //set visited for the middle element at true
                 int roomNumber = map.Rooms.Count + 1; //set the number for the new room at map.Room.Count + 1, because roomNumber = 0 means there is no room
                 map.getHexagonAt(middleHexagonIndexNumber).RoomNumber = roomNumber; //set the roomNumber for the middle hexagon
+                map.getHexagonAt(middleHexagonIndexNumber).EnlightendHexagon(map);
                 while (queue.Count != 1)
                 {
                     Vector2 tmp = queue.Dequeue(); //get the first element of the queue

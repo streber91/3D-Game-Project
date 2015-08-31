@@ -16,7 +16,6 @@ namespace Underlord.Animation
     public class AnimationModel : BasicModel
     {
         #region Fields
-
         /// <summary>
         /// Extra data associated with the XNA model
         /// </summary>
@@ -36,11 +35,9 @@ namespace Underlord.Animation
         /// 
         /// </summary>
         protected List<AnimationClip> clips = new List<AnimationClip>();
-
         #endregion
 
         #region Properties
-
         /// <summary>
         /// The underlying bones for the model
         /// </summary>
@@ -59,12 +56,10 @@ namespace Underlord.Animation
         /// <summary>
         /// 
         /// </summary>
-        public List<AnimationClip> AnimationClip { get { return clips; } }
-
+        public List<AnimationClip> AnimationClip { set { clips = value; } get { return clips; } }
         #endregion
 
         #region Construction
-
         /// <summary>
         /// Constructor. Creates the model from an XNA model
         /// </summary>
@@ -126,7 +121,6 @@ namespace Underlord.Animation
         #endregion
 
         #region Animation Management
-
         /// <summary>
         /// 
         /// </summary>
@@ -147,9 +141,7 @@ namespace Underlord.Animation
             player = new AnimationPlayer(clip, this);
             return player;
         }
-
         #endregion
-
         #region Updating
 
         /// <summary>
@@ -163,28 +155,23 @@ namespace Underlord.Animation
                 player.Update(gameTime);
             }
         }
-
         #endregion
 
         #region Drawing
-
         /// <summary>
         /// Draw the model
         /// </summary>
         /// <param name="graphics">The graphics device to draw on</param>
         /// <param name="camera">A camera to determine the view</param>
         /// <param name="world">A world matrix to place the model</param>
-        public void Draw(Camera camera, Matrix world)
+        public void Draw(Camera camera, Matrix world, bool drawAmbient, bool isEnlightend, float lightPower)
         {
             if (model == null)
                 return;
-
             //
             // Compute all of the bone absolute transforms
             //
-
             Matrix[] boneTransforms = new Matrix[bones.Count];
-
             for (int i = 0; i < bones.Count; i++)
             {
                 Bone bone = bones[i];
@@ -192,18 +179,15 @@ namespace Underlord.Animation
 
                 boneTransforms[i] = bone.AbsoluteTransform;
             }
-
             //
             // Determine the skin transforms from the skeleton
             //
-
             Matrix[] skeleton = new Matrix[modelExtra.Skeleton.Count];
             for (int s = 0; s < modelExtra.Skeleton.Count; s++)
             {
                 Bone bone = bones[modelExtra.Skeleton[s]];
                 skeleton[s] = bone.SkinTransform * bone.AbsoluteTransform;
             }
-
             // Draw the model.
             foreach (ModelMesh modelMesh in model.Meshes)
             {
@@ -211,34 +195,99 @@ namespace Underlord.Animation
                 {
                     if (effect is BasicEffect)
                     {
-                        BasicEffect beffect = effect as BasicEffect;
-                        beffect.World = boneTransforms[modelMesh.ParentBone.Index] * world;
-                        beffect.View = camera.View;
-                        beffect.Projection = camera.Projection;
-                        beffect.EnableDefaultLighting();
-                        beffect.PreferPerPixelLighting = true;
+                        BasicEffect basicEffect = effect as BasicEffect;
+                        basicEffect.World = boneTransforms[modelMesh.ParentBone.Index] * world;
+                        basicEffect.View = camera.View;
+                        basicEffect.Projection = camera.Projection;
+                        basicEffect.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+                        basicEffect.GraphicsDevice.BlendState = BlendState.AlphaBlend;
 
+                        this.SetBasicEffects(basicEffect, drawAmbient, isEnlightend, lightPower);       
                         if (this.modelTexture != null)
                         {
-                            beffect.Texture = this.modelTexture;
+                            basicEffect.Texture = this.modelTexture;
                         }
-
                     }
 
                     if (effect is SkinnedEffect)
                     {
-                        SkinnedEffect seffect = effect as SkinnedEffect;
-                        seffect.World = boneTransforms[modelMesh.ParentBone.Index] * world;
-                        seffect.View = camera.View;
-                        seffect.Projection = camera.Projection;
-                        seffect.EnableDefaultLighting();
-                        seffect.PreferPerPixelLighting = true;
-                        seffect.SetBoneTransforms(skeleton);
+                        SkinnedEffect skinndedEffect = effect as SkinnedEffect;
+                        skinndedEffect.World = boneTransforms[modelMesh.ParentBone.Index] * world;
+                        skinndedEffect.View = camera.View;
+                        skinndedEffect.Projection = camera.Projection;
+                        skinndedEffect.EnableDefaultLighting();
+                        skinndedEffect.PreferPerPixelLighting = true;
+                        skinndedEffect.SetBoneTransforms(skeleton);
                     }
                 }
                 modelMesh.Draw();
             }
         }
+        //public void Draw(Camera camera, Matrix world)
+        //{
+        //    if (model == null)
+        //        return;
+
+        //    //
+        //    // Compute all of the bone absolute transforms
+        //    //
+
+        //    Matrix[] boneTransforms = new Matrix[bones.Count];
+
+        //    for (int i = 0; i < bones.Count; i++)
+        //    {
+        //        Bone bone = bones[i];
+        //        bone.ComputeAbsoluteTransform();
+
+        //        boneTransforms[i] = bone.AbsoluteTransform;
+        //    }
+
+        //    //
+        //    // Determine the skin transforms from the skeleton
+        //    //
+
+        //    Matrix[] skeleton = new Matrix[modelExtra.Skeleton.Count];
+        //    for (int s = 0; s < modelExtra.Skeleton.Count; s++)
+        //    {
+        //        Bone bone = bones[modelExtra.Skeleton[s]];
+        //        skeleton[s] = bone.SkinTransform * bone.AbsoluteTransform;
+        //    }
+
+        //    // Draw the model.
+        //    foreach (ModelMesh modelMesh in model.Meshes)
+        //    {
+        //        foreach (Effect effect in modelMesh.Effects)
+        //        {
+        //            if (effect is BasicEffect)
+        //            {
+        //                BasicEffect beffect = effect as BasicEffect;
+        //                beffect.World = boneTransforms[modelMesh.ParentBone.Index] * world;
+        //                beffect.View = camera.View;
+        //                beffect.Projection = camera.Projection;
+        //                beffect.EnableDefaultLighting();
+        //                beffect.PreferPerPixelLighting = true;
+
+        //                if (this.modelTexture != null)
+        //                {
+        //                    beffect.Texture = this.modelTexture;
+        //                }
+
+        //            }
+
+        //            if (effect is SkinnedEffect)
+        //            {
+        //                SkinnedEffect seffect = effect as SkinnedEffect;
+        //                seffect.World = boneTransforms[modelMesh.ParentBone.Index] * world;
+        //                seffect.View = camera.View;
+        //                seffect.Projection = camera.Projection;
+        //                seffect.EnableDefaultLighting();
+        //                seffect.PreferPerPixelLighting = true;
+        //                seffect.SetBoneTransforms(skeleton);
+        //            }
+        //        }
+        //        modelMesh.Draw();
+        //    }
+        //}
        #endregion
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Underlord.Renderer;
 
 namespace Underlord.Entity
 {
@@ -60,7 +61,7 @@ namespace Underlord.Entity
             } 
         }
 
-        override public void DrawModel(Renderer.Camera camera, Vector3 drawPosition, Color drawColor)
+        override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor, bool isEnlightend, float lightPower)
         {
 
         }

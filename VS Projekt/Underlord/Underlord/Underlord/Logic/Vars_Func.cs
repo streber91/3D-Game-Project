@@ -170,8 +170,9 @@ namespace Underlord.Logic
            HexagonModels[(int)HexTyp.Sand].Texture = Content.Load<Texture2D>("Textures//floor_stone_TEXT");
            HexagonModels[(int)HexTyp.Stone].Texture = Content.Load<Texture2D>("Textures//floor_stone_TEXT");
            HexagonModels[(int)HexTyp.BeetleNest].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
-           HexagonModels[(int)HexTyp.BeetleNest].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
-           HexagonModels[(int)HexTyp.BeetleNest].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
+           HexagonModels[(int)HexTyp.Graveyard].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
+           HexagonModels[(int)HexTyp.Temple].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
+           HexagonModels[(int)HexTyp.Farm].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
 
            NestModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));    
            NestModels.Add(new BasicModel(Content.Load<Model>("Models/Entrance//entrance_GEO_01")));
@@ -181,6 +182,9 @@ namespace Underlord.Logic
 
            NestModels[(int)NestTyp.Beetle].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
            //NestModels[(int)NestTyp.Entrance].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
+           NestModels[(int)NestTyp.Skeleton].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
+           NestModels[(int)NestTyp.Temple].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
+           NestModels[(int)NestTyp.Farm].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
 
            UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models/Flags//flag_Deg_GEO_01")));
            UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models/Flags//flag_Lve_GEO_01")));

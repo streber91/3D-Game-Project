@@ -10,7 +10,8 @@ namespace Underlord.Logic
 {
     static class Interaction
     {
-        static Vars_Func.GameState gameState = Vars_Func.GameState.Ingame;
+        static Game1 game;
+        static Vars_Func.GameState gameState = Vars_Func.GameState.MainMenu;
         static Vector2 indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
         static int radius = 0;
         static int counter = 0;
@@ -20,6 +21,11 @@ namespace Underlord.Logic
         static Vars_Func.UpgradeTyp upgradeTyp = Vars_Func.UpgradeTyp.length;
 
         #region Properties
+        public static Game1 Game
+        {
+            get { return game; }
+            set { game = value; }
+        }
         public static Vars_Func.GameState GameState
         {
             get { return gameState; }
@@ -31,109 +37,145 @@ namespace Underlord.Logic
         {
             timeCounter += gameTime.ElapsedGameTime.Milliseconds;
 
-            if (timeCounter > 100)
+            if (gameState != Vars_Func.GameState.MainMenu &&
+                gameState != Vars_Func.GameState.Highscore &&
+                gameState != Vars_Func.GameState.Tutorial)
             {
-                //switch to CreateRoom Mode in "R" or the "CreateRoom-Button" is pressed
-                if (keyboard.IsKeyDown(Keys.R) ||
-                    (lastMouseState.LeftButton == ButtonState.Released &&
-                    mouseState.LeftButton == ButtonState.Pressed &&
-                    GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.Room).Rectangle.Contains(mouseState.X, mouseState.Y)))
+                if (timeCounter > 100)
                 {
-                    gameState = Vars_Func.GameState.CreateRoom;
-                    timeCounter = 0;
-                }
-                //switch to Build Mode if "N" or the "Build-Button" is pressed
-                if (keyboard.IsKeyDown(Keys.N) ||
-                    (lastMouseState.LeftButton == ButtonState.Released &&
-                    mouseState.LeftButton == ButtonState.Pressed &&
-                    GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.Build).Rectangle.Contains(mouseState.X, mouseState.Y)))
-                {
-                    indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
-                    radius = 0;
-                    counter = 0;
-                    gameState = Vars_Func.GameState.Build;
-                    timeCounter = 0;
-                }
-                //switch to Mine Mode if "M" or the "Mine-Button" is pressed
-                if (keyboard.IsKeyDown(Keys.M) ||
-                    (lastMouseState.LeftButton == ButtonState.Released &&
-                    mouseState.LeftButton == ButtonState.Pressed &&
-                    GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.Mine).Rectangle.Contains(mouseState.X, mouseState.Y)))
-                {
-                    indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
-                    radius = 0;
-                    counter = 0;
-                    gameState = Vars_Func.GameState.Mine;
-                    timeCounter = 0;
-                }
-                //switch to MergeRooms Mode if "T" or the "MergeRooms-Button" is pressed
-                if (keyboard.IsKeyDown(Keys.T) ||
-                    (lastMouseState.LeftButton == ButtonState.Released &&
-                    mouseState.LeftButton == ButtonState.Pressed &&
-                    GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.MergeRoom).Rectangle.Contains(mouseState.X, mouseState.Y)))
-                {
-                    indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
-                    radius = 0;
-                    counter = 0;
-                    gameState = Vars_Func.GameState.MergeRooms;
-                    timeCounter = 0;
-                }
-                //switch to DeleteRoom Mode if "Z" or the "DeleteRoom-Button" is pressed
-                if (keyboard.IsKeyDown(Keys.Z) ||
-                    (lastMouseState.LeftButton == ButtonState.Released &&
-                    mouseState.LeftButton == ButtonState.Pressed &&
-                    GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.DeleteRoom).Rectangle.Contains(mouseState.X, mouseState.Y)))
-                {
-                    indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
-                    radius = 0;
-                    counter = 0;
-                    gameState = Vars_Func.GameState.DeleteRoom;
-                    timeCounter = 0;
-                }
-                //switch to BuildUpgrade Mode if the "DamageUpgrade-Button" is pressed and a nest is selected
-                if (lastMouseState.LeftButton == ButtonState.Released &&
-                    mouseState.LeftButton == ButtonState.Pressed &&
-                    GUI.SelectedThingTyp == Vars_Func.ThingTyp.Nest &&
-                    GUI.getGUI_UpgradeButton(Vars_Func.GUI_ElementTyp.DamageUpgrade).Rectangle.Contains(mouseState.X, mouseState.Y))
-                {
-                    upgradeTyp = Vars_Func.UpgradeTyp.Damage;
-                    indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
-                    radius = 0;
-                    counter = 0;
-                    gameState = Vars_Func.GameState.BuildUpgrade;
-                    timeCounter = 0;
-                }
-                //switch to BuildUpgrade Mode if the "LifeUpgrade-Button" is pressed and a nest is selected
-                if (lastMouseState.LeftButton == ButtonState.Released &&
-                    mouseState.LeftButton == ButtonState.Pressed &&
-                    GUI.SelectedThingTyp == Vars_Func.ThingTyp.Nest &&
-                    GUI.getGUI_UpgradeButton(Vars_Func.GUI_ElementTyp.LifeUpgrade).Rectangle.Contains(mouseState.X, mouseState.Y))
-                {
-                    upgradeTyp = Vars_Func.UpgradeTyp.Life;
-                    indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
-                    radius = 0;
-                    counter = 0;
-                    gameState = Vars_Func.GameState.BuildUpgrade;
-                    timeCounter = 0;
-                }
-                //switch to BuildUpgrade Mode if the "SpeedUpgrade-Button" is pressed and a nest is selected
-                if (lastMouseState.LeftButton == ButtonState.Released &&
-                    mouseState.LeftButton == ButtonState.Pressed &&
-                    GUI.SelectedThingTyp == Vars_Func.ThingTyp.Nest &&
-                    GUI.getGUI_UpgradeButton(Vars_Func.GUI_ElementTyp.SpeedUpgrade).Rectangle.Contains(mouseState.X, mouseState.Y))
-                {
-                    upgradeTyp = Vars_Func.UpgradeTyp.Speed;
-                    indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
-                    radius = 0;
-                    counter = 0;
-                    gameState = Vars_Func.GameState.BuildUpgrade;
-                    timeCounter = 0;
+                    //switch to CreateRoom Mode in "R" or the "CreateRoom-Button" is pressed
+                    if (keyboard.IsKeyDown(Keys.R) ||
+                        (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.Room).Rectangle.Contains(mouseState.X, mouseState.Y)))
+                    {
+                        gameState = Vars_Func.GameState.CreateRoom;
+                        timeCounter = 0;
+                    }
+                    //switch to Build Mode if "N" or the "Build-Button" is pressed
+                    if (keyboard.IsKeyDown(Keys.N) ||
+                        (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.Build).Rectangle.Contains(mouseState.X, mouseState.Y)))
+                    {
+                        indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                        radius = 0;
+                        counter = 0;
+                        gameState = Vars_Func.GameState.Build;
+                        timeCounter = 0;
+                    }
+                    //switch to Mine Mode if "M" or the "Mine-Button" is pressed
+                    if (keyboard.IsKeyDown(Keys.M) ||
+                        (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.Mine).Rectangle.Contains(mouseState.X, mouseState.Y)))
+                    {
+                        indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                        radius = 0;
+                        counter = 0;
+                        gameState = Vars_Func.GameState.Mine;
+                        timeCounter = 0;
+                    }
+                    //switch to MergeRooms Mode if "T" or the "MergeRooms-Button" is pressed
+                    if (keyboard.IsKeyDown(Keys.T) ||
+                        (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.MergeRoom).Rectangle.Contains(mouseState.X, mouseState.Y)))
+                    {
+                        indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                        radius = 0;
+                        counter = 0;
+                        gameState = Vars_Func.GameState.MergeRooms;
+                        timeCounter = 0;
+                    }
+                    //switch to DeleteRoom Mode if "Z" or the "DeleteRoom-Button" is pressed
+                    if (keyboard.IsKeyDown(Keys.Z) ||
+                        (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.DeleteRoom).Rectangle.Contains(mouseState.X, mouseState.Y)))
+                    {
+                        indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                        radius = 0;
+                        counter = 0;
+                        gameState = Vars_Func.GameState.DeleteRoom;
+                        timeCounter = 0;
+                    }
+                    //switch to BuildUpgrade Mode if the "DamageUpgrade-Button" is pressed and a nest is selected
+                    if (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.SelectedThingTyp == Vars_Func.ThingTyp.Nest &&
+                        GUI.getGUI_UpgradeButton(Vars_Func.GUI_ElementTyp.DamageUpgrade).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    {
+                        upgradeTyp = Vars_Func.UpgradeTyp.Damage;
+                        indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                        radius = 0;
+                        counter = 0;
+                        gameState = Vars_Func.GameState.BuildUpgrade;
+                        timeCounter = 0;
+                    }
+                    //switch to BuildUpgrade Mode if the "LifeUpgrade-Button" is pressed and a nest is selected
+                    if (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.SelectedThingTyp == Vars_Func.ThingTyp.Nest &&
+                        GUI.getGUI_UpgradeButton(Vars_Func.GUI_ElementTyp.LifeUpgrade).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    {
+                        upgradeTyp = Vars_Func.UpgradeTyp.Life;
+                        indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                        radius = 0;
+                        counter = 0;
+                        gameState = Vars_Func.GameState.BuildUpgrade;
+                        timeCounter = 0;
+                    }
+                    //switch to BuildUpgrade Mode if the "SpeedUpgrade-Button" is pressed and a nest is selected
+                    if (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.SelectedThingTyp == Vars_Func.ThingTyp.Nest &&
+                        GUI.getGUI_UpgradeButton(Vars_Func.GUI_ElementTyp.SpeedUpgrade).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    {
+                        upgradeTyp = Vars_Func.UpgradeTyp.Speed;
+                        indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                        radius = 0;
+                        counter = 0;
+                        gameState = Vars_Func.GameState.BuildUpgrade;
+                        timeCounter = 0;
+                    }
                 }
             }
             switch (gameState)
             {
-                case Vars_Func.GameState.MainMenue:
+                #region MainMenu
+                case Vars_Func.GameState.MainMenu:
+                    //start the game if the "StartGame-Button" is pressed
+                    if (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.getGUI_MenuButton(Vars_Func.GUI_ElementTyp.StartGame).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    {
+                        gameState = Vars_Func.GameState.Ingame;
+                        game.reinitialize();
+                    }
+                    //show the highscore if the "Highscore-Button" is pressed
+                    if (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.getGUI_MenuButton(Vars_Func.GUI_ElementTyp.Highscore).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    {
+                        gameState = Vars_Func.GameState.Highscore;
+                    }
+                    //show the tutorial if the "Tutorial-Button" is pressed
+                    if (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.getGUI_MenuButton(Vars_Func.GUI_ElementTyp.Tutorial).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    {
+                        gameState = Vars_Func.GameState.Tutorial;
+                    }
+                    //quit the game if the "QuitGame-Button" is pressed
+                    if (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.getGUI_MenuButton(Vars_Func.GUI_ElementTyp.QuitGame).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    {
+                        game.Exit();
+                    }
                     break;
+                #endregion
                 #region Ingame
                 case Vars_Func.GameState.Ingame:
                     //colors the hexagon at mouseposition in Ingame mode yellow
@@ -141,6 +183,12 @@ namespace Underlord.Logic
                     //only ten clicks per second
                     if (timeCounter > 100)
                     {
+                        //switch to the return screen to exit the game and save the highscore
+                        if (keyboard.IsKeyDown(Keys.Escape))
+                        {
+                            gameState = Vars_Func.GameState.ReturnToMainMenu;
+                            timeCounter = 0;
+                        }
                         //try to select object that is currently at mouseposition
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed)
@@ -184,10 +232,32 @@ namespace Underlord.Logic
                     }
                     break;
                 #endregion
-                case Vars_Func.GameState.Save:
+                #region Highscore
+                case Vars_Func.GameState.Highscore:
+                    if (timeCounter > 100)
+                    {
+                        //back to MainMenu
+                        if (keyboard.IsKeyDown(Keys.Escape))
+                        {
+                            gameState = Vars_Func.GameState.MainMenu;
+                            timeCounter = 0;
+                        }
+                    }
                     break;
-                case Vars_Func.GameState.Load:
+                #endregion
+                #region Tutorial
+                case Vars_Func.GameState.Tutorial:
+                    if (timeCounter > 100)
+                    {
+                        //back to MainMenu
+                        if (keyboard.IsKeyDown(Keys.Escape))
+                        {
+                            gameState = Vars_Func.GameState.MainMenu;
+                            timeCounter = 0;
+                        }
+                    }
                     break;
+                #endregion
                 #region CreateRoom
                 case Vars_Func.GameState.CreateRoom:
                     //color the hexagons around the coursor too
@@ -256,8 +326,6 @@ namespace Underlord.Logic
                 #endregion
                 #region Build
                 case Vars_Func.GameState.Build:
-                    //colors the hexagon at mouseposition in Build mode purple
-                    map.getHexagonAt(mouseover).Color = Color.Purple;
                     //only ten clicks per second
                     if (timeCounter > 100)
                     {
@@ -267,24 +335,60 @@ namespace Underlord.Logic
                             gameState = Vars_Func.GameState.Ingame;
                             timeCounter = 0;
                         }
-                        //try to place a nest at mouseposition
-                        if (lastMouseState.LeftButton == ButtonState.Released && 
-                            mouseState.LeftButton == ButtonState.Pressed)
+                        //switch to PlaceAnts Mode if the "PlaceAnts-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceAnts).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
-                            //place nest only when there is a room at mouseposition and the room doesn't have a nest already
-                            if (map.getHexagonAt(mouseover).RoomNumber != 0 && map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType == Vars_Func.NestTyp.length)
-                            {
-                                //the neighbors of the hexagon at mouseposition must be in the same room
-                                bool placeable = true;
-                                for (int i = 0; i < 6; ++i)
-                                {
-                                    if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).RoomNumber) placeable = false;
-                                }
-                                if (placeable)
-                                {
-                                    new Nest(Vars_Func.NestTyp.Beetle, mouseover, map.getHexagonAt(mouseover), map, map.getHexagonAt(mouseover).Neighbors[3]);
-                                }
-                            }
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceAnts;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceSkeletons Mode if the "PlaceSkeletons-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceSkeletons).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceSkeletons;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceFarm Mode if the "PlaceFarm-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceFarm).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceFarm;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceTemple Mode if the "PlaceTemple-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceTemple).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceTemple;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceEntrance Mode if the "PlaceEntrance-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceEntrance).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceEntrance;
+                            timeCounter = 0;
                         }
                     }
                     break;
@@ -450,11 +554,369 @@ namespace Underlord.Logic
                     }
                     break;
                 #endregion
-                //#region Spellcasting
+                #region Spellcasting
                 case Vars_Func.GameState.Spellcasting:
                     break;
-                //#endregion
-
+                #endregion
+                #region PlaceAnts
+                case Vars_Func.GameState.PlaceAnts:
+                    //colors the hexagon at mouseposition in Build mode purple
+                    map.getHexagonAt(mouseover).Color = Color.Purple;
+                    //only ten clicks per second
+                    if (timeCounter > 100)
+                    {
+                        //back to Ingame Mode
+                        if (keyboard.IsKeyDown(Keys.Escape))
+                        {
+                            gameState = Vars_Func.GameState.Ingame;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceSkeletons Mode if the "PlaceSkeletons-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceSkeletons).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceSkeletons;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceFarm Mode if the "PlaceFarm-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceFarm).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceFarm;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceTemple Mode if the "PlaceTemple-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceTemple).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceTemple;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceEntrance Mode if the "PlaceEntrance-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceEntrance).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceEntrance;
+                            timeCounter = 0;
+                        }
+                        //try to place a nest at mouseposition
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed)
+                        {
+                            //place nest only when there is a room at mouseposition and the room doesn't have a nest already
+                            if (map.getHexagonAt(mouseover).RoomNumber != 0 && map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType == Vars_Func.NestTyp.length)
+                            {
+                                //the neighbors of the hexagon at mouseposition must be in the same room
+                                bool placeable = true;
+                                for (int i = 0; i < 6; ++i)
+                                {
+                                    if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).RoomNumber) placeable = false;
+                                }
+                                if (placeable)
+                                {
+                                    new Nest(Vars_Func.NestTyp.Beetle, mouseover, map.getHexagonAt(mouseover), map, map.getHexagonAt(mouseover).Neighbors[3]);
+                                }
+                            }
+                        }
+                    }
+                    break;
+                #endregion
+                #region PlaceSkeletons
+                case Vars_Func.GameState.PlaceSkeletons:
+                    //colors the hexagon at mouseposition in Build mode purple
+                    map.getHexagonAt(mouseover).Color = Color.Purple;
+                    //only ten clicks per second
+                    if (timeCounter > 100)
+                    {
+                        //back to Ingame Mode
+                        if (keyboard.IsKeyDown(Keys.Escape))
+                        {
+                            gameState = Vars_Func.GameState.Ingame;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceAnts Mode if the "PlaceAnts-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceAnts).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceAnts;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceFarm Mode if the "PlaceFarm-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceFarm).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceFarm;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceTemple Mode if the "PlaceTemple-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceTemple).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceTemple;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceEntrance Mode if the "PlaceEntrance-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceEntrance).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceEntrance;
+                            timeCounter = 0;
+                        }
+                    }
+                    break;
+                #endregion
+                #region PlaceFarm
+                case Vars_Func.GameState.PlaceFarm:
+                    //colors the hexagon at mouseposition in Build mode purple
+                    map.getHexagonAt(mouseover).Color = Color.Purple;
+                    //only ten clicks per second
+                    if (timeCounter > 100)
+                    {
+                        //back to Ingame Mode
+                        if (keyboard.IsKeyDown(Keys.Escape))
+                        {
+                            gameState = Vars_Func.GameState.Ingame;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceAnts Mode if the "PlaceAnts-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceAnts).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceAnts;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceSkeletons Mode if the "PlaceSkeletons-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceSkeletons).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceSkeletons;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceTemple Mode if the "PlaceTemple-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceTemple).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceTemple;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceEntrance Mode if the "PlaceEntrance-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceEntrance).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceEntrance;
+                            timeCounter = 0;
+                        }
+                    }
+                    break;
+                #endregion
+                #region PlaceTemple
+                case Vars_Func.GameState.PlaceTemple:
+                    //colors the hexagon at mouseposition in Build mode purple
+                    map.getHexagonAt(mouseover).Color = Color.Purple;
+                    //only ten clicks per second
+                    if (timeCounter > 100)
+                    {
+                        //back to Ingame Mode
+                        if (keyboard.IsKeyDown(Keys.Escape))
+                        {
+                            gameState = Vars_Func.GameState.Ingame;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceAnts Mode if the "PlaceAnts-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceAnts).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceAnts;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceSkeletons Mode if the "PlaceSkeletons-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceSkeletons).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceSkeletons;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceFarm Mode if the "PlaceFarm-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceFarm).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceFarm;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceTemple Mode if the "PlaceTemple-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceTemple).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceTemple;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceEntrance Mode if the "PlaceEntrance-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceEntrance).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceEntrance;
+                            timeCounter = 0;
+                        }
+                    }
+                    break;
+                #endregion
+                #region PlaceEntrance
+                case Vars_Func.GameState.PlaceEntrance:
+                    //colors the hexagon at mouseposition in Build mode purple
+                    map.getHexagonAt(mouseover).Color = Color.Purple;
+                    //only ten clicks per second
+                    if (timeCounter > 100)
+                    {
+                        //back to Ingame Mode
+                        if (keyboard.IsKeyDown(Keys.Escape))
+                        {
+                            gameState = Vars_Func.GameState.Ingame;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceAnts Mode if the "PlaceAnts-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceAnts).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceAnts;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceSkeletons Mode if the "PlaceSkeletons-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceSkeletons).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceSkeletons;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceFarm Mode if the "PlaceFarm-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceFarm).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceFarm;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceTemple Mode if the "PlaceTemple-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceTemple).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceTemple;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceEntrance Mode if the "PlaceEntrance-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceEntrance).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                            radius = 0;
+                            counter = 0;
+                            gameState = Vars_Func.GameState.PlaceEntrance;
+                            timeCounter = 0;
+                        }
+                    }
+                    break;
+                #endregion
+                #region ReturnToMainMenu
+                    case Vars_Func.GameState.ReturnToMainMenu:
+                    //return to the mainmenu and save the highscore if the "ReturnAccept-Button" is pressed
+                    if (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.getGUI_ReturnScreenButton(Vars_Func.GUI_ElementTyp.ReturnAccept).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    {
+                        gameState = Vars_Func.GameState.MainMenu;
+                    }
+                    //return to the game if the "ReturnDecline-Button" is pressed
+                    if (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.getGUI_ReturnScreenButton(Vars_Func.GUI_ElementTyp.ReturnDecline).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    {
+                        gameState = Vars_Func.GameState.Ingame;
+                    }
+                    break;
+                #endregion
             }
         }
 

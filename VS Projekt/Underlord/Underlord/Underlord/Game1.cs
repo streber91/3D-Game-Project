@@ -85,9 +85,9 @@ namespace Underlord
 
         public void reinitialize()
         {
-            Player.Gold = 10000;
-            Player.Mana = 10000;
-            Player.Food = 10000;
+            Player.Gold = 100;
+            Player.Mana = 100;
+            Player.Food = 100;
             Player.Score = 0;
             Spells.SummonImpCost = 0;
             GUI.SelectedThingTyp = Vars_Func.ThingTyp.length;

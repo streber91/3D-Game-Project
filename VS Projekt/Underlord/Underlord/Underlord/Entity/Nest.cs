@@ -297,16 +297,16 @@ namespace Underlord.Entity
                     }
                 }
             }
-            //update an entrance
-            else
-            {
-                //timer to spawn heroes
-                if (spawnCounter > 5000)
-                {
-                    spawnCreature(map);
-                    spawnCounter = 0;
-                }
-            }
+            ////update an entrance
+            //else
+            //{
+            //    //timer to spawn heroes
+            //    if (spawnCounter > 5000)
+            //    {
+            //        spawnCreature(map);
+            //        spawnCounter = 0;
+            //    }
+            //}
         }
 
         override public void DrawModel(Renderer.Camera camera, Vector3 drawPosition, Color drawColor, bool isEnlightend, float lightPower)
@@ -337,7 +337,7 @@ namespace Underlord.Entity
         //    Vars_Func.getNestModell(typ).Draw(camera, modelMatrix);
         //}
 
-        public void spawnCreature(Environment.Map map)
+        public void spawnCreature(Environment.Map map, int startage = 0)
         {
             Vector2 tmp = map.getHexagonAt(this.position).Neighbors[3];
             Queue<Vector2> queue = new Queue<Vector2>();
@@ -369,7 +369,7 @@ namespace Underlord.Entity
                     {
                         if (hex.Visited == true) hex.Visited = false;
                     }
-                    new Creature(Vars_Func.CreatureTyp.Knight, tmp, this, Vars_Func.ThingTyp.HeroCreature, map, upgradeCount);
+                    new Creature(Vars_Func.CreatureTyp.Knight, tmp, this, Vars_Func.ThingTyp.HeroCreature, map, upgradeCount, startage);
                     break;
 
                 case Vars_Func.NestTyp.Beetle:

@@ -1,0 +1,3 @@
+Zauber könne gewirkt werden indem sie per linksklick ausgewählt.
+und anschließend mit linksklick an der gewünschten Position gewirkt werden.
+natürlich nur wenn genügend Mana vorhanden ist.

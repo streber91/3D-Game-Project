@@ -30,6 +30,8 @@ namespace Underlord.Environment
         List<Creature> dyingCreatures;
         List<FireModel> fires;
         LightModel light;
+        List<Wave> waves;
+        List<Wave> endedWaves;
 
         Vector2 hqPosition;
         int planeSidelength;
@@ -88,17 +90,23 @@ namespace Underlord.Environment
         {
             get { return impList; }
         }
+        public List<Wave> Waves
+        {
+            get { return waves; }
+        }
+        public List<Wave> EndedWaves
+        {
+            get { return endedWaves; }
+        }
         public Vector2 HQPosition
         {
             get { return hqPosition; }
             set { hqPosition = value; }
         }
-
         public Vector3 HQDrawPositon
         {
             get { return this.getHexagonAt(hqPosition).getDrawPosition(); }
         }
-
         public List<FireModel> Fires
         {
             get { return fires; }
@@ -127,6 +135,8 @@ namespace Underlord.Environment
             mineJobs = new List<Vector2>();
             fires = new List<FireModel>();
             dyingCreatures = new List<Creature>();
+            waves = new List<Wave>();
+            endedWaves = new List<Wave>();
 
             hqPosition = new Vector2();
             //drawHeight = 2; //how many hexagons are drawn up and down of the middle (+1)
@@ -192,12 +202,6 @@ namespace Underlord.Environment
         public Hexagon getHexagonAt(float X, float Y) { return map[(int)(X * planeSidelength + Y)]; }
         public Hexagon getHexagonAt(Vector2 pos) { return map[(int)(pos.X * planeSidelength + pos.Y)]; }
         public int getPlanelength() { return planeSidelength; }
-        
-        //TODO
-        public void saveGame()
-        {
-
-        }
         
         public void move(Imp imp)
         {
@@ -519,6 +523,10 @@ namespace Underlord.Environment
             {
                 f.Update(gameTime);
             }
+            foreach (Wave w in waves)
+            {
+                w.update(gameTime, this);
+            }
             light.Update(gameTime);
             while (dyingCreatures.Count > 0)
             {
@@ -527,6 +535,11 @@ namespace Underlord.Environment
                     Player.Score++;
                 }
                 remove(dyingCreatures[0]);
+            }
+            while (endedWaves.Count > 0)
+            {
+                waves.Remove(endedWaves[0]);
+                endedWaves.RemoveAt(0);
             }
         }
     }

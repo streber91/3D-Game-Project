@@ -133,6 +133,8 @@
     <Compile Include="Logic\Job.cs" />
     <Compile Include="Logic\Mapgenerator.cs" />
     <Compile Include="Logic\Spells.cs" />
+    <Compile Include="Logic\Wave.cs" />
+    <Compile Include="Logic\WaveController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />

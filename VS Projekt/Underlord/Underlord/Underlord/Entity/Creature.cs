@@ -106,7 +106,7 @@ namespace Underlord.Entity
         #endregion
 
         #region Constructor
-        public Creature(Vars_Func.CreatureTyp typ, Vector2 position, Nest home, Vars_Func.ThingTyp allignment, Environment.Map map, int[] upgrades)
+        public Creature(Vars_Func.CreatureTyp typ, Vector2 position, Nest home, Vars_Func.ThingTyp allignment, Environment.Map map, int[] upgrades, int startage = 0)
         {
             switch (typ)
             {
@@ -122,10 +122,28 @@ namespace Underlord.Entity
                     damageTaken = 0;
                     hp = 500 + upgrades[1] * 100;
                     damage = 10 + upgrades[0] * 2;
-                    age = 0;
+                    age = startage;
                     maxAge = 100;
                     ageModifire = 1;
 			        map.getHexagonAt(position).Obj = this;
+                    map.Creatures.Add(this);
+                    break;
+                case Vars_Func.CreatureTyp.Skeleton:
+                    this.typ = typ;
+                    this.position = position;
+                    this.home = home;
+                    thingTyp = allignment;
+                    size = 1;
+                    speed = 1 + upgrades[2] * 0.1f;
+                    actionTimeCounter = 0;
+                    vision = 4;
+                    damageTaken = 0;
+                    hp = 250 + upgrades[1] * 100;
+                    damage = 20 + upgrades[0] * 2;
+                    age = startage;
+                    maxAge = 100;
+                    ageModifire = 1;
+                    map.getHexagonAt(position).Obj = this;
                     map.Creatures.Add(this);
                     break;
                 case Vars_Func.CreatureTyp.Knight:
@@ -140,7 +158,7 @@ namespace Underlord.Entity
                     damageTaken = 0;
                     hp = 300;
                     damage = 20;
-                    age = 0;
+                    age = startage;
                     ageModifire = 1;
 			        map.getHexagonAt(position).Obj = this;
                     map.Heroes.Add(this);
@@ -161,7 +179,7 @@ namespace Underlord.Entity
                     damageTaken = 0;
                     hp = 5000;
                     damage = 25;
-                    age = 0;
+                    age = startage;
                     ageModifire = 1;
 			        map.getHexagonAt(position).Obj = this;
                     map.Creatures.Add(this);

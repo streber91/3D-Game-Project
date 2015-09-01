@@ -58,7 +58,7 @@ namespace Underlord
             updateTimeCounter = 0;
             updates = 0;
             drawUpdates = 0;
-            interWaveTime = 60000 * 2; //in ms
+            interWaveTime = 60000 * 2.0f; //in ms
 
             Vars_Func.loadContent(Content);
             map = new Map(planeLength, Logic.Vars_Func.HexTyp.Sand, true, hexagonSideLength);
@@ -96,7 +96,7 @@ namespace Underlord
             updateTimeCounter = 0;
             updates = 0;
             drawUpdates = 0;
-            interWaveTime = 60000 * 2; //in ms
+            interWaveTime = 60000 * 2.0f; //in ms
 
             map = new Map(planeLength, Logic.Vars_Func.HexTyp.Sand, true, hexagonSideLength);
             Mapgenerator.generateMap(map, planeLength, (int)(planeLength / 10), (int)(planeLength / 5));

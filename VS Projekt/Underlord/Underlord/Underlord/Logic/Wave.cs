@@ -38,7 +38,7 @@ namespace Underlord.Logic
 
                 if (numberEnemys <= 0)
                 {
-                    map.Waves.Remove(this);
+                    map.EndedWaves.Add(this);
                 }
             }
         }

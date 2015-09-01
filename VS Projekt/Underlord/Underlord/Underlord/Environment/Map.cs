@@ -31,6 +31,7 @@ namespace Underlord.Environment
         List<FireModel> fires;
         LightModel light;
         List<Wave> waves;
+        List<Wave> endedWaves;
 
         Vector2 hqPosition;
         int planeSidelength;
@@ -93,6 +94,10 @@ namespace Underlord.Environment
         {
             get { return waves; }
         }
+        public List<Wave> EndedWaves
+        {
+            get { return endedWaves; }
+        }
         public Vector2 HQPosition
         {
             get { return hqPosition; }
@@ -131,6 +136,7 @@ namespace Underlord.Environment
             fires = new List<FireModel>();
             dyingCreatures = new List<Creature>();
             waves = new List<Wave>();
+            endedWaves = new List<Wave>();
 
             hqPosition = new Vector2();
             //drawHeight = 2; //how many hexagons are drawn up and down of the middle (+1)
@@ -529,6 +535,11 @@ namespace Underlord.Environment
                     Player.Score++;
                 }
                 remove(dyingCreatures[0]);
+            }
+            while (endedWaves.Count > 0)
+            {
+                waves.Remove(endedWaves[0]);
+                endedWaves.RemoveAt(0);
             }
         }
     }

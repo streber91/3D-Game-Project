@@ -120,7 +120,7 @@ namespace Underlord.Entity
                     actionTimeCounter = 0;
                     vision = 4;
                     damageTaken = 0;
-                    hp = 500 + upgrades[1] * 100;
+                    hp = 200 + upgrades[1] * 50;
                     damage = 10 + upgrades[0] * 2;
                     age = startage;
                     maxAge = 100;
@@ -138,10 +138,10 @@ namespace Underlord.Entity
                     actionTimeCounter = 0;
                     vision = 4;
                     damageTaken = 0;
-                    hp = 250 + upgrades[1] * 100;
-                    damage = 20 + upgrades[0] * 2;
+                    hp = 100 + upgrades[1] * 25;
+                    damage = 15 + upgrades[0] * 3;
                     age = startage;
-                    maxAge = 100;
+                    maxAge = 120;
                     ageModifire = 1;
                     map.getHexagonAt(position).Obj = this;
                     map.Creatures.Add(this);
@@ -156,8 +156,8 @@ namespace Underlord.Entity
                     actionTimeCounter = 0;
                     vision = 4;
                     damageTaken = 0;
-                    hp = 300;
-                    damage = 20;
+                    hp = 150;
+                    damage = 10;
                     age = startage;
                     ageModifire = 1;
 			        map.getHexagonAt(position).Obj = this;
@@ -262,8 +262,6 @@ namespace Underlord.Entity
                     break;
             }
         }
-
-
 
         private void UpdateState(GameTime time)
         {

@@ -12,7 +12,6 @@ namespace Underlord.Entity
     {
         Vars_Func.UpgradeTyp typ;
         Vector2 position;
-        int cost;
 
         #region Properties
         #endregion

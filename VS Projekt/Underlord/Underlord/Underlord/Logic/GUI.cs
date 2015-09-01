@@ -214,6 +214,7 @@ namespace Underlord.Logic
                     Interaction.GameState == Vars_Func.GameState.PlaceTemple ||
                     Interaction.GameState == Vars_Func.GameState.PlaceEntrance)
                 {
+                    //draw the buildButtons
                     foreach (GUI_Element b in buildButtons)
                     {
                         if (b.Rectangle.Contains(mouseState.X, mouseState.Y))
@@ -225,14 +226,20 @@ namespace Underlord.Logic
                             b.Draw(spriteBatch, font, Color.White);
                         }
                     }
+                    //draw the costs for the buildings
+                    spriteBatch.DrawString(font, Interaction.NestCost.ToString(), new Vector2(620, 740), Color.Black);
+                    spriteBatch.DrawString(font, Interaction.NestCost.ToString(), new Vector2(720, 740), Color.Black);
+                    spriteBatch.DrawString(font, Interaction.FarmCost.ToString(), new Vector2(820, 740), Color.Black);
+                    spriteBatch.DrawString(font, Interaction.TempleCost.ToString(), new Vector2(920, 740), Color.Black);
+                    spriteBatch.DrawString(font, Interaction.EntranceCost.ToString(), new Vector2(1020, 740), Color.Black);
                 }
                 //draw the player ressources
                 spriteBatch.DrawString(font, Player.Gold.ToString(), new Vector2(20, 70), Color.Black);
-                spriteBatch.DrawString(font, Player.Mana.ToString(), new Vector2(140, 70), Color.Black);
-                spriteBatch.DrawString(font, Player.Food.ToString(), new Vector2(260, 70), Color.Black);
+                spriteBatch.DrawString(font, Player.Mana.ToString(), new Vector2(120, 70), Color.Black);
+                spriteBatch.DrawString(font, Player.Food.ToString(), new Vector2(220, 70), Color.Black);
                 //draw the spellcosts
-                spriteBatch.DrawString(font, Spells.FireballCost.ToString(), new Vector2(20, 170), Color.Black);
-                spriteBatch.DrawString(font, Spells.SummonImpCost.ToString(), new Vector2(120, 170), Color.Black);
+                spriteBatch.DrawString(font, Spells.FireballCost.ToString(), new Vector2(30, 170), Color.Black);
+                spriteBatch.DrawString(font, Spells.SummonImpCost.ToString(), new Vector2(130, 170), Color.Black);
                 //draw different values for other types of selected objects
                 #region Selected Object
                 switch (selectedThingTyp)
@@ -267,6 +274,10 @@ namespace Underlord.Logic
                             spriteBatch.DrawString(font, "Dmg: " + nest.UpgradeCount[0], new Vector2(1121, 660), Color.Black);
                             spriteBatch.DrawString(font, "Live: " + nest.UpgradeCount[1], new Vector2(1121, 680), Color.Black);
                             spriteBatch.DrawString(font, "Speed: " + nest.UpgradeCount[2], new Vector2(1121, 700), Color.Black);
+                            //draw the upgradecosts
+                            spriteBatch.DrawString(font, nest.NextUpgradeCost.ToString(), new Vector2(620, 740), Color.Black);
+                            spriteBatch.DrawString(font, nest.NextUpgradeCost.ToString(), new Vector2(720, 740), Color.Black);
+                            spriteBatch.DrawString(font, nest.NextUpgradeCost.ToString(), new Vector2(820, 740), Color.Black);
                         }
                         else
                         {

@@ -14,11 +14,16 @@ namespace Underlord.Entity
         int[] upgradeCount = new int[3];
         List<Vector2> nestHexagons, possibleNextNestHexagons;
         float nutrition, maxNutrition, growCounter, spawnCounter, foodCounter;
-        int food;
+        int food, nextUpgradeCost;
         Boolean getsFeeded, getsHarvested;
         Vector2 targetPosition, position;
 
         #region Properties
+        public int NextUpgradeCost
+        {
+            get { return nextUpgradeCost; }
+            set { nextUpgradeCost = value; }
+        }
         public List<Vector2> PossibleNextNestHexagons
         {
             get { return possibleNextNestHexagons; }
@@ -76,6 +81,7 @@ namespace Underlord.Entity
         #region Constructor
         public Nest(Vars_Func.NestTyp typ, Vector2 position, Environment.Map map, Vector2 targetPosition)
         {
+            nextUpgradeCost = 100;
             Environment.Hexagon hex = map.getHexagonAt(position);
             if (typ != Vars_Func.NestTyp.Entrance)
             {

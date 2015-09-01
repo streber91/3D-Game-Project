@@ -10,6 +10,10 @@ namespace Underlord.Logic
 {
     static class Interaction
     {
+        static int nestCost = 100;
+        static int farmCost = 100;
+        static int templeCost = 100;
+        static int entranceCost = 100;
         static Game1 game;
         static Vars_Func.GameState gameState = Vars_Func.GameState.MainMenu;
         static Vector2 indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
@@ -21,6 +25,26 @@ namespace Underlord.Logic
         static Vars_Func.UpgradeTyp upgradeTyp = Vars_Func.UpgradeTyp.length;
 
         #region Properties
+        public static int NestCost
+        {
+            get { return nestCost; }
+            set { nestCost = value; }
+        }
+        public static int FarmCost
+        {
+            get { return farmCost; }
+            set { farmCost = value; }
+        }
+        public static int TempleCost
+        {
+            get { return templeCost; }
+            set { templeCost = value; }
+        }
+        public static int EntranceCost
+        {
+            get { return entranceCost; }
+            set { entranceCost = value; }
+        }
         public static Game1 Game
         {
             get { return game; }
@@ -551,29 +575,34 @@ namespace Underlord.Logic
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed)
                         {
-                            //place upgrade only when there is a room at mouseposition
-                            //and there isn't an object already
-                            //and that room is the same room which the selected nest belong to
-                            //and the nest has grown to that position
-                            if (map.getHexagonAt(mouseover).RoomNumber != 0 &&
-                                map.getHexagonAt(mouseover).Obj == null &&
-                                map.Rooms[map.getHexagonAt(mouseover).RoomNumber - 1].RoomObject == GUI.Nest &&
-                                map.getHexagonAt(mouseover).Nest == true)
+                            if (Player.enoughGold(GUI.Nest.NextUpgradeCost))
                             {
-                                //the neighbors of the hexagon at mouseposition must be in the same room
-                                //and must be free for buildings
-                                //and the nest must have grown to that positions
-                                bool placeable = true;
-                                for (int i = 0; i < 6; ++i)
+                                //place upgrade only when there is a room at mouseposition
+                                //and there isn't an object already
+                                //and that room is the same room which the selected nest belong to
+                                //and the nest has grown to that position
+                                if (map.getHexagonAt(mouseover).RoomNumber != 0 &&
+                                    map.getHexagonAt(mouseover).Obj == null &&
+                                    map.Rooms[map.getHexagonAt(mouseover).RoomNumber - 1].RoomObject == GUI.Nest &&
+                                    map.getHexagonAt(mouseover).Nest == true)
                                 {
-                                    if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).RoomNumber ||
-                                        map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).Nest == false ||
-                                        map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).Building == true)
-                                        placeable = false;
-                                }
-                                if (placeable)
-                                {
-                                    GUI.Nest.addUpgrade(upgradeTyp, mouseover, map.getHexagonAt(mouseover), map);
+                                    //the neighbors of the hexagon at mouseposition must be in the same room
+                                    //and must be free for buildings
+                                    //and the nest must have grown to that positions
+                                    bool placeable = true;
+                                    for (int i = 0; i < 6; ++i)
+                                    {
+                                        if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).RoomNumber ||
+                                            map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).Nest == false ||
+                                            map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).Building == true)
+                                            placeable = false;
+                                    }
+                                    if (placeable)
+                                    {
+                                        GUI.Nest.addUpgrade(upgradeTyp, mouseover, map.getHexagonAt(mouseover), map);
+                                        Player.Gold -= GUI.Nest.NextUpgradeCost;
+                                        GUI.Nest.NextUpgradeCost += 50;
+                                    }
                                 }
                             }
                         }
@@ -685,18 +714,22 @@ namespace Underlord.Logic
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed)
                         {
-                            //place nest only when there is a room at mouseposition and the room doesn't have a nest already
-                            if (map.getHexagonAt(mouseover).RoomNumber != 0 && map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType == Vars_Func.NestTyp.length)
+                            if (Player.enoughGold(nestCost))
                             {
-                                //the neighbors of the hexagon at mouseposition must be in the same room
-                                bool placeable = true;
-                                for (int i = 0; i < 6; ++i)
+                                //place nest only when there is a room at mouseposition and the room doesn't have a nest already
+                                if (map.getHexagonAt(mouseover).RoomNumber != 0 && map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType == Vars_Func.NestTyp.length)
                                 {
-                                    if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).RoomNumber) placeable = false;
-                                }
-                                if (placeable)
-                                {
-                                    new Nest(Vars_Func.NestTyp.Beetle, mouseover, map, map.getHexagonAt(mouseover).Neighbors[3]);
+                                    //the neighbors of the hexagon at mouseposition must be in the same room
+                                    bool placeable = true;
+                                    for (int i = 0; i < 6; ++i)
+                                    {
+                                        if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).RoomNumber) placeable = false;
+                                    }
+                                    if (placeable)
+                                    {
+                                        new Nest(Vars_Func.NestTyp.Beetle, mouseover, map, map.getHexagonAt(mouseover).Neighbors[3]);
+                                        Player.Gold -= nestCost;
+                                    }
                                 }
                             }
                         }
@@ -764,18 +797,22 @@ namespace Underlord.Logic
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed)
                         {
-                            //place nest only when there is a room at mouseposition and the room doesn't have a nest already
-                            if (map.getHexagonAt(mouseover).RoomNumber != 0 && map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType == Vars_Func.NestTyp.length)
+                            if (Player.enoughGold(nestCost))
                             {
-                                //the neighbors of the hexagon at mouseposition must be in the same room
-                                bool placeable = true;
-                                for (int i = 0; i < 6; ++i)
+                                //place nest only when there is a room at mouseposition and the room doesn't have a nest already
+                                if (map.getHexagonAt(mouseover).RoomNumber != 0 && map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType == Vars_Func.NestTyp.length)
                                 {
-                                    if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).RoomNumber) placeable = false;
-                                }
-                                if (placeable)
-                                {
-                                    new Nest(Vars_Func.NestTyp.Skeleton, mouseover, map, map.getHexagonAt(mouseover).Neighbors[3]);
+                                    //the neighbors of the hexagon at mouseposition must be in the same room
+                                    bool placeable = true;
+                                    for (int i = 0; i < 6; ++i)
+                                    {
+                                        if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).RoomNumber) placeable = false;
+                                    }
+                                    if (placeable)
+                                    {
+                                        new Nest(Vars_Func.NestTyp.Skeleton, mouseover, map, map.getHexagonAt(mouseover).Neighbors[3]);
+                                        Player.Gold -= nestCost;
+                                    }
                                 }
                             }
                         }
@@ -843,18 +880,22 @@ namespace Underlord.Logic
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed)
                         {
-                            //place nest only when there is a room at mouseposition and the room doesn't have a nest already
-                            if (map.getHexagonAt(mouseover).RoomNumber != 0 && map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType == Vars_Func.NestTyp.length)
+                            if (Player.enoughGold(farmCost))
                             {
-                                //the neighbors of the hexagon at mouseposition must be in the same room
-                                bool placeable = true;
-                                for (int i = 0; i < 6; ++i)
+                                //place nest only when there is a room at mouseposition and the room doesn't have a nest already
+                                if (map.getHexagonAt(mouseover).RoomNumber != 0 && map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType == Vars_Func.NestTyp.length)
                                 {
-                                    if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).RoomNumber) placeable = false;
-                                }
-                                if (placeable)
-                                {
-                                    new Nest(Vars_Func.NestTyp.Farm, mouseover, map, map.getHexagonAt(mouseover).Neighbors[3]);
+                                    //the neighbors of the hexagon at mouseposition must be in the same room
+                                    bool placeable = true;
+                                    for (int i = 0; i < 6; ++i)
+                                    {
+                                        if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).RoomNumber) placeable = false;
+                                    }
+                                    if (placeable)
+                                    {
+                                        new Nest(Vars_Func.NestTyp.Farm, mouseover, map, map.getHexagonAt(mouseover).Neighbors[3]);
+                                        Player.Gold -= farmCost;
+                                    }
                                 }
                             }
                         }
@@ -933,18 +974,22 @@ namespace Underlord.Logic
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed)
                         {
-                            //place nest only when there is a room at mouseposition and the room doesn't have a nest already
-                            if (map.getHexagonAt(mouseover).RoomNumber != 0 && map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType == Vars_Func.NestTyp.length)
+                            if (Player.enoughGold(templeCost))
                             {
-                                //the neighbors of the hexagon at mouseposition must be in the same room
-                                bool placeable = true;
-                                for (int i = 0; i < 6; ++i)
+                                //place nest only when there is a room at mouseposition and the room doesn't have a nest already
+                                if (map.getHexagonAt(mouseover).RoomNumber != 0 && map.Rooms.ElementAt(map.getHexagonAt(mouseover).RoomNumber - 1).NestType == Vars_Func.NestTyp.length)
                                 {
-                                    if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).RoomNumber) placeable = false;
-                                }
-                                if (placeable)
-                                {
-                                    new Nest(Vars_Func.NestTyp.Temple, mouseover, map, map.getHexagonAt(mouseover).Neighbors[3]);
+                                    //the neighbors of the hexagon at mouseposition must be in the same room
+                                    bool placeable = true;
+                                    for (int i = 0; i < 6; ++i)
+                                    {
+                                        if (map.getHexagonAt(mouseover).RoomNumber != map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[i]).RoomNumber) placeable = false;
+                                    }
+                                    if (placeable)
+                                    {
+                                        new Nest(Vars_Func.NestTyp.Temple, mouseover, map, map.getHexagonAt(mouseover).Neighbors[3]);
+                                        Player.Gold -= templeCost;
+                                    }
                                 }
                             }
                         }
@@ -1023,14 +1068,18 @@ namespace Underlord.Logic
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed)
                         {
-                            //place entrance only when there isn't a room at mouseposition and there isn't an object at the position
-                            if (map.getHexagonAt(mouseover).RoomNumber == 0 &&
-                                map.getHexagonAt(mouseover).Obj == null &&
-                                (map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[3]).Obj == null ||
-                                map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[3]).Obj.getThingTyp() != Vars_Func.ThingTyp.Wall ||
-                                map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[3]).Obj.getThingTyp() != Vars_Func.ThingTyp.HQCreature))
+                            if (Player.enoughGold(entranceCost))
                             {
-                                new Nest(Vars_Func.NestTyp.Entrance, mouseover, map, map.HQPosition);
+                                //place entrance only when there isn't a room at mouseposition and there isn't an object at the position
+                                if (map.getHexagonAt(mouseover).RoomNumber == 0 &&
+                                    map.getHexagonAt(mouseover).Obj == null &&
+                                    (map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[3]).Obj == null ||
+                                    map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[3]).Obj.getThingTyp() != Vars_Func.ThingTyp.Wall ||
+                                    map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[3]).Obj.getThingTyp() != Vars_Func.ThingTyp.HQCreature))
+                                {
+                                    new Nest(Vars_Func.NestTyp.Entrance, mouseover, map, map.HQPosition);
+                                    Player.Gold -= entranceCost;
+                                }
                             }
                         }
                     }

@@ -152,6 +152,7 @@
       <Name>farm_dirt_HEX_01</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
+      <ProcessorParameters_RotationX>270</ProcessorParameters_RotationX>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -159,7 +160,7 @@
       <Name>fungus_HQ_GEO_02</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
-      <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
+      <ProcessorParameters_RotationX>270</ProcessorParameters_RotationX>
     </Compile>
   </ItemGroup>
   <ItemGroup>

@@ -20,7 +20,7 @@ namespace Underlord.Logic
        public enum HexTyp { Sand, Stone, BeetleNest, Farm, Temple, Graveyard, length };
        public enum SpellType { SummonImp, Fireball, length  }
 
-       public enum GameState { MainMenu, Ingame, Highscore, Tutorial, CreateRoom, Build, Mine, MergeRooms, DeleteRoom, BuildUpgrade, Spellcasting, PlaceAnts, PlaceSkeletons, PlaceFarm, PlaceTemple, PlaceEntrance, ReturnToMainMenu, length };
+       public enum GameState { MainMenu, Ingame, Highscore, Tutorial, CreateRoom, Build, Mine, MergeRooms, DeleteRoom, BuildUpgrade, Fireball, SummonImp, PlaceAnts, PlaceSkeletons, PlaceFarm, PlaceTemple, PlaceEntrance, ReturnToMainMenu, length };
 
        public enum ImpJob { Idle, Harvest, Feed, Mine, MineDiamonds, MineGold, length };
 
@@ -28,10 +28,13 @@ namespace Underlord.Logic
 									DamageUpgrade, LifeUpgrade, SpeedUpgrade,
                                     LeftHUD, RightHUD, BottomHUD, TopHUD, RessoucesHUD, InfoHUD,
                                     Menu, StartGame, QuitGame, Highscore, Tutorial,
-                                    ReturnAccept, ReturnDecline, length };
+                                    ReturnAccept, ReturnDecline,
+                                    Fireball, SummonImp, length };
 
        public enum ImpState { Walking, Digging, Praying, Harvesting, Nothing, length };
        public enum CreatureState { Walking, Fighting, Nothing, Starting, OpenMouth, CloseMouth, PingPong, length };
+
+       public enum GrowObject { Farm, Temple, Graveyard, length };
 
        static List<AnimationModel> CreatureModels;
        static List<BasicModel> CreatureShadows;
@@ -45,6 +48,8 @@ namespace Underlord.Logic
        static Model TorchFireModel;
        static BasicModel HQMouthModel;
        static LightModel EntranceRayModel;
+       static List<BasicModel> GrowModels;
+       static BasicModel TargetFlag;
 
        static Texture2D pixel;
        static List<Texture2D> GUI_Elements;
@@ -57,6 +62,7 @@ namespace Underlord.Logic
 
        static Vector3[] CreaturParamters = { new Vector3(0, 0.07f, MathHelper.PiOver2), new Vector3(0f, 0.04f, MathHelper.PiOver2), new Vector3(0, 1.5f, MathHelper.PiOver2), new Vector3(0, 1, 0) };
        static Vector3[] NestParamters = { new Vector3(0, 1, 0), new Vector3(0, 1, 0), new Vector3(0, 1, 0), new Vector3(0, 1, 0), new Vector3(0, 1, 0) };
+       static Vector3[] GrowObjectParameters = { new Vector3(0, 1, 0), new Vector3(0, 1, 0), new Vector3(0, 1, 0) };
 
        public static AnimationModel getCreatureModell(CreatureTyp typ) { return CreatureModels[(int)typ]; }
        public static BasicModel getCreatureShadow(CreatureTyp typ) { return CreatureShadows[(int)typ]; }
@@ -70,6 +76,8 @@ namespace Underlord.Logic
        public static Model getTorchFireModel() { return TorchFireModel; }
        public static BasicModel getHQMouthModel() { return HQMouthModel; }
        public static LightModel getEntranceRayModel() { return EntranceRayModel; }
+       public static BasicModel getGrowModel(GrowObject typ) { return GrowModels[(int)typ]; }
+       public static BasicModel getTargetFlag() { return TargetFlag; }
 
        public static Texture2D getPixel() { return pixel; }
        public static Texture2D getGUI_ElementTextures(GUI_ElementTyp typ) { return GUI_Elements[(int)typ]; }
@@ -80,6 +88,7 @@ namespace Underlord.Logic
 
        public static Vector3 getCreatureParams(CreatureTyp typ) { return CreaturParamters[(int)typ]; }
        public static Vector3 getNestParams(NestTyp typ) { return NestParamters[(int)typ]; }
+       public static Vector3 getGrowObjectParams(GrowObject typ) { return GrowObjectParameters[(int)typ]; }
 
        public static void loadContent(ContentManager Content)
        {
@@ -93,6 +102,7 @@ namespace Underlord.Logic
            Rock_Texture = new List<Texture2D>();
            Gold_Texture = new List<Texture2D>();
            Diamond_Texture = new List<Texture2D>();
+           GrowModels = new List<BasicModel>();
 
            pixel = Content.Load<Texture2D>("TEST");
 
@@ -129,6 +139,9 @@ namespace Underlord.Logic
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
 
            Rock_Texture.Add(Content.Load<Texture2D>("Textures/Rock//wall_rock_broken_01_TEXT"));
            Rock_Texture.Add(Content.Load<Texture2D>("Textures/Rock//wall_rock_broken_02_TEXT"));
@@ -176,19 +189,25 @@ namespace Underlord.Logic
 
            NestModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));    
            NestModels.Add(new BasicModel(Content.Load<Model>("Models/Entrance//entrance_GEO_01")));
-           NestModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));
-           NestModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));
+           NestModels.Add(new BasicModel(Content.Load<Model>("Models//tempel_HQ_GEO_01")));
+           NestModels.Add(new BasicModel(Content.Load<Model>("Models//fungus_HQ_GEO_02")));
            NestModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));
 
            NestModels[(int)NestTyp.Beetle].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
            //NestModels[(int)NestTyp.Entrance].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
-           NestModels[(int)NestTyp.Skeleton].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
-           NestModels[(int)NestTyp.Temple].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
+           //NestModels[(int)NestTyp.Skeleton].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
+           //NestModels[(int)NestTyp.Temple].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
            NestModels[(int)NestTyp.Farm].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
 
            UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models/Flags//flag_Deg_GEO_01")));
            UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models/Flags//flag_Lve_GEO_01")));
            UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models/Flags//flag_Spd_GEO_01")));
+           
+           GrowModels.Add(new BasicModel(Content.Load<Model>("Models//farm_dirt_HEX_01")));
+           GrowModels.Add(new BasicModel(Content.Load<Model>("Models//tempel_GEO_01")));
+           GrowModels.Add(new BasicModel(Content.Load<Model>("Models//graveyard_GEO_01")));
+
+           TargetFlag = new BasicModel(Content.Load<Model>("Models/Flags//flag_Deg_GEO_01"));
 
            //CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")));
            //CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//knight_&_sword_ANI_01")/*, 0.2f, MathHelper.PiOver2*/));

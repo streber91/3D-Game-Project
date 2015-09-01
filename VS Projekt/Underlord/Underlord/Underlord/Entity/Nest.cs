@@ -143,6 +143,7 @@ namespace Underlord.Entity
                         map.getHexagonAt(neighbor).Typ = Vars_Func.HexTyp.Graveyard;
                         map.getHexagonAt(neighbor).Building = true;
                         map.getHexagonAt(neighbor).Nest = true;
+                        map.getHexagonAt(neighbor).GrowObject = Vars_Func.GrowObject.Graveyard;
                         for (int j = 0; j < 6; ++j)
                         {
                             Vector2 nextNeighbor = hex.Neighbors[j];
@@ -169,7 +170,8 @@ namespace Underlord.Entity
                         nestHexagons.Add(neighbor);
                         map.getHexagonAt(neighbor).Typ = Vars_Func.HexTyp.Farm;
                         map.getHexagonAt(neighbor).Building = true;
-                        map.getHexagonAt(neighbor).Nest = true; 
+                        map.getHexagonAt(neighbor).Nest = true;
+                        map.getHexagonAt(neighbor).GrowObject = Vars_Func.GrowObject.Farm;
                         for (int j = 0; j < 6; ++j)
                         {
                             Vector2 nextNeighbor = hex.Neighbors[j];
@@ -197,6 +199,7 @@ namespace Underlord.Entity
                         map.getHexagonAt(neighbor).Typ = Vars_Func.HexTyp.Temple;
                         map.getHexagonAt(neighbor).Building = true;
                         map.getHexagonAt(neighbor).Nest = true;
+                        map.getHexagonAt(neighbor).GrowObject = Vars_Func.GrowObject.Temple;
                         food = 0;
                         getsHarvested = false;
                         foodCounter = 0;
@@ -237,7 +240,24 @@ namespace Underlord.Entity
                         Vector2 pos = possibleNextNestHexagons[tmp];
                         nestHexagons.Add(pos);
                         Environment.Hexagon hex = map.getHexagonAt(pos);
-                        hex.Typ = Vars_Func.HexTyp.BeetleNest;
+                        switch(typ)
+                        {
+                            case Vars_Func.NestTyp.Beetle:
+                                hex.Typ = Vars_Func.HexTyp.BeetleNest;
+                                break;
+                            case Vars_Func.NestTyp.Skeleton:
+                                hex.Typ = Vars_Func.HexTyp.Graveyard;
+                                hex.GrowObject = Vars_Func.GrowObject.Graveyard;
+                                break;
+                            case Vars_Func.NestTyp.Farm:
+                                hex.Typ = Vars_Func.HexTyp.Farm;
+                                hex.GrowObject = Vars_Func.GrowObject.Farm;
+                                break;
+                            case Vars_Func.NestTyp.Temple:
+                                hex.Typ = Vars_Func.HexTyp.Temple;
+                                hex.GrowObject = Vars_Func.GrowObject.Temple;
+                                break;
+                        }
                         hex.Nest = true;
                         for (int i = 0; i < 6; ++i)
                         {
@@ -322,6 +342,19 @@ namespace Underlord.Entity
 
             Vars_Func.getNestModell(typ).Color = drawColor;
             Vars_Func.getNestModell(typ).Draw(camera, modelMatrix, false, isEnlightend, lightPower);
+        }
+
+        public void DrawTargetFlag(Renderer.Camera camera, Vector3 drawPosition, Color drawColor, bool isEnlightend, float lightPower)
+        {
+            Matrix modelMatrix = Matrix.Identity *
+            Matrix.CreateScale(1) *
+            Matrix.CreateRotationX(0) *
+            Matrix.CreateRotationY(0) *
+            Matrix.CreateRotationZ(0) *
+            Matrix.CreateTranslation(drawPosition);
+
+            Vars_Func.getTargetFlag().Color = drawColor;
+            Vars_Func.getTargetFlag().Draw(camera, modelMatrix, false, isEnlightend, lightPower);
         }
 
         //override public void DrawModel(Renderer.Camera camera, Vector3 drawPosition, Color drawColor)

@@ -58,6 +58,7 @@ namespace Underlord.Logic
                         mouseState.LeftButton == ButtonState.Pressed &&
                         GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.Build).Rectangle.Contains(mouseState.X, mouseState.Y)))
                     {
+                        if (GUI.SelectedThingTyp == Vars_Func.ThingTyp.Nest) GUI.SelectedThingTyp = Vars_Func.ThingTyp.length;
                         indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                         radius = 0;
                         counter = 0;
@@ -98,6 +99,28 @@ namespace Underlord.Logic
                         radius = 0;
                         counter = 0;
                         gameState = Vars_Func.GameState.DeleteRoom;
+                        timeCounter = 0;
+                    }
+                    //switch to Fireball Mode if the "Fireball-Button" is pressed
+                    if (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.Fireball).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    {
+                        indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                        radius = 0;
+                        counter = 0;
+                        gameState = Vars_Func.GameState.Fireball;
+                        timeCounter = 0;
+                    }
+                    //switch to SummonImp Mode if the "SummonImp-Button" is pressed
+                    if (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.SummonImp).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    {
+                        indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
+                        radius = 0;
+                        counter = 0;
+                        gameState = Vars_Func.GameState.SummonImp;
                         timeCounter = 0;
                     }
                     //switch to BuildUpgrade Mode if the "DamageUpgrade-Button" is pressed and a nest is selected
@@ -557,8 +580,48 @@ namespace Underlord.Logic
                     }
                     break;
                 #endregion
-                #region Spellcasting
-                case Vars_Func.GameState.Spellcasting:
+                #region Fireball
+                case Vars_Func.GameState.Fireball:
+                    //colors the hexagon at mouseposition in Fireball mode red
+                    map.getHexagonAt(mouseover).Color = Color.Red;
+                    //only ten clicks per second
+                    if (timeCounter > 100)
+                    {
+                        //back to Ingame Mode
+                        if (keyboard.IsKeyDown(Keys.Escape))
+                        {
+                            gameState = Vars_Func.GameState.Ingame;
+                            timeCounter = 0;
+                        }
+                        //shot a fireball at mouseposition
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed)
+                        {
+                            Spells.castSpell(Vars_Func.SpellType.Fireball, mouseover, map);
+                        }
+                    }
+                    break;
+                #endregion
+                #region SummonImp
+                case Vars_Func.GameState.SummonImp:
+                    //colors the hexagon at mouseposition in Fireball mode red
+                    map.getHexagonAt(mouseover).Color = Color.Red;
+                    //only ten clicks per second
+                    if (timeCounter > 100)
+                    {
+                        //back to Ingame Mode
+                        if (keyboard.IsKeyDown(Keys.Escape))
+                        {
+                            gameState = Vars_Func.GameState.Ingame;
+                            timeCounter = 0;
+                        }
+                        //shot a fireball at mouseposition
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed)
+                        {
+                            Spells.castSpell(Vars_Func.SpellType.SummonImp, mouseover, map);
+                        }
+                    }
                     break;
                 #endregion
                 #region PlaceAnts

@@ -81,6 +81,11 @@ namespace Underlord
 
         public void reinitialize()
         {
+            Player.Gold = 10000;
+            Player.Mana = 10000;
+            Player.Food = 10000;
+            Player.Score = 0;
+            Spells.SummonImpCost = 0;
             GUI.SelectedThingTyp = Vars_Func.ThingTyp.length;
             hexagonSideLength = 1; //dont change
             mapDrawWidth = 10; //dont go over 15
@@ -189,9 +194,9 @@ namespace Underlord
             {
                 minimap.drawMinimap(spriteBatch, indexOfMiddleHexagon);
             }
-            GUI.Draw(spriteBatch, font, mouseState);
-            spriteBatch.DrawString(font, mouseState.X.ToString() + " : " + mouseState.Y.ToString(), new Vector2(20, 200), Color.Black);
-            spriteBatch.DrawString(font, mousePosition.X.ToString() + " : " + mousePosition.Y.ToString() + " : " + mousePosition.Z.ToString(), new Vector2(20, 220), Color.Black);
+            GUI.Draw(spriteBatch, font, mouseState, camera, map);
+            //spriteBatch.DrawString(font, mouseState.X.ToString() + " : " + mouseState.Y.ToString(), new Vector2(20, 200), Color.Black);
+            //spriteBatch.DrawString(font, mousePosition.X.ToString() + " : " + mousePosition.Y.ToString() + " : " + mousePosition.Z.ToString(), new Vector2(20, 220), Color.Black);
             spriteBatch.DrawString(font, "FPS: " + drawFrame.ToString(), new Vector2(20, 240), Color.Black);
             spriteBatch.DrawString(font, "UPS: " + drawUpdates.ToString(), new Vector2(20, 260), Color.Black);
 

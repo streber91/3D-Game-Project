@@ -47,15 +47,17 @@ namespace Underlord.Logic
             //elements.Add(new GUI_Element(new Rectangle(200, 0, 10, 916), "", Vars_Func.GUI_ElementTyp.TopHUD));
             elements.Add(new GUI_Element(new Rectangle(13, 13, 400, 200), "", Vars_Func.GUI_ElementTyp.RessoucesHUD));
             elements.Add(new GUI_Element(new Rectangle(10, 10, 88, 88), "", Vars_Func.GUI_ElementTyp.GoldHUD));
-            elements.Add(new GUI_Element(new Rectangle(130, 10, 88, 88), "", Vars_Func.GUI_ElementTyp.ManaHUD));
-            elements.Add(new GUI_Element(new Rectangle(250, 10, 88, 88), "", Vars_Func.GUI_ElementTyp.FoodHUD));
+            elements.Add(new GUI_Element(new Rectangle(110, 10, 88, 88), "", Vars_Func.GUI_ElementTyp.ManaHUD));
+            elements.Add(new GUI_Element(new Rectangle(210, 10, 88, 88), "", Vars_Func.GUI_ElementTyp.FoodHUD));
             elements.Add(new GUI_Element(new Rectangle(1116, 600, 250, 168), "", Vars_Func.GUI_ElementTyp.InfoHUD));
 
-            buttons.Add(new GUI_Element(new Rectangle(100, 680, 88, 76), "  Mine(M)", Vars_Func.GUI_ElementTyp.Mine));
-            buttons.Add(new GUI_Element(new Rectangle(200, 680, 88, 76), "  Room(R)", Vars_Func.GUI_ElementTyp.Room));
-            buttons.Add(new GUI_Element(new Rectangle(300, 680, 88, 76), "  Merge(T)", Vars_Func.GUI_ElementTyp.MergeRoom));
-            buttons.Add(new GUI_Element(new Rectangle(400, 680, 88, 76), "  Delete(Z)", Vars_Func.GUI_ElementTyp.DeleteRoom));
-            buttons.Add(new GUI_Element(new Rectangle(500, 680, 88, 76), "  Nest(N)", Vars_Func.GUI_ElementTyp.Build));
+            buttons.Add(new GUI_Element(new Rectangle(80, 680, 88, 76), "  Mine(M)", Vars_Func.GUI_ElementTyp.Mine));
+            buttons.Add(new GUI_Element(new Rectangle(180, 680, 88, 76), "  Room(R)", Vars_Func.GUI_ElementTyp.Room));
+            buttons.Add(new GUI_Element(new Rectangle(280, 680, 88, 76), "  Merge(T)", Vars_Func.GUI_ElementTyp.MergeRoom));
+            buttons.Add(new GUI_Element(new Rectangle(380, 680, 88, 76), "  Delete(Z)", Vars_Func.GUI_ElementTyp.DeleteRoom));
+            buttons.Add(new GUI_Element(new Rectangle(480, 680, 88, 76), "  Nest(N)", Vars_Func.GUI_ElementTyp.Build));
+            buttons.Add(new GUI_Element(new Rectangle(10, 110, 88, 76), "  Fireball", Vars_Func.GUI_ElementTyp.Fireball));
+            buttons.Add(new GUI_Element(new Rectangle(110, 110, 88, 76), "  Imp", Vars_Func.GUI_ElementTyp.SummonImp));
 
             upgradeButtons.Add(new GUI_Element(new Rectangle(600, 680, 88, 76), "Dmg", Vars_Func.GUI_ElementTyp.DamageUpgrade));
             upgradeButtons.Add(new GUI_Element(new Rectangle(700, 680, 88, 76), "Live", Vars_Func.GUI_ElementTyp.LifeUpgrade));
@@ -136,7 +138,7 @@ namespace Underlord.Logic
 
         }
 
-        public static void Draw(SpriteBatch spriteBatch, SpriteFont font, MouseState mouseState)
+        public static void Draw(SpriteBatch spriteBatch, SpriteFont font, MouseState mouseState, Renderer.Camera camera, Environment.Map map)
         {
             if (Interaction.GameState == Vars_Func.GameState.MainMenu)
             {
@@ -228,6 +230,9 @@ namespace Underlord.Logic
                 spriteBatch.DrawString(font, Player.Gold.ToString(), new Vector2(20, 70), Color.Black);
                 spriteBatch.DrawString(font, Player.Mana.ToString(), new Vector2(140, 70), Color.Black);
                 spriteBatch.DrawString(font, Player.Food.ToString(), new Vector2(260, 70), Color.Black);
+                //draw the spellcosts
+                spriteBatch.DrawString(font, Spells.FireballCost.ToString(), new Vector2(20, 170), Color.Black);
+                spriteBatch.DrawString(font, Spells.SummonImpCost.ToString(), new Vector2(120, 170), Color.Black);
                 //draw different values for other types of selected objects
                 #region Selected Object
                 switch (selectedThingTyp)
@@ -255,6 +260,7 @@ namespace Underlord.Logic
                                     b.Draw(spriteBatch, font, Color.White);
                                 }
                             }
+                            nest.DrawTargetFlag(camera, map.getHexagonAt(nest.TargetPosition).get3DPosition(), Color.White, false, 0.0f);
                             spriteBatch.DrawString(font, "Typ: " + nest.Typ.ToString(), new Vector2(1121, 600), Color.Black);
                             spriteBatch.DrawString(font, "Nutrition: " + nest.Nutrition.ToString() + "/" + nest.MaxNutrition.ToString(), new Vector2(1121, 620), Color.Black);
                             spriteBatch.DrawString(font, "Upgrades:", new Vector2(1121, 640), Color.Black);

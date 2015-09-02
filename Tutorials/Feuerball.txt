@@ -1,1 +1,0 @@
-Der Feuerball fügt ALLEN Kreaturen auf dem Zielfeld und darum herum Schaden zu.

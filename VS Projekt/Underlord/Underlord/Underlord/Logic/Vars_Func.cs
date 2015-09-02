@@ -20,16 +20,19 @@ namespace Underlord.Logic
        public enum HexTyp { Sand, Stone, BeetleNest, Farm, Temple, Graveyard, length };
        public enum SpellType { SummonImp, Fireball, length  }
 
-       public enum GameState { MainMenu, Ingame, Highscore, Tutorial, CreateRoom, Build, Mine, MergeRooms, DeleteRoom, BuildUpgrade, Fireball, SummonImp, PlaceAnts, PlaceSkeletons, PlaceFarm, PlaceTemple, PlaceEntrance, ReturnToMainMenu, length };
+       public enum GameState { MainMenu, Ingame, Highscore, Tutorial, CreateRoom, Build, Mine, MergeRooms, DeleteRoom, BuildUpgrade, Fireball, SummonImp, PlaceAnts, PlaceSkeletons, PlaceFarm, PlaceTemple, PlaceEntrance, ReturnToMainMenu,
+                               GUI_Tutorial, HQCreature_Tutorial, Creature_Tutorial, Minimap_Tutorial, Nest_Tutorial, PlaceNest_Tutorial, Resources_Tutorial, Upgrades_Tutorial, Wavetimer_Tutorial, Spells_Tutorial, length };
 
        public enum ImpJob { Idle, Harvest, Feed, Mine, MineDiamonds, MineGold, length };
 
        public enum GUI_ElementTyp { BackgroundHUD, MinimapHUD, FoodHUD, GoldHUD, ManaHUD, Mine, Room, MergeRoom, DeleteRoom, Build, PlaceAnts, PlaceSkeletons, PlaceFarm, PlaceTemple, PlaceEntrance,
 									DamageUpgrade, LifeUpgrade, SpeedUpgrade,
                                     LeftHUD, RightHUD, BottomHUD, TopHUD, RessoucesHUD, InfoHUD,
-                                    Menu, StartGame, QuitGame, Highscore, Tutorial,
-                                    ReturnAccept, ReturnDecline,
-                                    Fireball, SummonImp, length };
+                                    Menu, StartGame, QuitGame, Highscore, Tutorial, ReturnAccept, ReturnDecline,
+                                    Fireball, SummonImp,
+                                    GUI_Tutorial, HQCreature_Tutorial, Creature_Tutorial, Minimap_Tutorial, Nest_Tutorial, PlaceNest_Tutorial, Resources_Tutorial, Upgrades_Tutorial, Wavetimer_Tutorial, Spells_Tutorial,
+                                    GUI_TutorialButton, HQCreature_TutorialButton, Creature_TutorialButton, Minimap_TutorialButton, Nest_TutorialButton, PlaceNest_TutorialButton, Resources_TutorialButton, Upgrades_TutorialButton, Wavetimer_TutorialButton, Spells_TutorialButton, length
+       };
 
        public enum ImpState { Walking, Digging, Praying, Harvesting, Nothing, length };
        public enum CreatureState { Walking, Fighting, Nothing, Starting, OpenMouth, CloseMouth, PingPong, length };
@@ -106,11 +109,15 @@ namespace Underlord.Logic
 
            pixel = Content.Load<Texture2D>("TEST");
 
+
+           //BackgroundHUD, MinimapHUD, FoodHUD, GoldHUD, ManaHUD
            GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Screen//screen_background_01"));
            GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Minimap//minimap_background_02"));
            GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Ressources//scroll_foot"));
            GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Ressources//scroll_gold"));
            GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Ressources//scroll_mana"));
+
+           //Mine, Room, MergeRoom, DeleteRoom, Build, PlaceAnts, PlaceSkeletons, PlaceFarm, PlaceTemple, PlaceEntrance, DamageUpgrade, LifeUpgrade, SpeedUpgrade
            GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_mine"));
            GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_room"));
            GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_merge"));
@@ -125,6 +132,7 @@ namespace Underlord.Logic
            GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
            GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
 
+           //LeftHUD, RightHUD, BottomHUD, TopHUD, RessoucesHUD, InfoHUD
            GUI_Elements.Add(Content.Load<Texture2D>("Left_HUD_Test"));
            GUI_Elements.Add(Content.Load<Texture2D>("Right_HUD_Test"));
            GUI_Elements.Add(Content.Load<Texture2D>("Bottom_HUD_Test"));
@@ -132,6 +140,7 @@ namespace Underlord.Logic
            GUI_Elements.Add(Content.Load<Texture2D>("Ressouces_HUD_Test"));
            GUI_Elements.Add(Content.Load<Texture2D>("Info_HUD_Test"));
 
+           //Menu, StartGame, QuitGame, Highscore, Tutorial, ReturnAccept, ReturnDecline
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
@@ -140,8 +149,33 @@ namespace Underlord.Logic
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
 
+           //Spells (Fireball, SummonImp)
            GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
            GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
+
+           //Tutorials
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
+
+           //TutorialButtons
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST2"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST2"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST2"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST2"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST2"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST2"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST2"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST2"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST2"));
+           GUI_Elements.Add(Content.Load<Texture2D>("TEST2"));
 
            Rock_Texture.Add(Content.Load<Texture2D>("Textures/Rock//wall_rock_broken_01_TEXT"));
            Rock_Texture.Add(Content.Load<Texture2D>("Textures/Rock//wall_rock_broken_02_TEXT"));

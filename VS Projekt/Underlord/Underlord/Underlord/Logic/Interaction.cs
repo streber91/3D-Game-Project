@@ -23,6 +23,7 @@ namespace Underlord.Logic
         static Vector2 oldMousePosition;
         static List<Vector2> toBeRoomPositions = new List<Vector2>();
         static Vars_Func.UpgradeTyp upgradeTyp = Vars_Func.UpgradeTyp.length;
+        static Environment.Hexagon lastSelectedHexagon;
 
         #region Properties
         public static int NestCost
@@ -186,13 +187,99 @@ namespace Underlord.Logic
                         gameState = Vars_Func.GameState.BuildUpgrade;
                         timeCounter = 0;
                     }
+                    //switch to GUI_Tutorial Mode if the "GUI_TutorialButton-Button" is pressed
+                    if (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.getGUI_TutorialButtons(Vars_Func.GUI_ElementTyp.GUI_TutorialButton).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    {
+                        gameState = Vars_Func.GameState.GUI_Tutorial;
+                        timeCounter = 0;
+                    }
+                    //switch to Minimap_Tutorial Mode if the "Minimap_TutorialButton-Button" is pressed
+                    if (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.getGUI_TutorialButtons(Vars_Func.GUI_ElementTyp.Minimap_TutorialButton).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    {
+                        gameState = Vars_Func.GameState.Minimap_Tutorial;
+                        timeCounter = 0;
+                    }
+                    //switch to Resources_Tutorial Mode if the "Resources_TutorialButton-Button" is pressed
+                    if (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.getGUI_TutorialButtons(Vars_Func.GUI_ElementTyp.Resources_TutorialButton).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    {
+                        gameState = Vars_Func.GameState.Resources_Tutorial;
+                        timeCounter = 0;
+                    }
+                    //switch to Spells_Tutorial Mode if the "Spells_TutorialButton-Button" is pressed
+                    if (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.getGUI_TutorialButtons(Vars_Func.GUI_ElementTyp.Spells_TutorialButton).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    {
+                        gameState = Vars_Func.GameState.Spells_Tutorial;
+                        timeCounter = 0;
+                    }
+                    //switch to Wavetimer_Tutorial Mode if the "Wavetimer_TutorialButton-Button" is pressed
+                    if (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.getGUI_TutorialButtons(Vars_Func.GUI_ElementTyp.Wavetimer_TutorialButton).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    {
+                        gameState = Vars_Func.GameState.Wavetimer_Tutorial;
+                        timeCounter = 0;
+                    }
+                    //switch to Nest_Tutorial Mode if the "Nest_TutorialButton-Button" is pressed and a nest is selected
+                    if (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.SelectedThingTyp == Vars_Func.ThingTyp.Nest &&
+                        GUI.getGUI_TutorialButtons(Vars_Func.GUI_ElementTyp.Nest_TutorialButton).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    {
+                        gameState = Vars_Func.GameState.Nest_Tutorial;
+                        timeCounter = 0;
+                    }
+                    //switch to Upgrades_Tutorial Mode if the "Upgrades_TutorialButton-Button" is pressed and a nest is selected
+                    if (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.SelectedThingTyp == Vars_Func.ThingTyp.Nest &&
+                        GUI.getGUI_TutorialButtons(Vars_Func.GUI_ElementTyp.Upgrades_TutorialButton).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    {
+                        gameState = Vars_Func.GameState.Upgrades_Tutorial;
+                        timeCounter = 0;
+                    }
+                    //switch to Creature_Tutorial Mode if the "Creature_TutorialButton-Button" is pressed and a nest is selected
+                    if (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        (GUI.SelectedThingTyp == Vars_Func.ThingTyp.DungeonCreature || GUI.SelectedThingTyp == Vars_Func.ThingTyp.HeroCreature) &&
+                        GUI.getGUI_TutorialButtons(Vars_Func.GUI_ElementTyp.Creature_TutorialButton).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    {
+                        gameState = Vars_Func.GameState.Creature_Tutorial;
+                        timeCounter = 0;
+                    }
+                    //switch to HQCreature_Tutorial Mode if the "HQCreature_TutorialButton-Button" is pressed and a nest is selected
+                    if (lastMouseState.LeftButton == ButtonState.Released &&
+                        mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.SelectedThingTyp == Vars_Func.ThingTyp.HQCreature &&
+                        GUI.getGUI_TutorialButtons(Vars_Func.GUI_ElementTyp.HQCreature_TutorialButton).Rectangle.Contains(mouseState.X, mouseState.Y))
+                    {
+                        gameState = Vars_Func.GameState.HQCreature_Tutorial;
+                        timeCounter = 0;
+                    }
                     //change the target for the nest to the clicked mouseposition
                     if(lastMouseState.RightButton == ButtonState.Released &&
                         mouseState.RightButton == ButtonState.Pressed &&
                         GUI.SelectedThingTyp == Vars_Func.ThingTyp.Nest &&
-                        GUI.Nest.Typ != Vars_Func.NestTyp.Entrance)
+                        GUI.Nest.Typ != Vars_Func.NestTyp.Entrance &&
+                        (map.getHexagonAt(mouseover).Obj == null ||
+                        (map.getHexagonAt(mouseover).Obj.getThingTyp() != Vars_Func.ThingTyp.Wall &&
+                        map.getHexagonAt(mouseover).Obj.getThingTyp() != Vars_Func.ThingTyp.Nest &&
+                        map.getHexagonAt(mouseover).Obj.getThingTyp() != Vars_Func.ThingTyp.Farm &&
+                        map.getHexagonAt(mouseover).Obj.getThingTyp() != Vars_Func.ThingTyp.Temple &&
+                        map.getHexagonAt(mouseover).Obj.getThingTyp() != Vars_Func.ThingTyp.HQCreature &&
+                        map.getHexagonAt(mouseover).Obj.getThingTyp() != Vars_Func.ThingTyp.Upgrade)))
                     {
+                        map.getHexagonAt(GUI.Nest.TargetPosition).TargetFlag = false;
                         GUI.Nest.TargetPosition = mouseover;
+                        map.getHexagonAt(GUI.Nest.TargetPosition).TargetFlag = true;
+                        lastSelectedHexagon = map.getHexagonAt(GUI.Nest.TargetPosition);
                     }
                 }
             }
@@ -248,6 +335,7 @@ namespace Underlord.Logic
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed)
                         {
+                            if(lastSelectedHexagon != null) lastSelectedHexagon.TargetFlag = false;
                             if (map.getHexagonAt(mouseover).Obj != null)
                             {
                                 switch ((map.getHexagonAt(mouseover).Obj.getThingTyp()))
@@ -259,7 +347,12 @@ namespace Underlord.Logic
                                     case Vars_Func.ThingTyp.Nest:
                                         GUI.SelectedThingTyp = Vars_Func.ThingTyp.Nest;
                                         GUI.Nest = (Nest)map.getHexagonAt(mouseover).Obj;
-                                        if(GUI.Nest.Typ != Vars_Func.NestTyp.Entrance) GUI.Nest = (Nest)map.Rooms[map.getHexagonAt(mouseover).RoomNumber - 1].RoomObject;
+                                        if (GUI.Nest.Typ != Vars_Func.NestTyp.Entrance)
+                                        {
+                                            GUI.Nest = (Nest)map.Rooms[map.getHexagonAt(mouseover).RoomNumber - 1].RoomObject;
+                                            map.getHexagonAt(GUI.Nest.TargetPosition).TargetFlag = true;
+                                            lastSelectedHexagon = map.getHexagonAt(GUI.Nest.TargetPosition);
+                                        }
                                         break;
                                     case Vars_Func.ThingTyp.DungeonCreature:
                                         GUI.SelectedThingTyp = Vars_Func.ThingTyp.DungeonCreature;
@@ -443,6 +536,14 @@ namespace Underlord.Logic
                             radius = 0;
                             counter = 0;
                             gameState = Vars_Func.GameState.PlaceEntrance;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceNest_Tutorial Mode if the "PlaceNest_TutorialButton-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_TutorialButtons(Vars_Func.GUI_ElementTyp.PlaceNest_TutorialButton).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            gameState = Vars_Func.GameState.PlaceNest_Tutorial;
                             timeCounter = 0;
                         }
                     }
@@ -710,6 +811,14 @@ namespace Underlord.Logic
                             gameState = Vars_Func.GameState.PlaceEntrance;
                             timeCounter = 0;
                         }
+                        //switch to PlaceNest_Tutorial Mode if the "PlaceNest_TutorialButton-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_TutorialButtons(Vars_Func.GUI_ElementTyp.PlaceNest_TutorialButton).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            gameState = Vars_Func.GameState.PlaceNest_Tutorial;
+                            timeCounter = 0;
+                        }
                         //try to place a nest at mouseposition
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed)
@@ -793,6 +902,14 @@ namespace Underlord.Logic
                             gameState = Vars_Func.GameState.PlaceEntrance;
                             timeCounter = 0;
                         }
+                        //switch to PlaceNest_Tutorial Mode if the "PlaceNest_TutorialButton-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_TutorialButtons(Vars_Func.GUI_ElementTyp.PlaceNest_TutorialButton).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            gameState = Vars_Func.GameState.PlaceNest_Tutorial;
+                            timeCounter = 0;
+                        }
                         //try to place a nest at mouseposition
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed)
@@ -874,6 +991,14 @@ namespace Underlord.Logic
                             radius = 0;
                             counter = 0;
                             gameState = Vars_Func.GameState.PlaceEntrance;
+                            timeCounter = 0;
+                        }
+                        //switch to PlaceNest_Tutorial Mode if the "PlaceNest_TutorialButton-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_TutorialButtons(Vars_Func.GUI_ElementTyp.PlaceNest_TutorialButton).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            gameState = Vars_Func.GameState.PlaceNest_Tutorial;
                             timeCounter = 0;
                         }
                         //try to place a nest at mouseposition
@@ -970,6 +1095,14 @@ namespace Underlord.Logic
                             gameState = Vars_Func.GameState.PlaceEntrance;
                             timeCounter = 0;
                         }
+                        //switch to PlaceNest_Tutorial Mode if the "PlaceNest_TutorialButton-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_TutorialButtons(Vars_Func.GUI_ElementTyp.PlaceNest_TutorialButton).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            gameState = Vars_Func.GameState.PlaceNest_Tutorial;
+                            timeCounter = 0;
+                        }
                         //try to place a nest at mouseposition
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed)
@@ -1064,6 +1197,14 @@ namespace Underlord.Logic
                             gameState = Vars_Func.GameState.PlaceEntrance;
                             timeCounter = 0;
                         }
+                        //switch to PlaceNest_Tutorial Mode if the "PlaceNest_TutorialButton-Button" is pressed
+                        if (lastMouseState.LeftButton == ButtonState.Released &&
+                            mouseState.LeftButton == ButtonState.Pressed &&
+                            GUI.getGUI_TutorialButtons(Vars_Func.GUI_ElementTyp.PlaceNest_TutorialButton).Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            gameState = Vars_Func.GameState.PlaceNest_Tutorial;
+                            timeCounter = 0;
+                        }
                         //try to place a nest at mouseposition
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed)
@@ -1102,6 +1243,20 @@ namespace Underlord.Logic
                         gameState = Vars_Func.GameState.Ingame;
                     }
                     break;
+                #endregion
+                #region default
+                default:
+                //only ten clicks per second
+                if (timeCounter > 100)
+                {
+                    //back to Ingame Mode
+                    if (keyboard.IsKeyDown(Keys.Escape))
+                    {
+                        gameState = Vars_Func.GameState.Ingame;
+                        timeCounter = 0;
+                    }
+                }
+                break;
                 #endregion
             }
         }

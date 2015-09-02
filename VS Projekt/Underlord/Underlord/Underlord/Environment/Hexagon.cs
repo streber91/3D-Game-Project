@@ -24,6 +24,7 @@ namespace Underlord.Environment
         Color drawColor;
         Logic.Vars_Func.HexTyp typ;
         Logic.Vars_Func.GrowObject growObject;
+        bool targetFlag;
         
        
         private Matrix[] boneTransforms;
@@ -35,6 +36,11 @@ namespace Underlord.Environment
         Random randomValue;
 
         #region Properties
+        public bool TargetFlag
+        {
+            get { return targetFlag; }
+            set { targetFlag = value; }
+        }
         public Logic.Vars_Func.GrowObject GrowObject
         {
             get { return growObject; }
@@ -140,6 +146,7 @@ namespace Underlord.Environment
             fireModels = new FireModel[3];
             randomValue = new Random();
             growObject = Logic.Vars_Func.GrowObject.length;
+            targetFlag = false;
         }
         #endregion
 
@@ -216,18 +223,30 @@ namespace Underlord.Environment
             if (obj == null && imps.Count > 0) imps[0].DrawModel(camera, drawPosition, drawColor, isEnlightend, lightPower);
             //if (obj != null && imps.Count > 0) imps[0].DrawModel(camera, drawPosition, drawColor, isEnlightend, lightPower);
 
+            if (targetFlag)
+            {
+                Matrix modelMatrix2 = Matrix.Identity *
+                Matrix.CreateScale(1) *
+                Matrix.CreateRotationX(0) *
+                Matrix.CreateRotationY(0) *
+                Matrix.CreateRotationZ(0) *
+                Matrix.CreateTranslation(drawPosition);
+                Logic.Vars_Func.getTargetFlag().Color = drawColor;
+                Logic.Vars_Func.getTargetFlag().Draw(camera, modelMatrix2, false, isEnlightend, lightPower);
+            }
+
             switch (growObject)
             {
                 case Logic.Vars_Func.GrowObject.Farm:
                     drawPosition = new Vector3(drawPosition.X, drawPosition.Y, drawPosition.Z + Logic.Vars_Func.getGrowObjectParams(growObject).X);
-                    Matrix modelMatrix2 = Matrix.Identity *
+                    Matrix modelMatrix3 = Matrix.Identity *
                     Matrix.CreateScale(Logic.Vars_Func.getGrowObjectParams(growObject).Y) *
                     Matrix.CreateRotationX(Logic.Vars_Func.getGrowObjectParams(growObject).Z) *
                     Matrix.CreateRotationY(0) *
                     Matrix.CreateRotationZ(0) *
                     Matrix.CreateTranslation(drawPosition);
                     Logic.Vars_Func.getGrowModel(growObject).Color = drawColor;
-                    Logic.Vars_Func.getGrowModel(growObject).Draw(camera, modelMatrix2, false, isEnlightend, lightPower);
+                    Logic.Vars_Func.getGrowModel(growObject).Draw(camera, modelMatrix3, false, isEnlightend, lightPower);
                     break;
                 case Logic.Vars_Func.GrowObject.Temple:
                     break;

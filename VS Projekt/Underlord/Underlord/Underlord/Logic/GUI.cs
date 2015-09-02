@@ -23,6 +23,8 @@ namespace Underlord.Logic
         static List<GUI_Element> buildButtons = new List<GUI_Element>();
         static List<GUI_Element> returnScreenElements = new List<GUI_Element>();
         static List<GUI_Element> returnScreenButtons = new List<GUI_Element>();
+        static List<GUI_Element> tutorials = new List<GUI_Element>();
+        static List<GUI_Element> tutorialButtons = new List<GUI_Element>();
 
         public static void createGUI()
         {
@@ -68,10 +70,40 @@ namespace Underlord.Logic
             buildButtons.Add(new GUI_Element(new Rectangle(800, 680, 88, 76), "Farm", Vars_Func.GUI_ElementTyp.PlaceFarm));
             buildButtons.Add(new GUI_Element(new Rectangle(900, 680, 88, 76), "Temple", Vars_Func.GUI_ElementTyp.PlaceTemple));
             buildButtons.Add(new GUI_Element(new Rectangle(1000, 680, 88, 76), "Entrance", Vars_Func.GUI_ElementTyp.PlaceEntrance));
+
+            tutorials.Add(new GUI_Element(new Rectangle(500, 300, 400, 400), "", Vars_Func.GUI_ElementTyp.GUI_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(500, 300, 400, 400), "", Vars_Func.GUI_ElementTyp.HQCreature_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(500, 300, 400, 400), "", Vars_Func.GUI_ElementTyp.Creature_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(500, 300, 400, 400), "", Vars_Func.GUI_ElementTyp.Minimap_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(500, 300, 400, 400), "", Vars_Func.GUI_ElementTyp.Nest_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(500, 300, 400, 400), "", Vars_Func.GUI_ElementTyp.PlaceNest_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(500, 300, 400, 400), "", Vars_Func.GUI_ElementTyp.Resources_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(500, 300, 400, 400), "", Vars_Func.GUI_ElementTyp.Upgrades_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(500, 300, 400, 400), "", Vars_Func.GUI_ElementTyp.Wavetimer_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(500, 300, 400, 400), "", Vars_Func.GUI_ElementTyp.Spells_Tutorial));
+
+            tutorialButtons.Add(new GUI_Element(new Rectangle(570, 650, 20, 20), "", Vars_Func.GUI_ElementTyp.GUI_TutorialButton));
+            tutorialButtons.Add(new GUI_Element(new Rectangle(1320, 600, 20, 20), "", Vars_Func.GUI_ElementTyp.HQCreature_TutorialButton));
+            tutorialButtons.Add(new GUI_Element(new Rectangle(1320, 600, 20, 20), "", Vars_Func.GUI_ElementTyp.Creature_TutorialButton));
+            tutorialButtons.Add(new GUI_Element(new Rectangle(1320, 280, 20, 20), "", Vars_Func.GUI_ElementTyp.Minimap_TutorialButton));
+            tutorialButtons.Add(new GUI_Element(new Rectangle(1320, 600, 20, 20), "", Vars_Func.GUI_ElementTyp.Nest_TutorialButton));
+            tutorialButtons.Add(new GUI_Element(new Rectangle(1090, 650, 20, 20), "", Vars_Func.GUI_ElementTyp.PlaceNest_TutorialButton));
+            tutorialButtons.Add(new GUI_Element(new Rectangle(310, 10, 20, 20), "", Vars_Func.GUI_ElementTyp.Resources_TutorialButton));
+            tutorialButtons.Add(new GUI_Element(new Rectangle(1090, 650, 20, 20), "", Vars_Func.GUI_ElementTyp.Upgrades_TutorialButton));
+            tutorialButtons.Add(new GUI_Element(new Rectangle(1070, 80, 20, 20), "", Vars_Func.GUI_ElementTyp.Wavetimer_TutorialButton));
+            tutorialButtons.Add(new GUI_Element(new Rectangle(210, 110, 20, 20), "", Vars_Func.GUI_ElementTyp.Spells_TutorialButton));
         }
         
 
         #region Properties
+        public static GUI_Element getGUI_TutorialButtons(Vars_Func.GUI_ElementTyp typ)
+        {
+            foreach (GUI_Element b in tutorialButtons)
+            {
+                if (b.ElementTyp == typ) return b;
+            }
+            return null;
+        }
         public static GUI_Element getGUI_ReturnScreenButton(Vars_Func.GUI_ElementTyp typ)
         {
             foreach (GUI_Element b in returnScreenButtons)
@@ -190,6 +222,70 @@ namespace Underlord.Logic
                         }
                     }
                 }
+                //draw the TutorialElements
+                switch (Interaction.GameState)
+                {
+                    case Vars_Func.GameState.GUI_Tutorial:
+                        foreach (GUI_Element e in tutorials)
+                        {
+                            if(e.ElementTyp == Vars_Func.GUI_ElementTyp.GUI_Tutorial) e.Draw(spriteBatch, font, Color.White);
+                        }
+                        break;
+                    case Vars_Func.GameState.HQCreature_Tutorial:
+                        foreach (GUI_Element e in tutorials)
+                        {
+                            if (e.ElementTyp == Vars_Func.GUI_ElementTyp.HQCreature_Tutorial) e.Draw(spriteBatch, font, Color.White);
+                        }
+                        break;
+                    case Vars_Func.GameState.Creature_Tutorial:
+                        foreach (GUI_Element e in tutorials)
+                        {
+                            if (e.ElementTyp == Vars_Func.GUI_ElementTyp.Creature_Tutorial) e.Draw(spriteBatch, font, Color.White);
+                        }
+                        break;
+                    case Vars_Func.GameState.Minimap_Tutorial:
+                        foreach (GUI_Element e in tutorials)
+                        {
+                            if (e.ElementTyp == Vars_Func.GUI_ElementTyp.Minimap_Tutorial) e.Draw(spriteBatch, font, Color.White);
+                        }
+                        break;
+                    case Vars_Func.GameState.Nest_Tutorial:
+                        foreach (GUI_Element e in tutorials)
+                        {
+                            if (e.ElementTyp == Vars_Func.GUI_ElementTyp.Nest_Tutorial) e.Draw(spriteBatch, font, Color.White);
+                        }
+                        break;
+                    case Vars_Func.GameState.PlaceNest_Tutorial:
+                        foreach (GUI_Element e in tutorials)
+                        {
+                            if (e.ElementTyp == Vars_Func.GUI_ElementTyp.PlaceNest_Tutorial) e.Draw(spriteBatch, font, Color.White);
+                        }
+                        break;
+                    case Vars_Func.GameState.Resources_Tutorial:
+                        foreach (GUI_Element e in tutorials)
+                        {
+                            if (e.ElementTyp == Vars_Func.GUI_ElementTyp.Resources_Tutorial) e.Draw(spriteBatch, font, Color.White);
+                        }
+                        break;
+                    case Vars_Func.GameState.Upgrades_Tutorial:
+                        foreach (GUI_Element e in tutorials)
+                        {
+                            if (e.ElementTyp == Vars_Func.GUI_ElementTyp.Upgrades_Tutorial) e.Draw(spriteBatch, font, Color.White);
+                        }
+                        break;
+                    case Vars_Func.GameState.Wavetimer_Tutorial:
+                        foreach (GUI_Element e in tutorials)
+                        {
+                            if (e.ElementTyp == Vars_Func.GUI_ElementTyp.Wavetimer_Tutorial) e.Draw(spriteBatch, font, Color.White);
+                        }
+                        break;
+                    case Vars_Func.GameState.Spells_Tutorial:
+                        foreach (GUI_Element e in tutorials)
+                        {
+                            if (e.ElementTyp == Vars_Func.GUI_ElementTyp.Spells_Tutorial) e.Draw(spriteBatch, font, Color.White);
+                        }
+                        break;
+                }
                 //draw the GUI_elements
                 foreach (GUI_Element e in elements)
                 {
@@ -207,6 +303,25 @@ namespace Underlord.Logic
                         b.Draw(spriteBatch, font, Color.White);
                     }
                 }
+                //draw the tutorialButtons that are visible everytime
+                foreach (GUI_Element b in tutorialButtons)
+                {
+                    if (b.ElementTyp == Vars_Func.GUI_ElementTyp.GUI_TutorialButton ||
+                        b.ElementTyp == Vars_Func.GUI_ElementTyp.Minimap_TutorialButton ||
+                        b.ElementTyp == Vars_Func.GUI_ElementTyp.Resources_TutorialButton ||
+                        b.ElementTyp == Vars_Func.GUI_ElementTyp.Spells_TutorialButton ||
+                        b.ElementTyp == Vars_Func.GUI_ElementTyp.Wavetimer_TutorialButton)
+                    {
+                        if (b.Rectangle.Contains(mouseState.X, mouseState.Y))
+                        {
+                            b.Draw(spriteBatch, font, Color.Gray);
+                        }
+                        else
+                        {
+                            b.Draw(spriteBatch, font, Color.White);
+                        }
+                    }
+                }
                 if (Interaction.GameState == Vars_Func.GameState.Build ||
                     Interaction.GameState == Vars_Func.GameState.PlaceAnts ||
                     Interaction.GameState == Vars_Func.GameState.PlaceSkeletons ||
@@ -214,6 +329,21 @@ namespace Underlord.Logic
                     Interaction.GameState == Vars_Func.GameState.PlaceTemple ||
                     Interaction.GameState == Vars_Func.GameState.PlaceEntrance)
                 {
+                    //draw the tutorialButton for buildButtons
+                    foreach (GUI_Element b in tutorialButtons)
+                    {
+                        if (b.ElementTyp == Vars_Func.GUI_ElementTyp.PlaceNest_TutorialButton)
+                        {
+                            if (b.Rectangle.Contains(mouseState.X, mouseState.Y))
+                            {
+                                b.Draw(spriteBatch, font, Color.Gray);
+                            }
+                            else
+                            {
+                                b.Draw(spriteBatch, font, Color.White);
+                            }
+                        }
+                    }
                     //draw the buildButtons
                     foreach (GUI_Element b in buildButtons)
                     {
@@ -255,6 +385,22 @@ namespace Underlord.Logic
                     case Vars_Func.ThingTyp.Nest:
                         if (nest.Typ != Vars_Func.NestTyp.Entrance)
                         {
+                            //draw the tutorialButton for upgradeButtons and nests
+                            foreach (GUI_Element b in tutorialButtons)
+                            {
+                                if (b.ElementTyp == Vars_Func.GUI_ElementTyp.Upgrades_TutorialButton ||
+                                    b.ElementTyp == Vars_Func.GUI_ElementTyp.Nest_TutorialButton)
+                                {
+                                    if (b.Rectangle.Contains(mouseState.X, mouseState.Y))
+                                    {
+                                        b.Draw(spriteBatch, font, Color.Gray);
+                                    }
+                                    else
+                                    {
+                                        b.Draw(spriteBatch, font, Color.White);
+                                    }
+                                }
+                            }
                             //draw the upgradeButtons
                             foreach (GUI_Element b in upgradeButtons)
                             {
@@ -267,7 +413,6 @@ namespace Underlord.Logic
                                     b.Draw(spriteBatch, font, Color.White);
                                 }
                             }
-                            nest.DrawTargetFlag(camera, map.getHexagonAt(nest.TargetPosition).get3DPosition(), Color.White, false, 0.0f);
                             spriteBatch.DrawString(font, "Typ: " + nest.Typ.ToString(), new Vector2(1121, 600), Color.Black);
                             spriteBatch.DrawString(font, "Nutrition: " + nest.Nutrition.ToString() + "/" + nest.MaxNutrition.ToString(), new Vector2(1121, 620), Color.Black);
                             spriteBatch.DrawString(font, "Upgrades:", new Vector2(1121, 640), Color.Black);
@@ -288,6 +433,21 @@ namespace Underlord.Logic
                     case Vars_Func.ThingTyp.DungeonCreature:
                         if (creature != null)
                         {
+                            //draw the tutorialButton for creatures
+                            foreach (GUI_Element b in tutorialButtons)
+                            {
+                                if (b.ElementTyp == Vars_Func.GUI_ElementTyp.Creature_TutorialButton)
+                                {
+                                    if (b.Rectangle.Contains(mouseState.X, mouseState.Y))
+                                    {
+                                        b.Draw(spriteBatch, font, Color.Gray);
+                                    }
+                                    else
+                                    {
+                                        b.Draw(spriteBatch, font, Color.White);
+                                    }
+                                }
+                            }
                             spriteBatch.DrawString(font, "Typ: " + creature.Typ.ToString(), new Vector2(1121, 600), Color.Black);
                             spriteBatch.DrawString(font, "HP: " + (creature.HP - creature.DamageTaken).ToString(), new Vector2(1121, 620), Color.Black);
                             spriteBatch.DrawString(font, "Damage: " + creature.Damage.ToString(), new Vector2(1121, 640), Color.Black);
@@ -297,6 +457,21 @@ namespace Underlord.Logic
                     case Vars_Func.ThingTyp.HeroCreature:
                         if (creature != null)
                         {
+                            //draw the tutorialButton for creatures
+                            foreach (GUI_Element b in tutorialButtons)
+                            {
+                                if (b.ElementTyp == Vars_Func.GUI_ElementTyp.Creature_TutorialButton)
+                                {
+                                    if (b.Rectangle.Contains(mouseState.X, mouseState.Y))
+                                    {
+                                        b.Draw(spriteBatch, font, Color.Gray);
+                                    }
+                                    else
+                                    {
+                                        b.Draw(spriteBatch, font, Color.White);
+                                    }
+                                }
+                            }
                             spriteBatch.DrawString(font, "Typ: " + creature.Typ.ToString(), new Vector2(1121, 600), Color.Black);
                             spriteBatch.DrawString(font, "HP: " + (creature.HP - creature.DamageTaken).ToString(), new Vector2(1121, 620), Color.Black);
                             spriteBatch.DrawString(font, "Damage: " + creature.Damage.ToString(), new Vector2(1121, 640), Color.Black);
@@ -314,6 +489,21 @@ namespace Underlord.Logic
                     case Vars_Func.ThingTyp.HQCreature:
                         if (creature != null)
                         {
+                            //draw the tutorialButton for the HQCreature
+                            foreach (GUI_Element b in tutorialButtons)
+                            {
+                                if (b.ElementTyp == Vars_Func.GUI_ElementTyp.HQCreature_TutorialButton)
+                                {
+                                    if (b.Rectangle.Contains(mouseState.X, mouseState.Y))
+                                    {
+                                        b.Draw(spriteBatch, font, Color.Gray);
+                                    }
+                                    else
+                                    {
+                                        b.Draw(spriteBatch, font, Color.White);
+                                    }
+                                }
+                            }
                             spriteBatch.DrawString(font, "Typ: " + creature.Typ.ToString(), new Vector2(1121, 600), Color.Black);
                             spriteBatch.DrawString(font, "HP: " + (creature.HP - creature.DamageTaken).ToString(), new Vector2(1121, 620), Color.Black);
                             spriteBatch.DrawString(font, "Damage: " + creature.Damage.ToString(), new Vector2(1121, 640), Color.Black);

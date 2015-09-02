@@ -140,6 +140,7 @@ namespace Underlord.Environment
             fireModels = new FireModel[3];
             randomValue = new Random();
             growObject = Logic.Vars_Func.GrowObject.length;
+            targetFlag = false;
         }
         #endregion
 

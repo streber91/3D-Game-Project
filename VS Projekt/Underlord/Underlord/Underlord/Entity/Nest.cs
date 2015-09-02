@@ -316,7 +316,7 @@ namespace Underlord.Entity
                         }
                     }
                     //timer to spawn creatures
-                    if (spawnCounter > 10000 && nutrition > 0)
+                    if (spawnCounter > Math.Max(10000, (250000 / nestHexagons.Count)) && nutrition > 0)
                     {
                         spawnCreature(map);
                         spawnCounter = 0;

@@ -15,7 +15,7 @@ namespace Underlord.Logic
         static int templeCost = 100;
         static int entranceCost = 100;
         static Game1 game;
-        static Vars_Func.GameState gameState = Vars_Func.GameState.MainMenu;
+        static Vars_Func.GameState gameState = Vars_Func.GameState.Ingame;
         static Vector2 indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
         static int radius = 0;
         static int counter = 0;
@@ -81,8 +81,13 @@ namespace Underlord.Logic
                     if (keyboard.IsKeyDown(Keys.N) ||
                         (lastMouseState.LeftButton == ButtonState.Released &&
                         mouseState.LeftButton == ButtonState.Pressed &&
+                        GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.Nest).Visable &&
                         GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.Build).Rectangle.Contains(mouseState.X, mouseState.Y)))
                     {
+
+                    //if (GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.Build).Visable &&
+                    //    GUI.getGUI_Button(Vars_Func.GUI_ElementTyp.Build).SelectionRectangle.Contains(mouseState.X, mouseState.Y))
+                    //{
                         if (GUI.SelectedThingTyp == Vars_Func.ThingTyp.Nest) GUI.SelectedThingTyp = Vars_Func.ThingTyp.length;
                         indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                         radius = 0;
@@ -326,7 +331,7 @@ namespace Underlord.Logic
                     if (timeCounter > 100)
                     {
                         //switch to the return screen to exit the game and save the highscore
-                        if (keyboard.IsKeyDown(Keys.Escape))
+                        if (keyboard.IsKeyDown(Keys.Escape) || mouseState.RightButton == ButtonState.Pressed)
                         {
                             gameState = Vars_Func.GameState.ReturnToMainMenu;
                             timeCounter = 0;
@@ -418,7 +423,7 @@ namespace Underlord.Logic
                     if (timeCounter > 100)
                     {
                         //back to Ingame mode and reset of values
-                        if (keyboard.IsKeyDown(Keys.Escape))
+                        if (keyboard.IsKeyDown(Keys.Escape) || mouseState.RightButton == ButtonState.Pressed)
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -478,7 +483,7 @@ namespace Underlord.Logic
                     if (timeCounter > 100)
                     {
                         //back to Ingame Mode
-                        if (keyboard.IsKeyDown(Keys.Escape))
+                        if (keyboard.IsKeyDown(Keys.Escape) || mouseState.RightButton == ButtonState.Pressed)
                         {
                             gameState = Vars_Func.GameState.Ingame;
                             timeCounter = 0;
@@ -486,7 +491,7 @@ namespace Underlord.Logic
                         //switch to PlaceAnts Mode if the "PlaceAnts-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceAnts).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Nest).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -497,7 +502,7 @@ namespace Underlord.Logic
                         //switch to PlaceSkeletons Mode if the "PlaceSkeletons-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceSkeletons).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Graveyard).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -508,7 +513,7 @@ namespace Underlord.Logic
                         //switch to PlaceFarm Mode if the "PlaceFarm-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceFarm).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Farm).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -519,7 +524,7 @@ namespace Underlord.Logic
                         //switch to PlaceTemple Mode if the "PlaceTemple-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceTemple).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Temple).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -530,7 +535,7 @@ namespace Underlord.Logic
                         //switch to PlaceEntrance Mode if the "PlaceEntrance-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceEntrance).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Entrance).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -557,7 +562,7 @@ namespace Underlord.Logic
                     if (timeCounter > 100)
                     {
                         //back to Ingame Mode
-                        if (keyboard.IsKeyDown(Keys.Escape))
+                        if (keyboard.IsKeyDown(Keys.Escape) || mouseState.RightButton == ButtonState.Pressed)
                         {
                             gameState = Vars_Func.GameState.Ingame;
                             timeCounter = 0;
@@ -597,7 +602,7 @@ namespace Underlord.Logic
                     if (timeCounter > 100)
                     {
                         //back to Ingame Mode
-                        if (keyboard.IsKeyDown(Keys.Escape))
+                        if (keyboard.IsKeyDown(Keys.Escape) || mouseState.RightButton == ButtonState.Pressed)
                         {
                             gameState = Vars_Func.GameState.Ingame;
                             timeCounter = 0;
@@ -637,7 +642,7 @@ namespace Underlord.Logic
                     if (timeCounter > 100)
                     {
                         //back to Ingame Mode
-                        if (keyboard.IsKeyDown(Keys.Escape))
+                        if (keyboard.IsKeyDown(Keys.Escape) || mouseState.RightButton == ButtonState.Pressed)
                         {
                             gameState = Vars_Func.GameState.Ingame;
                             timeCounter = 0;
@@ -667,7 +672,7 @@ namespace Underlord.Logic
                     if (timeCounter > 100)
                     {
                         //back to Ingame Mode
-                        if (keyboard.IsKeyDown(Keys.Escape))
+                        if (keyboard.IsKeyDown(Keys.Escape) || mouseState.RightButton == ButtonState.Pressed)
                         {
                             gameState = Vars_Func.GameState.Ingame;
                             timeCounter = 0;
@@ -762,7 +767,7 @@ namespace Underlord.Logic
                     if (timeCounter > 100)
                     {
                         //back to Ingame Mode
-                        if (keyboard.IsKeyDown(Keys.Escape))
+                        if (keyboard.IsKeyDown(Keys.Escape) || mouseState.RightButton == ButtonState.Pressed)
                         {
                             gameState = Vars_Func.GameState.Ingame;
                             timeCounter = 0;
@@ -770,7 +775,7 @@ namespace Underlord.Logic
                         //switch to PlaceSkeletons Mode if the "PlaceSkeletons-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceSkeletons).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Graveyard).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -781,7 +786,7 @@ namespace Underlord.Logic
                         //switch to PlaceFarm Mode if the "PlaceFarm-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceFarm).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Farm).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -792,7 +797,7 @@ namespace Underlord.Logic
                         //switch to PlaceTemple Mode if the "PlaceTemple-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceTemple).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Temple).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -803,7 +808,7 @@ namespace Underlord.Logic
                         //switch to PlaceEntrance Mode if the "PlaceEntrance-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceEntrance).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Entrance).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -853,7 +858,7 @@ namespace Underlord.Logic
                     if (timeCounter > 100)
                     {
                         //back to Ingame Mode
-                        if (keyboard.IsKeyDown(Keys.Escape))
+                        if (keyboard.IsKeyDown(Keys.Escape) || mouseState.RightButton == ButtonState.Pressed)
                         {
                             gameState = Vars_Func.GameState.Ingame;
                             timeCounter = 0;
@@ -861,7 +866,7 @@ namespace Underlord.Logic
                         //switch to PlaceAnts Mode if the "PlaceAnts-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceAnts).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Nest).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -872,7 +877,7 @@ namespace Underlord.Logic
                         //switch to PlaceFarm Mode if the "PlaceFarm-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceFarm).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Farm).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -883,7 +888,7 @@ namespace Underlord.Logic
                         //switch to PlaceTemple Mode if the "PlaceTemple-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceTemple).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Temple).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -894,7 +899,7 @@ namespace Underlord.Logic
                         //switch to PlaceEntrance Mode if the "PlaceEntrance-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceEntrance).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Entrance).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -944,7 +949,7 @@ namespace Underlord.Logic
                     if (timeCounter > 100)
                     {
                         //back to Ingame Mode
-                        if (keyboard.IsKeyDown(Keys.Escape))
+                        if (keyboard.IsKeyDown(Keys.Escape) || mouseState.RightButton == ButtonState.Pressed)
                         {
                             gameState = Vars_Func.GameState.Ingame;
                             timeCounter = 0;
@@ -952,7 +957,7 @@ namespace Underlord.Logic
                         //switch to PlaceAnts Mode if the "PlaceAnts-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceAnts).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Nest).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -963,7 +968,7 @@ namespace Underlord.Logic
                         //switch to PlaceSkeletons Mode if the "PlaceSkeletons-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceSkeletons).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Graveyard).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -974,7 +979,7 @@ namespace Underlord.Logic
                         //switch to PlaceTemple Mode if the "PlaceTemple-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceTemple).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Temple).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -985,7 +990,7 @@ namespace Underlord.Logic
                         //switch to PlaceEntrance Mode if the "PlaceEntrance-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceEntrance).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Entrance).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -1035,7 +1040,7 @@ namespace Underlord.Logic
                     if (timeCounter > 100)
                     {
                         //back to Ingame Mode
-                        if (keyboard.IsKeyDown(Keys.Escape))
+                        if (keyboard.IsKeyDown(Keys.Escape) || mouseState.RightButton == ButtonState.Pressed)
                         {
                             gameState = Vars_Func.GameState.Ingame;
                             timeCounter = 0;
@@ -1043,7 +1048,7 @@ namespace Underlord.Logic
                         //switch to PlaceAnts Mode if the "PlaceAnts-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceAnts).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Nest).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -1054,7 +1059,7 @@ namespace Underlord.Logic
                         //switch to PlaceSkeletons Mode if the "PlaceSkeletons-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceSkeletons).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Graveyard).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -1065,7 +1070,7 @@ namespace Underlord.Logic
                         //switch to PlaceFarm Mode if the "PlaceFarm-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceFarm).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Farm).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -1076,7 +1081,7 @@ namespace Underlord.Logic
                         //switch to PlaceTemple Mode if the "PlaceTemple-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceTemple).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Temple).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -1087,7 +1092,7 @@ namespace Underlord.Logic
                         //switch to PlaceEntrance Mode if the "PlaceEntrance-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceEntrance).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Entrance).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -1137,7 +1142,7 @@ namespace Underlord.Logic
                     if (timeCounter > 100)
                     {
                         //back to Ingame Mode
-                        if (keyboard.IsKeyDown(Keys.Escape))
+                        if (keyboard.IsKeyDown(Keys.Escape) || mouseState.RightButton == ButtonState.Pressed)
                         {
                             gameState = Vars_Func.GameState.Ingame;
                             timeCounter = 0;
@@ -1145,7 +1150,7 @@ namespace Underlord.Logic
                         //switch to PlaceAnts Mode if the "PlaceAnts-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceAnts).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Nest).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -1156,7 +1161,7 @@ namespace Underlord.Logic
                         //switch to PlaceSkeletons Mode if the "PlaceSkeletons-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceSkeletons).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Graveyard).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -1167,7 +1172,7 @@ namespace Underlord.Logic
                         //switch to PlaceFarm Mode if the "PlaceFarm-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceFarm).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Farm).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -1178,7 +1183,7 @@ namespace Underlord.Logic
                         //switch to PlaceTemple Mode if the "PlaceTemple-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceTemple).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Temple).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;
@@ -1189,7 +1194,7 @@ namespace Underlord.Logic
                         //switch to PlaceEntrance Mode if the "PlaceEntrance-Button" is pressed
                         if (lastMouseState.LeftButton == ButtonState.Released &&
                             mouseState.LeftButton == ButtonState.Pressed &&
-                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.PlaceEntrance).Rectangle.Contains(mouseState.X, mouseState.Y))
+                            GUI.getGUI_BuildButton(Vars_Func.GUI_ElementTyp.Entrance).Rectangle.Contains(mouseState.X, mouseState.Y))
                         {
                             indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
                             radius = 0;

@@ -20,14 +20,27 @@ namespace Underlord.Logic
        public enum HexTyp { Sand, Stone, BeetleNest, Farm, Temple, Graveyard, length };
        public enum SpellType { SummonImp, Fireball, length  }
 
-       public enum GameState { MainMenu, Ingame, Highscore, Tutorial, CreateRoom, Build, Mine, MergeRooms, DeleteRoom, BuildUpgrade, Fireball, SummonImp, PlaceAnts, PlaceSkeletons, PlaceFarm, PlaceTemple, PlaceEntrance, ReturnToMainMenu,
+       public enum GameState { StartMenu, MainMenu, Ingame, Settings, Highscore, Tutorial, 
+                               CreateRoom, Build, Mine, MergeRooms, DeleteRoom, BuildUpgrade, Fireball, SummonImp, PlaceAnts, PlaceSkeletons, PlaceFarm, PlaceTemple, PlaceEntrance, ReturnToMainMenu,
                                GUI_Tutorial, HQCreature_Tutorial, Creature_Tutorial, Minimap_Tutorial, Nest_Tutorial, PlaceNest_Tutorial, Resources_Tutorial, Upgrades_Tutorial, Wavetimer_Tutorial, Spells_Tutorial, length };
 
        public enum ImpJob { Idle, Harvest, Feed, Mine, MineDiamonds, MineGold, length };
 
-       public enum GUI_ElementTyp { BackgroundHUD, MinimapHUD, FoodHUD, GoldHUD, ManaHUD, Mine, Room, MergeRoom, DeleteRoom, Build, PlaceAnts, PlaceSkeletons, PlaceFarm, PlaceTemple, PlaceEntrance,
+       public enum GUI_Font { Augusta, AugustaBold, AugustaBold2, AugustaHeadline, AugustaTextField, AusgustaText, length };
+
+       public enum GUI_Typ { StartButton, NewGameButton, SettingsButton, HighScoreButton, QuitButton, None, length }; 
+
+       public enum GUI_ElementTyp { Dummy, 
+                                    Nest, Graveyard, Farm, Temple, Entrance,
+                                    FrameHUD, ButtonHUD, BackgroundHUD, MinimapHUD, RessoucesFrame, RessoucesHUD, RessoucesPapier, InfoHUD,
+                                    Food, Gold, Mana,
+                                    Mine, Room, MergeRoom, DeleteRoom, Build, Upgrade, 
 									DamageUpgrade, LifeUpgrade, SpeedUpgrade,
-                                    LeftHUD, RightHUD, BottomHUD, TopHUD, RessoucesHUD, InfoHUD,
+                                    LeftChain, RightChain, SpecialChain, Pole,
+                                    LeftHUD, RightHUD, BottomHUD, TopHUD,
+                                    StartBackgroundHUD, BlackBackgoundHUD, TextFrame, TextBlance, UnderlordHUD, UnderlordFireLogo, UnderlordBurnedLogo,
+                                    TextFieldSmall, TextFieldMiddle, TextFieldBig, BookField, TextArrow, ChainSmall, ChainMiddle, ChainBig, ChainLarge,
+                                    FullScreenButton, 
                                     Menu, StartGame, QuitGame, Highscore, Tutorial, ReturnAccept, ReturnDecline,
                                     Fireball, SummonImp,
                                     GUI_Tutorial, HQCreature_Tutorial, Creature_Tutorial, Minimap_Tutorial, Nest_Tutorial, PlaceNest_Tutorial, Resources_Tutorial, Upgrades_Tutorial, Wavetimer_Tutorial, Spells_Tutorial,
@@ -39,6 +52,7 @@ namespace Underlord.Logic
 
        public enum GrowObject { Farm, Temple, Graveyard, length };
 
+       #region Fields
        static List<AnimationModel> CreatureModels;
        static List<BasicModel> CreatureShadows;
        static List<BasicModel> NestModels;
@@ -55,17 +69,16 @@ namespace Underlord.Logic
        static BasicModel TargetFlag;
 
        static Texture2D pixel;
+       static List<SpriteFont> GUI_Fonts;
        static List<Texture2D> GUI_Elements;
 
        static List<Texture2D> Rock_Texture;
        static List<Texture2D> Gold_Texture;
        static List<Texture2D> Diamond_Texture;
 
-       //static Vector3[] CreaturParamters = { new Vector3(0,1,0), new Vector3(0.5f, 0.1f, MathHelper.PiOver2), new Vector3(0,1,0), new Vector3(0,1,0) };
-
-       static Vector3[] CreaturParamters = { new Vector3(0, 0.07f, MathHelper.PiOver2), new Vector3(0f, 0.04f, MathHelper.PiOver2), new Vector3(0, 1.5f, MathHelper.PiOver2), new Vector3(0, 1, 0) };
-       static Vector3[] NestParamters = { new Vector3(0, 1, 0), new Vector3(0, 1, 0), new Vector3(0, 1, 0), new Vector3(0, 1, 0), new Vector3(0, 1, 0) };
-       static Vector3[] GrowObjectParameters = { new Vector3(0, 1, 0), new Vector3(0, 1, 0), new Vector3(0, 1, 0) };
+       static Vector3[] CreaturParamters = { new Vector3(0, 0.07f, MathHelper.PiOver2), new Vector3(0f, 0.04f, MathHelper.PiOver2), new Vector3(0, 1.5f, MathHelper.PiOver2), new Vector3(0f, 0.04f, MathHelper.PiOver2) };
+       static Vector3[] NestParamters = { new Vector3(0, 1, 0), new Vector3(0, 1, 0), new Vector3(0, 1, 0), new Vector3(0.01f, 1, 0), new Vector3(0.01f, 1, 0) };
+       static Vector3[] GrowObjectParameters = { new Vector3(0.01f, 1, 0), new Vector3(0.01f, 1, 0), new Vector3(0.01f, 1, 0) };
 
        public static AnimationModel getCreatureModell(CreatureTyp typ) { return CreatureModels[(int)typ]; }
        public static BasicModel getCreatureShadow(CreatureTyp typ) { return CreatureShadows[(int)typ]; }
@@ -83,6 +96,7 @@ namespace Underlord.Logic
        public static BasicModel getTargetFlag() { return TargetFlag; }
 
        public static Texture2D getPixel() { return pixel; }
+       public static SpriteFont getGUI_Font(GUI_Font typ) { return GUI_Fonts[(int)typ]; }
        public static Texture2D getGUI_ElementTextures(GUI_ElementTyp typ) { return GUI_Elements[(int)typ]; }
 
        public static Texture2D getWall_RockTexture(int index) { return Rock_Texture[index]; }
@@ -92,6 +106,7 @@ namespace Underlord.Logic
        public static Vector3 getCreatureParams(CreatureTyp typ) { return CreaturParamters[(int)typ]; }
        public static Vector3 getNestParams(NestTyp typ) { return NestParamters[(int)typ]; }
        public static Vector3 getGrowObjectParams(GrowObject typ) { return GrowObjectParameters[(int)typ]; }
+       #endregion
 
        public static void loadContent(ContentManager Content)
        {
@@ -108,37 +123,130 @@ namespace Underlord.Logic
            GrowModels = new List<BasicModel>();
 
            pixel = Content.Load<Texture2D>("TEST");
+           GUI_Fonts = new List<SpriteFont>();
 
+           //Augusta, AugustaBold, AugustaBold2, AugustaHeadline, AugustaTextField, AusgustaText
+           #region Fonts
+           GUI_Fonts.Add(Content.Load<SpriteFont>("Fonts//Augusta"));
+           GUI_Fonts.Add(Content.Load<SpriteFont>("Fonts//AugustaBold"));
+           GUI_Fonts.Add(Content.Load<SpriteFont>("Fonts//AugustaBold_2"));
+           GUI_Fonts.Add(Content.Load<SpriteFont>("Fonts//Augusta_Headline"));
+           GUI_Fonts.Add(Content.Load<SpriteFont>("Fonts//Augusta_TextField"));
+           GUI_Fonts.Add(Content.Load<SpriteFont>("Fonts//Augusta_Text"));
+           #endregion
 
-           //BackgroundHUD, MinimapHUD, FoodHUD, GoldHUD, ManaHUD
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Screen//screen_background_01"));
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Minimap//minimap_background_02"));
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Ressources//scroll_foot"));
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Ressources//scroll_gold"));
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Ressources//scroll_mana"));
+           //Dummy
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Dummy//dummy_texture_1366x768"));
 
-           //Mine, Room, MergeRoom, DeleteRoom, Build, PlaceAnts, PlaceSkeletons, PlaceFarm, PlaceTemple, PlaceEntrance, DamageUpgrade, LifeUpgrade, SpeedUpgrade
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_mine"));
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_room"));
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_merge"));
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_delete"));
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
+           //Nest, Graveyard, Farm, Temple, Entrance,
+           #region Building
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Buildings//ant"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Buildings//skeleton"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Buildings//farm"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Buildings//tempel"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Buildings//tempel"));
+           #endregion
 
+           //FrameHUD, ButtonHUD, BackgroundHUD, MinimapHUD, RessoucesFrame, RessoucesHUD, RessoucesPapier, InfoHUD
+           #region HUD
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Screen//screen_frame_iron_96x24"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Screen//screen_frame_iron_110x475_01"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Screen//screen_background_iron_01"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Minimap//minimap_frame_iron_260x265"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Ressources//res_frame_singel_iron_260x265"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Ressources//res_singel_iron_260x265"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Ressources//res_papier_singel_260x265"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Screen//info_frame_iron_247x160"));
+           #endregion
+
+           //Food, Gold, Mana
+           #region Ressources
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Ressources//res_foot"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Ressources//res_gold"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Ressources//res_mana"));
+           #endregion
+
+           ////BackgroundHUD, MinimapHUD, FoodHUD, GoldHUD, ManaHUD
+           //GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Screen//screen_background_01"));
+           //GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Minimap//minimap_background_02"));
+           //GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Ressources//scroll_foot"));
+           //GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Ressources//scroll_gold"));
+           //GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Ressources//scroll_mana"));
+
+           //Mine, Room, MergeRoom, DeleteRoom, Build, Upgrade
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Functions//mine"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Functions//room"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Functions//merge"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Functions//delete"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Functions//build"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Upgrades//flag"));
+
+           ////Mine, Room, MergeRoom, DeleteRoom, Build, PlaceAnts, PlaceSkeletons, PlaceFarm, PlaceTemple, PlaceEntrance, DamageUpgrade, LifeUpgrade, SpeedUpgrade
+           //GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_mine"));
+           //GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_room"));
+           //GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_merge"));
+           //GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_delete"));
+           //GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
+           //GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
+           //GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
+           //GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
+           //GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
+           //GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
+           //GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
+           //GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
+           //GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
+
+           //DamageUpgrade, LifeUpgrade, SpeedUpgrade
+           #region Upgrades
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Upgrades//upgrade_deg"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Upgrades//upgrade_lev"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Upgrades//upgrade_spd"));
+           #endregion
+
+           //LeftChain, RightChain, SpecialChain, Pole
+           #region Special-GUI Elements
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Elements//chain_short_left_48x256"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Elements//chain_short_right_48x256"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Elements//chain_special_24x60"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Elements//pole_iron_500x8"));
+           #endregion
+                 
            //LeftHUD, RightHUD, BottomHUD, TopHUD, RessoucesHUD, InfoHUD
            GUI_Elements.Add(Content.Load<Texture2D>("Left_HUD_Test"));
            GUI_Elements.Add(Content.Load<Texture2D>("Right_HUD_Test"));
            GUI_Elements.Add(Content.Load<Texture2D>("Bottom_HUD_Test"));
            GUI_Elements.Add(Content.Load<Texture2D>("Top_HUD_Test"));
-           GUI_Elements.Add(Content.Load<Texture2D>("Ressouces_HUD_Test"));
-           GUI_Elements.Add(Content.Load<Texture2D>("Info_HUD_Test"));
+           //GUI_Elements.Add(Content.Load<Texture2D>("Ressouces_HUD_Test"));
+           //GUI_Elements.Add(Content.Load<Texture2D>("Info_HUD_Test"));
+
+           //StartBackgroundHUD, BlackBackgoundHUD, TextFrame, TextBlance, UnderlordHUD, UnderlordFireLogo, UnderlordBurnedLogo
+           #region Start-GUI Elements
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Start//start_background_1366x768"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Start//blackground_1366x768"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Start//start_text_chains_293x72"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Start//start_text_blance_293x96"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Start//start_underlord_frame_800x350"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Start//underlord_fire_800x525"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Start//underlord_burned_800x525"));
+           #endregion
+
+           //TextFieldSmall, TextFieldMiddle, TextFieldBig, BookField, TextArrow, ChainSmall, ChainMiddle, ChainBig, ChainLarge,
+           #region Main-Menu-GUI Elements
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/TextFields//text_small_288x72"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/TextFields//text_middle_384x96"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/TextFields//text_big_512x128"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/TextFields//book_911x512"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/TextFields//text_back_384x96"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Chains//chain_small_288x64"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Chains//chain_middle_384x84"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Chains//chain_big_512x100"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Chains//chain_large_911x237"));
+           #endregion
+
+           //FullScreenButton
+           #region Setting-GUI Elements
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/TextFields//scroll_76x88"));
+           #endregion
 
            //Menu, StartGame, QuitGame, Highscore, Tutorial, ReturnAccept, ReturnDecline
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
@@ -189,19 +297,10 @@ namespace Underlord.Logic
            Diamond_Texture.Add(Content.Load<Texture2D>("Textures/Diamond//wall_diamond_broken_02_TEXT"));
            Diamond_Texture.Add(Content.Load<Texture2D>("Textures/Diamond//wall_diamond_broken_03_TEXT"));
 
-           //WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
-           //WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
-           //WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
-           //WallModels.Add(new BasicModel(Content.Load<Model>("Models//sandWall_HEX_02")));
-
            WallModels.Add(new BasicModel(Content.Load<Model>("Models/Wall/sand_Wall_HEX_01")));
            WallModels.Add(new BasicModel(Content.Load<Model>("Models/Wall/sand_Wall_HEX_01")));
            WallModels.Add(new BasicModel(Content.Load<Model>("Models/Wall/sand_Wall_HEX_01")));
            WallModels.Add(new BasicModel(Content.Load<Model>("Models/Wall/sand_Wall_HEX_01")));
-
-           //WallModels[(int)WallTyp.Stone].Texture = Content.Load<Texture2D>("Textures//wall_rock_TEXT");
-           //WallModels[(int)WallTyp.Gold].Texture = Content.Load<Texture2D>("Textures//wall_gold_TEXT");
-           //WallModels[(int)WallTyp.Diamond].Texture = Content.Load<Texture2D>("Textures//wall_diamond_TEXT");
 
            WallModels[(int)WallTyp.Stone].Texture = Content.Load<Texture2D>("Textures/Rock//wall_rock_TEXT");
            WallModels[(int)WallTyp.Gold].Texture = Content.Load<Texture2D>("Textures/Gold//wall_gold_TEXT");
@@ -216,39 +315,32 @@ namespace Underlord.Logic
 
            HexagonModels[(int)HexTyp.Sand].Texture = Content.Load<Texture2D>("Textures//floor_stone_TEXT");
            HexagonModels[(int)HexTyp.Stone].Texture = Content.Load<Texture2D>("Textures//floor_stone_TEXT");
-           HexagonModels[(int)HexTyp.BeetleNest].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
-           HexagonModels[(int)HexTyp.Graveyard].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
-           HexagonModels[(int)HexTyp.Temple].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
-           HexagonModels[(int)HexTyp.Farm].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
+           HexagonModels[(int)HexTyp.BeetleNest].Texture = Content.Load<Texture2D>("Textures/Nest//nest_orange_TEXT");
+           HexagonModels[(int)HexTyp.Graveyard].Texture = Content.Load<Texture2D>("Textures/Farm//farm_dirt_TEXT");
+           HexagonModels[(int)HexTyp.Temple].Texture = Content.Load<Texture2D>("Textures/Tempel//tempel_white_TEXT");
+           HexagonModels[(int)HexTyp.Farm].Texture = Content.Load<Texture2D>("Textures/Farm//farm_dirt_TEXT");
 
-           NestModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));    
+           NestModels.Add(new BasicModel(Content.Load<Model>("Models/Nest//nest_GEO_01")));    
            NestModels.Add(new BasicModel(Content.Load<Model>("Models/Entrance//entrance_GEO_01")));
-           NestModels.Add(new BasicModel(Content.Load<Model>("Models//tempel_HQ_GEO_01")));
-           NestModels.Add(new BasicModel(Content.Load<Model>("Models//fungus_HQ_GEO_02")));
-           NestModels.Add(new BasicModel(Content.Load<Model>("Models//nest_HEX_01")));
+           NestModels.Add(new BasicModel(Content.Load<Model>("Models/Tempel//tempel_house_GEO_01")));
+           NestModels.Add(new BasicModel(Content.Load<Model>("Models/Farm//farm_house_GEO_01")));
+           NestModels.Add(new BasicModel(Content.Load<Model>("Models/Graveyard//graveyard_house_GEO_01")));
 
-           NestModels[(int)NestTyp.Beetle].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
+           NestModels[(int)NestTyp.Beetle].Texture = Content.Load<Texture2D>("Textures/Nest//nest_orange_TEXT");
            //NestModels[(int)NestTyp.Entrance].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
            //NestModels[(int)NestTyp.Skeleton].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
-           //NestModels[(int)NestTyp.Temple].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
-           NestModels[(int)NestTyp.Farm].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
+           //NestModels[(int)NestTyp.Temple].Texture = Content.Load<Texture2D>("Textures/Tempel//tempel_white_TEXT");
+           //NestModels[(int)NestTyp.Farm].Texture = Content.Load<Texture2D>("Textures//nest_orange_TEXT");
 
            UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models/Flags//flag_Deg_GEO_01")));
            UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models/Flags//flag_Lve_GEO_01")));
            UpgradeModels.Add(new BasicModel(Content.Load<Model>("Models/Flags//flag_Spd_GEO_01")));
            
-           GrowModels.Add(new BasicModel(Content.Load<Model>("Models//farm_dirt_HEX_01")));
-           GrowModels.Add(new BasicModel(Content.Load<Model>("Models//tempel_GEO_01")));
-           GrowModels.Add(new BasicModel(Content.Load<Model>("Models//graveyard_GEO_01")));
+           GrowModels.Add(new BasicModel(Content.Load<Model>("Models/Farm//farm_floor_GEO_01")));
+           GrowModels.Add(new BasicModel(Content.Load<Model>("Models/Tempel//tempel_floor_GEO_01")));
+           GrowModels.Add(new BasicModel(Content.Load<Model>("Models/Graveyard//graveyard_floor_GEO_01")));
 
            TargetFlag = new BasicModel(Content.Load<Model>("Models/Flags//flag_Deg_GEO_01"));
-
-           //CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")));
-           //CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//knight_&_sword_ANI_01")/*, 0.2f, MathHelper.PiOver2*/));
-           //CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels//ant_GEO_01")));
-
-           //ImpModel = new ImpModel(Content.Load<Model>("AnimationModels//minion_ANI_walk_simple_02"));
-           //ImpModel.AddClip(new AnimationModel (Content.Load<Model>("AnimationModels//minion_ANI_grabbling_01")));
 
            // Add ant character
            AnimationModel ant = new AnimationModel(Content.Load<Model>("AnimationModels/Ant//ant_simple_walk_ANI_01"));
@@ -266,6 +358,7 @@ namespace Underlord.Logic
            // Add HQ character
            CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels/HQ//devil_head_GEO_01")));
            HQMouthModel = new BasicModel(Content.Load<Model>("AnimationModels/HQ//devil_mouth_GEO_01"));
+           CreatureShadows.Add(new BasicModel(Content.Load<Model>("AnimationModels/Skeleton//skeleton_shadow_GEO_01")));
 
            // Add skeleton character
            AnimationModel skeleton = new AnimationModel(Content.Load<Model>("AnimationModels/Skeleton//skeleton_simple_walk_ANI_01"));

@@ -50,6 +50,11 @@ namespace Underlord.Logic
                             imp.State = Vars_Func.ImpState.Digging;
                             imp.TargetHexagon = map.getHexagonAt(imp.CurrentJob.Destination);
                             break;
+                        case Vars_Func.ImpJob.Harvest:
+                            imp.State = Vars_Func.ImpState.Harvesting;
+                            imp.TargetHexagon = map.getHexagonAt(imp.CurrentJob.Destination);
+                            break;
+                            
                     }
 
                     if (imp.CurrentJob.Worktime <= 0)

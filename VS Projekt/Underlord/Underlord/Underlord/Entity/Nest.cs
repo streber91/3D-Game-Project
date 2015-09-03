@@ -347,7 +347,7 @@ namespace Underlord.Entity
             Matrix.CreateTranslation(drawPosition);
 
             Vars_Func.getNestModell(typ).Color = drawColor;
-            Vars_Func.getNestModell(typ).Draw(camera, modelMatrix, false, isEnlightend, lightPower);
+            Vars_Func.getNestModell(typ).Draw(camera, modelMatrix, false, isEnlightend, lightPower/2);
         }
 
         //override public void DrawModel(Renderer.Camera camera, Vector3 drawPosition, Color drawColor)

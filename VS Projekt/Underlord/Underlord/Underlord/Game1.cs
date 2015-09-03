@@ -16,6 +16,7 @@ namespace Underlord
 {
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        Vars_Func.GameState gamestate;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         BasicEffect effect;
@@ -33,7 +34,8 @@ namespace Underlord
         Minimap minimap;
         WaveController wavecontroller;
 
-        Vector3 temp;
+        bool showIngameMenu, buttonIsPressed, reinitializeDone;
+
         float updateTimeCounter, updates, drawUpdates;
         float frameTimeCounter, frames, drawFrame;
 
@@ -48,6 +50,7 @@ namespace Underlord
 
         protected override void Initialize()
         {
+            gamestate = Vars_Func.GameState.StartMenu;
             hexagonSideLength = 1; //dont change
             mapDrawWidth = 10; //dont go over 15
             planeLength = 50; //need an even number!
@@ -59,6 +62,9 @@ namespace Underlord
             updates = 0;
             drawUpdates = 0;
             interWaveTime = 60000 * 2.0f; //in ms
+            showIngameMenu = false;
+            buttonIsPressed = false;
+            reinitializeDone = false;
 
             Vars_Func.loadContent(Content);
             map = new Map(planeLength, Logic.Vars_Func.HexTyp.Sand, true, hexagonSideLength);
@@ -73,14 +79,19 @@ namespace Underlord
             keyboard = Keyboard.GetState();
             mouseState = Mouse.GetState();
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
-            //minimap = new Minimap(map, new Vector2(graphics.PreferredBackBufferWidth - minimapSize, 0), new Vector2(minimapSize, minimapSize));
+            
+            
+            minimap = new Minimap(map, new Vector2(graphics.PreferredBackBufferWidth - minimapSize, 0), new Vector2(minimapSize, minimapSize));
             GUI.createGUI();
-            System.Diagnostics.Debug.WriteLine("HQ " + map.HQPosition);
-
-            //camera.Position = new Vector3(1.6f*map.HQPosition.X, 1.45f*map.HQPosition.Y, camera.Position.Z);
+            StartMenu_GUI.createGUI();
+            MainMenu_GUI.createGUI();
+            Highscore_GUI.createGUI();
+            Setting_GUI.createGUI();
+            IngameMenu_GUI.createGUI();
 
             base.Initialize();
             Interaction.Game = this;
+            reinitializeDone = true;
         }
 
         public void reinitialize()
@@ -115,7 +126,7 @@ namespace Underlord
             mouseState = Mouse.GetState();
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
             minimap = new Minimap(map, new Vector2(graphics.PreferredBackBufferWidth - minimapSize, 2), new Vector2(minimapSize, minimapSize));
-            System.Diagnostics.Debug.WriteLine("HQ " + map.HQPosition);
+            
 
             base.Initialize();
             Interaction.Game = this;
@@ -136,11 +147,6 @@ namespace Underlord
 
         protected override void Update(GameTime gameTime)
         {
-            if (temp != map.HQDrawPositon)
-            {
-                //System.Diagnostics.Debug.WriteLine("HQ " + map.HQDrawPositon);
-                temp = map.HQDrawPositon;
-            }
             // updates per second
             updateTimeCounter += gameTime.ElapsedGameTime.Milliseconds;
             ++updates;
@@ -155,21 +161,165 @@ namespace Underlord
             keyboard = Keyboard.GetState();
             lastMouseState = mouseState;
             mouseState = Mouse.GetState();
-            mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
-            camera.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, mouseState);
-            view = camera.View;
-            map.update(gameTime, gameTime.ElapsedGameTime.Milliseconds);
-            //// DON'T TOUCH THIS////
+            //mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
+            //camera.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, mouseState);
+            //view = camera.View;
+            //map.update(gameTime, gameTime.ElapsedGameTime.Milliseconds);
+            ////// DON'T TOUCH THIS////
+            
+            //indexOfMiddleHexagon = Vars_Func.gridColision(camera.Target, planeLength, hexagonSideLength);
+            //Vector2 mouseover = Vars_Func.gridColision(mousePosition, planeLength, hexagonSideLength);
 
+            //Vars_Func.resetHexagonColors(map);
 
-            indexOfMiddleHexagon = Vars_Func.gridColision(camera.Target, planeLength, hexagonSideLength);
-            Vector2 mouseover = Vars_Func.gridColision(mousePosition, planeLength, hexagonSideLength);
+            //wavecontroller.update(gameTime, map);
 
-            Vars_Func.resetHexagonColors(map);
+            //Interaction.Update(gameTime, map, mouseover, mouseState, lastMouseState, keyboard);
+            //GUI.update(gameTime, map, mouseState);
 
-            wavecontroller.update(gameTime, map);
+            switch (gamestate)
+            {
+                #region Startmenu
+                case Vars_Func.GameState.StartMenu:
+                    StartMenu_GUI.update(gameTime, mouseState, keyboard);
+                    if (StartMenu_GUI.getGUI_Button() != null && StartMenu_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.StartButton)
+                    {
+                        gamestate = Vars_Func.GameState.MainMenu;
+                    }
+                    break;
+                #endregion
+                #region Mainmenu
+                case Vars_Func.GameState.MainMenu:
+                    MainMenu_GUI.update(gameTime, mouseState, keyboard);
+                    Highscore_GUI.restGUI();
+                    Setting_GUI.restGUI();
 
-            Interaction.Update(gameTime, map, mouseover, mouseState, lastMouseState, keyboard);
+                    if (MainMenu_GUI.getGUI_Button() != null)
+                    {
+                        switch (MainMenu_GUI.getGUI_Button().Typ)
+                        {
+                            case Vars_Func.GUI_Typ.NewGameButton:
+                                reinitialize();
+                                gamestate = Vars_Func.GameState.Ingame;
+                                MainMenu_GUI.restGUI();
+                                break;
+                            case Vars_Func.GUI_Typ.SettingsButton:
+                                gamestate = Vars_Func.GameState.Settings;
+                                break;
+                            case Vars_Func.GUI_Typ.HighScoreButton:
+                                gamestate = Vars_Func.GameState.Highscore;
+                                break;
+                            case Vars_Func.GUI_Typ.QuitButton:
+                                this.Exit();
+                                break;
+                            default: break;
+                        }
+                    }
+                    break;
+                #endregion
+                #region Ingame
+                case Vars_Func.GameState.Ingame:
+                    MainMenu_GUI.restGUI();
+                    if (keyboard.IsKeyDown(Keys.Tab) && !buttonIsPressed)
+                    {
+                        buttonIsPressed = true;
+                        showIngameMenu = !showIngameMenu;
+                    }
+                    if (!keyboard.IsKeyDown(Keys.Tab) && buttonIsPressed)
+                    {
+                        buttonIsPressed = false;
+                    }
+
+                    // Add ingame menu
+                    if (showIngameMenu)
+                    {
+                        IngameMenu_GUI.update(gameTime, mouseState, keyboard);
+                        if (IngameMenu_GUI.getGUI_Button() != null)
+                        {
+                            switch (IngameMenu_GUI.getGUI_Button().Typ)
+                            {
+                                case Vars_Func.GUI_Typ.NewGameButton:
+                                    showIngameMenu = false;
+                                    IngameMenu_GUI.restGUI();
+                                    break;
+                                case Vars_Func.GUI_Typ.SettingsButton:
+                                    gamestate = Vars_Func.GameState.Settings;
+                                    break;
+                                case Vars_Func.GUI_Typ.HighScoreButton:
+                                    gamestate = Vars_Func.GameState.Highscore;
+                                    break;
+                                case Vars_Func.GUI_Typ.StartButton:
+                                    gamestate = Vars_Func.GameState.MainMenu;
+                                    break;
+                                default: break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
+                        camera.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, mouseState);
+                        view = camera.View;
+
+                        map.update(gameTime, gameTime.ElapsedGameTime.Milliseconds);
+                        //// DON'T TOUCH THIS////
+                        indexOfMiddleHexagon = Vars_Func.gridColision(camera.Target, planeLength, hexagonSideLength);
+                        Vector2 mouseover = Vars_Func.gridColision(mousePosition, planeLength, hexagonSideLength);
+                        
+                        Vars_Func.resetHexagonColors(map);
+
+                        wavecontroller.update(gameTime, map);
+                        GUI.update(gameTime, map, mouseState);
+                        Interaction.Update(gameTime, map, mouseover, mouseState, lastMouseState, keyboard);
+                    }
+                    break;
+                #endregion
+                #region Highscore
+                case Vars_Func.GameState.Highscore:
+                    Highscore_GUI.update(gameTime, mouseState, keyboard);
+                    if (showIngameMenu)
+                    {
+                        IngameMenu_GUI.restGUI();
+                        if (Highscore_GUI.getGUI_Button() != null && Highscore_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.StartButton)
+                        {
+                            gamestate = Vars_Func.GameState.Ingame;
+                        }
+                    }
+                    else
+                    {
+                        MainMenu_GUI.restGUI();
+                        if (Highscore_GUI.getGUI_Button() != null && Highscore_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.StartButton)
+                        {
+                            gamestate = Vars_Func.GameState.MainMenu;
+                        }
+                    }
+                    break;
+                #endregion
+                #region Settings
+                case Vars_Func.GameState.Settings:
+                    Setting_GUI.update(gameTime, mouseState, keyboard);
+                    if (showIngameMenu)
+                    {
+                        IngameMenu_GUI.restGUI();
+                        if (Setting_GUI.getGUI_Button() != null && Setting_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.StartButton)
+                        {
+                            gamestate = Vars_Func.GameState.Ingame;
+                        }
+                    }
+                    else
+                    {
+                        MainMenu_GUI.restGUI();
+                        if (Setting_GUI.getGUI_Button() != null && Setting_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.StartButton)
+                        {
+                            gamestate = Vars_Func.GameState.MainMenu;
+                        }
+                    }
+
+                    break;
+                #endregion
+                default:
+                    break;
+            }
             base.Update(gameTime);
         }
 
@@ -192,21 +342,142 @@ namespace Underlord
             effect.CurrentTechnique.Passes[0].Apply();
             map.DrawModel(camera, indexOfMiddleHexagon, camera.Target, mapDrawWidth);
 
-
             spriteBatch.Begin();
 
-            if (Interaction.GameState != Vars_Func.GameState.MainMenu &&
-                Interaction.GameState != Vars_Func.GameState.Highscore &&
-                Interaction.GameState != Vars_Func.GameState.Tutorial)
-            {
-                minimap.drawMinimap(spriteBatch, indexOfMiddleHexagon);
-            }
-            GUI.Draw(spriteBatch, font, mouseState, camera, map);
-            //spriteBatch.DrawString(font, mouseState.X.ToString() + " : " + mouseState.Y.ToString(), new Vector2(20, 200), Color.Black);
-            //spriteBatch.DrawString(font, mousePosition.X.ToString() + " : " + mousePosition.Y.ToString() + " : " + mousePosition.Z.ToString(), new Vector2(20, 220), Color.Black);
-            spriteBatch.DrawString(font, "FPS: " + drawFrame.ToString(), new Vector2(20, 240), Color.Black);
-            spriteBatch.DrawString(font, "UPS: " + drawUpdates.ToString(), new Vector2(20, 260), Color.Black);
+            //if (Interaction.GameState != Vars_Func.GameState.MainMenu &&
+            //    Interaction.GameState != Vars_Func.GameState.Highscore &&
+            //    Interaction.GameState != Vars_Func.GameState.Tutorial)
+            //{
+            //    minimap.drawMinimap(spriteBatch, indexOfMiddleHexagon);
+            //}
+            //GUI.Draw(spriteBatch, font, mouseState, camera, map);
+            //GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+            ////spriteBatch.DrawString(font, mouseState.X.ToString() + " : " + mouseState.Y.ToString(), new Vector2(20, 200), Color.Black);
+            ////spriteBatch.DrawString(font, mousePosition.X.ToString() + " : " + mousePosition.Y.ToString() + " : " + mousePosition.Z.ToString(), new Vector2(20, 220), Color.Black);
+            //spriteBatch.DrawString(font, "FPS: " + drawFrame.ToString(), new Vector2(20, 240), Color.Black);
+            //spriteBatch.DrawString(font, "UPS: " + drawUpdates.ToString(), new Vector2(20, 260), Color.Black);
 
+            switch (gamestate)
+            {
+                #region Startmenu
+                case Vars_Func.GameState.StartMenu:
+                    StartMenu_GUI.Draw(spriteBatch, font);
+                    break;
+                #endregion
+                #region Mainmenu
+                case Vars_Func.GameState.MainMenu:
+                    // Draw the old one unil menu is ready 
+                    if (!MainMenu_GUI.UpdateReady)
+                    {
+                        StartMenu_GUI.Draw(spriteBatch, font);
+                    }
+                    else
+                    {
+                        MainMenu_GUI.Draw(spriteBatch, font);
+                    }
+                    break;
+                #endregion
+                #region Ingame
+                case Vars_Func.GameState.Ingame:
+                    if (reinitializeDone)
+                    {
+                        //minimap.drawMinimap(spriteBatch, indexOfMiddleHexagon);
+                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                        spriteBatch.DrawString(font, mouseState.X.ToString() + " : " + mouseState.Y.ToString(), new Vector2(20, 200), Color.Black);
+                        spriteBatch.DrawString(font, mousePosition.X.ToString() + " : " + mousePosition.Y.ToString() + " : " + mousePosition.Z.ToString(), new Vector2(20, 220), Color.Black);
+                        spriteBatch.DrawString(font, "FPS: " + drawFrame.ToString(), new Vector2(20, 240), Color.Black);
+                        spriteBatch.DrawString(font, "UPS: " + drawUpdates.ToString(), new Vector2(20, 260), Color.Black);
+
+                        if (showIngameMenu)
+                        {
+                            if (!IngameMenu_GUI.UpdateReady)
+                            {
+                                //Do nothing
+                            }
+                            else
+                            {
+                                IngameMenu_GUI.Draw(spriteBatch, font);
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        MainMenu_GUI.Draw(spriteBatch, font);
+                    }
+                    break;
+                #endregion
+                #region Highscore
+                case Vars_Func.GameState.Highscore:
+                    if (showIngameMenu)
+                    {
+                        if (!Highscore_GUI.UpdateReady)
+                        {
+                            IngameMenu_GUI.Draw(spriteBatch, font);
+                        }
+                        else
+                        {
+                            Highscore_GUI.Draw(spriteBatch, font);
+                        }
+                    }
+                    else
+                    {
+                        if (!Highscore_GUI.UpdateReady)
+                        {
+                            MainMenu_GUI.Draw(spriteBatch, font);
+                        }
+                        else
+                        {
+                            Highscore_GUI.Draw(spriteBatch, font);
+                        }
+                    }
+                    break;
+#endregion
+                #region Settings
+                case Vars_Func.GameState.Settings:
+                    if (showIngameMenu)
+                    {
+                        if (!Setting_GUI.UpdateReady)
+                        {
+                            IngameMenu_GUI.Draw(spriteBatch, font);
+                        }
+                        else
+                        {
+                            Setting_GUI.Draw(spriteBatch, font);
+                            if (Setting_GUI.UseFullscreen && !this.graphics.IsFullScreen)
+                            {
+                                this.graphics.ToggleFullScreen();
+                            }
+                            else if (!Setting_GUI.UseFullscreen && this.graphics.IsFullScreen)
+                            {
+                                this.graphics.ToggleFullScreen();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (!Setting_GUI.UpdateReady)
+                        {
+                            MainMenu_GUI.Draw(spriteBatch, font);
+                        }
+                        else
+                        {
+                            Setting_GUI.Draw(spriteBatch, font);
+                            if (Setting_GUI.UseFullscreen && !this.graphics.IsFullScreen)
+                            {
+                                this.graphics.ToggleFullScreen();
+                            }
+                            else if (!Setting_GUI.UseFullscreen && this.graphics.IsFullScreen)
+                            {
+                                this.graphics.ToggleFullScreen();
+                            }
+                        }
+                    }
+                    break;
+                #endregion
+                default:
+                    break;
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);

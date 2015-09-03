@@ -239,18 +239,36 @@ namespace Underlord.Environment
             {
                 case Logic.Vars_Func.GrowObject.Farm:
                     drawPosition = new Vector3(drawPosition.X, drawPosition.Y, drawPosition.Z + Logic.Vars_Func.getGrowObjectParams(growObject).X);
-                    Matrix modelMatrix3 = Matrix.Identity *
+                    Matrix farmModelMatrix = Matrix.Identity *
                     Matrix.CreateScale(Logic.Vars_Func.getGrowObjectParams(growObject).Y) *
                     Matrix.CreateRotationX(Logic.Vars_Func.getGrowObjectParams(growObject).Z) *
                     Matrix.CreateRotationY(0) *
                     Matrix.CreateRotationZ(0) *
                     Matrix.CreateTranslation(drawPosition);
                     Logic.Vars_Func.getGrowModel(growObject).Color = drawColor;
-                    Logic.Vars_Func.getGrowModel(growObject).Draw(camera, modelMatrix3, false, isEnlightend, lightPower);
+                    Logic.Vars_Func.getGrowModel(growObject).Draw(camera, farmModelMatrix, false, isEnlightend, lightPower/2);
                     break;
                 case Logic.Vars_Func.GrowObject.Temple:
+                    //drawPosition = new Vector3(drawPosition.X, drawPosition.Y, drawPosition.Z + Logic.Vars_Func.getGrowObjectParams(growObject).X);
+                    //Matrix templeModelMatrix = Matrix.Identity *
+                    //Matrix.CreateScale(Logic.Vars_Func.getGrowObjectParams(growObject).Y) *
+                    //Matrix.CreateRotationX(Logic.Vars_Func.getGrowObjectParams(growObject).Z) *
+                    //Matrix.CreateRotationY(0) *
+                    //Matrix.CreateRotationZ(0) *
+                    //Matrix.CreateTranslation(drawPosition);
+                    //Logic.Vars_Func.getGrowModel(growObject).Color = drawColor;
+                    //Logic.Vars_Func.getGrowModel(growObject).Draw(camera, templeModelMatrix, false, isEnlightend, lightPower/2);
                     break;
                 case Logic.Vars_Func.GrowObject.Graveyard:
+                    drawPosition = new Vector3(drawPosition.X, drawPosition.Y, drawPosition.Z + Logic.Vars_Func.getGrowObjectParams(growObject).X);
+                    Matrix graveyardModelMatrix = Matrix.Identity *
+                    Matrix.CreateScale(Logic.Vars_Func.getGrowObjectParams(growObject).Y) *
+                    Matrix.CreateRotationX(Logic.Vars_Func.getGrowObjectParams(growObject).Z) *
+                    Matrix.CreateRotationY(0) *
+                    Matrix.CreateRotationZ(0) *
+                    Matrix.CreateTranslation(drawPosition);
+                    Logic.Vars_Func.getGrowModel(growObject).Color = drawColor;
+                    Logic.Vars_Func.getGrowModel(growObject).Draw(camera, graveyardModelMatrix, false, isEnlightend, lightPower/2);
                     break;
                 case Logic.Vars_Func.GrowObject.length:
                     break;

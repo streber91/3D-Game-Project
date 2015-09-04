@@ -21,7 +21,7 @@ namespace Underlord.Logic
 
         bool enabled = true, visable = true, highlightable = false;
         bool move = false, moveAlongX = true, moveAlongY = false;
-        bool selectable = true, useSelectionRect = false;
+        bool selectable = true, pressed = false, mousePressed = false;
         float positionLerpCounter = 0, speed;
         float textYBonus = 0; 
 
@@ -75,6 +75,10 @@ namespace Underlord.Logic
         public bool Highlightable
         {
             set { highlightable = value; }
+        }
+        public bool Pressed
+        {
+            get { return pressed; }
         }
         public bool Move
         {
@@ -269,30 +273,43 @@ namespace Underlord.Logic
 
         private void SetSelection(MouseState mouseState)
         {
-            if (rectangle.Contains(mouseState.X, mouseState.Y) && !useSelectionRect && selectable)
-            {
-                useSelectionRect = true;
-                move = true;
-                int maxX = 0, maxY = 0;
-                foreach (GUI_Element c in childElements)
-                {
-                    if (maxX < (c.Rectangle.X + c.Rectangle.Width))
-                    {
-                        maxX = (c.Rectangle.X + c.Rectangle.Width);
-                    }
-                    if (maxY < (c.Rectangle.Y + c.Rectangle.Height))
-                    {
-                        maxY = (c.Rectangle.Y + c.Rectangle.Height);
-                    }
-                }
-                selectionRectangle = new Rectangle(rectangle.X, rectangle.Y, maxX, maxY);
-            }
+            //if (rectangle.Contains(mouseState.X, mouseState.Y) && !useSelectionRect && selectable)
+            //{
+            //    useSelectionRect = true;
+            //    move = true;
+            //    int maxX = 0, maxY = 0;
+            //    foreach (GUI_Element c in childElements)
+            //    {
+            //        if (maxX < (c.Rectangle.X + c.Rectangle.Width))
+            //        {
+            //            maxX = (c.Rectangle.X + c.Rectangle.Width);
+            //        }
+            //        if (maxY < (c.Rectangle.Y + c.Rectangle.Height))
+            //        {
+            //            maxY = (c.Rectangle.Y + c.Rectangle.Height);
+            //        }
+            //    }
+            //    selectionRectangle = new Rectangle(rectangle.X, rectangle.Y, maxX, maxY);
+            //}
 
-            if (useSelectionRect && !selectionRectangle.Contains(mouseState.X, mouseState.Y) && selectable)
-            {
-                useSelectionRect = false;
-                move = false;
-            }
+            //if (useSelectionRect && !selectionRectangle.Contains(mouseState.X, mouseState.Y) && selectable)
+            //{
+            //    useSelectionRect = false;
+            //    move = false;
+            //}
+            //if (rectangle.Contains(mouseState.X, mouseState.Y) && mouseState.LeftButton == ButtonState.Pressed && !mousePressed)
+            //{
+            //    mousePressed = true;
+            //    move = true;
+            //    pressed = true;
+            //}
+            
+            //if (
+            //     (mouseState.RightButton == ButtonState.Pressed) )
+            //{
+            //    move = false;
+            //    pressed = false;
+            //}
         }
 
         private void MoveForward(GameTime time)

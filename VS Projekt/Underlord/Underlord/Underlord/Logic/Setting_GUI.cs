@@ -38,7 +38,7 @@ namespace Underlord.Logic
             frames.Add(headLineFrame);
             all.Add(headLineFrame);
 
-            headLine = new GUI_Element(new Rectangle(1366 / 2 - 256, 32, 512, 128), "      Settings", Vars_Func.GUI_ElementTyp.TextFieldBig);
+            headLine = new GUI_Element(new Rectangle(1366 / 2 - 256, 32, 512, 128), "        Settings", Vars_Func.GUI_ElementTyp.TextFieldBig);
             headLine.YBonus = 20;
             dummy.Children.Add(headLine);
             all.Add(headLine);
@@ -48,7 +48,7 @@ namespace Underlord.Logic
             frames.Add(returnFrame);
             all.Add(returnFrame);
 
-            returnButton = new GUI_Element(new Rectangle(225 - (384 / 2), 42, 384, 96), "          Back", Vars_Func.GUI_ElementTyp.TextArrow, Vars_Func.GUI_Typ.StartButton);
+            returnButton = new GUI_Element(new Rectangle(225 - (384 / 2), 42, 384, 96), "              Back", Vars_Func.GUI_ElementTyp.TextArrow, Vars_Func.GUI_Typ.StartButton);
             returnButton.Highlightable = true;
             returnButton.YBonus = 15;
             dummy.Children.Add(returnButton);

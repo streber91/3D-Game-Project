@@ -48,7 +48,7 @@ namespace Underlord.Logic
             frames.Add(returnFrame);
             all.Add(returnFrame);
 
-            returnButton = new GUI_Element(new Rectangle(225 - (384 / 2), 42, 384, 96), "          Back", Vars_Func.GUI_ElementTyp.TextArrow, Vars_Func.GUI_Typ.StartButton);
+            returnButton = new GUI_Element(new Rectangle(225 - (384 / 2), 42, 384, 96), "              Back", Vars_Func.GUI_ElementTyp.TextArrow, Vars_Func.GUI_Typ.StartButton);
             returnButton.Highlightable = true;
             returnButton.YBonus = 15;
             dummy.Children.Add(returnButton);

@@ -21,7 +21,7 @@ namespace Underlord.Logic
        public enum SpellType { SummonImp, Fireball, length  }
 
        public enum GameState { StartMenu, MainMenu, Ingame, Settings, Highscore, Tutorial, 
-                               CreateRoom, Build, Mine, MergeRooms, DeleteRoom, BuildUpgrade, Fireball, SummonImp, PlaceAnts, PlaceSkeletons, PlaceFarm, PlaceTemple, PlaceEntrance, ReturnToMainMenu,
+                               CreateRoom, Build, Mine, MergeRooms, DeleteRoom, Upgrade, BuildUpgrade, Fireball, SummonImp, PlaceAnts, PlaceSkeletons, PlaceFarm, PlaceTemple, PlaceEntrance, ReturnToMainMenu,
                                GUI_Tutorial, HQCreature_Tutorial, Creature_Tutorial, Minimap_Tutorial, Nest_Tutorial, PlaceNest_Tutorial, Resources_Tutorial, Upgrades_Tutorial, Wavetimer_Tutorial, Spells_Tutorial, length };
 
        public enum ImpJob { Idle, Harvest, Feed, Mine, MineDiamonds, MineGold, length };
@@ -144,7 +144,7 @@ namespace Underlord.Logic
            GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Buildings//skeleton"));
            GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Buildings//farm"));
            GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Buildings//tempel"));
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Buildings//tempel"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Buildings//entrance"));
            #endregion
 
            //FrameHUD, ButtonHUD, BackgroundHUD, MinimapHUD, RessoucesFrame, RessoucesHUD, RessoucesPapier, InfoHUD
@@ -258,8 +258,8 @@ namespace Underlord.Logic
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));
 
            //Spells (Fireball, SummonImp)
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Scrolls//scroll_88"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Spells//fireball"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Spells//imp"));
 
            //Tutorials
            GUI_Elements.Add(Content.Load<Texture2D>("TEST"));

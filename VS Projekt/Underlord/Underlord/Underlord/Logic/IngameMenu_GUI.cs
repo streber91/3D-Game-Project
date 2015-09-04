@@ -31,7 +31,7 @@ namespace Underlord.Logic
             elements.Add(background);
             all.Add(background);
 
-            GUI_Element newGameButton = new GUI_Element(new Rectangle(1366 / 2 - (384 / 2), 180, 384, 96), "     Continue", Vars_Func.GUI_ElementTyp.TextFieldMiddle, Vars_Func.GUI_Typ.NewGameButton);
+            GUI_Element newGameButton = new GUI_Element(new Rectangle(1366 / 2 - (384 / 2), 180, 384, 96), "      Continue", Vars_Func.GUI_ElementTyp.TextFieldMiddle, Vars_Func.GUI_Typ.NewGameButton);
             newGameButton.Highlightable = true;
             newGameButton.YBonus = 10;
             buttons.Add(newGameButton);
@@ -41,7 +41,7 @@ namespace Underlord.Logic
             frames.Add(settingsFrame);
             all.Add(settingsFrame);
 
-            GUI_Element settingsButton = new GUI_Element(new Rectangle(1366 / 2 - (384 / 2), 296, 384, 96), "     Settings", Vars_Func.GUI_ElementTyp.TextFieldMiddle, Vars_Func.GUI_Typ.SettingsButton);
+            GUI_Element settingsButton = new GUI_Element(new Rectangle(1366 / 2 - (384 / 2), 296, 384, 96), "       Settings", Vars_Func.GUI_ElementTyp.TextFieldMiddle, Vars_Func.GUI_Typ.SettingsButton);
             settingsButton.Highlightable = true;
             settingsButton.YBonus = 10;
             buttons.Add(settingsButton);
@@ -51,7 +51,7 @@ namespace Underlord.Logic
             frames.Add(highscoreFrame);
             all.Add(highscoreFrame);
 
-            GUI_Element highscoreButton = new GUI_Element(new Rectangle(1366 / 2 - (384 / 2), 412, 384, 96), "     Highscore", Vars_Func.GUI_ElementTyp.TextFieldMiddle, Vars_Func.GUI_Typ.HighScoreButton);
+            GUI_Element highscoreButton = new GUI_Element(new Rectangle(1366 / 2 - (384 / 2), 412, 384, 96), "      Highscore", Vars_Func.GUI_ElementTyp.TextFieldMiddle, Vars_Func.GUI_Typ.HighScoreButton);
             highscoreButton.Highlightable = true;
             highscoreButton.YBonus = 10;
             buttons.Add(highscoreButton);
@@ -61,7 +61,7 @@ namespace Underlord.Logic
             frames.Add(quitFrame);
             all.Add(quitFrame);
 
-            GUI_Element quitButton = new GUI_Element(new Rectangle(1366 / 2 - (288 / 2), 528, 288, 72), "     Exit", Vars_Func.GUI_ElementTyp.TextFieldSmall, Vars_Func.GUI_Typ.StartButton);
+            GUI_Element quitButton = new GUI_Element(new Rectangle(1366 / 2 - (288 / 2), 528, 288, 72), "      Exit", Vars_Func.GUI_ElementTyp.TextFieldSmall, Vars_Func.GUI_Typ.StartButton);
             quitButton.Highlightable = true;
             quitButton.YBonus = 10;
             buttons.Add(quitButton);

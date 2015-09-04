@@ -41,7 +41,7 @@ namespace Underlord.Logic
             dummy.Children.Add(textFrame);
             all.Add(textFrame);
 
-            startButton = new GUI_Element(new Rectangle(1366 / 2 - 144, 574, 293, 96), "\n  Press Enter To Start", Vars_Func.GUI_ElementTyp.TextBlance, Vars_Func.GUI_Typ.StartButton);
+            startButton = new GUI_Element(new Rectangle(1366 / 2 - 144, 574, 293, 96), "\n   Press Enter To Start", Vars_Func.GUI_ElementTyp.TextBlance, Vars_Func.GUI_Typ.StartButton);
             startButton.Highlightable = true;
             dummy.Children.Add(startButton);
             all.Add(startButton);

@@ -27,6 +27,8 @@ namespace Underlord.Logic
         static List<GUI_Element> tutorials = new List<GUI_Element>();
         static List<GUI_Element> tutorialButtons = new List<GUI_Element>();
 
+        static bool isButtonPressed = false;
+
         public static void createGUI()
         {
             menuElements.Add(new GUI_Element(new Rectangle(0, 0, 400, 400), "", Vars_Func.GUI_ElementTyp.Menu));
@@ -154,7 +156,7 @@ namespace Underlord.Logic
             GUI_Element demageRightChain = new GUI_Element(new Rectangle(demage.Rectangle.X + 69 - 12 + 5, demage.Rectangle.Y, 12, 90), "", Vars_Func.GUI_ElementTyp.RightChain);
             demage.RightChain = demageRightChain;
             upgrade.Children.Add(demage);
-            upgradeButtons.Add(upgrade);
+            buttons.Add(upgrade);
 
             // Add build-up buttons
             GUI_Element build = new GUI_Element(new Rectangle(31, 675, 69, 60), "", Vars_Func.GUI_ElementTyp.Build);
@@ -238,11 +240,11 @@ namespace Underlord.Logic
             // Finaliy add the build-button 
             buttons.Add(build);
 
-            //buildButtons.Add(tempel);
-            //buildButtons.Add(farm);
-            //buildButtons.Add(graveyard);
-            //buildButtons.Add(nest);
-            //buildButtons.Add(new GUI_Element(new Rectangle(1000, 680, 88, 76), "Entrance", Vars_Func.GUI_ElementTyp.Entrance));
+            buildButtons.Add(tempel);
+            buildButtons.Add(farm);
+            buildButtons.Add(graveyard);
+            buildButtons.Add(nest);
+            buildButtons.Add(entrance);
 
 
             GUI_Element fireball = new GUI_Element(new Rectangle(31 + 110, 285, 69, 60), "", Vars_Func.GUI_ElementTyp.Fireball);
@@ -257,7 +259,7 @@ namespace Underlord.Logic
             // Add room button
             GUI_Element imp = new GUI_Element(new Rectangle(31 + 110, 363, 69, 60), "", Vars_Func.GUI_ElementTyp.SummonImp);
             imp.Highlightable = true;
-            GUI_Element impFrame = new GUI_Element(new Rectangle(imp.Rectangle.X - 11, imp.Rectangle.Y + 45, 96, 24), "   Imp", Vars_Func.GUI_ElementTyp.FrameHUD);
+            GUI_Element impFrame = new GUI_Element(new Rectangle(imp.Rectangle.X - 11, imp.Rectangle.Y + 45, 96, 24), "       Imp", Vars_Func.GUI_ElementTyp.FrameHUD);
             imp.Frame = impFrame;
             GUI_Element impLeftChain = new GUI_Element(new Rectangle(imp.Rectangle.X - 5, imp.Rectangle.Y, 12, 90), "", Vars_Func.GUI_ElementTyp.LeftChain);
             imp.LeftChain = impLeftChain;
@@ -274,6 +276,10 @@ namespace Underlord.Logic
             //buttons.Add(new GUI_Element(new Rectangle(480, 680, 88, 76), "  Nest(N)", Vars_Func.GUI_ElementTyp.Build));
             //buttons.Add(new GUI_Element(new Rectangle(10, 110, 88, 76), "  Fireball", Vars_Func.GUI_ElementTyp.Fireball));
             //buttons.Add(new GUI_Element(new Rectangle(110, 110, 88, 76), "  Imp", Vars_Func.GUI_ElementTyp.SummonImp));
+
+            upgradeButtons.Add(demage);
+            upgradeButtons.Add(live);
+            upgradeButtons.Add(speed);
 
             //upgradeButtons.Add(new GUI_Element(new Rectangle(600, 680, 88, 76), "Dmg", Vars_Func.GUI_ElementTyp.DamageUpgrade));
             //upgradeButtons.Add(new GUI_Element(new Rectangle(700, 680, 88, 76), "Live", Vars_Func.GUI_ElementTyp.LifeUpgrade));
@@ -385,6 +391,10 @@ namespace Underlord.Logic
             get { return creature; }
             set { creature = value; }
         }
+        public static bool IsPressed
+        {
+            get { return isButtonPressed; }
+        }
         #endregion
 
         #region Update
@@ -395,9 +405,23 @@ namespace Underlord.Logic
                 u.Update(time, map, mouseState);
             }
 
+            bool pressed = false;
             foreach (GUI_Element b in buttons)
             {
                 b.Update(time, map, mouseState);
+                if (b.Pressed)
+                {
+                    pressed = true;
+                }
+            }
+
+            if (pressed && !isButtonPressed)
+            {
+                isButtonPressed = true;
+            }
+            if (!pressed && isButtonPressed)
+            {
+                isButtonPressed = false; 
             }
         }
         #endregion
@@ -871,10 +895,9 @@ namespace Underlord.Logic
             if (enableUpgrades)
             {
                 // Enable the upgrade buttons
-                foreach (GUI_Element b in upgradeButtons)
+                foreach (GUI_Element b in buttons)
                 {
-                    if (!b.Enabled)
-                    {
+                    if(b.ElementTyp == Vars_Func.GUI_ElementTyp.Upgrade && !b.Enabled){
                         b.Enabled = true;
                     }
                 }
@@ -882,9 +905,9 @@ namespace Underlord.Logic
             else
             {
                 // Disable the upgrade buttons
-                foreach (GUI_Element b in upgradeButtons)
+                foreach (GUI_Element b in buttons)
                 {
-                    if (b.Enabled)
+                    if (b.ElementTyp == Vars_Func.GUI_ElementTyp.Upgrade && b.Enabled)
                     {
                         b.Enabled = false;
                     }

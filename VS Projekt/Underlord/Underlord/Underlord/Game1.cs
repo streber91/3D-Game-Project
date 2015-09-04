@@ -220,15 +220,18 @@ namespace Underlord
                 #region Ingame
                 case Vars_Func.GameState.Ingame:
                     MainMenu_GUI.restGUI();
-                    if (keyboard.IsKeyDown(Keys.Tab) && !buttonIsPressed)
-                    {
-                        buttonIsPressed = true;
-                        showIngameMenu = !showIngameMenu;
-                    }
-                    if (!keyboard.IsKeyDown(Keys.Tab) && buttonIsPressed)
-                    {
-                        buttonIsPressed = false;
-                    }
+                    //if (!GUI.IsPressed)
+                    //{
+                        if (keyboard.IsKeyDown(Keys.Tab) && !buttonIsPressed)
+                        {
+                            buttonIsPressed = true;
+                            showIngameMenu = !showIngameMenu;
+                        }
+                        if (!keyboard.IsKeyDown(Keys.Tab) && buttonIsPressed)
+                        {
+                            buttonIsPressed = false;
+                        }
+                    //}
 
                     // Add ingame menu
                     if (showIngameMenu)

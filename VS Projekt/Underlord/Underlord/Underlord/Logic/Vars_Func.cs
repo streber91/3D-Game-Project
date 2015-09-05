@@ -12,7 +12,7 @@ namespace Underlord.Logic
 {
    static class Vars_Func
     {
-       public enum ThingTyp { Wall, Upgrade, Nest, DungeonCreature, HeroCreature, NeutralCreature, HQCreature, Imp, Farm, Temple, length };
+       public enum ThingTyp { Wall, Upgrade, Nest, DungeonCreature, HeroCreature, NeutralCreature, HQCreature, Imp, length };
        public enum CreatureTyp { Beetle, Knight, HQCreatur, Skeleton, length };
        public enum NestTyp { Beetle, Entrance, Temple, Farm, Skeleton, length };
        public enum UpgradeTyp {Damage, Life, Speed, length };

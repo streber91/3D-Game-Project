@@ -125,7 +125,7 @@ namespace Underlord
             keyboard = Keyboard.GetState();
             mouseState = Mouse.GetState();
             mousePosition = Vars_Func.mousepos(GraphicsDevice, mouseState, projection, view);
-            minimap = new Minimap(map, new Vector2(graphics.PreferredBackBufferWidth - minimapSize, 2), new Vector2(minimapSize, minimapSize));
+            minimap = new Minimap(map, new Vector2(graphics.PreferredBackBufferWidth - minimapSize, 0), new Vector2(minimapSize, minimapSize));
             
 
             base.Initialize();
@@ -300,7 +300,7 @@ namespace Underlord
                 #endregion
                 #region Settings
                 case Vars_Func.GameState.Settings:
-                    Setting_GUI.update(gameTime, mouseState, keyboard);
+                    Setting_GUI.update(gameTime, mouseState, lastMouseState, keyboard);
                     if (showIngameMenu)
                     {
                         IngameMenu_GUI.restGUI();
@@ -386,10 +386,10 @@ namespace Underlord
                     {
                         //minimap.drawMinimap(spriteBatch, indexOfMiddleHexagon);
                         GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
-                        spriteBatch.DrawString(font, mouseState.X.ToString() + " : " + mouseState.Y.ToString(), new Vector2(20, 200), Color.Black);
-                        spriteBatch.DrawString(font, mousePosition.X.ToString() + " : " + mousePosition.Y.ToString() + " : " + mousePosition.Z.ToString(), new Vector2(20, 220), Color.Black);
-                        spriteBatch.DrawString(font, "FPS: " + drawFrame.ToString(), new Vector2(20, 240), Color.Black);
-                        spriteBatch.DrawString(font, "UPS: " + drawUpdates.ToString(), new Vector2(20, 260), Color.Black);
+                        //spriteBatch.DrawString(font, mouseState.X.ToString() + " : " + mouseState.Y.ToString(), new Vector2(20, 200), Color.Black);
+                        //spriteBatch.DrawString(font, mousePosition.X.ToString() + " : " + mousePosition.Y.ToString() + " : " + mousePosition.Z.ToString(), new Vector2(20, 220), Color.Black);
+                        //spriteBatch.DrawString(font, "FPS: " + drawFrame.ToString(), new Vector2(20, 240), Color.Black);
+                        //spriteBatch.DrawString(font, "UPS: " + drawUpdates.ToString(), new Vector2(20, 260), Color.Black);
 
                         if (showIngameMenu)
                         {

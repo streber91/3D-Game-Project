@@ -164,7 +164,7 @@ namespace Underlord.Logic
             GUI_Element demage = new GUI_Element(new Rectangle(upgrade.Rectangle.X + 100, 597, 69, 60), "", Vars_Func.GUI_ElementTyp.DamageUpgrade);
             demage.Visable = false;
             demage.Highlightable = true;
-            GUI_Element demageFrame = new GUI_Element(new Rectangle(demage.Rectangle.X - 11, demage.Rectangle.Y + 45, 96, 24), "  Demage", Vars_Func.GUI_ElementTyp.FrameHUD);
+            GUI_Element demageFrame = new GUI_Element(new Rectangle(demage.Rectangle.X - 11, demage.Rectangle.Y + 45, 96, 24), "  Damage", Vars_Func.GUI_ElementTyp.FrameHUD);
             demageFrame.Visable = false;
             demage.Frame = demageFrame;
             GUI_Element demageLeftChain = new GUI_Element(new Rectangle(demage.Rectangle.X - 5, demage.Rectangle.Y, 12, 90), "", Vars_Func.GUI_ElementTyp.LeftChain);
@@ -310,7 +310,7 @@ namespace Underlord.Logic
             
             #region Tutorials Buttons
             //Set the commen gui tutorial button
-            GUI_Element GUI_t = new GUI_Element(new Rectangle(0, 0, 20, 20), " ?", Vars_Func.GUI_ElementTyp.GUI_TutorialButton);
+            GUI_Element GUI_t = new GUI_Element(new Rectangle(13, 278, 20, 20), " ?", Vars_Func.GUI_ElementTyp.GUI_TutorialButton);
             GUI_t.Highlightable = true;
             tutorialButtons.Add(GUI_t);
 
@@ -1040,9 +1040,12 @@ namespace Underlord.Logic
 
             #region Draw Ressources
             //draw the player ressources
-            spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), "Gold: " + Player.Gold, new Vector2(120, 50), Color.Black);
-            spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), "Mana: " + Player.Mana, new Vector2(120, 125), Color.Black);
-            spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), "Food: " + Player.Food, new Vector2(110, 200), Color.Black);
+            spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), "Gold: ", new Vector2(120, 50), Color.Black);
+            spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), Player.Gold.ToString(), new Vector2(120, 70), Color.Black);
+            spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), "Mana: ", new Vector2(120, 125), Color.Black);
+            spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), Player.Mana.ToString(), new Vector2(120, 145), Color.Black);
+            spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), "Food: ", new Vector2(120, 200), Color.Black);
+            spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), Player.Food.ToString(), new Vector2(120, 220), Color.Black);
             #endregion
 
             bool enableUpgrades = false;
@@ -1059,7 +1062,8 @@ namespace Underlord.Logic
                     }
                     break;
                 case Vars_Func.ThingTyp.Nest:
-                    if (nest.Typ != Vars_Func.NestTyp.Entrance)
+                    if (nest.Typ == Vars_Func.NestTyp.Beetle ||
+                        nest.Typ == Vars_Func.NestTyp.Skeleton)
                     {
                         //draw the tutorialButton for upgradeButtons and nests
                         if (showHelp)
@@ -1093,11 +1097,21 @@ namespace Underlord.Logic
                         spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Live: " + nest.NextUpgradeCost.ToString() + " Gold", new Vector2(1110, 680), Color.Black);
                         spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Speed: " + nest.NextUpgradeCost.ToString() + " Gold", new Vector2(1110, 700), Color.Black);
                     }
-                    else
+                    else if (nest.Typ == Vars_Func.NestTyp.Entrance)
                     {
                         alreadyDrawing = true;
                         spriteBatch.DrawString(font, "Typ: " + nest.Typ.ToString(), new Vector2(1110, 520), Color.Black);
-                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Start Age: ", new Vector2(1110, 540), Color.Black);
+                    }
+                    else if (nest.Typ == Vars_Func.NestTyp.Farm)
+                    {
+                        spriteBatch.DrawString(font, "Typ: " + nest.Typ.ToString(), new Vector2(1110, 520), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Food per second: " + (int)(nest.NestHexagons.Count / 10) + "." + (nest.NestHexagons.Count % 10), new Vector2(1110, 540), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Food: " + nest.Food, new Vector2(1110, 560), Color.Black);
+                    }
+                    else if (nest.Typ == Vars_Func.NestTyp.Temple)
+                    {
+                        spriteBatch.DrawString(font, "Typ: " + nest.Typ.ToString(), new Vector2(1110, 520), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Mana per second: " + (int)(nest.NestHexagons.Count / 10) + "." + (nest.NestHexagons.Count%10), new Vector2(1110, 540), Color.Black);
                     }
                     break;
                 case Vars_Func.ThingTyp.DungeonCreature:

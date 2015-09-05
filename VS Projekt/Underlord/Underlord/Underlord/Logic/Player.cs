@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace Underlord.Logic
 {
@@ -31,6 +32,23 @@ namespace Underlord.Logic
             set { score = value; }
         }
         #endregion
+        //TODO
+        public static void saveScore(int score)
+        {
+
+        }
+
+        public static String loadString(String filename)
+        {
+            Char[] result = new Char[1000];
+
+            using (StreamReader sr = new StreamReader(filename))
+            {
+                sr.ReadBlock(result, 0, 1000);
+            }
+
+            return new String(result);
+        }
 
         public static bool enoughFood(int foodneeded)
         {

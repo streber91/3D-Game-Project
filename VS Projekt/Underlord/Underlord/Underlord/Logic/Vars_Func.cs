@@ -70,6 +70,7 @@ namespace Underlord.Logic
        static BasicModel FarmInput;
        static BasicModel TempelStone;
        static BasicModel TempelBath;
+       static FireBallModel FireBall;
 
        static Texture2D pixel;
        static List<SpriteFont> GUI_Fonts;
@@ -100,6 +101,7 @@ namespace Underlord.Logic
        public static BasicModel getFarmInput() { return FarmInput; }
        public static BasicModel getTempelStone() { return TempelStone; }
        public static BasicModel getTempelBath() { return TempelBath; }
+       public static FireBallModel getFireBall() { return FireBall; }
 
        public static Texture2D getPixel() { return pixel; }
        public static SpriteFont getGUI_Font(GUI_Font typ) { return GUI_Fonts[(int)typ]; }
@@ -366,6 +368,14 @@ namespace Underlord.Logic
            TorchFireModel = Content.Load<Model>("Models/Torch//torch_fire_HEX_01");
            // Add god' ray model
            EntranceRayModel = new LightModel(Content.Load<Model>("Models/Entrance/entrance_rays_GEO_01"));
+
+           FireBall = new FireBallModel(Content.Load<Model>("Models/Fire/fireball_GEO_01"));
+           FireBallModel fire1 = new FireBallModel(Content.Load<Model>("Models/Fire/fire_GEO_01"));
+           FireBallModel fire2 = new FireBallModel(Content.Load<Model>("Models/Fire/fire_GEO_01"));
+           FireBallModel fire3 = new FireBallModel(Content.Load<Model>("Models/Fire/fire_GEO_01"));
+           FireBall.Fires.Add(fire1);
+           FireBall.Fires.Add(fire2);
+           FireBall.Fires.Add(fire3);
        }
 
        public static Vector3 mousepos(GraphicsDevice graphics, MouseState mousestate, Matrix projection, Matrix view)

@@ -1,0 +1,6 @@
+In Underlord you build a dungeon and defend your head against waves of heros.
+You increase your score by defeating Heros.
+The game ends when your head is destroyed or you quit per menu.
+If your score is high enough it gets saved as higescore.
+Ingame you find tutorialbuttons which explain the gamemechanics.
+The camera can be rotated by Q and E.

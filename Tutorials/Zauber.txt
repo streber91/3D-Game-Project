@@ -1,6 +1,0 @@
-Zauber könne gewirkt werden indem sie per linksklick ausgewählt.
-und anschließend mit linksklick an der gewünschten Position gewirkt werden.
-natürlich nur wenn genügend Mana vorhanden ist.
-Der Feuerball fügt ALLEN Kreaturen auf dem Zielfeld und darum herum Schaden zu.
-Der Zauber Imbbeschwörung beschwört einen weiteren Imp in der Nähe des Hauptgebäudes.
-Die Kosten sind abhängig von der Anzahl vorhandener Imps.

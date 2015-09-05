@@ -1,4 +1,0 @@
-Von links nach rechts haben die Buttons folgende Funktionen:
-Grabauftrag, Raum erstellen, Räume Zusammenfügen, Raum löschen, Gebäudebau
-Raum zusammenfügen fügt alle an das angeklickte Hexagon angrenzende und leere Räume dem angeklickten Raum hinzu.
-Nur leere Räume können gelöscht werden.

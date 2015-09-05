@@ -186,6 +186,9 @@ namespace Underlord.Entity
                     map.getHexagonAt(position).IsHQ = true;
                     map.getHexagonAt(position).EnlightendHexagon(map);
                     currentState = Vars_Func.CreatureState.PingPong;
+
+                    // Some Fireball Test
+                    map.getHexagonAt(position).Fireball = Vars_Func.getFireBall();
                     break;
             }
             this.model = new AnimationModel(Vars_Func.getCreatureModell(typ).Model);
@@ -229,6 +232,9 @@ namespace Underlord.Entity
             }
             else
             {
+                //Update the fireball
+                Vars_Func.getFireBall().Update(time);
+
                 if (currentState == Vars_Func.CreatureState.OpenMouth && (positionLerpCounter / (1000 * 1 / speed)) < 1)
                 {
                     positionLerpCounter += (float)time.ElapsedGameTime.Milliseconds;

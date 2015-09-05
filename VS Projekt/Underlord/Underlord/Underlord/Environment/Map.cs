@@ -246,22 +246,22 @@ namespace Underlord.Environment
                     jobsWaiting.Dequeue();
                     mineJobs.Remove(position);
                 }
-                else
-                {
-                    foreach (Job j in jobsInProgress)
-                    {
-                        if (j.Destination == position) tmp = j;
-                    }
-                    if (tmp != null)
-                    {
-                        foreach (Imp i in impList)
-                        {
-                            if (i.CurrentJob == tmp) i.CurrentJob = null;
-                        }
-                        jobsInProgress.Remove(tmp);
-                        mineJobs.Remove(position);
-                    }
-                }
+                //else
+                //{
+                //    foreach (Job j in jobsInProgress)
+                //    {
+                //        if (j.Destination == position) tmp = j;
+                //    }
+                //    if (tmp != null)
+                //    {
+                //        foreach (Imp i in impList)
+                //        {
+                //            if (i.CurrentJob == tmp) i.CurrentJob = null;
+                //        }
+                //        jobsInProgress.Remove(tmp);
+                //        mineJobs.Remove(position);
+                //    }
+                //}
             }
         }
 
@@ -485,7 +485,7 @@ namespace Underlord.Environment
         //}
         #endregion
 
-        public void update(GameTime gameTime, float timeSinceLastUpdate)
+        public void update(GameTime gameTime, float timeSinceLastUpdate, Game1 game1)
         {
             while (jobsDone.Count > 0)
             {
@@ -532,7 +532,13 @@ namespace Underlord.Environment
             {
                 if (dyingCreatures[0].getThingTyp() == Vars_Func.ThingTyp.HeroCreature)
                 {
-                    Player.Score++;
+                    Player.Score += entrances.Count;
+                }
+                if (dyingCreatures[0].getThingTyp() == Vars_Func.ThingTyp.HQCreature)
+                {
+                    Player.saveScore();  
+                    Interaction.GameState = Vars_Func.GameState.MainMenu;
+                    game1.reinitialize();
                 }
                 remove(dyingCreatures[0]);
             }

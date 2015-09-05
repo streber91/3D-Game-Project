@@ -1,0 +1,3 @@
+Nests spawn units and send them to theirs targetposition.
+Nests grow over time if there is space in  their room.
+Nests need food for spawning and growing.

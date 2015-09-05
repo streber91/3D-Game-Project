@@ -11,10 +11,6 @@ namespace Underlord.Logic
         int startage, numberEnemys;
         float spawncounter;
 
-        #region Properties
-
-        #endregion
-
         #region Constructor
         public Wave(int startage, int numberEnemys)
         {

@@ -25,14 +25,13 @@ namespace Underlord
         Camera camera;
         SpriteFont font;
         int planeLength, minimapSize, mapDrawWidth;
-        float hexagonSideLength, interWaveTime;
+        float hexagonSideLength;
         KeyboardState keyboard;
         MouseState mouseState;
         MouseState lastMouseState;
         Vector3 mousePosition;
         Vector2 indexOfMiddleHexagon;
         Minimap minimap;
-        WaveController wavecontroller;
 
         bool showIngameMenu, buttonIsPressed, reinitializeDone;
 
@@ -61,7 +60,6 @@ namespace Underlord
             updateTimeCounter = 0;
             updates = 0;
             drawUpdates = 0;
-            interWaveTime = 60000 * 2.0f; //in ms
             showIngameMenu = false;
             buttonIsPressed = false;
             reinitializeDone = false;
@@ -69,7 +67,6 @@ namespace Underlord
             Vars_Func.loadContent(Content);
             map = new Map(planeLength, Logic.Vars_Func.HexTyp.Sand, true, hexagonSideLength);
             Mapgenerator.generateMap(map, planeLength, (int)(planeLength / 10), (int)(planeLength / 5));
-            wavecontroller = new WaveController(interWaveTime);
 
             //cameraposition HQ.X * 1.5, HQ.Y * 1.75
             camera = new Camera(new Vector3((map.HQPosition.X * 1.5f) + 1, (map.HQPosition.Y * 1.75f) - 10 + 0.875f, 11), new Vector3((map.HQPosition.X * 1.5f) + 1, (map.HQPosition.Y * 1.75f) + 0.875f, 0),
@@ -99,7 +96,7 @@ namespace Underlord
             Player.Gold = 10000;
             Player.Mana = 10000;
             Player.Food = 100;
-            Player.Score = 0;
+            Player.Score = 10;
             Spells.SummonImpCost = 0;
             GUI.SelectedThingTyp = Vars_Func.ThingTyp.length;
             hexagonSideLength = 1; //dont change
@@ -112,11 +109,10 @@ namespace Underlord
             updateTimeCounter = 0;
             updates = 0;
             drawUpdates = 0;
-            interWaveTime = 60000 * 2.0f; //in ms
+            WaveController.restart();
 
             map = new Map(planeLength, Logic.Vars_Func.HexTyp.Sand, true, hexagonSideLength);
             Mapgenerator.generateMap(map, planeLength, (int)(planeLength / 10), (int)(planeLength / 5));
-            wavecontroller = new WaveController(interWaveTime);
 
             camera = new Camera(new Vector3((map.HQPosition.X * 1.5f) + 1, (map.HQPosition.Y * 1.75f) - 10 + 0.875f, 11), new Vector3((map.HQPosition.X * 1.5f) + 1, (map.HQPosition.Y * 1.75f) + 0.875f, 0),
                                 Vector3.UnitZ, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f, planeLength, hexagonSideLength);
@@ -220,8 +216,8 @@ namespace Underlord
                 #region Ingame
                 case Vars_Func.GameState.Ingame:
                     MainMenu_GUI.restGUI();
-                    //if (!GUI.IsPressed)
-                    //{
+                    Setting_GUI.restGUI();
+                    Highscore_GUI.restGUI();
                         if (keyboard.IsKeyDown(Keys.Tab) && !buttonIsPressed)
                         {
                             buttonIsPressed = true;
@@ -231,7 +227,6 @@ namespace Underlord
                         {
                             buttonIsPressed = false;
                         }
-                    //}
 
                     // Add ingame menu
                     if (showIngameMenu)
@@ -252,6 +247,7 @@ namespace Underlord
                                     gamestate = Vars_Func.GameState.Highscore;
                                     break;
                                 case Vars_Func.GUI_Typ.StartButton:
+                                    Player.saveScore();
                                     reinitialize();
                                     gamestate = Vars_Func.GameState.MainMenu;
                                     break;
@@ -265,14 +261,14 @@ namespace Underlord
                         camera.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, mouseState);
                         view = camera.View;
 
-                        map.update(gameTime, gameTime.ElapsedGameTime.Milliseconds);
+                        map.update(gameTime, gameTime.ElapsedGameTime.Milliseconds, this);
                         //// DON'T TOUCH THIS////
                         indexOfMiddleHexagon = Vars_Func.gridColision(camera.Target, planeLength, hexagonSideLength);
                         Vector2 mouseover = Vars_Func.gridColision(mousePosition, planeLength, hexagonSideLength);
                         
                         Vars_Func.resetHexagonColors(map);
 
-                        wavecontroller.update(gameTime, map);
+                        WaveController.update(gameTime, map);
                         GUI.update(gameTime, map, mouseState);
                         Interaction.Update(gameTime, map, mouseover, mouseState, lastMouseState, keyboard);
                     }
@@ -339,7 +335,7 @@ namespace Underlord
                 frameTimeCounter -= 1000;
             }
 
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             effect.View = camera.View;
             effect.Projection = camera.Projection;
             effect.VertexColorEnabled = true;

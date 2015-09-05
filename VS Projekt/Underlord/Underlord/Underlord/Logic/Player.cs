@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace Underlord.Logic
 {
@@ -31,6 +32,36 @@ namespace Underlord.Logic
             set { score = value; }
         }
         #endregion
+        
+        public static void saveScore()
+        {
+            Char[] tmp;
+            using (StreamReader sr = new StreamReader("Content/Highscore.txt", Encoding.UTF7, false))
+            {
+                tmp = new Char[sr.BaseStream.Length];
+                sr.ReadBlock(tmp, 0, (int)sr.BaseStream.Length);
+            }
+            int highscore = Int32.Parse(new String(tmp));
+            if (score > highscore)
+            {
+                TextWriter writer = new StreamWriter("Content/Highscore.txt");
+                writer.Write(score);
+                writer.Flush();
+                writer.Close();
+            }
+        }
+
+        public static String loadString(String filename)
+        {
+            Char[] result;
+            using (StreamReader sr = new StreamReader(filename, Encoding.UTF7, false))
+            {
+                result = new Char[sr.BaseStream.Length];
+                sr.ReadBlock(result, 0, (int)sr.BaseStream.Length);
+            }
+
+            return new String(result);
+        }
 
         public static bool enoughFood(int foodneeded)
         {

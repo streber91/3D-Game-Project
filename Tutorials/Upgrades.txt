@@ -1,2 +1,0 @@
-Upgrades werden wie Nester Plaziert und verstärken die von ihrem Nest Produzierten Kreaturen.
-Von links nach rechts sind die Upgrades Schaden, Leben und Geschwindigkeit(Bewegung und Angriff)

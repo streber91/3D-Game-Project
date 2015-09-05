@@ -1,0 +1,4 @@
+The reccources you can use.
+Gold: used to build Upgrades and Buildings
+Mana: used to cast Speels
+Nahrung: used for maintenance of nests

@@ -23,7 +23,7 @@ namespace Underlord.Logic
         bool move = false, moveAlongX = true, moveAlongY = false;
         bool selectable = true, pressed = false, mousePressed = false;
         float positionLerpCounter = 0, speed;
-        float textYBonus = 0; 
+        float textYBonus = 0, textXBonus = 0; 
 
         #region Properties
         public Vars_Func.GUI_ElementTyp ElementTyp
@@ -125,6 +125,10 @@ namespace Underlord.Logic
         public float YBonus
         {
             set { textYBonus = value; }
+        }
+        public float XBonus
+        {
+            set { textXBonus = value; }
         } 
         #endregion
         
@@ -178,6 +182,7 @@ namespace Underlord.Logic
                 this.SetColor(mouseState);
                 // Set selection
                 this.SetSelection(mouseState);
+            }
                 // Move children
                 if (move)
                 {
@@ -195,7 +200,7 @@ namespace Underlord.Logic
                         this.UpdatePosition(c);
                     }
                 }
-            }
+            
             // Update children
             foreach (GUI_Element c in childElements)
             {
@@ -369,13 +374,6 @@ namespace Underlord.Logic
         }
         #endregion
 
-        //public void Draw(SpriteBatch spriteBatch, SpriteFont font, Color spriteColor)
-        //{
-        //    if (elementTyp == Vars_Func.GUI_ElementTyp.BottomHUD) spriteBatch.Draw(Vars_Func.getGUI_ElementTextures(elementTyp), new Vector2(rectangle.X, rectangle.Y), Color.Red);
-        //    else spriteBatch.Draw(Vars_Func.getGUI_ElementTextures(elementTyp), new Vector2(rectangle.X, rectangle.Y), spriteColor);
-        //    spriteBatch.DrawString(font, text, new Vector2(rectangle.X, rectangle.Y+30), Color.Black);
-        //}
-
         #region Drawing
         public void Draw(SpriteBatch spriteBatch, SpriteFont font)
         {
@@ -406,7 +404,7 @@ namespace Underlord.Logic
                 //else spriteBatch.Draw(Vars_Func.getGUI_ElementTextures(elementTyp), new Vector2(rectangle.X, rectangle.Y), spriteColor);
 
                 else spriteBatch.Draw(Vars_Func.getGUI_ElementTextures(elementTyp), currentRectangle, spriteColor);
-                spriteBatch.DrawString(font, text, new Vector2(currentRectangle.X, currentRectangle.Y + 2 + textYBonus), Color.Black);
+                spriteBatch.DrawString(font, text, new Vector2(currentRectangle.X + textXBonus, currentRectangle.Y + 2 + textYBonus), Color.Black);
 
                 if (frameElement != null)
                 {

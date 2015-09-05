@@ -1,0 +1,6 @@
+Creatures are hostile Heroes or creatures
+from on of your nests.
+You can't comand them direkt and they attack
+everithing hostile insigth. They ages over time.
+While heroes grow stronger over time, yours
+become stronger, then weaker and die at last.

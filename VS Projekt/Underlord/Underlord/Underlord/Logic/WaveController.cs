@@ -8,7 +8,7 @@ namespace Underlord.Logic
 {
     static class WaveController
     {
-        static float timeCounter, interWaveTime = 60000 * 1;
+        static float timeCounter, interWaveTime = 60000 * 3.0f;
         static int waveCounter;
 
         #region Properties
@@ -26,6 +26,7 @@ namespace Underlord.Logic
         {
             timeCounter = 0;
             waveCounter = 0;
+            interWaveTime = 60000 * 3.0f;
         }
 
         public static void update(GameTime gameTime, Environment.Map map)
@@ -36,6 +37,7 @@ namespace Underlord.Logic
                 map.Waves.Add(new Wave(waveCounter * 20, (int)(5 + waveCounter / 3)));
                 ++waveCounter;
                 timeCounter -= interWaveTime;
+                interWaveTime = Math.Max(interWaveTime - (60000 * 0.5f), 60000);
             }
         }
     }

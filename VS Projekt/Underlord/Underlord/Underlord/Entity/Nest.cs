@@ -13,7 +13,7 @@ namespace Underlord.Entity
         List<Upgrade> upgrades;
         int[] upgradeCount = new int[3];
         List<Vector2> nestHexagons, possibleNextNestHexagons;
-        float nutrition, maxNutrition, growCounter, spawnCounter, foodCounter;
+        float nutrition, maxNutrition, growCounter, spawnCounter, foodCounter, rotationSpeed;
         int food, nextUpgradeCost;
         Boolean getsFeeded, getsHarvested;
         Vector2 targetPosition, position;
@@ -348,6 +348,47 @@ namespace Underlord.Entity
 
             Vars_Func.getNestModell(typ).Color = drawColor;
             Vars_Func.getNestModell(typ).Draw(camera, modelMatrix, false, isEnlightend, lightPower/2);
+
+
+            if (typ == Vars_Func.NestTyp.Farm)
+            {
+                Vars_Func.getFarmInput().Color = drawColor;
+                float zValue = MathHelper.Lerp(0.4f, -0.1f, ((float)(Player.Food) / 3000));
+                Vector3 farmPostion = new Vector3(drawPosition.X, drawPosition.Y, drawPosition.Z - zValue);
+                Matrix farmMatrix = Matrix.Identity *
+                Matrix.CreateScale(Vars_Func.getNestParams(typ).Y) *
+                Matrix.CreateRotationX(Vars_Func.getNestParams(typ).Z) *
+                Matrix.CreateRotationY(0) *
+                Matrix.CreateRotationZ(0) *
+                Matrix.CreateTranslation(farmPostion);
+                Vars_Func.getFarmInput().Draw(camera, farmMatrix, false, isEnlightend, lightPower / 2);
+            }
+
+            else if (typ == Vars_Func.NestTyp.Temple)
+            {
+                Vars_Func.getTempelBath().Color = drawColor;
+                Vars_Func.getTempelStone().Color = drawColor;
+
+                float zRoationSpeed = MathHelper.Lerp(0.1f, 1, ((float)(Player.Mana) / 30000));
+                rotationSpeed += zRoationSpeed;
+
+                Matrix tempelMatrix = Matrix.Identity *
+                Matrix.CreateScale(Vars_Func.getNestParams(typ).Y) *
+                Matrix.CreateRotationX(Vars_Func.getNestParams(typ).Z) *
+                Matrix.CreateRotationY(0) *
+                Matrix.CreateRotationZ(rotationSpeed) *
+                Matrix.CreateTranslation(drawPosition);
+                Vars_Func.getTempelStone().Draw(camera, tempelMatrix, false, isEnlightend, lightPower / 2);
+
+                Vector3 tempelBathPosition = new Vector3(drawPosition.X, drawPosition.Y, drawPosition.Z +1f);
+                Matrix tempelBathMatrix = Matrix.Identity *
+                Matrix.CreateScale(10) *
+                Matrix.CreateRotationX(Vars_Func.getNestParams(typ).Z) *
+                Matrix.CreateRotationY(0) *
+                Matrix.CreateRotationZ(0) *
+                Matrix.CreateTranslation(tempelBathPosition);
+                Vars_Func.getTempelBath().Draw(camera, tempelBathMatrix, false, isEnlightend, lightPower / 2);
+            }
         }
 
         //override public void DrawModel(Renderer.Camera camera, Vector3 drawPosition, Color drawColor)

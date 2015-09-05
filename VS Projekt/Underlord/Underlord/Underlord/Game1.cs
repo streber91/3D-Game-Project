@@ -96,8 +96,8 @@ namespace Underlord
 
         public void reinitialize()
         {
-            Player.Gold = 100;
-            Player.Mana = 100;
+            Player.Gold = 10000;
+            Player.Mana = 10000;
             Player.Food = 100;
             Player.Score = 0;
             Spells.SummonImpCost = 0;

@@ -112,6 +112,7 @@
     <Compile Include="Animation\Bone.cs" />
     <Compile Include="Animation\ImpModel.cs" />
     <Compile Include="Basic\BasicModel.cs" />
+    <Compile Include="Basic\FireBallModel.cs" />
     <Compile Include="Basic\FireModel.cs" />
     <Compile Include="Basic\LightModel.cs" />
     <Compile Include="Entity\Nest.cs" />

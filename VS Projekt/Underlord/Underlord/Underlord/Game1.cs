@@ -217,8 +217,8 @@ namespace Underlord
                 #region Ingame
                 case Vars_Func.GameState.Ingame:
                     MainMenu_GUI.restGUI();
-                    //if (!GUI.IsPressed)
-                    //{
+                    Setting_GUI.restGUI();
+                    Highscore_GUI.restGUI();
                         if (keyboard.IsKeyDown(Keys.Tab) && !buttonIsPressed)
                         {
                             buttonIsPressed = true;
@@ -228,7 +228,6 @@ namespace Underlord
                         {
                             buttonIsPressed = false;
                         }
-                    //}
 
                     // Add ingame menu
                     if (showIngameMenu)
@@ -335,7 +334,7 @@ namespace Underlord
                 frameTimeCounter -= 1000;
             }
 
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             effect.View = camera.View;
             effect.Projection = camera.Projection;
             effect.VertexColorEnabled = true;

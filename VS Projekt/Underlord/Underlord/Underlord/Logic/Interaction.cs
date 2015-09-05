@@ -12,8 +12,8 @@ namespace Underlord.Logic
     {
         static int nestCost = 100;
         static int farmCost = 100;
-        static int templeCost = 100;
-        static int entranceCost = 100;
+        static int templeCost = 250;
+        static int entranceCost = 200;
         static Game1 game;
         static Vars_Func.GameState gameState = Vars_Func.GameState.Ingame;
         static Vector2 indexOfMiddleHexagonForRoomCreation = new Vector2(0, 0);
@@ -288,8 +288,6 @@ namespace Underlord.Logic
                         (map.getHexagonAt(mouseover).Obj == null ||
                         (map.getHexagonAt(mouseover).Obj.getThingTyp() != Vars_Func.ThingTyp.Wall &&
                         map.getHexagonAt(mouseover).Obj.getThingTyp() != Vars_Func.ThingTyp.Nest &&
-                        map.getHexagonAt(mouseover).Obj.getThingTyp() != Vars_Func.ThingTyp.Farm &&
-                        map.getHexagonAt(mouseover).Obj.getThingTyp() != Vars_Func.ThingTyp.Temple &&
                         map.getHexagonAt(mouseover).Obj.getThingTyp() != Vars_Func.ThingTyp.HQCreature &&
                         map.getHexagonAt(mouseover).Obj.getThingTyp() != Vars_Func.ThingTyp.Upgrade)))
                     {
@@ -373,11 +371,18 @@ namespace Underlord.Logic
                                     case Vars_Func.ThingTyp.Nest:
                                         GUI.SelectedThingTyp = Vars_Func.ThingTyp.Nest;
                                         GUI.Nest = (Nest)map.getHexagonAt(mouseover).Obj;
-                                        if (GUI.Nest.Typ != Vars_Func.NestTyp.Entrance)
+                                        if (GUI.Nest.Typ != Vars_Func.NestTyp.Entrance &&
+                                            GUI.Nest.Typ != Vars_Func.NestTyp.Temple &&
+                                            GUI.Nest.Typ != Vars_Func.NestTyp.Farm)
                                         {
                                             GUI.Nest = (Nest)map.Rooms[map.getHexagonAt(mouseover).RoomNumber - 1].RoomObject;
                                             map.getHexagonAt(GUI.Nest.TargetPosition).TargetFlag = true;
                                             lastSelectedHexagon = map.getHexagonAt(GUI.Nest.TargetPosition);
+                                        }
+                                        if (GUI.Nest.Typ == Vars_Func.NestTyp.Temple ||
+                                           GUI.Nest.Typ == Vars_Func.NestTyp.Farm)
+                                        {
+                                            GUI.Nest = (Nest)map.Rooms[map.getHexagonAt(mouseover).RoomNumber - 1].RoomObject;
                                         }
                                         break;
                                     case Vars_Func.ThingTyp.DungeonCreature:
@@ -583,7 +588,7 @@ namespace Underlord.Logic
                     if (timeCounter > 100)
                     {
                         //back to Ingame Mode
-                        if (keyboard.IsKeyDown(Keys.Escape) || mouseState.RightButton == ButtonState.Pressed)
+                        if (keyboard.IsKeyDown(Keys.Escape))
                         {
                             gameState = Vars_Func.GameState.Ingame;
                             timeCounter = 0;
@@ -610,6 +615,14 @@ namespace Underlord.Logic
                                     map.MineJobs.Add(mouseover);
                                     map.JobsWaiting.Enqueue(new Job(Vars_Func.ImpJob.MineDiamonds, mouseover));
                                 }
+                            }
+                        }
+                        //try to cancle a minejob at mouseposition
+                        if (mouseState.RightButton == ButtonState.Pressed)
+                        {
+                            if (map.MineJobs.Contains(mouseover))
+                            {
+                                map.removeMineJob(mouseover);
                             }
                         }
                     }

@@ -19,7 +19,7 @@ namespace Underlord.Logic
 
         static GUI_Element dummy, headLine, returnButton, fullscreenButton, backgroundFrame, book,tutorialButton;
         static GUI_Element pressedButton = null;
-        static bool cleanUp = false, dontDraw = false, updateReady = false, fullscreen = false, help = true, buttonPressed = false;
+        static bool cleanUp = false, dontDraw = false, updateReady = false, fullscreen = false, help = true/*, buttonPressed = false*/;
 
         #region Initialize
         public static void createGUI()
@@ -116,12 +116,12 @@ namespace Underlord.Logic
             cleanUp = false;
             dontDraw = false;
             updateReady = false;
-            buttonPressed = false;
+            //buttonPressed = false;
         }
         #endregion
 
         #region Update
-        public static void update(GameTime time, MouseState mouseState, KeyboardState keyboard)
+        public static void update(GameTime time, MouseState mouseState, MouseState lastMouseState, KeyboardState keyboard)
         {
             if (!updateReady)
             {
@@ -139,30 +139,30 @@ namespace Underlord.Logic
                 e.Update(time, null, mouseState);
             }
 
-            if (fullscreenButton.Rectangle.Contains(mouseState.X, mouseState.Y) && !buttonPressed &&
-               (mouseState.LeftButton == ButtonState.Pressed || keyboard.IsKeyDown(Keys.Enter)))
+            if (fullscreenButton.Rectangle.Contains(mouseState.X, mouseState.Y) && lastMouseState.LeftButton == ButtonState.Released &&
+               mouseState.LeftButton == ButtonState.Pressed)
             {
                 fullscreen = !fullscreen;
-                buttonPressed = true;
+                //buttonPressed = true;
             }
 
-            if (tutorialButton.Rectangle.Contains(mouseState.X, mouseState.Y) && !buttonPressed &&
-               (mouseState.LeftButton == ButtonState.Pressed || keyboard.IsKeyDown(Keys.Enter)))
+            if (tutorialButton.Rectangle.Contains(mouseState.X, mouseState.Y) && lastMouseState.LeftButton == ButtonState.Released &&
+               mouseState.LeftButton == ButtonState.Pressed)
             {
                 help = !help;
-                buttonPressed = true;
+                //buttonPressed = true;
             }
 
-            if ( !(fullscreenButton.Rectangle.Contains(mouseState.X, mouseState.Y) && mouseState.LeftButton == ButtonState.Pressed) &&
-               !keyboard.IsKeyDown(Keys.Enter) && buttonPressed)
-            {
-                buttonPressed = false;
-            }
-            if (!(tutorialButton.Rectangle.Contains(mouseState.X, mouseState.Y) && mouseState.LeftButton == ButtonState.Pressed) &&
-!keyboard.IsKeyDown(Keys.Enter) && buttonPressed)
-            {
-                buttonPressed = false;
-            }
+            //if (!(fullscreenButton.Rectangle.Contains(mouseState.X, mouseState.Y) && mouseState.LeftButton == ButtonState.Pressed) &&
+            //   !keyboard.IsKeyDown(Keys.Enter) && buttonPressed)
+            //{
+            //    buttonPressed = false;
+            //}
+            //if (!(tutorialButton.Rectangle.Contains(mouseState.X, mouseState.Y) && mouseState.LeftButton == ButtonState.Pressed) &&
+            //   !keyboard.IsKeyDown(Keys.Enter) && buttonPressed)
+            //{
+            //    buttonPressed = false;
+            //}
 
 
             if (fullscreen)

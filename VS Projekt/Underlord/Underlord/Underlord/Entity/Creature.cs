@@ -178,7 +178,7 @@ namespace Underlord.Entity
                     vision = 4;
                     damageTaken = 0;
                     hp = 5000;
-                    damage = 25;
+                    damage = 500;
                     age = startage;
                     ageModifire = 1;
 			        map.getHexagonAt(position).Obj = this;

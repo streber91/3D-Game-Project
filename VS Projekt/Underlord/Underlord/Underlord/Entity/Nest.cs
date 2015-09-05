@@ -120,10 +120,16 @@ namespace Underlord.Entity
                         map.getHexagonAt(neighbor).Typ = Vars_Func.HexTyp.BeetleNest;
                         map.getHexagonAt(neighbor).Building = true;
                         map.getHexagonAt(neighbor).Nest = true;
+                    }
+                    for (int i = 0; i < 6; ++i)
+                    {
+                        Vector2 neighbor = hex.Neighbors[i];
                         for (int j = 0; j < 6; ++j)
                         {
                             Vector2 nextNeighbor = hex.Neighbors[j];
-                            if (!map.getHexagonAt(nextNeighbor).Nest && map.getHexagonAt(nextNeighbor).RoomNumber == map.getHexagonAt(neighbor).RoomNumber && !possibleNextNestHexagons.Contains(nextNeighbor))
+                            if (!map.getHexagonAt(nextNeighbor).Nest &&
+                                map.getHexagonAt(nextNeighbor).RoomNumber == map.getHexagonAt(neighbor).RoomNumber &&
+                                !possibleNextNestHexagons.Contains(nextNeighbor))
                             {
                                 possibleNextNestHexagons.Add(nextNeighbor);
                             }
@@ -150,10 +156,16 @@ namespace Underlord.Entity
                         map.getHexagonAt(neighbor).Building = true;
                         map.getHexagonAt(neighbor).Nest = true;
                         map.getHexagonAt(neighbor).GrowObject = Vars_Func.GrowObject.Graveyard;
+                    }
+                    for (int i = 0; i < 6; ++i)
+                    {
+                        Vector2 neighbor = hex.Neighbors[i];
                         for (int j = 0; j < 6; ++j)
                         {
                             Vector2 nextNeighbor = hex.Neighbors[j];
-                            if (!map.getHexagonAt(nextNeighbor).Nest && map.getHexagonAt(nextNeighbor).RoomNumber == map.getHexagonAt(neighbor).RoomNumber && !possibleNextNestHexagons.Contains(nextNeighbor))
+                            if (!map.getHexagonAt(nextNeighbor).Nest &&
+                                map.getHexagonAt(nextNeighbor).RoomNumber == map.getHexagonAt(neighbor).RoomNumber &&
+                                !possibleNextNestHexagons.Contains(nextNeighbor))
                             {
                                 possibleNextNestHexagons.Add(nextNeighbor);
                             }
@@ -168,7 +180,10 @@ namespace Underlord.Entity
                     hex.Nest = true;
                     nutrition = 1;
                     maxNutrition = 1;
-                    thingTyp = Vars_Func.ThingTyp.Farm;
+                    thingTyp = Vars_Func.ThingTyp.Nest;
+                    food = 0;
+                    getsHarvested = false;
+                    foodCounter = 0;
 
                     for (int i = 0; i < 6; ++i)
                     {
@@ -178,10 +193,16 @@ namespace Underlord.Entity
                         map.getHexagonAt(neighbor).Building = true;
                         map.getHexagonAt(neighbor).Nest = true;
                         map.getHexagonAt(neighbor).GrowObject = Vars_Func.GrowObject.Farm;
+                    }
+                    for (int i = 0; i < 6; ++i)
+                    {
+                        Vector2 neighbor = hex.Neighbors[i];
                         for (int j = 0; j < 6; ++j)
                         {
                             Vector2 nextNeighbor = hex.Neighbors[j];
-                            if (!map.getHexagonAt(nextNeighbor).Nest && map.getHexagonAt(nextNeighbor).RoomNumber == map.getHexagonAt(neighbor).RoomNumber && !possibleNextNestHexagons.Contains(nextNeighbor))
+                            if (!map.getHexagonAt(nextNeighbor).Nest &&
+                                map.getHexagonAt(nextNeighbor).RoomNumber == map.getHexagonAt(neighbor).RoomNumber &&
+                                !possibleNextNestHexagons.Contains(nextNeighbor))
                             {
                                 possibleNextNestHexagons.Add(nextNeighbor);
                             }
@@ -196,7 +217,8 @@ namespace Underlord.Entity
                     hex.Nest = true;
                     nutrition = 1;
                     maxNutrition = 1;
-                    thingTyp = Vars_Func.ThingTyp.Temple;
+                    thingTyp = Vars_Func.ThingTyp.Nest;
+                    foodCounter = 0;
 
                     for (int i = 0; i < 6; ++i)
                     {
@@ -206,13 +228,16 @@ namespace Underlord.Entity
                         map.getHexagonAt(neighbor).Building = true;
                         map.getHexagonAt(neighbor).Nest = true;
                         map.getHexagonAt(neighbor).GrowObject = Vars_Func.GrowObject.Temple;
-                        food = 0;
-                        getsHarvested = false;
-                        foodCounter = 0;
+                    }
+                    for (int i = 0; i < 6; ++i)
+                    {
+                        Vector2 neighbor = hex.Neighbors[i];
                         for (int j = 0; j < 6; ++j)
                         {
                             Vector2 nextNeighbor = hex.Neighbors[j];
-                            if (!map.getHexagonAt(nextNeighbor).Nest && map.getHexagonAt(nextNeighbor).RoomNumber == map.getHexagonAt(neighbor).RoomNumber && !possibleNextNestHexagons.Contains(nextNeighbor))
+                            if (!map.getHexagonAt(nextNeighbor).Nest &&
+                                map.getHexagonAt(nextNeighbor).RoomNumber == map.getHexagonAt(neighbor).RoomNumber &&
+                                !possibleNextNestHexagons.Contains(nextNeighbor))
                             {
                                 possibleNextNestHexagons.Add(nextNeighbor);
                             }
@@ -286,7 +311,7 @@ namespace Underlord.Entity
                     {
                         Player.Mana++;
                         foodCounter = 0;
-                    } 
+                    }
                 }
                 else if (this.typ == Vars_Func.NestTyp.Farm)
                 {

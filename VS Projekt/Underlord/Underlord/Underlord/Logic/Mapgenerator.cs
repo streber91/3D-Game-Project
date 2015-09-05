@@ -64,8 +64,8 @@ namespace Underlord.Logic
                                 new Wall(new Vector2(hex.X, hex.Y), Vars_Func.WallTyp.Gold, 300, map);
                             }
                         }
-                        if (specials[randnum] == Vars_Func.WallTyp.HQ) map.HQPosition = new Vector2(i, j);
-                        if (specials[randnum] == Vars_Func.WallTyp.EN) EN = new Vector2(i, j);
+                        else if (specials[randnum] == Vars_Func.WallTyp.HQ) map.HQPosition = new Vector2(i, j);
+                        else if (specials[randnum] == Vars_Func.WallTyp.EN) EN = new Vector2(i, j);
                         specials.RemoveAt(randnum);
                     }
                     // fill rest with normal walls
@@ -106,14 +106,14 @@ namespace Underlord.Logic
                     counter++;
                     ++EN.X;
                 }
-                if (map.HQPosition.Y < EN.Y)
+                if (map.HQPosition.Y < EN.Y && !map.getHexagonAt(map.HQPosition.X, map.HQPosition.Y).Neighbors.Contains(EN))
                 {
                     map.getHexagonAt(EN.X, EN.Y - 1).Obj = null;
                     tempPos = new Vector2(EN.X, EN.Y - 1);
                     counter++;
                     --EN.Y;
                 }
-                else if (map.HQPosition.Y > EN.Y)
+                else if (map.HQPosition.Y > EN.Y && !map.getHexagonAt(map.HQPosition.X, map.HQPosition.Y).Neighbors.Contains(EN))
                 {
                     map.getHexagonAt(EN.X, EN.Y + 1).Obj = null;
                     tempPos = new Vector2(EN.X, EN.Y + 1);

@@ -36,7 +36,7 @@ namespace Underlord.Environment
             for (int i = 0; i < map.getMapHexagons().Length; i++)
             {
                 temp = map.getMapHexagons()[i];
-                if (temp.Obj == null) continue;
+                if (temp.Obj == null) drawHex(temp.IndexNumber, Color.Black, spritebatch);
                 else if (temp.Obj.getThingTyp().Equals(Vars_Func.ThingTyp.HeroCreature)) drawHex(temp.IndexNumber, Color.Red, spritebatch);
                 else if (temp.Obj.getThingTyp().Equals(Vars_Func.ThingTyp.DungeonCreature)) drawHex(temp.IndexNumber, Color.Blue, spritebatch);
                 else if (temp.Obj.getThingTyp().Equals(Vars_Func.ThingTyp.NeutralCreature)) drawHex(temp.IndexNumber, Color.Gray, spritebatch);

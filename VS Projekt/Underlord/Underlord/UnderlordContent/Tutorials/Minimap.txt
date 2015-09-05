@@ -1,0 +1,8 @@
+The Minimap shows the Dungeon.
+Green: Diamond       Red: Hero
+Blue: Creature       White: Head
+Crimson: Entrance    Orange: Stone
+Black: empty         Yellow: Gold
+Brown: Nest/Upgrade
+
+

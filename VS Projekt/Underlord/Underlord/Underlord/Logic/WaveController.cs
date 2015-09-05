@@ -6,24 +6,23 @@ using Microsoft.Xna.Framework;
 
 namespace Underlord.Logic
 {
-    class WaveController
+    static class WaveController
     {
-        float timeCounter, interWaveTime;
-        int waveCounter;
+        static float timeCounter, interWaveTime = 60000 * 1;
+        static int waveCounter;
 
         #region Properties
-
-        #endregion
-
-        #region Constructor
-        public WaveController(float interWaveTime)
+        public static int  WaveCounter
         {
-            this.interWaveTime = interWaveTime;
-            timeCounter = 0;
+            get { return waveCounter; }
+        }
+        public static int TimeToNextWave
+        {
+            get { return (int)((interWaveTime - timeCounter)/1000); }
         }
         #endregion
 
-        public void update(GameTime gameTime, Environment.Map map)
+        public static void update(GameTime gameTime, Environment.Map map)
         {
             timeCounter += gameTime.ElapsedGameTime.Milliseconds;
             if (timeCounter >= interWaveTime)

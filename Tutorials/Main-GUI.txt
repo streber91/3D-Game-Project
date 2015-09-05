@@ -1,0 +1,4 @@
+Merge merges all void rooms that border on the targeted Hexagon
+into the clicked room.
+Delet delte the targeted room.
+Only void room can be deleted.

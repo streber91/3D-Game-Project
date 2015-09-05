@@ -65,12 +65,11 @@ namespace Underlord.Logic
             elements.Add(new GUI_Element(new Rectangle(13, 13, 260, 265), "", Vars_Func.GUI_ElementTyp.RessoucesPapier));
             elements.Add(new GUI_Element(new Rectangle(13, 13, 260, 265), "", Vars_Func.GUI_ElementTyp.RessoucesHUD));
 
-            //TODO: Add the right time and wave count, thanks
-            GUI_Element timer = new GUI_Element(new Rectangle(1090 - 144, 13, 144, 36), "   Timer:", Vars_Func.GUI_ElementTyp.TextFieldSmall);
+            GUI_Element timer = new GUI_Element(new Rectangle(1090 - 144, 13, 144, 36), "", Vars_Func.GUI_ElementTyp.TextFieldSmall);
             timer.YBonus = 10;
             waveElements.Add(timer);
 
-            GUI_Element wave = new GUI_Element(new Rectangle(1090 - 144 - 36, 13, 36, 36), "  Wave", Vars_Func.GUI_ElementTyp.InfoHUD);
+            GUI_Element wave = new GUI_Element(new Rectangle(1090 - 144 - 36, 13, 36, 36), "", Vars_Func.GUI_ElementTyp.InfoHUD);
             wave.YBonus = 10;
             waveElements.Add(wave);
 
@@ -296,16 +295,16 @@ namespace Underlord.Logic
             //buildButtons.Add(new GUI_Element(new Rectangle(1000, 680, 88, 76), "Entrance", Vars_Func.GUI_ElementTyp.PlaceEntrance));
 
             #region Tutorial-Text-Fields
-            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 24, 637, 163), "", Vars_Func.GUI_ElementTyp.GUI_Tutorial));
-            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), "", Vars_Func.GUI_ElementTyp.HQCreature_Tutorial));
-            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), "", Vars_Func.GUI_ElementTyp.Creature_Tutorial));
-            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), "", Vars_Func.GUI_ElementTyp.Minimap_Tutorial));
-            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), "", Vars_Func.GUI_ElementTyp.Nest_Tutorial));
-            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), "", Vars_Func.GUI_ElementTyp.PlaceNest_Tutorial));
-            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), "", Vars_Func.GUI_ElementTyp.Resources_Tutorial));
-            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), "", Vars_Func.GUI_ElementTyp.Upgrades_Tutorial));
-            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), "", Vars_Func.GUI_ElementTyp.Wavetimer_Tutorial));
-            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), "", Vars_Func.GUI_ElementTyp.Spells_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), Player.loadString("Content/Tutorials/Main-GUI.txt"), Vars_Func.GUI_ElementTyp.GUI_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), Player.loadString("Content/Tutorials/Head.txt"), Vars_Func.GUI_ElementTyp.HQCreature_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), Player.loadString("Content/Tutorials/Creature.txt"), Vars_Func.GUI_ElementTyp.Creature_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), Player.loadString("Content/Tutorials/Minimap.txt"), Vars_Func.GUI_ElementTyp.Minimap_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), Player.loadString("Content/Tutorials/Nest.txt"), Vars_Func.GUI_ElementTyp.Nest_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), Player.loadString("Content/Tutorials/Build.txt"), Vars_Func.GUI_ElementTyp.PlaceNest_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), Player.loadString("Content/Tutorials/Reccources.txt"), Vars_Func.GUI_ElementTyp.Resources_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), Player.loadString("Content/Tutorials/Upgrades.txt"), Vars_Func.GUI_ElementTyp.Upgrades_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), Player.loadString("Content/Tutorials/Wavetimer.txt"), Vars_Func.GUI_ElementTyp.Wavetimer_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), Player.loadString("Content/Tutorials/Spells.txt"), Vars_Func.GUI_ElementTyp.Spells_Tutorial));
             #endregion
             
             #region Tutorials Buttons
@@ -1038,11 +1037,24 @@ namespace Underlord.Logic
             }
             #endregion
 
+            #region Draw Wave-Elements
+            foreach (GUI_Element w in waveElements)
+            {
+                w.Draw(spriteBatch, font);
+            }
+            #endregion
+
             #region Draw Ressources
             //draw the player ressources
             spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), "Gold: " + Player.Gold, new Vector2(120, 50), Color.Black);
             spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), "Mana: " + Player.Mana, new Vector2(120, 125), Color.Black);
             spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), "Food: " + Player.Food, new Vector2(110, 200), Color.Black);
+            #endregion
+
+            #region Draw Wavetimer
+            //draw the Wavetimer and Counter
+            spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), ((int)WaveController.TimeToNextWave / 60) + ":" + ((int)WaveController.TimeToNextWave % 60), new Vector2(1090 - 104, 17), Color.Black);
+            spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), WaveController.WaveCounter.ToString(), new Vector2(1090 - 144 - 34, 17), Color.Black);
             #endregion
 
             bool enableUpgrades = false;
@@ -1182,11 +1194,6 @@ namespace Underlord.Logic
                 spriteBatch.DrawString(font, "Spell-Costs: ", new Vector2(1090 - 260 + 20, 610), Color.Black);
                 spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Fireball: " + Spells.FireballCost.ToString() + " Mana", new Vector2(1090 - 260 + 20, 630), Color.Black);
                 spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Summon Imp: " + Spells.SummonImpCost.ToString() + " Mana", new Vector2(1090 - 260 + 20, 650), Color.Black);
-            }
-
-            foreach (GUI_Element w in waveElements)
-            {
-                w.Draw(spriteBatch, font);
             }
 
             if (enableUpgrades)

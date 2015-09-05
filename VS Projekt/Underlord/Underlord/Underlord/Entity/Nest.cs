@@ -230,6 +230,7 @@ namespace Underlord.Entity
 
         override public void update(GameTime gameTime, Environment.Map map)
         {
+            map.getHexagonAt(this.position).Obj = this;
             growCounter += gameTime.ElapsedGameTime.Milliseconds;
             spawnCounter += gameTime.ElapsedGameTime.Milliseconds;
             foodCounter += gameTime.ElapsedGameTime.Milliseconds;
@@ -237,7 +238,7 @@ namespace Underlord.Entity
             if (this.typ != Vars_Func.NestTyp.Entrance)
             {
                 //timer for growth of the nest
-                if (growCounter > 1000 && nutrition > 0)
+                if (growCounter > 10000 && nutrition > 0)
                 {
                     if (possibleNextNestHexagons.Count != 0)
                     {
@@ -281,7 +282,7 @@ namespace Underlord.Entity
                 {
                     foodCounter += gameTime.ElapsedGameTime.Milliseconds;
 
-                    if (foodCounter > 1000 / this.nestHexagons.Count)
+                    if (foodCounter > 10000 / this.nestHexagons.Count)
                     {
                         Player.Mana++;
                         foodCounter = 0;
@@ -291,7 +292,7 @@ namespace Underlord.Entity
                 {
                     foodCounter += gameTime.ElapsedGameTime.Milliseconds;
 
-                    if (foodCounter > 1000 / this.nestHexagons.Count)
+                    if (foodCounter > 10000 / this.nestHexagons.Count)
                     {
                         food++;
                         foodCounter = 0;

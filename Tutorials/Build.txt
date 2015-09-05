@@ -1,0 +1,6 @@
+Temple/Farm produces Mana/Food.
+Entrance spawns additonal Heroes and increases scoremultiplier.
+Buildings can be placed in void rooms and need at last one field
+space in the room in every direction.
+Entrances are an exeption, they ned one space and one field
+in bottom of the placementfield free and no room.

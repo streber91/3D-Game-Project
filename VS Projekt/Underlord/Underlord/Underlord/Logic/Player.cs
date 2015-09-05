@@ -40,11 +40,12 @@ namespace Underlord.Logic
 
         public static String loadString(String filename)
         {
-            Char[] result = new Char[1000];
+            Char[] result;
 
-            using (StreamReader sr = new StreamReader(filename))
+            using (StreamReader sr = new StreamReader(filename, Encoding.UTF7, false))
             {
-                sr.ReadBlock(result, 0, 1000);
+                result = new Char[sr.BaseStream.Length];
+                sr.ReadBlock(result, 0, (int)sr.BaseStream.Length);
             }
 
             return new String(result);

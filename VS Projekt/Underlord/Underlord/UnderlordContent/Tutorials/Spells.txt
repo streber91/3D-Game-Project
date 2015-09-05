@@ -1,0 +1,5 @@
+Vast speels by selekt them per leftklick.
+and then leftclick at the targetposition.
+Fireball deals damage to ALL creatures at targetposition and arround.
+Summoning an Imp costs more with more Imps in game.
+The Imps spawn at your Head.

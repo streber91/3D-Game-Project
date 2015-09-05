@@ -32,7 +32,6 @@ namespace Underlord
         Vector3 mousePosition;
         Vector2 indexOfMiddleHexagon;
         Minimap minimap;
-        WaveController wavecontroller;
 
         bool showIngameMenu, buttonIsPressed, reinitializeDone;
 
@@ -69,7 +68,6 @@ namespace Underlord
             Vars_Func.loadContent(Content);
             map = new Map(planeLength, Logic.Vars_Func.HexTyp.Sand, true, hexagonSideLength);
             Mapgenerator.generateMap(map, planeLength, (int)(planeLength / 10), (int)(planeLength / 5));
-            wavecontroller = new WaveController(interWaveTime);
 
             //cameraposition HQ.X * 1.5, HQ.Y * 1.75
             camera = new Camera(new Vector3((map.HQPosition.X * 1.5f) + 1, (map.HQPosition.Y * 1.75f) - 10 + 0.875f, 11), new Vector3((map.HQPosition.X * 1.5f) + 1, (map.HQPosition.Y * 1.75f) + 0.875f, 0),
@@ -116,7 +114,6 @@ namespace Underlord
 
             map = new Map(planeLength, Logic.Vars_Func.HexTyp.Sand, true, hexagonSideLength);
             Mapgenerator.generateMap(map, planeLength, (int)(planeLength / 10), (int)(planeLength / 5));
-            wavecontroller = new WaveController(interWaveTime);
 
             camera = new Camera(new Vector3((map.HQPosition.X * 1.5f) + 1, (map.HQPosition.Y * 1.75f) - 10 + 0.875f, 11), new Vector3((map.HQPosition.X * 1.5f) + 1, (map.HQPosition.Y * 1.75f) + 0.875f, 0),
                                 Vector3.UnitZ, GraphicsDevice.Viewport.AspectRatio, 0.5f, 1000.0f, planeLength, hexagonSideLength);
@@ -271,7 +268,7 @@ namespace Underlord
                         
                         Vars_Func.resetHexagonColors(map);
 
-                        wavecontroller.update(gameTime, map);
+                        WaveController.update(gameTime, map);
                         GUI.update(gameTime, map, mouseState);
                         Interaction.Update(gameTime, map, mouseover, mouseState, lastMouseState, keyboard);
                     }

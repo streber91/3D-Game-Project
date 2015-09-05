@@ -305,6 +305,12 @@ namespace Underlord.Logic
             tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), Player.loadString("Content/Tutorials/Upgrades.txt"), Vars_Func.GUI_ElementTyp.Upgrades_Tutorial));
             tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), Player.loadString("Content/Tutorials/Wavetimer.txt"), Vars_Func.GUI_ElementTyp.Wavetimer_Tutorial));
             tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), Player.loadString("Content/Tutorials/Spells.txt"), Vars_Func.GUI_ElementTyp.Spells_Tutorial));
+
+            foreach (GUI_Element g in tutorials)
+            {
+                g.YBonus = 22;
+                g.XBonus = 30;
+            }
             #endregion
             
             #region Tutorials Buttons
@@ -1056,8 +1062,8 @@ namespace Underlord.Logic
 
             #region Draw Wavetimer
             //draw the Wavetimer and Counter
-            spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), ((int)WaveController.TimeToNextWave / 60) + ":" + ((int)WaveController.TimeToNextWave % 60), new Vector2(1090 - 104, 17), Color.Black);
-            spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), WaveController.WaveCounter.ToString(), new Vector2(1090 - 144 - 34, 17), Color.Black);
+            spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), ((int)WaveController.TimeToNextWave / 60) + ":" + ((int)WaveController.TimeToNextWave % 60), new Vector2(1090 - 104, 16), Color.Black);
+            spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), WaveController.WaveCounter.ToString(), new Vector2(1090 - 144 - 30, 16), Color.Black);
             #endregion
 
             bool enableUpgrades = false;

@@ -22,6 +22,12 @@ namespace Underlord.Logic
         }
         #endregion
 
+        public static void restart()
+        {
+            timeCounter = 0;
+            waveCounter = 0;
+        }
+
         public static void update(GameTime gameTime, Environment.Map map)
         {
             timeCounter += gameTime.ElapsedGameTime.Milliseconds;

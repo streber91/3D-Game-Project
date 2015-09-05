@@ -25,7 +25,7 @@ namespace Underlord
         Camera camera;
         SpriteFont font;
         int planeLength, minimapSize, mapDrawWidth;
-        float hexagonSideLength, interWaveTime;
+        float hexagonSideLength;
         KeyboardState keyboard;
         MouseState mouseState;
         MouseState lastMouseState;
@@ -60,7 +60,6 @@ namespace Underlord
             updateTimeCounter = 0;
             updates = 0;
             drawUpdates = 0;
-            interWaveTime = 60000 * 2.0f; //in ms
             showIngameMenu = false;
             buttonIsPressed = false;
             reinitializeDone = false;
@@ -97,7 +96,7 @@ namespace Underlord
             Player.Gold = 10000;
             Player.Mana = 10000;
             Player.Food = 100;
-            Player.Score = 0;
+            Player.Score = 10;
             Spells.SummonImpCost = 0;
             GUI.SelectedThingTyp = Vars_Func.ThingTyp.length;
             hexagonSideLength = 1; //dont change
@@ -110,7 +109,7 @@ namespace Underlord
             updateTimeCounter = 0;
             updates = 0;
             drawUpdates = 0;
-            interWaveTime = 60000 * 2.0f; //in ms
+            WaveController.restart();
 
             map = new Map(planeLength, Logic.Vars_Func.HexTyp.Sand, true, hexagonSideLength);
             Mapgenerator.generateMap(map, planeLength, (int)(planeLength / 10), (int)(planeLength / 5));
@@ -249,6 +248,7 @@ namespace Underlord
                                     gamestate = Vars_Func.GameState.Highscore;
                                     break;
                                 case Vars_Func.GUI_Typ.StartButton:
+                                    Player.saveScore();
                                     gamestate = Vars_Func.GameState.MainMenu;
                                     break;
                                 default: break;
@@ -261,7 +261,7 @@ namespace Underlord
                         camera.Update(gameTime, gameTime.ElapsedGameTime.Milliseconds, mouseState);
                         view = camera.View;
 
-                        map.update(gameTime, gameTime.ElapsedGameTime.Milliseconds);
+                        map.update(gameTime, gameTime.ElapsedGameTime.Milliseconds, this);
                         //// DON'T TOUCH THIS////
                         indexOfMiddleHexagon = Vars_Func.gridColision(camera.Target, planeLength, hexagonSideLength);
                         Vector2 mouseover = Vars_Func.gridColision(mousePosition, planeLength, hexagonSideLength);

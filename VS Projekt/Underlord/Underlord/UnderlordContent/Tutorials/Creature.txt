@@ -1,5 +1,6 @@
-Kreaturen sind entweder feindlich oder einem euere Nester zugehörig.
-Sie lassen sich nie direkt steuern und greifen alle Feinde in Reichweite an.
-Kreaturen altern mit der Zeit.
-Wärend dies eure eigen Kreaturen zunächst stärkt, dann schwächt und schlussendlich tötet,
-werden Helden mit dem Alter immer nur noch mächtiger.
+Creatures are hostile Heroes or creatures
+from on of your nests.
+You can't comand them direkt and they attack
+everithing hostile insigth. They ages over time.
+While heroes grow stronger over time, yours
+become stronger, then weaker and die at last.

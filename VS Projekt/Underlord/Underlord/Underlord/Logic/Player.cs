@@ -32,16 +32,28 @@ namespace Underlord.Logic
             set { score = value; }
         }
         #endregion
-        //TODO
-        public static void saveScore(int score)
+        
+        public static void saveScore()
         {
-
+            Char[] tmp;
+            using (StreamReader sr = new StreamReader("Content/Highscore.txt", Encoding.UTF7, false))
+            {
+                tmp = new Char[sr.BaseStream.Length];
+                sr.ReadBlock(tmp, 0, (int)sr.BaseStream.Length);
+            }
+            int highscore = Int32.Parse(new String(tmp));
+            if (score > highscore)
+            {
+                TextWriter writer = new StreamWriter("Content/Highscore.txt");
+                writer.Write(score);
+                writer.Flush();
+                writer.Close();
+            }
         }
 
         public static String loadString(String filename)
         {
             Char[] result;
-
             using (StreamReader sr = new StreamReader(filename, Encoding.UTF7, false))
             {
                 result = new Char[sr.BaseStream.Length];

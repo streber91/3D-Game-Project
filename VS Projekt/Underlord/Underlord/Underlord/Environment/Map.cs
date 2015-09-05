@@ -485,7 +485,7 @@ namespace Underlord.Environment
         //}
         #endregion
 
-        public void update(GameTime gameTime, float timeSinceLastUpdate)
+        public void update(GameTime gameTime, float timeSinceLastUpdate, Game1 game1)
         {
             while (jobsDone.Count > 0)
             {
@@ -533,6 +533,12 @@ namespace Underlord.Environment
                 if (dyingCreatures[0].getThingTyp() == Vars_Func.ThingTyp.HeroCreature)
                 {
                     Player.Score += entrances.Count;
+                }
+                if (dyingCreatures[0].getThingTyp() == Vars_Func.ThingTyp.HQCreature)
+                {
+                    Player.saveScore();  
+                    Interaction.GameState = Vars_Func.GameState.MainMenu;
+                    game1.reinitialize();
                 }
                 remove(dyingCreatures[0]);
             }

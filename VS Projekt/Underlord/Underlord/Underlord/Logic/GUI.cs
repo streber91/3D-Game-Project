@@ -27,6 +27,7 @@ namespace Underlord.Logic
         static List<GUI_Element> tutorials = new List<GUI_Element>();
         static List<GUI_Element> tutorialButtons = new List<GUI_Element>();
         static List<GUI_Element> waveElements = new List<GUI_Element>();
+        static GUI_Element scoreElement;
 
         static GUI_Element tempTutorial = null, selectedTutorial;
         static bool isButtonPressed = false, alreadyDrawing = false, showHelp;
@@ -73,6 +74,9 @@ namespace Underlord.Logic
             GUI_Element wave = new GUI_Element(new Rectangle(1090 - 144 - 36, 13, 36, 36), "  Wave", Vars_Func.GUI_ElementTyp.InfoHUD);
             wave.YBonus = 10;
             waveElements.Add(wave);
+
+            //Add Score
+            scoreElement = new GUI_Element(new Rectangle(260 + 13, 13, 144, 36), "   Score:", Vars_Func.GUI_ElementTyp.TextFieldSmall);
 
             #region Controll Buttons
             // Add mine button
@@ -1036,6 +1040,10 @@ namespace Underlord.Logic
                 spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Tempel: " + Interaction.TempleCost.ToString() + " Gold", new Vector2(1090 - 260 + 20, 690), Color.Black);
                 spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Entrance: " + Interaction.EntranceCost.ToString() + " Gold", new Vector2(1090 - 260 + 20, 710), Color.Black);
             }
+            #endregion
+
+            #region Draw ScoreElement
+            scoreElement.Draw(spriteBatch, font);
             #endregion
 
             #region Draw Ressources

@@ -252,6 +252,7 @@ namespace Underlord
                                     gamestate = Vars_Func.GameState.Highscore;
                                     break;
                                 case Vars_Func.GUI_Typ.StartButton:
+                                    reinitialize();
                                     gamestate = Vars_Func.GameState.MainMenu;
                                     break;
                                 default: break;

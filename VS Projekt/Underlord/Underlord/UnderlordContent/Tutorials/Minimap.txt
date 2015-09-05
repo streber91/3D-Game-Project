@@ -1,4 +1,4 @@
-The Minimap shows the Dungeon.
+The minimap shows the dungeon.
 Green: Diamond       Red: Hero
 Blue: Creature       White: Head
 Crimson: Entrance    Orange: Stone

@@ -1,14 +1,6 @@
-Willkommen zu Underlord.
-In diesem Spiel baut ihr euche einen Dungeon und wehrt Wellen von Helden ab die in euren Dungeon eindringen.
-Das Spiel endet erst wenn euer Hauptgebäude(der Kopf) zerstört wurde oder ihr es per Esc-Taste beendet.
-In beiden Fällen wird eure Score gespeichert und eventuell der Highscore hinzugefügt.
-Mit der Esc-Taste könnt ihr im Regelfall immer in das vorhergehende Menu zurückspringen.
-Steuern tut ihr mit der Maus und Tastatur.
-W, A, S und D bewegen die Kamera Q und E rotieren sie.
-Im Spiel findet ihr viele kleine Fragezeichen, wenn ihr diese anklikt erhaltet ihr eine kurze Beschreibung zu dem dazugehörigen Element.
-
-Mana wird automatisch eurem Vorrat hinzugefügt.
-Nahrung wird von Imps in den Farmen geerntet und an die Nester ausgeliefert.
-Gold und Diamantader geben Gold wenn ein Imp sie abbaut.
-
-Viel Spaß beim Spielen.
+In Underlord you build a dungeon and defend your head against waves of heroes.
+You increase your score by defeating heroes.
+The game ends when your head is destroyed or you quit per menu.
+If your score is high enough it gets saved as higescore.
+Ingame you find tutorialbuttons which explain the gamemechanics.
+The camera can be rotated by Q and E.

@@ -33,7 +33,7 @@ namespace Underlord.Logic
             timeCounter += gameTime.ElapsedGameTime.Milliseconds;
             if (timeCounter >= interWaveTime)
             {   
-                map.Waves.Add(new Wave(waveCounter * 10, (int)(5 + waveCounter / 3)));
+                map.Waves.Add(new Wave(waveCounter * 20, (int)(5 + waveCounter / 3)));
                 ++waveCounter;
                 timeCounter -= interWaveTime;
             }

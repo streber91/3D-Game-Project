@@ -1,2 +1,2 @@
-This shows the time left until the next
-wave of enemys arrives, and the wavenumber.
+This shows the wavenumber and the time left
+until the next wave of enemies arrive.

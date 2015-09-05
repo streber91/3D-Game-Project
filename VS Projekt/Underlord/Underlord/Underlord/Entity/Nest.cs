@@ -109,7 +109,7 @@ namespace Underlord.Entity
                     hex.Nest = true;
                     getsFeeded = false;
                     maxNutrition = 500f;
-                    nutrition = 250f;
+                    nutrition = 0f;
                     upgrades = new List<Upgrade>();
                     thingTyp = Vars_Func.ThingTyp.Nest;
 
@@ -144,7 +144,7 @@ namespace Underlord.Entity
                     hex.Nest = true;
                     getsFeeded = false;
                     maxNutrition = 500f;
-                    nutrition = 250f;
+                    nutrition = 0f;
                     upgrades = new List<Upgrade>();
                     thingTyp = Vars_Func.ThingTyp.Nest;
 

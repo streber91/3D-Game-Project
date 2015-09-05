@@ -93,10 +93,10 @@ namespace Underlord
 
         public void reinitialize()
         {
-            Player.Gold = 10000;
-            Player.Mana = 10000;
-            Player.Food = 100;
-            Player.Score = 10;
+            Player.Gold = 200;
+            Player.Mana = 100;
+            Player.Food = 200;
+            Player.Score = 0;
             Spells.SummonImpCost = 0;
             GUI.SelectedThingTyp = Vars_Func.ThingTyp.length;
             hexagonSideLength = 1; //dont change

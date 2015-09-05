@@ -149,7 +149,7 @@ namespace Underlord.Logic
                     f.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaTextField));
                 }
                 returnButton.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaTextField));
-                book.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AusgustaText));
+                book.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaText));
                 headLine.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaHeadline));
                 backgroundFrame.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold2));
             }

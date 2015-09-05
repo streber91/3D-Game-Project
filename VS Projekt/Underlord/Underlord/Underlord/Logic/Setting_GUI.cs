@@ -17,9 +17,9 @@ namespace Underlord.Logic
         static List<GUI_Element> elements = new List<GUI_Element>();
         static List<GUI_Element> frames = new List<GUI_Element>();
 
-        static GUI_Element dummy, headLine, returnButton, fullscreenButton, backgroundFrame, book;
+        static GUI_Element dummy, headLine, returnButton, fullscreenButton, backgroundFrame, book,tutorialButton;
         static GUI_Element pressedButton = null;
-        static bool cleanUp = false, dontDraw = false, updateReady = false, fullscreen = false, buttonPressed = false;
+        static bool cleanUp = false, dontDraw = false, updateReady = false, fullscreen = false, help = true, buttonPressed = false;
 
         #region Initialize
         public static void createGUI()
@@ -59,7 +59,19 @@ namespace Underlord.Logic
             frames.Add(bookFrame);
             all.Add(bookFrame);
 
-            book = new GUI_Element(new Rectangle(1366 / 2 - (911 / 2), 180, 911, 512), "\n        Fullscreen: ", Vars_Func.GUI_ElementTyp.BookField);
+            string spaceSmall = "     ", spaceBig = "        ";
+            book = new GUI_Element(new Rectangle(1366 / 2 - (911 / 2), 180, 911, 512), "\n" + spaceBig + "Fullscreen: \n\n\n"
+                                                                                            + spaceBig + "Show Help:  \n\n"
+                                                                                            + spaceBig + "Menu:" + spaceSmall + "       Tab\n"
+                                                                                            + spaceBig + "Confirm:" + spaceSmall + "  Enter/LMT\n"
+                                                                                            + spaceBig + "Refuse:" + spaceSmall + "     Esc/RMT\n"
+                                                                                            + spaceBig + "Mine:" + spaceSmall + "        M \n"
+                                                                                            + spaceBig + "Room:" + spaceSmall + "      R\n"
+                                                                                            + spaceBig + "Merge:" + spaceSmall + "     T\n"
+                                                                                            + spaceBig + "Delete:" + spaceSmall + "     D\n"
+                                                                                            + spaceBig + "Upgrade:" + spaceSmall + "U\n"
+                                                                                            + spaceBig + "Build:" + spaceSmall + "      N\n"
+                                                                                            , Vars_Func.GUI_ElementTyp.BookField);
             book.YBonus = 10;
             dummy.Children.Add(book);
             all.Add(book);
@@ -70,6 +82,11 @@ namespace Underlord.Logic
             dummy.Children.Add(fullscreenButton);
             all.Add(fullscreenButton);
 
+            tutorialButton = new GUI_Element(new Rectangle(1366 / 2 - 200 + 76, 230 + 60, 76, 76), "  Off", Vars_Func.GUI_ElementTyp.FullScreenButton);
+            tutorialButton.Highlightable = true;
+            tutorialButton.YBonus = 20;
+            dummy.Children.Add(tutorialButton);
+            all.Add(tutorialButton);
 
             backgroundFrame = new GUI_Element(new Rectangle(0, 0, 1366, 768), "", Vars_Func.GUI_ElementTyp.BackgroundHUD);
             all.Add(backgroundFrame);
@@ -88,6 +105,10 @@ namespace Underlord.Logic
         public static bool UseFullscreen
         {
             get { return fullscreen; }
+        }
+        public static bool ShowHelp
+        {
+            get { return help; }
         }
         public static void restGUI()
         {
@@ -118,17 +139,32 @@ namespace Underlord.Logic
                 e.Update(time, null, mouseState);
             }
 
-            if (((fullscreenButton.Rectangle.Contains(mouseState.X, mouseState.Y) && mouseState.LeftButton == ButtonState.Pressed) ||
-               keyboard.IsKeyDown(Keys.Enter)) && !buttonPressed)
+            if (fullscreenButton.Rectangle.Contains(mouseState.X, mouseState.Y) && !buttonPressed &&
+               (mouseState.LeftButton == ButtonState.Pressed || keyboard.IsKeyDown(Keys.Enter)))
             {
                 fullscreen = !fullscreen;
                 buttonPressed = true;
             }
+
+            if (tutorialButton.Rectangle.Contains(mouseState.X, mouseState.Y) && !buttonPressed &&
+               (mouseState.LeftButton == ButtonState.Pressed || keyboard.IsKeyDown(Keys.Enter)))
+            {
+                help = !help;
+                buttonPressed = true;
+            }
+
             if ( !(fullscreenButton.Rectangle.Contains(mouseState.X, mouseState.Y) && mouseState.LeftButton == ButtonState.Pressed) &&
                !keyboard.IsKeyDown(Keys.Enter) && buttonPressed)
             {
                 buttonPressed = false;
             }
+            if (!(tutorialButton.Rectangle.Contains(mouseState.X, mouseState.Y) && mouseState.LeftButton == ButtonState.Pressed) &&
+!keyboard.IsKeyDown(Keys.Enter) && buttonPressed)
+            {
+                buttonPressed = false;
+            }
+
+
             if (fullscreen)
             {
                 fullscreenButton.Text = "  On";
@@ -137,7 +173,14 @@ namespace Underlord.Logic
             {
                 fullscreenButton.Text = "  Off";
             }
-
+            if (help)
+            {
+                tutorialButton.Text = "  On";
+            }
+            else
+            {
+                tutorialButton.Text = "  Off";
+            }
 
             if ((returnButton.Rectangle.Contains(mouseState.X, mouseState.Y) && mouseState.LeftButton == ButtonState.Pressed) ||
                 keyboard.IsKeyDown(Keys.Back) || (keyboard.IsKeyDown(Keys.Escape)))
@@ -170,9 +213,10 @@ namespace Underlord.Logic
                     f.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaTextField));
                 }
                 returnButton.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaTextField));
-                book.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AusgustaText));
+                book.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaText));
                 headLine.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaHeadline));
-                fullscreenButton.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AusgustaText));
+                fullscreenButton.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaText));
+                tutorialButton.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaText));
                 backgroundFrame.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold2));
             }
         }

@@ -26,8 +26,11 @@ namespace Underlord.Logic
         static List<GUI_Element> returnScreenButtons = new List<GUI_Element>();
         static List<GUI_Element> tutorials = new List<GUI_Element>();
         static List<GUI_Element> tutorialButtons = new List<GUI_Element>();
+        static List<GUI_Element> waveElements = new List<GUI_Element>();
 
-        static bool isButtonPressed = false;
+        static GUI_Element tempTutorial = null, selectedTutorial;
+        static bool isButtonPressed = false, alreadyDrawing = false, showHelp;
+        static float tutorialLerpCounter = 0;
 
         public static void createGUI()
         {
@@ -48,7 +51,8 @@ namespace Underlord.Logic
             elements.Add(new GUI_Element(new Rectangle(13, 13, 260, 265), "", Vars_Func.GUI_ElementTyp.RessoucesFrame));
             elements.Add(new GUI_Element(new Rectangle(13, 278, 110, 475), "", Vars_Func.GUI_ElementTyp.ButtonHUD));
             elements.Add(new GUI_Element(new Rectangle(13 + 110, 278, 110, 172), "", Vars_Func.GUI_ElementTyp.ButtonHUD));
-            elements.Add(new GUI_Element(new Rectangle(1106, 590, 247, 160), "", Vars_Func.GUI_ElementTyp.InfoHUD));
+            elements.Add(new GUI_Element(new Rectangle(1090, 768 - 13 - 265, 260, 265), "", Vars_Func.GUI_ElementTyp.InfoHUD));
+            elements.Add(new GUI_Element(new Rectangle(1090 - 260, 768 - 13 - 160, 260, 160), "", Vars_Func.GUI_ElementTyp.SecondInfoHUD));
 
             GUI_Element topLeftChain = new GUI_Element(new Rectangle(31 - 5, -30, 12, 64), "", Vars_Func.GUI_ElementTyp.LeftChain);
             GUI_Element topRightChain = new GUI_Element(new Rectangle(31 + 78 - 12 + 5, -30, 12, 64), "", Vars_Func.GUI_ElementTyp.RightChain);
@@ -61,6 +65,16 @@ namespace Underlord.Logic
             elements.Add(new GUI_Element(new Rectangle(13, 13, 260, 265), "", Vars_Func.GUI_ElementTyp.RessoucesPapier));
             elements.Add(new GUI_Element(new Rectangle(13, 13, 260, 265), "", Vars_Func.GUI_ElementTyp.RessoucesHUD));
 
+            //TODO: Add the right time and wave count, thanks
+            GUI_Element timer = new GUI_Element(new Rectangle(1090 - 144, 13, 144, 36), "   Timer:", Vars_Func.GUI_ElementTyp.TextFieldSmall);
+            timer.YBonus = 10;
+            waveElements.Add(timer);
+
+            GUI_Element wave = new GUI_Element(new Rectangle(1090 - 144 - 36, 13, 36, 36), "  Wave", Vars_Func.GUI_ElementTyp.InfoHUD);
+            wave.YBonus = 10;
+            waveElements.Add(wave);
+
+            #region Controll Buttons
             // Add mine button
             GUI_Element mine = new GUI_Element(new Rectangle(31, 285, 69, 60), "", Vars_Func.GUI_ElementTyp.Mine);
             mine.Highlightable = true;
@@ -101,6 +115,8 @@ namespace Underlord.Logic
             GUI_Element deleteRightChain = new GUI_Element(new Rectangle(delete.Rectangle.X + 69 - 12 + 5, delete.Rectangle.Y, 12, 90), "", Vars_Func.GUI_ElementTyp.RightChain);
             delete.RightChain = deleteRightChain;
             buttons.Add(delete);
+
+            #region Upgrades
             // Add upgrade buttons
             GUI_Element upgrade = new GUI_Element(new Rectangle(31, 597, 69, 60), "", Vars_Func.GUI_ElementTyp.Upgrade);
             upgrade.Visable = true;
@@ -157,6 +173,11 @@ namespace Underlord.Logic
             demage.RightChain = demageRightChain;
             upgrade.Children.Add(demage);
             buttons.Add(upgrade);
+
+            upgradeButtons.Add(demage);
+            upgradeButtons.Add(live);
+            upgradeButtons.Add(speed);
+            #endregion
 
             // Add build-up buttons
             GUI_Element build = new GUI_Element(new Rectangle(31, 675, 69, 60), "", Vars_Func.GUI_ElementTyp.Build);
@@ -239,14 +260,14 @@ namespace Underlord.Logic
 
             // Finaliy add the build-button 
             buttons.Add(build);
-
             buildButtons.Add(tempel);
             buildButtons.Add(farm);
             buildButtons.Add(graveyard);
             buildButtons.Add(nest);
             buildButtons.Add(entrance);
+            #endregion
 
-
+            #region Spells
             GUI_Element fireball = new GUI_Element(new Rectangle(31 + 110, 285, 69, 60), "", Vars_Func.GUI_ElementTyp.Fireball);
             fireball.Highlightable = true;
             GUI_Element fireballFrame = new GUI_Element(new Rectangle(fireball.Rectangle.X - 11, fireball.Rectangle.Y + 45, 96, 24), "  Fireball", Vars_Func.GUI_ElementTyp.FrameHUD);
@@ -266,24 +287,7 @@ namespace Underlord.Logic
             GUI_Element impRightChain = new GUI_Element(new Rectangle(imp.Rectangle.X + 69 - 12 + 5, imp.Rectangle.Y, 12, 90), "", Vars_Func.GUI_ElementTyp.RightChain);
             imp.RightChain = impRightChain;
             buttons.Add(imp);
-
-
-
-            //buttons.Add(new GUI_Element(new Rectangle(80, 680, 88, 76), "  Mine(M)", Vars_Func.GUI_ElementTyp.Mine));
-            //buttons.Add(new GUI_Element(new Rectangle(180, 680, 88, 76), "  Room(R)", Vars_Func.GUI_ElementTyp.Room));
-            //buttons.Add(new GUI_Element(new Rectangle(280, 680, 88, 76), "  Merge(T)", Vars_Func.GUI_ElementTyp.MergeRoom));
-            //buttons.Add(new GUI_Element(new Rectangle(380, 680, 88, 76), "  Delete(Z)", Vars_Func.GUI_ElementTyp.DeleteRoom));
-            //buttons.Add(new GUI_Element(new Rectangle(480, 680, 88, 76), "  Nest(N)", Vars_Func.GUI_ElementTyp.Build));
-            //buttons.Add(new GUI_Element(new Rectangle(10, 110, 88, 76), "  Fireball", Vars_Func.GUI_ElementTyp.Fireball));
-            //buttons.Add(new GUI_Element(new Rectangle(110, 110, 88, 76), "  Imp", Vars_Func.GUI_ElementTyp.SummonImp));
-
-            upgradeButtons.Add(demage);
-            upgradeButtons.Add(live);
-            upgradeButtons.Add(speed);
-
-            //upgradeButtons.Add(new GUI_Element(new Rectangle(600, 680, 88, 76), "Dmg", Vars_Func.GUI_ElementTyp.DamageUpgrade));
-            //upgradeButtons.Add(new GUI_Element(new Rectangle(700, 680, 88, 76), "Live", Vars_Func.GUI_ElementTyp.LifeUpgrade));
-            //upgradeButtons.Add(new GUI_Element(new Rectangle(800, 680, 88, 76), "Speed", Vars_Func.GUI_ElementTyp.SpeedUpgrade));
+            #endregion
 
             //buildButtons.Add(new GUI_Element(new Rectangle(600, 680, 88, 76), "Ants", Vars_Func.GUI_ElementTyp.PlaceAnts));
             //buildButtons.Add(new GUI_Element(new Rectangle(700, 680, 88, 76), "Skeletons", Vars_Func.GUI_ElementTyp.PlaceSkeletons));
@@ -291,29 +295,71 @@ namespace Underlord.Logic
             //buildButtons.Add(new GUI_Element(new Rectangle(900, 680, 88, 76), "Temple", Vars_Func.GUI_ElementTyp.PlaceTemple));
             //buildButtons.Add(new GUI_Element(new Rectangle(1000, 680, 88, 76), "Entrance", Vars_Func.GUI_ElementTyp.PlaceEntrance));
 
-            tutorials.Add(new GUI_Element(new Rectangle(500, 300, 400, 400), "", Vars_Func.GUI_ElementTyp.GUI_Tutorial));
-            tutorials.Add(new GUI_Element(new Rectangle(500, 300, 400, 400), "", Vars_Func.GUI_ElementTyp.HQCreature_Tutorial));
-            tutorials.Add(new GUI_Element(new Rectangle(500, 300, 400, 400), "", Vars_Func.GUI_ElementTyp.Creature_Tutorial));
-            tutorials.Add(new GUI_Element(new Rectangle(500, 300, 400, 400), "", Vars_Func.GUI_ElementTyp.Minimap_Tutorial));
-            tutorials.Add(new GUI_Element(new Rectangle(500, 300, 400, 400), "", Vars_Func.GUI_ElementTyp.Nest_Tutorial));
-            tutorials.Add(new GUI_Element(new Rectangle(500, 300, 400, 400), "", Vars_Func.GUI_ElementTyp.PlaceNest_Tutorial));
-            tutorials.Add(new GUI_Element(new Rectangle(500, 300, 400, 400), "", Vars_Func.GUI_ElementTyp.Resources_Tutorial));
-            tutorials.Add(new GUI_Element(new Rectangle(500, 300, 400, 400), "", Vars_Func.GUI_ElementTyp.Upgrades_Tutorial));
-            tutorials.Add(new GUI_Element(new Rectangle(500, 300, 400, 400), "", Vars_Func.GUI_ElementTyp.Wavetimer_Tutorial));
-            tutorials.Add(new GUI_Element(new Rectangle(500, 300, 400, 400), "", Vars_Func.GUI_ElementTyp.Spells_Tutorial));
+            #region Tutorial-Text-Fields
+            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 24, 637, 163), "", Vars_Func.GUI_ElementTyp.GUI_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), "", Vars_Func.GUI_ElementTyp.HQCreature_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), "", Vars_Func.GUI_ElementTyp.Creature_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), "", Vars_Func.GUI_ElementTyp.Minimap_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), "", Vars_Func.GUI_ElementTyp.Nest_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), "", Vars_Func.GUI_ElementTyp.PlaceNest_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), "", Vars_Func.GUI_ElementTyp.Resources_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), "", Vars_Func.GUI_ElementTyp.Upgrades_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), "", Vars_Func.GUI_ElementTyp.Wavetimer_Tutorial));
+            tutorials.Add(new GUI_Element(new Rectangle(13 + 260, 25, 637, 163), "", Vars_Func.GUI_ElementTyp.Spells_Tutorial));
+            #endregion
+            
+            #region Tutorials Buttons
+            //Set the commen gui tutorial button
+            GUI_Element GUI_t = new GUI_Element(new Rectangle(0, 0, 20, 20), " ?", Vars_Func.GUI_ElementTyp.GUI_TutorialButton);
+            GUI_t.Highlightable = true;
+            tutorialButtons.Add(GUI_t);
 
-            tutorialButtons.Add(new GUI_Element(new Rectangle(570, 650, 20, 20), "", Vars_Func.GUI_ElementTyp.GUI_TutorialButton));
-            tutorialButtons.Add(new GUI_Element(new Rectangle(1320, 600, 20, 20), "", Vars_Func.GUI_ElementTyp.HQCreature_TutorialButton));
-            tutorialButtons.Add(new GUI_Element(new Rectangle(1320, 600, 20, 20), "", Vars_Func.GUI_ElementTyp.Creature_TutorialButton));
-            tutorialButtons.Add(new GUI_Element(new Rectangle(1320, 280, 20, 20), "", Vars_Func.GUI_ElementTyp.Minimap_TutorialButton));
-            tutorialButtons.Add(new GUI_Element(new Rectangle(1320, 600, 20, 20), "", Vars_Func.GUI_ElementTyp.Nest_TutorialButton));
-            tutorialButtons.Add(new GUI_Element(new Rectangle(1090, 650, 20, 20), "", Vars_Func.GUI_ElementTyp.PlaceNest_TutorialButton));
-            tutorialButtons.Add(new GUI_Element(new Rectangle(310, 10, 20, 20), "", Vars_Func.GUI_ElementTyp.Resources_TutorialButton));
-            tutorialButtons.Add(new GUI_Element(new Rectangle(1090, 650, 20, 20), "", Vars_Func.GUI_ElementTyp.Upgrades_TutorialButton));
-            tutorialButtons.Add(new GUI_Element(new Rectangle(1070, 80, 20, 20), "", Vars_Func.GUI_ElementTyp.Wavetimer_TutorialButton));
-            tutorialButtons.Add(new GUI_Element(new Rectangle(210, 110, 20, 20), "", Vars_Func.GUI_ElementTyp.Spells_TutorialButton));
+            //Set the hq creature tutorial button
+            GUI_Element hq_t = new GUI_Element(new Rectangle(1310, 763 - 265 + 13, 20, 20), " ?", Vars_Func.GUI_ElementTyp.HQCreature_TutorialButton);
+            hq_t.Highlightable = true;
+            tutorialButtons.Add(hq_t);
+
+            //Set the creature tutorial button
+            GUI_Element cre_t = new GUI_Element(new Rectangle(1310, 763 - 265 + 13, 20, 20), " ?", Vars_Func.GUI_ElementTyp.Creature_TutorialButton);
+            cre_t.Highlightable = true;
+            tutorialButtons.Add(cre_t);
+
+            //Set the minimap tutorial button
+            GUI_Element map_t = new GUI_Element(new Rectangle(1366 - 13 - 17, 13 + 265 - 20 - 1, 20, 20), " ?", Vars_Func.GUI_ElementTyp.Minimap_TutorialButton);
+            map_t.Highlightable = true;
+            tutorialButtons.Add(map_t);
+
+            //Set the nest tutorial button
+            GUI_Element nest_t = new GUI_Element(new Rectangle(1310, 763 - 265 + 13, 20, 20), " ?", Vars_Func.GUI_ElementTyp.Nest_TutorialButton);
+            nest_t.Highlightable = true;
+            tutorialButtons.Add(nest_t);
+
+            //Set the place-nest tutorial button
+            GUI_Element pla_t = new GUI_Element(new Rectangle(0, 675, 20, 20), " ?", Vars_Func.GUI_ElementTyp.PlaceNest_TutorialButton);
+            pla_t.Highlightable = true;
+            tutorialButtons.Add(pla_t);
+
+            //Set the ressource tutorial button
+            GUI_Element res_t = new GUI_Element(new Rectangle(260 - 7, 13 + 265 - 20, 20, 20), " ?", Vars_Func.GUI_ElementTyp.Resources_TutorialButton);
+            res_t.Highlightable = true;
+            tutorialButtons.Add(res_t);
+
+            //Set the upgrade tutorial button
+            GUI_Element upg_t = new GUI_Element(new Rectangle(0, 597, 20, 20), " ?", Vars_Func.GUI_ElementTyp.Upgrades_TutorialButton);
+            upg_t.Highlightable = true;
+            tutorialButtons.Add(upg_t);
+
+            //Set the wave tutorial button
+            GUI_Element wave_t = new GUI_Element(new Rectangle(1090 - 20, 13 + 36, 20, 20), " ?", Vars_Func.GUI_ElementTyp.Wavetimer_TutorialButton);
+            wave_t.Highlightable = true;
+            tutorialButtons.Add(wave_t);
+
+            //Set the spell tutorial button
+            GUI_Element spell_t = new GUI_Element(new Rectangle(110 + 13, 278, 20, 20), " ?", Vars_Func.GUI_ElementTyp.Spells_TutorialButton);
+            spell_t.Highlightable = true;
+            tutorialButtons.Add(spell_t);
+            #endregion
         }
-
 
         #region Properties
         public static GUI_Element getGUI_TutorialButtons(Vars_Func.GUI_ElementTyp typ)
@@ -400,6 +446,15 @@ namespace Underlord.Logic
         #region Update
         public static void update(GameTime time, Environment.Map map, MouseState mouseState)
         {
+            showHelp = Setting_GUI.ShowHelp;
+            if (showHelp)
+            {
+                foreach (GUI_Element t in tutorialButtons)
+                {
+                    t.Update(time, map, mouseState);
+                }
+            }
+
             foreach (GUI_Element u in upgradeButtons)
             {
                 u.Update(time, map, mouseState);
@@ -422,6 +477,127 @@ namespace Underlord.Logic
             if (!pressed && isButtonPressed)
             {
                 isButtonPressed = false; 
+            }
+
+             #region Select the right Tutorial-GUI-Element when chosen and store it in tempTutorial
+            if (showHelp)
+            {
+                switch (Interaction.GameState)
+                {
+                    case Vars_Func.GameState.GUI_Tutorial:
+                        foreach (GUI_Element e in tutorials)
+                        {
+                            if (e.ElementTyp == Vars_Func.GUI_ElementTyp.GUI_Tutorial) tempTutorial = e;
+                        }
+                        break;
+                    case Vars_Func.GameState.HQCreature_Tutorial:
+                        foreach (GUI_Element e in tutorials)
+                        {
+                            if (e.ElementTyp == Vars_Func.GUI_ElementTyp.HQCreature_Tutorial) tempTutorial = e;
+                        }
+                        break;
+                    case Vars_Func.GameState.Creature_Tutorial:
+                        foreach (GUI_Element e in tutorials)
+                        {
+                            if (e.ElementTyp == Vars_Func.GUI_ElementTyp.Creature_Tutorial) tempTutorial = e;
+                        }
+                        break;
+                    case Vars_Func.GameState.Minimap_Tutorial:
+                        foreach (GUI_Element e in tutorials)
+                        {
+                            if (e.ElementTyp == Vars_Func.GUI_ElementTyp.Minimap_Tutorial) tempTutorial = e;
+                        }
+                        break;
+                    case Vars_Func.GameState.Nest_Tutorial:
+                        foreach (GUI_Element e in tutorials)
+                        {
+                            if (e.ElementTyp == Vars_Func.GUI_ElementTyp.Nest_Tutorial) tempTutorial = e;
+                        }
+                        break;
+                    case Vars_Func.GameState.PlaceNest_Tutorial:
+                        foreach (GUI_Element e in tutorials)
+                        {
+                            if (e.ElementTyp == Vars_Func.GUI_ElementTyp.PlaceNest_Tutorial) tempTutorial = e;
+                        }
+                        break;
+                    case Vars_Func.GameState.Resources_Tutorial:
+                        foreach (GUI_Element e in tutorials)
+                        {
+                            if (e.ElementTyp == Vars_Func.GUI_ElementTyp.Resources_Tutorial) tempTutorial = e;
+                        }
+                        break;
+                    case Vars_Func.GameState.Upgrades_Tutorial:
+                        foreach (GUI_Element e in tutorials)
+                        {
+                            if (e.ElementTyp == Vars_Func.GUI_ElementTyp.Upgrades_Tutorial) tempTutorial = e;
+                        }
+                        break;
+                    case Vars_Func.GameState.Wavetimer_Tutorial:
+                        foreach (GUI_Element e in tutorials)
+                        {
+                            if (e.ElementTyp == Vars_Func.GUI_ElementTyp.Wavetimer_Tutorial) tempTutorial = e;
+                        }
+                        break;
+                    case Vars_Func.GameState.Spells_Tutorial:
+                        foreach (GUI_Element e in tutorials)
+                        {
+                            if (e.ElementTyp == Vars_Func.GUI_ElementTyp.Spells_Tutorial) tempTutorial = e;
+                        }
+                        break;
+                    default:
+                        tempTutorial = null;
+                        break;
+                }
+            #endregion
+
+                if (tempTutorial != null)
+                {
+                    // Move the old, selected tutorial text back 
+                    if (selectedTutorial != null && selectedTutorial != tempTutorial)
+                    {
+                        tutorialLerpCounter -= (float)time.ElapsedGameTime.Milliseconds / 500;
+                        if (tutorialLerpCounter < 0)
+                        {
+                            selectedTutorial = tempTutorial;
+                            tutorialLerpCounter = 0;
+                        }
+                        float yValue = MathHelper.Lerp(-300, selectedTutorial.Rectangle.Y, tutorialLerpCounter);
+                        selectedTutorial.CurrentRectangle = new Rectangle(selectedTutorial.Rectangle.X, (int)yValue, selectedTutorial.CurrentRectangle.Width, selectedTutorial.CurrentRectangle.Height);
+                    }
+                    //Some start conditions
+                    if (selectedTutorial == null)
+                    {
+                        selectedTutorial = tempTutorial;
+                    }
+                    //Move the selected tutorial text the right position
+                    if (selectedTutorial == tempTutorial && tutorialLerpCounter != 1)
+                    {
+                        tutorialLerpCounter += (float)time.ElapsedGameTime.Milliseconds / 500;
+                        if (tutorialLerpCounter > 1)
+                        {
+                            tutorialLerpCounter = 1;
+                        }
+                        float yValue = MathHelper.Lerp(-300, selectedTutorial.Rectangle.Y, tutorialLerpCounter);
+                        selectedTutorial.CurrentRectangle = new Rectangle(selectedTutorial.Rectangle.X, (int)yValue, selectedTutorial.CurrentRectangle.Width, selectedTutorial.CurrentRectangle.Height);
+                    }
+                }
+                else
+                {
+                    if (selectedTutorial != null)
+                    {
+                        tutorialLerpCounter -= (float)time.ElapsedGameTime.Milliseconds / 500;
+                        if (tutorialLerpCounter < 0)
+                        {
+                            selectedTutorial = null;
+                            tutorialLerpCounter = 0;
+                        }
+                        if (selectedTutorial != null)
+                        {
+                            float yValue = MathHelper.Lerp(-300, selectedTutorial.Rectangle.Y, tutorialLerpCounter);
+                            selectedTutorial.CurrentRectangle = new Rectangle(selectedTutorial.Rectangle.X, (int)yValue, selectedTutorial.CurrentRectangle.Width, selectedTutorial.CurrentRectangle.Height);
+                        }
+                    }
+                }
             }
         }
         #endregion
@@ -776,6 +952,7 @@ namespace Underlord.Logic
         #region Draw
         public static void Draw(SpriteBatch spriteBatch, SpriteFont font, Minimap minimap, Vector2 indexOfMiddleHexagon)
         {
+            #region Draw Elements
             //draw the GUI_elements
             foreach (GUI_Element e in elements)
             {
@@ -785,6 +962,9 @@ namespace Underlord.Logic
                     minimap.drawMinimap(spriteBatch, indexOfMiddleHexagon);
                 }
             }
+            #endregion
+
+            #region Draw Buttons
             //draw the buttons
             foreach (GUI_Element b in buttons)
             {
@@ -798,30 +978,72 @@ namespace Underlord.Logic
                     }
                 }
             }
+            #endregion
 
-            foreach (GUI_Element b in tutorialButtons)
+            #region Draw Tutorial-Elements
+            //draw the TutorialElements
+            if (showHelp)
             {
-                if (b.ElementTyp == Vars_Func.GUI_ElementTyp.GUI_TutorialButton ||
-                    b.ElementTyp == Vars_Func.GUI_ElementTyp.Minimap_TutorialButton ||
-                    b.ElementTyp == Vars_Func.GUI_ElementTyp.Resources_TutorialButton ||
-                    b.ElementTyp == Vars_Func.GUI_ElementTyp.Spells_TutorialButton ||
-                    b.ElementTyp == Vars_Func.GUI_ElementTyp.Wavetimer_TutorialButton)
+                if (selectedTutorial != null)
                 {
-                    //if (b.Rectangle.Contains(mouseState.X, mouseState.Y))
-                    //{
-                        b.Draw(spriteBatch, font);
-                    //}
-                    //else
-                    //{
-                    //    b.Draw(spriteBatch, font);
-                    //}
+                    selectedTutorial.Draw(spriteBatch, font);
                 }
             }
+            #endregion
 
+            #region Draw Standart-Tutorial-Buttons
+            // draw the standard tutorialbuttons
+            if (showHelp)
+            {
+                foreach (GUI_Element b in tutorialButtons)
+                {
+                    if (b.ElementTyp == Vars_Func.GUI_ElementTyp.GUI_TutorialButton ||
+                        b.ElementTyp == Vars_Func.GUI_ElementTyp.Minimap_TutorialButton ||
+                        b.ElementTyp == Vars_Func.GUI_ElementTyp.Resources_TutorialButton ||
+                        b.ElementTyp == Vars_Func.GUI_ElementTyp.Spells_TutorialButton ||
+                        b.ElementTyp == Vars_Func.GUI_ElementTyp.Wavetimer_TutorialButton)
+                    {
+                        b.Draw(spriteBatch, font);
+                    }
+                }
+            }
+            #endregion
+
+            #region Draw Building-Elements
+            if (Interaction.GameState == Vars_Func.GameState.Build ||
+                Interaction.GameState == Vars_Func.GameState.PlaceAnts ||
+                Interaction.GameState == Vars_Func.GameState.PlaceSkeletons ||
+                Interaction.GameState == Vars_Func.GameState.PlaceFarm ||
+                Interaction.GameState == Vars_Func.GameState.PlaceTemple ||
+                Interaction.GameState == Vars_Func.GameState.PlaceEntrance)
+            {
+                if (showHelp)
+                {
+                    //draw the tutorialButton for buildButtons
+                    foreach (GUI_Element b in tutorialButtons)
+                    {
+                        if (b.ElementTyp == Vars_Func.GUI_ElementTyp.PlaceNest_TutorialButton)
+                        {
+                            b.Draw(spriteBatch, font);
+                        }
+                    }
+                }
+                alreadyDrawing = true;
+                spriteBatch.DrawString(font, "Costs: ", new Vector2(1090 - 260 + 20, 610), Color.Black);
+                spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Nest: " + Interaction.NestCost.ToString() + " Gold", new Vector2(1090 - 260 + 20, 630), Color.Black);
+                spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Graveyard: " + Interaction.NestCost.ToString() + " Gold", new Vector2(1090 - 260 + 20, 650), Color.Black);
+                spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Farm: " + Interaction.FarmCost.ToString() + " Gold", new Vector2(1090 - 260 + 20, 670), Color.Black);
+                spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Tempel: " + Interaction.TempleCost.ToString() + " Gold", new Vector2(1090 - 260 + 20, 690), Color.Black);
+                spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Entrance: " + Interaction.EntranceCost.ToString() + " Gold", new Vector2(1090 - 260 + 20, 710), Color.Black);
+            }
+            #endregion
+
+            #region Draw Ressources
             //draw the player ressources
             spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), "Gold: " + Player.Gold, new Vector2(120, 50), Color.Black);
             spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), "Mana: " + Player.Mana, new Vector2(120, 125), Color.Black);
             spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), "Food: " + Player.Food, new Vector2(110, 200), Color.Black);
+            #endregion
 
             bool enableUpgrades = false;
             //draw different values for other types of selected objects
@@ -831,66 +1053,141 @@ namespace Underlord.Logic
                 case Vars_Func.ThingTyp.Wall:
                     if (wall != null)
                     {
-                        spriteBatch.DrawString(font, "Typ: " + wall.Typ.ToString(), new Vector2(1121, 600), Color.Black);
-                        spriteBatch.DrawString(font, "HP: " + wall.HP.ToString(), new Vector2(1121, 620), Color.Black);
-                        spriteBatch.DrawString(font, "Gold: " + wall.Gold.ToString(), new Vector2(1121, 640), Color.Black);
+                        spriteBatch.DrawString(font, "Typ: " + wall.Typ.ToString(), new Vector2(1110, 520), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "HP: " + wall.HP.ToString(), new Vector2(1110, 540), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Gold: " + wall.Gold.ToString(), new Vector2(1110, 560), Color.Black);
                     }
                     break;
                 case Vars_Func.ThingTyp.Nest:
                     if (nest.Typ != Vars_Func.NestTyp.Entrance)
                     {
+                        //draw the tutorialButton for upgradeButtons and nests
+                        if (showHelp)
+                        {
+                            foreach (GUI_Element b in tutorialButtons)
+                            {
+                                if (b.ElementTyp == Vars_Func.GUI_ElementTyp.Upgrades_TutorialButton ||
+                                    b.ElementTyp == Vars_Func.GUI_ElementTyp.Nest_TutorialButton)
+                                {
+                                    b.Draw(spriteBatch, font);
+                                }
+                            }
+                        }
+                        //draw the upgradeButtons
+                        foreach (GUI_Element b in upgradeButtons)
+                        {
+                            b.Draw(spriteBatch, font);
+                        }
                         enableUpgrades = true;
-                        spriteBatch.DrawString(font, "Typ: " + nest.Typ.ToString(), new Vector2(1121, 600), Color.Black);
-                        spriteBatch.DrawString(font, "Nutrition: " + nest.Nutrition.ToString() + "/" + nest.MaxNutrition.ToString(), new Vector2(1121, 620), Color.Black);
-                        spriteBatch.DrawString(font, "Upgrades:", new Vector2(1121, 640), Color.Black);
-                        spriteBatch.DrawString(font, "Damage: " + nest.UpgradeCount[0], new Vector2(1121, 660), Color.Black);
-                        spriteBatch.DrawString(font, "Live: " + nest.UpgradeCount[1], new Vector2(1121, 680), Color.Black);
-                        spriteBatch.DrawString(font, "Speed: " + nest.UpgradeCount[2], new Vector2(1121, 700), Color.Black);
+
+                        spriteBatch.DrawString(font, "Typ: " + nest.Typ.ToString(), new Vector2(1110, 520), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Nutrition: " + nest.Nutrition.ToString() + "/" + nest.MaxNutrition.ToString(), new Vector2(1110, 540), Color.Black);
+                        spriteBatch.DrawString(font, "Upgrades:", new Vector2(1110, 560), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Damage: " + nest.UpgradeCount[0], new Vector2(1110, 580), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Live: " + nest.UpgradeCount[1], new Vector2(1110, 600), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Speed: " + nest.UpgradeCount[2], new Vector2(1110, 620), Color.Black);
+
+                        //draw the upgradecosts
+                        spriteBatch.DrawString(font, "Upgrade-Costs:", new Vector2(1110, 640), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Damage: " + nest.NextUpgradeCost.ToString() + " Gold", new Vector2(1110, 660), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Live: " + nest.NextUpgradeCost.ToString() + " Gold", new Vector2(1110, 680), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Speed: " + nest.NextUpgradeCost.ToString() + " Gold", new Vector2(1110, 700), Color.Black);
                     }
                     else
                     {
-                        spriteBatch.DrawString(font, "Typ: " + nest.Typ.ToString(), new Vector2(1121, 600), Color.Black);
-                        spriteBatch.DrawString(font, "Start Age: ", new Vector2(1121, 620), Color.Black);
+                        alreadyDrawing = true;
+                        spriteBatch.DrawString(font, "Typ: " + nest.Typ.ToString(), new Vector2(1110, 520), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Start Age: ", new Vector2(1110, 540), Color.Black);
                     }
                     break;
                 case Vars_Func.ThingTyp.DungeonCreature:
                     if (creature != null)
                     {
-                        spriteBatch.DrawString(font, "Typ: " + creature.Typ.ToString(), new Vector2(1121, 600), Color.Black);
-                        spriteBatch.DrawString(font, "HP: " + (creature.HP - creature.DamageTaken).ToString(), new Vector2(1121, 620), Color.Black);
-                        spriteBatch.DrawString(font, "Damage: " + creature.Damage.ToString(), new Vector2(1121, 640), Color.Black);
-                        spriteBatch.DrawString(font, "Age: " + ((int)creature.Age).ToString(), new Vector2(1121, 660), Color.Black);
+                        //draw the tutorialButton for creatures
+                        if (showHelp)
+                        {
+                            foreach (GUI_Element b in tutorialButtons)
+                            {
+                                if (b.ElementTyp == Vars_Func.GUI_ElementTyp.Creature_TutorialButton)
+                                {
+                                    b.Draw(spriteBatch, font);
+                                }
+                            }
+                        }
+                        spriteBatch.DrawString(font, "Typ: " + creature.Typ.ToString(), new Vector2(1110, 520), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "HP: " + (creature.HP - creature.DamageTaken).ToString(), new Vector2(1110, 540), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Damage: " + creature.Damage.ToString(), new Vector2(1110, 560), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Age: " + ((int)creature.Age).ToString(), new Vector2(1110, 580), Color.Black);
                     }
                     break;
                 case Vars_Func.ThingTyp.HeroCreature:
                     if (creature != null)
                     {
-                        spriteBatch.DrawString(font, "Typ: " + creature.Typ.ToString(), new Vector2(1121, 600), Color.Black);
-                        spriteBatch.DrawString(font, "HP: " + (creature.HP - creature.DamageTaken).ToString(), new Vector2(1121, 620), Color.Black);
-                        spriteBatch.DrawString(font, "Damage: " + creature.Damage.ToString(), new Vector2(1121, 640), Color.Black);
-                        spriteBatch.DrawString(font, "Age: " + ((int)creature.Age).ToString(), new Vector2(1121, 660), Color.Black);
+                        if (showHelp)
+                        {
+                            foreach (GUI_Element b in tutorialButtons)
+                            {
+                                if (b.ElementTyp == Vars_Func.GUI_ElementTyp.Creature_TutorialButton)
+                                {
+                                    b.Draw(spriteBatch, font);
+                                }
+                            }
+                        }
+                        spriteBatch.DrawString(font, "Typ: " + creature.Typ.ToString(), new Vector2(1110, 520), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "HP: " + (creature.HP - creature.DamageTaken).ToString(), new Vector2(1110, 540), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Damage: " + creature.Damage.ToString(), new Vector2(1110, 560), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Age: " + ((int)creature.Age).ToString(), new Vector2(1110, 580), Color.Black);
                     }
                     break;
                 case Vars_Func.ThingTyp.NeutralCreature:
                     if (creature != null)
                     {
-                        spriteBatch.DrawString(font, "Typ: " + creature.Typ.ToString(), new Vector2(1121, 600), Color.Black);
-                        spriteBatch.DrawString(font, "HP: " + (creature.HP - creature.DamageTaken).ToString(), new Vector2(1121, 620), Color.Black);
-                        spriteBatch.DrawString(font, "Damage: " + creature.Damage.ToString(), new Vector2(1121, 640), Color.Black);
+                        spriteBatch.DrawString(font, "Typ: " + creature.Typ.ToString(), new Vector2(1110, 520), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "HP: " + (creature.HP - creature.DamageTaken).ToString(), new Vector2(1110, 540), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Damage: " + creature.Damage.ToString(), new Vector2(1110, 560), Color.Black);
                     }
                     break;
                 case Vars_Func.ThingTyp.HQCreature:
                     if (creature != null)
                     {
-                        spriteBatch.DrawString(font, "Typ: " + creature.Typ.ToString(), new Vector2(1121, 600), Color.Black);
-                        spriteBatch.DrawString(font, "HP: " + (creature.HP - creature.DamageTaken).ToString(), new Vector2(1121, 620), Color.Black);
-                        spriteBatch.DrawString(font, "Damage: " + creature.Damage.ToString(), new Vector2(1121, 640), Color.Black);
+                        //draw the tutorialButton for the HQCreature
+                        if (showHelp)
+                        {
+                            foreach (GUI_Element b in tutorialButtons)
+                            {
+                                if (b.ElementTyp == Vars_Func.GUI_ElementTyp.HQCreature_TutorialButton)
+                                {
+                                    b.Draw(spriteBatch, font);
+                                }
+                            }
+                        }
+                        spriteBatch.DrawString(font, "Typ: " + creature.Typ.ToString(), new Vector2(1110, 520), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "HP: " + (creature.HP - creature.DamageTaken).ToString(), new Vector2(1110, 540), Color.Black);
+                        spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Damage: " + creature.Damage.ToString(), new Vector2(1110, 560), Color.Black);
                     }
                     break;
                 case Vars_Func.ThingTyp.length:
+                    //Reset the info element and let them draw the spell costs
+                    if (alreadyDrawing && Interaction.GameState == Vars_Func.GameState.Ingame)
+                    {
+                        alreadyDrawing = false;
+                    }
                     break;
             }
             #endregion
+
+            if (!alreadyDrawing)
+            {
+                //draw the spellcosts
+                spriteBatch.DrawString(font, "Spell-Costs: ", new Vector2(1090 - 260 + 20, 610), Color.Black);
+                spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Fireball: " + Spells.FireballCost.ToString() + " Mana", new Vector2(1090 - 260 + 20, 630), Color.Black);
+                spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaSmall), "Summon Imp: " + Spells.SummonImpCost.ToString() + " Mana", new Vector2(1090 - 260 + 20, 650), Color.Black);
+            }
+
+            foreach (GUI_Element w in waveElements)
+            {
+                w.Draw(spriteBatch, font);
+            }
 
             if (enableUpgrades)
             {

@@ -999,6 +999,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Fire\fireball_GEO_01.fbx">
+      <Name>fireball_GEO_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
+    </Compile>
+    <Compile Include="Models\Fire\fire_GEO_01.fbx">
+      <Name>fire_GEO_01</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
+    </Compile>
     <None Include="Tutorials\Build.txt">
       <Name>Build</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

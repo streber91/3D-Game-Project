@@ -182,6 +182,7 @@ namespace Underlord.Logic
                 this.SetColor(mouseState);
                 // Set selection
                 this.SetSelection(mouseState);
+            }
                 // Move children
                 if (move)
                 {
@@ -199,7 +200,7 @@ namespace Underlord.Logic
                         this.UpdatePosition(c);
                     }
                 }
-            }
+            
             // Update children
             foreach (GUI_Element c in childElements)
             {
@@ -372,13 +373,6 @@ namespace Underlord.Logic
             }
         }
         #endregion
-
-        //public void Draw(SpriteBatch spriteBatch, SpriteFont font, Color spriteColor)
-        //{
-        //    if (elementTyp == Vars_Func.GUI_ElementTyp.BottomHUD) spriteBatch.Draw(Vars_Func.getGUI_ElementTextures(elementTyp), new Vector2(rectangle.X, rectangle.Y), Color.Red);
-        //    else spriteBatch.Draw(Vars_Func.getGUI_ElementTextures(elementTyp), new Vector2(rectangle.X, rectangle.Y), spriteColor);
-        //    spriteBatch.DrawString(font, text, new Vector2(rectangle.X, rectangle.Y+30), Color.Black);
-        //}
 
         #region Drawing
         public void Draw(SpriteBatch spriteBatch, SpriteFont font)

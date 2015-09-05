@@ -82,7 +82,7 @@ namespace Underlord.Logic
             dummy.Children.Add(fullscreenButton);
             all.Add(fullscreenButton);
 
-            tutorialButton = new GUI_Element(new Rectangle(1366 / 2 - 200 + 76, 230 + 60, 76, 76), "  Off", Vars_Func.GUI_ElementTyp.FullScreenButton);
+            tutorialButton = new GUI_Element(new Rectangle(1366 / 2 - 200, 230 + 60, 76, 76), "  Off", Vars_Func.GUI_ElementTyp.FullScreenButton);
             tutorialButton.Highlightable = true;
             tutorialButton.YBonus = 20;
             dummy.Children.Add(tutorialButton);

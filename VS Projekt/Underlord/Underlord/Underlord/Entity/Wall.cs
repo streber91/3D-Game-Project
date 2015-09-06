@@ -47,7 +47,7 @@ namespace Underlord.Entity
             this.hp = hp;
             this.initHP = hp;
             map.getHexagonAt(indexPosition).Obj = this;
-            if (typ == Vars_Func.WallTyp.Gold) gold = 500;
+            if (typ == Vars_Func.WallTyp.Gold) gold = 100;
             //boneTransforms = new Matrix[Entity.Vars_Func.getWallModell(typ).Model.Bones.Count];
         }
         #endregion

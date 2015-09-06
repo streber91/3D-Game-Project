@@ -61,11 +61,12 @@ namespace Underlord.Logic
             
             string startSpace = "          ";
             string text = "\n" +startSpace;
+            String[] highscore = Player.loadScore();
 
             for (int i = 0; i < 10; i++)
             {
-                int number = i+1;
-                text += number.ToString() + ". Nobody ";
+                int number = i + 1;
+                text += number.ToString() + ". " + highscore[i];
                 text += "\n";
                 text += startSpace;
             }

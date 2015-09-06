@@ -61,7 +61,7 @@ namespace Underlord.Logic
                         {
                             foreach (Vector2 hex in map.getHexagonAt(i, j).Neighbors)
                             {
-                                new Wall(new Vector2(hex.X, hex.Y), Vars_Func.WallTyp.Gold, 300, map);
+                                new Wall(new Vector2(hex.X, hex.Y), Vars_Func.WallTyp.Gold, 150, map);
                             }
                         }
                         else if (specials[randnum] == Vars_Func.WallTyp.HQ) map.HQPosition = new Vector2(i, j);

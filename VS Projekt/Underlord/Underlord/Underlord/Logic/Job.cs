@@ -85,16 +85,16 @@ namespace Underlord.Logic
                     break;
 
                 case Vars_Func.ImpJob.MineDiamonds:
-                    Player.Gold += 10;
+                    Player.Gold += 2;
                     break;
 
                 case Vars_Func.ImpJob.MineGold:
                     Entity.Wall goldWall = ((Entity.Wall)map.getHexagonAt(destination).Obj);
-                    goldWall.HP -= 10;
+                    goldWall.HP -= 5;
                     if (goldWall.Gold > 0)
                     {
-                        Player.Gold += Math.Min(10, goldWall.Gold);
-                        goldWall.Gold -= Math.Min(10, goldWall.Gold);
+                        Player.Gold += Math.Min(5, goldWall.Gold);
+                        goldWall.Gold -= Math.Min(5, goldWall.Gold);
                     }
                     if (goldWall.HP <= 0)
                     {

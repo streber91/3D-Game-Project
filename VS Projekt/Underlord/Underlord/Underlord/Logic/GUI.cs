@@ -717,7 +717,14 @@ namespace Underlord.Logic
 
             #region Draw Wavetimer
             //draw the Wavetimer and Counter
-            spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), ((int)WaveController.TimeToNextWave / 60) + ":" + ((int)WaveController.TimeToNextWave % 60), new Vector2(1090 - 104, 16), Color.Black);
+            if (((int)WaveController.TimeToNextWave % 60) >= 10)
+            {
+                spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), ((int)WaveController.TimeToNextWave / 60) + ":" + ((int)WaveController.TimeToNextWave % 60), new Vector2(1090 - 104, 16), Color.Black);
+            }
+            else
+            {
+                spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), ((int)WaveController.TimeToNextWave / 60) + ":0" + ((int)WaveController.TimeToNextWave % 60), new Vector2(1090 - 104, 16), Color.Black);
+            }
             spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), WaveController.WaveCounter.ToString(), new Vector2(1090 - 144 - 30, 16), Color.Black);
             #endregion
 

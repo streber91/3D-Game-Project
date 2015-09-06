@@ -15,25 +15,33 @@ namespace Underlord.Logic
         {
             if (imp.ActionTimeCounter >= 500)
             {
-                if (imp.Path == null) imp.Path = new Stack<Vector2>();
-                // search Job
-                if (imp.CurrentJob.JobTyp == Vars_Func.ImpJob.Idle)
+                //20 trys for jobsearch
+                for (int i = 0; i < 20; ++i)
                 {
-                    //jobs there?
-                    if (map.JobsWaiting.Count != 0)
+                    if (imp.Path == null) imp.Path = new Stack<Vector2>();
+                    // search Job
+                    if (imp.CurrentJob.JobTyp == Vars_Func.ImpJob.Idle)
                     {
-                        imp.CurrentJob = map.JobsWaiting.Dequeue();
-                        map.JobsInProgress.Add(imp.CurrentJob);
+                        //jobs there?
+                        if (map.JobsWaiting.Count != 0)
+                        {
+                            imp.CurrentJob = map.JobsWaiting.Dequeue();
+                            map.JobsInProgress.Add(imp.CurrentJob);
+                        }
                     }
-                }
-                // search path to workplace
-                if(imp.Path.Count == 0 && imp.CurrentJob.JobTyp != Vars_Func.ImpJob.Idle) imp.Path = determinePath(imp.Position, imp.CurrentJob.Destination, map);
-                //job not reachable enque job 
-                if (imp.Path == null)
-                {
-                    map.JobsInProgress.Remove(imp.CurrentJob);
-                    map.JobsWaiting.Enqueue(imp.CurrentJob);
-                    imp.CurrentJob = new Job(Vars_Func.ImpJob.Idle);
+                    // search path to workplace
+                    if (imp.Path.Count == 0 && imp.CurrentJob.JobTyp != Vars_Func.ImpJob.Idle) imp.Path = determinePath(imp.Position, imp.CurrentJob.Destination, map);
+                    //job not reachable enque job
+                    if (imp.Path == null)
+                    {
+                        map.JobsInProgress.Remove(imp.CurrentJob);
+                        map.JobsWaiting.Enqueue(imp.CurrentJob);
+                        imp.CurrentJob = new Job(Vars_Func.ImpJob.Idle);
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
                 // working
                 if (imp.CurrentJob.JobTyp != Vars_Func.ImpJob.Idle && map.getHexagonAt(imp.Position).Neighbors.Contains(imp.CurrentJob.Destination))
@@ -255,7 +263,7 @@ namespace Underlord.Logic
                         (map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.HeroCreature || ignoreCreatures) &&
                         (map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.NeutralCreature || ignoreCreatures) &&
                         map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.Nest && map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.Upgrade &&
-                        (map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.HQCreature ||(map.getHexagonAt(start).Obj != null && map.getHexagonAt(start).Obj.getThingTyp() == Vars_Func.ThingTyp.HeroCreature))
+                        (map.getHexagonAt(hex).Obj.getThingTyp() != Logic.Vars_Func.ThingTyp.HQCreature || (map.getHexagonAt(start).Obj != null && map.getHexagonAt(start).Obj.getThingTyp() == Vars_Func.ThingTyp.HeroCreature))
                         )))
                     {
                         queue.Enqueue(hex);

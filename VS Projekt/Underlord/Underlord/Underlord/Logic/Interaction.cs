@@ -1313,8 +1313,11 @@ namespace Underlord.Logic
                                 if (map.getHexagonAt(mouseover).RoomNumber == 0 &&
                                     map.getHexagonAt(mouseover).Obj == null &&
                                     (map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[3]).Obj == null ||
-                                    map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[3]).Obj.getThingTyp() != Vars_Func.ThingTyp.Wall ||
-                                    map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[3]).Obj.getThingTyp() != Vars_Func.ThingTyp.HQCreature))
+                                    (map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[3]).Obj.getThingTyp() != Vars_Func.ThingTyp.Wall &&
+                                    map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[3]).Obj.getThingTyp() != Vars_Func.ThingTyp.HQCreature &&
+                                    map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[3]).Obj.getThingTyp() != Vars_Func.ThingTyp.Nest)) &&
+                                    (map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[0]).Obj == null ||
+                                    map.getHexagonAt(map.getHexagonAt(mouseover).Neighbors[0]).Obj.getThingTyp() != Vars_Func.ThingTyp.Nest))
                                 {
                                     new Nest(Vars_Func.NestTyp.Entrance, mouseover, map, map.HQPosition);
                                     Player.Gold -= entranceCost;

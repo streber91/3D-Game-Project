@@ -126,7 +126,7 @@ namespace Underlord.Entity
                         Vector2 neighbor = hex.Neighbors[i];
                         for (int j = 0; j < 6; ++j)
                         {
-                            Vector2 nextNeighbor = hex.Neighbors[j];
+                            Vector2 nextNeighbor = map.getHexagonAt(neighbor).Neighbors[j];
                             if (!map.getHexagonAt(nextNeighbor).Nest &&
                                 map.getHexagonAt(nextNeighbor).RoomNumber == map.getHexagonAt(neighbor).RoomNumber &&
                                 !possibleNextNestHexagons.Contains(nextNeighbor))
@@ -162,7 +162,7 @@ namespace Underlord.Entity
                         Vector2 neighbor = hex.Neighbors[i];
                         for (int j = 0; j < 6; ++j)
                         {
-                            Vector2 nextNeighbor = hex.Neighbors[j];
+                            Vector2 nextNeighbor = map.getHexagonAt(neighbor).Neighbors[j];
                             if (!map.getHexagonAt(nextNeighbor).Nest &&
                                 map.getHexagonAt(nextNeighbor).RoomNumber == map.getHexagonAt(neighbor).RoomNumber &&
                                 !possibleNextNestHexagons.Contains(nextNeighbor))
@@ -199,7 +199,7 @@ namespace Underlord.Entity
                         Vector2 neighbor = hex.Neighbors[i];
                         for (int j = 0; j < 6; ++j)
                         {
-                            Vector2 nextNeighbor = hex.Neighbors[j];
+                            Vector2 nextNeighbor = map.getHexagonAt(neighbor).Neighbors[j];
                             if (!map.getHexagonAt(nextNeighbor).Nest &&
                                 map.getHexagonAt(nextNeighbor).RoomNumber == map.getHexagonAt(neighbor).RoomNumber &&
                                 !possibleNextNestHexagons.Contains(nextNeighbor))
@@ -234,7 +234,7 @@ namespace Underlord.Entity
                         Vector2 neighbor = hex.Neighbors[i];
                         for (int j = 0; j < 6; ++j)
                         {
-                            Vector2 nextNeighbor = hex.Neighbors[j];
+                            Vector2 nextNeighbor = map.getHexagonAt(neighbor).Neighbors[j];
                             if (!map.getHexagonAt(nextNeighbor).Nest &&
                                 map.getHexagonAt(nextNeighbor).RoomNumber == map.getHexagonAt(neighbor).RoomNumber &&
                                 !possibleNextNestHexagons.Contains(nextNeighbor))

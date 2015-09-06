@@ -476,6 +476,8 @@ namespace Underlord.Logic
                         //determines the hexagons that the new room would have
                         else if (counter == 1)
                         {
+                            //colors the hexagon at mouseposition in CreateRoom mode blue
+                            map.getHexagonAt(mouseover).Color = Color.Blue;
                             Vector2 newMousePosition = mouseover;
                             if (oldMousePosition != newMousePosition)
                             {

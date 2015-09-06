@@ -489,21 +489,22 @@ namespace Underlord.Logic
                Interaction.GameState == Vars_Func.GameState.MergeRooms ||
                Interaction.GameState == Vars_Func.GameState.DeleteRoom ||
                Interaction.GameState == Vars_Func.GameState.Build ||
-               Interaction.GameState == Vars_Func.GameState.BuildUpgrade)
+               Interaction.GameState == Vars_Func.GameState.BuildUpgrade ||
+               Interaction.GameState == Vars_Func.GameState.PlaceAnts ||
+               Interaction.GameState == Vars_Func.GameState.PlaceSkeletons ||
+               Interaction.GameState == Vars_Func.GameState.PlaceFarm ||
+               Interaction.GameState == Vars_Func.GameState.PlaceTemple ||
+               Interaction.GameState == Vars_Func.GameState.PlaceEntrance)
            {
                foreach (Environment.Hexagon hex in map.getMapHexagons())
                {
                    if (hex.RoomNumber == 0) { }
-                   else if (hex.RoomNumber % 10 == 0) hex.Color = Color.Red;
-                   else if (hex.RoomNumber % 10 == 1) hex.Color = Color.Yellow;
-                   else if (hex.RoomNumber % 10 == 2) hex.Color = Color.Blue;
-                   else if (hex.RoomNumber % 10 == 3) hex.Color = Color.Black;
-                   else if (hex.RoomNumber % 10 == 4) hex.Color = Color.Green;
-                   else if (hex.RoomNumber % 10 == 5) hex.Color = Color.Purple;
-                   else if (hex.RoomNumber % 10 == 6) hex.Color = Color.Lerp(Color.Black, Color.Green, 0.5f);
-                   else if (hex.RoomNumber % 10 == 7) hex.Color = Color.Lerp(Color.Black, Color.Green, 0.5f);
-                   else if (hex.RoomNumber % 10 == 8) hex.Color = Color.Lerp(Color.Black, Color.Green, 0.5f);
-                   else if (hex.RoomNumber % 10 == 9) hex.Color = Color.Lerp(Color.Black, Color.Green, 0.5f);
+                   else if (hex.RoomNumber % 6 == 0) hex.Color = Color.Red;
+                   else if (hex.RoomNumber % 6 == 1) hex.Color = Color.Yellow;
+                   else if (hex.RoomNumber % 6 == 2) hex.Color = Color.Blue;
+                   else if (hex.RoomNumber % 6 == 3) hex.Color = Color.Black;
+                   else if (hex.RoomNumber % 6 == 4) hex.Color = Color.Green;
+                   else if (hex.RoomNumber % 6 == 5) hex.Color = Color.Purple;
                }
            }
            //colors the hexagons which are in the mineJobs list

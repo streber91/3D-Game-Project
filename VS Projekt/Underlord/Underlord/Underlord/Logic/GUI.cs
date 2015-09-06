@@ -75,7 +75,7 @@ namespace Underlord.Logic
             waveElements.Add(wave);
 
             //Add Score
-            scoreElement = new GUI_Element(new Rectangle(260 + 13, 13, 144, 36), "   Score:", Vars_Func.GUI_ElementTyp.TextFieldSmall);
+            scoreElement = new GUI_Element(new Rectangle(260 + 13, 13, 144, 36), "", Vars_Func.GUI_ElementTyp.TextFieldSmall);
 
             #region Controll Buttons
             // Add mine button
@@ -726,6 +726,11 @@ namespace Underlord.Logic
                 spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), ((int)WaveController.TimeToNextWave / 60) + ":0" + ((int)WaveController.TimeToNextWave % 60), new Vector2(1090 - 104, 16), Color.Black);
             }
             spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), WaveController.WaveCounter.ToString(), new Vector2(1090 - 144 - 30, 16), Color.Black);
+            #endregion
+
+            #region Draw Score
+            //draw the score
+            spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), "Score: " + Player.Score, new Vector2(260 + 19, 16), Color.Black);
             #endregion
 
             bool enableUpgrades = false;

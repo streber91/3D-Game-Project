@@ -240,7 +240,7 @@ namespace Underlord.Logic
             GUI_Element graveyard = new GUI_Element(new Rectangle(build.Rectangle.X + 200, 675, 69, 60), "", Vars_Func.GUI_ElementTyp.Graveyard);
             graveyard.Visable = false;
             graveyard.Highlightable = true;
-            GUI_Element graveyardFrame = new GUI_Element(new Rectangle(graveyard.Rectangle.X - 11, graveyard.Rectangle.Y + 45, 96, 24), " Skeleton", Vars_Func.GUI_ElementTyp.FrameHUD);
+            GUI_Element graveyardFrame = new GUI_Element(new Rectangle(graveyard.Rectangle.X - 11, graveyard.Rectangle.Y + 45, 96, 24), " Graveyard", Vars_Func.GUI_ElementTyp.FrameHUD);
             graveyardFrame.Visable = false;
             graveyard.Frame = graveyardFrame;
             GUI_Element graveyardLeftChain = new GUI_Element(new Rectangle(graveyard.Rectangle.X - 5, graveyard.Rectangle.Y, 12, 90), "", Vars_Func.GUI_ElementTyp.LeftChain);
@@ -252,7 +252,7 @@ namespace Underlord.Logic
             GUI_Element nest = new GUI_Element(new Rectangle(build.Rectangle.X + 100, 675, 69, 60), "", Vars_Func.GUI_ElementTyp.Nest);
             nest.Visable = false;
             nest.Highlightable = true;
-            GUI_Element nestFrame = new GUI_Element(new Rectangle(nest.Rectangle.X - 11, nest.Rectangle.Y + 45, 96, 24), "    Ant", Vars_Func.GUI_ElementTyp.FrameHUD);
+            GUI_Element nestFrame = new GUI_Element(new Rectangle(nest.Rectangle.X - 11, nest.Rectangle.Y + 45, 96, 24), "     Nest", Vars_Func.GUI_ElementTyp.FrameHUD);
             nestFrame.Visable = false;
             nest.Frame = nestFrame;
             GUI_Element nestLeftChain = new GUI_Element(new Rectangle(nest.Rectangle.X - 5, nest.Rectangle.Y, 12, 90), "", Vars_Func.GUI_ElementTyp.LeftChain);

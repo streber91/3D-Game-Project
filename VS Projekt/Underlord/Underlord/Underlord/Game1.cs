@@ -205,7 +205,7 @@ namespace Underlord
                         switch (MainMenu_GUI.getGUI_Button().Typ)
                         {
                             case Vars_Func.GUI_Typ.NewGameButton:
-                                //reinitialize();
+                                reinitialize();
                                 //gamestate = Vars_Func.GameState.Ingame;
                                 gamestate = Vars_Func.GameState.Intro;
                                 MainMenu_GUI.restGUI();
@@ -231,6 +231,8 @@ namespace Underlord
                     Highscore_GUI.restGUI();
                     Confirm_GUI.restGUI();
                     GameOver_GUI.restGUI();
+
+                    IntroMenu_GUI.restGUI();
                         if (keyboard.IsKeyDown(Keys.Tab) && !buttonIsPressed)
                         {
                             buttonIsPressed = true;
@@ -347,6 +349,7 @@ namespace Underlord
                     {
                         Player.saveScore();
                         reinitialize();
+                        IntroMenu_GUI.createGUI();
                         MainMenu_GUI.createGUI();
                         gamestate = Vars_Func.GameState.MainMenu;
                         //showIngameMenu = false;

@@ -1,5 +1,5 @@
 Gold is used to build upgrades and buildings.
-Gold is gathered by Imps from gold and diamonds.
+Gold is gathered by imps from gold and diamonds.
 Mana is used to cast spells and produced by temples.
 Food is used for maintenance of nests, gathered
-by farms and harvested by Imps.
+by farms and harvested by imps.

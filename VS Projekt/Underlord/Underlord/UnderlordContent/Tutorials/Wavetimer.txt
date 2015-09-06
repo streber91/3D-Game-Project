@@ -1,2 +1,3 @@
 This shows the wavenumber and the time left
 until the next wave of enemies arrive.
+Below you see your current score.

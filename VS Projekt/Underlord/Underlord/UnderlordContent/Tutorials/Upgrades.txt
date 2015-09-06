@@ -1,2 +1,6 @@
-Upgrades are placed like nests.
-They enhance your creatures.
+Upgrades are placed like nests. The costs of an upgrade
+increase for each upgrade in the associated nest.
+They enhance the creatures of their associated nest.
+While damageupgrades increase the damage and live-
+upgrades increas the live, the speedupgrade increase
+the attackspeed and walkingspeed of creatures.

@@ -120,6 +120,7 @@ namespace Underlord.Environment
         }
         public FireBallModel Fireball
         {
+            get { return fireBall; }
             set { fireBall = value; }
         }
         #endregion

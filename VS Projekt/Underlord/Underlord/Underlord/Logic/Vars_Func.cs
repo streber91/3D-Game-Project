@@ -20,7 +20,9 @@ namespace Underlord.Logic
        public enum HexTyp { Sand, Stone, BeetleNest, Farm, Temple, Graveyard, length };
        public enum SpellType { SummonImp, Fireball, length  }
 
-       public enum GameState { StartMenu, MainMenu, Ingame, Settings, Highscore, Tutorial, 
+       public enum GameState
+       {
+           StartMenu, MainMenu, Ingame, Settings, Highscore, Tutorial, Confirm, GameOver, Intro,
                                CreateRoom, Build, Mine, MergeRooms, DeleteRoom, Upgrade, BuildUpgrade, Fireball, SummonImp, PlaceAnts, PlaceSkeletons, PlaceFarm, PlaceTemple, PlaceEntrance, ReturnToMainMenu,
                                GUI_Tutorial, HQCreature_Tutorial, Creature_Tutorial, Minimap_Tutorial, Nest_Tutorial, PlaceNest_Tutorial, Resources_Tutorial, Upgrades_Tutorial, Wavetimer_Tutorial, Spells_Tutorial, length };
 
@@ -28,9 +30,11 @@ namespace Underlord.Logic
 
        public enum GUI_Font { Augusta, AugustaBold, AugustaBold2, AugustaHeadline, AugustaTextField, AugustaText, AugustaSmall, length };
 
-       public enum GUI_Typ { StartButton, NewGameButton, SettingsButton, HighScoreButton, QuitButton, None, length }; 
+       public enum GUI_Typ { StartButton, NewGameButton, SettingsButton, HighScoreButton, QuitButton, None, length };
 
-       public enum GUI_ElementTyp { Dummy, 
+       public enum GUI_ElementTyp
+       {
+           Dummy, Aca,
                                     Nest, Graveyard, Farm, Temple, Entrance,
                                     FrameHUD, ButtonHUD, BackgroundHUD, MinimapHUD, RessoucesFrame, RessoucesHUD, RessoucesPapier, InfoHUD, SecondInfoHUD,
                                     Food, Gold, Mana,
@@ -146,7 +150,7 @@ namespace Underlord.Logic
 
            //Dummy
            GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/Dummy//dummy_texture_1366x768"));
-
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Screen//info_aca_260x265"));
            //Nest, Graveyard, Farm, Temple, Entrance,
            #region Building
            GUI_Elements.Add(Content.Load<Texture2D>("Textures/HUD/Buildings//ant"));

@@ -18,33 +18,34 @@ namespace Underlord.Basic
         float timeCounter;
         float rotationSpeed1, rotationSpeed2, rotationSpeed3;
         float position1, position2, position3;
+        bool releaseFire = false;
         Random randomValue;
 
         List<FireBallModel> fires = new List<FireBallModel>();
-        
+
         #region Properties
-        public float Z 
-        { 
+        public float Z
+        {
             get { return zPosition; }
-            set { zPosition = value; } 
+            set { zPosition = value; }
         }
 
-        public float Scale 
-        { 
+        public float Scale
+        {
             get { return scale; }
-            set { scale = value; } 
+            set { scale = value; }
         }
 
-        public float Alpha 
+        public float Alpha
         {
             get { return alpha; }
-            set { alpha = value; } 
+            set { alpha = value; }
         }
 
-        public float RotationZ 
+        public float RotationZ
         {
             get { return rotation; }
-            set { rotation = value; } 
+            set { rotation = value; }
         }
 
         public List<FireBallModel> Fires
@@ -52,6 +53,20 @@ namespace Underlord.Basic
             get { return fires; }
         }
 
+        public bool ReleaseFire
+        {
+            set { releaseFire = value; }
+        }
+
+        public void resetFireBall()
+        {
+            speed = 0.6f;
+            zPosition = 0;
+            alpha = 1;
+            scale = 1;
+            timeCounter = 0;
+            randomValue = new Random();
+        }
         #endregion
 
         #region Constructor
@@ -74,24 +89,27 @@ namespace Underlord.Basic
         /// <param name="gameTime">The game's time</param>
         public void Update(GameTime gameTime)
         {
-            timeCounter += (float)gameTime.ElapsedGameTime.Milliseconds/1000;
+            if (releaseFire)
+            {
+                timeCounter += (float)gameTime.ElapsedGameTime.Milliseconds / 1000;
 
-            zPosition = MathHelper.Lerp(5f, 0f, timeCounter*speed);
-            float value = (float)(0.5f * Math.Cos(timeCounter / 1000 * speed + MathHelper.PiOver2)) + 0.5f;
-            scale = 1 - (value/2);
-            rotation += (timeCounter / 500) * 10;
+                zPosition = MathHelper.Lerp(5f, 0f, timeCounter * speed);
+                float value = (float)(0.5f * Math.Cos(timeCounter / 1000 * speed + MathHelper.PiOver2)) + 0.5f;
+                scale = 1 - (value / 2);
+                rotation += (timeCounter / 500) * 10;
 
-            position1 += (timeCounter/1000)*8;
-            fires[0].Z = position1;
-            fires[0].Scale = MathHelper.Lerp(1f, 0f, MathHelper.Clamp(position1/10, 0, 1));
+                position1 += (timeCounter / 1000) * 8;
+                fires[0].Z = position1;
+                fires[0].Scale = MathHelper.Lerp(1f, 0f, MathHelper.Clamp(position1 / 10, 0, 1));
 
-            position2 += (timeCounter / 1000) * 6;
-            fires[1].Z = position2;
-            fires[1].Scale = MathHelper.Lerp(1f, 0f, MathHelper.Clamp(position1 /12, 0, 1));
+                position2 += (timeCounter / 1000) * 6;
+                fires[1].Z = position2;
+                fires[1].Scale = MathHelper.Lerp(1f, 0f, MathHelper.Clamp(position1 / 12, 0, 1));
 
-            position3 += (timeCounter / 1000) * 4;
-            fires[2].Z = position3;
-            fires[2].Scale = MathHelper.Lerp(1f, 0f, MathHelper.Clamp(position1 / 15, 0, 1));
+                position3 += (timeCounter / 1000) * 4;
+                fires[2].Z = position3;
+                fires[2].Scale = MathHelper.Lerp(1f, 0f, MathHelper.Clamp(position1 / 15, 0, 1));
+            }
 
         }
         #endregion
@@ -135,7 +153,8 @@ namespace Underlord.Basic
                 modelMesh.Draw();
             }
 
-            foreach(FireBallModel f in fires){
+            foreach (FireBallModel f in fires)
+            {
                 f.Draw(camera, world);
             }
         }

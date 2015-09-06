@@ -536,9 +536,11 @@ namespace Underlord.Environment
                 }
                 if (dyingCreatures[0].getThingTyp() == Vars_Func.ThingTyp.HQCreature)
                 {
-                    Player.saveScore(); //first save the score of the game
-                    game1.reinitialize(); // reset the game 
-                    Interaction.GameState = Vars_Func.GameState.MainMenu; //TODO change to Gameover screen
+                    Interaction.GameState = Vars_Func.GameState.GameOver;
+
+                    //Player.saveScore(); //first save the score of the game
+                    //game1.reinitialize(); // reset the game 
+                    //Interaction.GameState = Vars_Func.GameState.MainMenu; //TODO change to Gameover screen
                     //max wenn das verloren spiel im hintergurnd des Gameover noch zu sehn sein soll must du das reinitialize erst nach verlassen das gameover scren ausführen.
                     // und denk bitte dran deine GUI im reinitialize zu reseten, immoment funktionert das so nicht ganz wie es ist.
                 }

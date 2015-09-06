@@ -127,9 +127,12 @@
     <Compile Include="Entity\Upgrade.cs" />
     <Compile Include="Entity\Creature.cs" />
     <Compile Include="Entity\Thing.cs" />
+    <Compile Include="Logic\Confirm_GUI.cs" />
+    <Compile Include="Logic\GameOver_GUI.cs" />
     <Compile Include="Logic\GUI_Element.cs" />
     <Compile Include="Logic\Highscore_GUI.cs" />
     <Compile Include="Logic\IngameMenu_GUI.cs" />
+    <Compile Include="Logic\IntroMenu_GUI.cs" />
     <Compile Include="Logic\MainMenu_GUI.cs" />
     <Compile Include="Logic\Player.cs" />
     <Compile Include="Logic\Setting_GUI.cs" />

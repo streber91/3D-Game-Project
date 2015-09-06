@@ -65,6 +65,7 @@ namespace Underlord.Logic
                                                                                             + spaceBig + "Menu:" + spaceSmall + "       Tab\n"
                                                                                             + spaceBig + "Confirm:" + spaceSmall + "  Enter/LMT\n"
                                                                                             + spaceBig + "Refuse:" + spaceSmall + "     Esc/RMT\n"
+                                                                                            + spaceBig + "Close Help:  Esc\n"
                                                                                             + spaceBig + "Mine:" + spaceSmall + "        M \n"
                                                                                             + spaceBig + "Room:" + spaceSmall + "      R\n"
                                                                                             + spaceBig + "Merge:" + spaceSmall + "     T\n"
@@ -108,6 +109,7 @@ namespace Underlord.Logic
         }
         public static bool ShowHelp
         {
+            set { help = value; }
             get { return help; }
         }
         public static void restGUI()

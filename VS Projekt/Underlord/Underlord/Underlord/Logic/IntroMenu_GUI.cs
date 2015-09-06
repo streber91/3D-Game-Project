@@ -11,15 +11,14 @@ using Underlord.Environment;
 
 namespace Underlord.Logic
 {
-    class MainMenu_GUI
+    class IntroMenu_GUI
     {
         static List<GUI_Element> all = new List<GUI_Element>();
         static List<GUI_Element> elements = new List<GUI_Element>();
-        static List<GUI_Element> buttons = new List<GUI_Element>();
         static List<GUI_Element> frames = new List<GUI_Element>();
+        static List<GUI_Element> buttons = new List<GUI_Element>();
 
-        static GUI_Element dummy, headLine, backgroundFrame, aca;
-        static GUI_Element currentSelectedButton = null, pressedButton = null;
+        static GUI_Element dummy, headLine, backgroundFrame, book, background, currentSelectedButton = null, pressedButton = null;
         static MouseState oldMouseState;
         static int buttonCounter = 0;
         static bool keyIsDown = false, cleanUp = false, dontDraw = false, updateReady = false;
@@ -37,76 +36,49 @@ namespace Underlord.Logic
             elements.Add(background);
             all.Add(background);
 
-            GUI_Element headLineFrame = new GUI_Element(new Rectangle(1366 / 2 - 256, 0-50, 512, 100), "", Vars_Func.GUI_ElementTyp.ChainBig);
+            GUI_Element headLineFrame = new GUI_Element(new Rectangle(1366 / 2 - 256, 0 - 50, 512, 100), "", Vars_Func.GUI_ElementTyp.ChainBig);
             dummy.Children.Add(headLineFrame);
             frames.Add(headLineFrame);
             all.Add(headLineFrame);
 
-            headLine = new GUI_Element(new Rectangle(1366 / 2 - 256, 32, 512, 128), "     Main Menu", Vars_Func.GUI_ElementTyp.TextFieldBig);
-            headLine.YBonus = 20;
+            headLine = new GUI_Element(new Rectangle(1366 / 2 - 256, 32, 512, 128), "            Welcome new Lord...", Vars_Func.GUI_ElementTyp.TextFieldBig);
+            headLine.YBonus = 45;
             dummy.Children.Add(headLine);
             all.Add(headLine);
 
-            aca = new GUI_Element(new Rectangle(1090, 13, 260, 265), "", Vars_Func.GUI_ElementTyp.Aca);
-            dummy.Children.Add(aca);
-            all.Add(aca);
+            GUI_Element withFrame = new GUI_Element(new Rectangle(1366 / 2 - 911/2, 180+384-20, 256, 64), "", Vars_Func.GUI_ElementTyp.ChainMiddle);
+            dummy.Children.Add(withFrame);
+            frames.Add(withFrame);
+            all.Add(withFrame);
 
-            GUI_Element newGameFrame = new GUI_Element(new Rectangle(1366 / 2 - (384 / 2), 180 - 32, 384, 84), "", Vars_Func.GUI_ElementTyp.ChainMiddle);
-            dummy.Children.Add(newGameFrame);
-            frames.Add(newGameFrame);
-            all.Add(newGameFrame);
+            GUI_Element withButton = new GUI_Element(new Rectangle(1366 / 2 - 911 / 2, 180+384+10, 256, 76), "   With Help", Vars_Func.GUI_ElementTyp.TextFieldMiddle, Vars_Func.GUI_Typ.NewGameButton);
+            withButton.Highlightable = true;
+            withButton.YBonus = 15;
+            dummy.Children.Add(withButton);
+            buttons.Add(withButton);
+            all.Add(withButton);
 
-            GUI_Element newGameButton = new GUI_Element(new Rectangle(1366 / 2 - (384 / 2), 180, 384, 96), "      New Game", Vars_Func.GUI_ElementTyp.TextFieldMiddle, Vars_Func.GUI_Typ.NewGameButton);
-            newGameButton.Highlightable = true;
-            newGameButton.YBonus = 10;
-            dummy.Children.Add(newGameButton);
-            buttons.Add(newGameButton);
-            all.Add(newGameButton);
+            GUI_Element bookFrame = new GUI_Element(new Rectangle(1366 / 2 - (911 / 2), -(237 / 2) + 100, 911, 237), "", Vars_Func.GUI_ElementTyp.ChainLarge);
+            dummy.Children.Add(bookFrame);
+            frames.Add(bookFrame);
+            all.Add(bookFrame);
 
-            //GUI_Element howToFrame = new GUI_Element(new Rectangle(1366 / 2 - (384 / 2), 296 - 32, 384, 84), "", Vars_Func.GUI_ElementTyp.ChainMiddle);
-            //dummy.Children.Add(howToFrame);
-            //frames.Add(howToFrame);
+            GUI_Element withOutFrame = new GUI_Element(new Rectangle(1366 / 2 + 911 / 2-256, 180 + 384 - 20, 256, 64), "", Vars_Func.GUI_ElementTyp.ChainMiddle);
+            dummy.Children.Add(withOutFrame);
+            frames.Add(withOutFrame);
+            all.Add(withOutFrame);
 
-            //GUI_Element howToButton = new GUI_Element(new Rectangle(1366 / 2 - (384 / 2), 296, 384, 96), " How To Play", Vars_Func.GUI_ElementTyp.TextFieldMiddle);
-            //howToButton.Highlightable = true;
-            //dummy.Children.Add(howToButton);
-            //buttons.Add(howToButton);
+            GUI_Element withOutButton = new GUI_Element(new Rectangle(1366 / 2 + 911 / 2-256, 180 + 384 + 10, 256, 76), "  Without Help", Vars_Func.GUI_ElementTyp.TextFieldMiddle, Vars_Func.GUI_Typ.QuitButton);
+            withOutButton.Highlightable = true;
+            withOutButton.YBonus = 15;
+            dummy.Children.Add(withOutButton);
+            buttons.Add(withOutButton);
+            all.Add(withOutButton);
 
-            GUI_Element settingsFrame = new GUI_Element(new Rectangle(1366 / 2 - (384 / 2), 296 - 32, 384, 84), "", Vars_Func.GUI_ElementTyp.ChainMiddle);
-            dummy.Children.Add(settingsFrame);
-            frames.Add(settingsFrame);
-            all.Add(settingsFrame);
-
-            GUI_Element settingsButton = new GUI_Element(new Rectangle(1366 / 2 - (384 / 2), 296, 384, 96), "       Settings", Vars_Func.GUI_ElementTyp.TextFieldMiddle, Vars_Func.GUI_Typ.SettingsButton);
-            settingsButton.Highlightable = true;
-            settingsButton.YBonus = 10;
-            dummy.Children.Add(settingsButton);
-            buttons.Add(settingsButton);
-            all.Add(settingsButton);
-
-            GUI_Element highscoreFrame = new GUI_Element(new Rectangle(1366 / 2 - (384 / 2), 412 - 32, 384, 84), "", Vars_Func.GUI_ElementTyp.ChainMiddle);
-            dummy.Children.Add(highscoreFrame);
-            frames.Add(highscoreFrame);
-            all.Add(highscoreFrame);
-
-            GUI_Element highscoreButton = new GUI_Element(new Rectangle(1366 / 2 - (384 / 2), 412, 384, 96), "      Highscore", Vars_Func.GUI_ElementTyp.TextFieldMiddle, Vars_Func.GUI_Typ.HighScoreButton);
-            highscoreButton.Highlightable = true;
-            highscoreButton.YBonus = 10;
-            dummy.Children.Add(highscoreButton);
-            buttons.Add(highscoreButton);
-            all.Add(highscoreButton);
-
-            GUI_Element quitFrame = new GUI_Element(new Rectangle(1366 / 2 - (288 / 2), 528 - 32, 288, 64), "", Vars_Func.GUI_ElementTyp.ChainSmall);
-            dummy.Children.Add(quitFrame);
-            frames.Add(quitFrame);
-            all.Add(quitFrame);
-
-            GUI_Element quitButton = new GUI_Element(new Rectangle(1366 / 2 - (288 / 2), 528, 288, 72), "       Quit", Vars_Func.GUI_ElementTyp.TextFieldSmall, Vars_Func.GUI_Typ.QuitButton);
-            quitButton.Highlightable = true;
-            quitButton.YBonus = 10;
-            dummy.Children.Add(quitButton);
-            buttons.Add(quitButton);
-            all.Add(quitButton);
+            book = new GUI_Element(new Rectangle(1366 / 2 - (911 / 2), 180, 911, 384), Player.loadString("Content/Tutorials/MainTutorial.txt"), Vars_Func.GUI_ElementTyp.BookField);
+            book.YBonus = 10;
+            dummy.Children.Add(book);
+            all.Add(book);
 
             backgroundFrame = new GUI_Element(new Rectangle(0, 0, 1366, 768), "", Vars_Func.GUI_ElementTyp.BackgroundHUD);
             all.Add(backgroundFrame);
@@ -124,13 +96,14 @@ namespace Underlord.Logic
         }
         public static void restGUI()
         {
-            currentSelectedButton = null;
             pressedButton = null;
-            buttonCounter = 0;
-            visibleLerpCounter = 1;
             cleanUp = false;
             dontDraw = false;
             updateReady = false;
+            visibleLerpCounter = 1;
+            keyIsDown = false;
+            buttonCounter = 0;
+            currentSelectedButton = null;
         }
         #endregion
 
@@ -141,30 +114,20 @@ namespace Underlord.Logic
             {
                 updateReady = true;
             }
-            if(!dummy.Move && !cleanUp){
+            foreach (GUI_Element b in buttons)
+            {
+                b.Update(time, null, mouseState);
+            }
+            if (!dummy.Move && !cleanUp)
+            {
                 dummy.Move = true;
             }
             headLine.Update(time, null, mouseState);
             dummy.Update(time, null, mouseState);
 
-            foreach (GUI_Element e in elements)
-            {
-                e.Update(time, null, mouseState);
-            }
-
             if (cleanUp)
             {
-                //if (currentSelectedButton.Typ == Vars_Func.GUI_Typ.NewGameButton)
-                //{
-                //    FadeOut(time);
-                //}
-                //else
-                //{
-                    if (dummy.Children.Last().CurrentRectangle.Y <= -500 && pressedButton == null)
-                    {
-                        pressedButton = currentSelectedButton;
-                    }
-                //}
+                    FadeOut(time);
             }
             else
             {
@@ -249,11 +212,13 @@ namespace Underlord.Logic
                 if (currentSelectedButton != null &&
                    (mouseState.LeftButton == ButtonState.Pressed || keyboard.IsKeyDown(Keys.Enter)))
                 {
-                    dummy.Move = false;
                     cleanUp = true;
+                    dummy.Move = false;
                 }
             }
+
         }
+
         public static void FadeOut(GameTime time)
         {
             visibleLerpCounter -= (float)time.ElapsedGameTime.Milliseconds / 1000;
@@ -278,18 +243,18 @@ namespace Underlord.Logic
                 dummy.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold2));
                 foreach (GUI_Element e in elements)
                 {
-                    e.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaTextField));
+                    e.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaText));
                 }
                 foreach (GUI_Element f in frames)
                 {
-                    f.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaTextField));
+                    f.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaText));
                 }
                 foreach (GUI_Element b in buttons)
                 {
-                    b.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaTextField));
+                    b.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaText));
                 }
-                headLine.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaHeadline));
-                aca.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaText));
+                book.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.Augusta));
+                headLine.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaText));
                 backgroundFrame.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold2));
             }
         }

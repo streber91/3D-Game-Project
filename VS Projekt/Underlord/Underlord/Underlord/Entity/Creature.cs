@@ -188,7 +188,7 @@ namespace Underlord.Entity
                     currentState = Vars_Func.CreatureState.PingPong;
 
                     // Some Fireball Test
-                    map.getHexagonAt(position).Fireball = Vars_Func.getFireBall();
+                    //map.getHexagonAt(position).Fireball = Vars_Func.getFireBall();
                     break;
             }
             this.model = new AnimationModel(Vars_Func.getCreatureModell(typ).Model);

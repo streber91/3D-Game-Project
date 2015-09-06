@@ -85,6 +85,9 @@ namespace Underlord
             Highscore_GUI.createGUI();
             Setting_GUI.createGUI();
             IngameMenu_GUI.createGUI();
+            Confirm_GUI.createGUI();
+            GameOver_GUI.createGUI();
+            IntroMenu_GUI.createGUI();
 
             base.Initialize();
             Interaction.Game = this;
@@ -172,6 +175,10 @@ namespace Underlord
 
             //Interaction.Update(gameTime, map, mouseover, mouseState, lastMouseState, keyboard);
             //GUI.update(gameTime, map, mouseState);
+            if (Interaction.GameState == Vars_Func.GameState.GameOver)
+            {
+                gamestate = Vars_Func.GameState.GameOver;
+            }
 
             switch (gamestate)
             {
@@ -189,14 +196,18 @@ namespace Underlord
                     MainMenu_GUI.update(gameTime, mouseState, keyboard);
                     Highscore_GUI.restGUI();
                     Setting_GUI.restGUI();
+                    GameOver_GUI.restGUI();
+                    IntroMenu_GUI.restGUI();
+                    showIngameMenu = false;
 
                     if (MainMenu_GUI.getGUI_Button() != null)
                     {
                         switch (MainMenu_GUI.getGUI_Button().Typ)
                         {
                             case Vars_Func.GUI_Typ.NewGameButton:
-                                reinitialize();
-                                gamestate = Vars_Func.GameState.Ingame;
+                                //reinitialize();
+                                //gamestate = Vars_Func.GameState.Ingame;
+                                gamestate = Vars_Func.GameState.Intro;
                                 MainMenu_GUI.restGUI();
                                 break;
                             case Vars_Func.GUI_Typ.SettingsButton:
@@ -218,6 +229,8 @@ namespace Underlord
                     MainMenu_GUI.restGUI();
                     Setting_GUI.restGUI();
                     Highscore_GUI.restGUI();
+                    Confirm_GUI.restGUI();
+                    GameOver_GUI.restGUI();
                         if (keyboard.IsKeyDown(Keys.Tab) && !buttonIsPressed)
                         {
                             buttonIsPressed = true;
@@ -247,9 +260,9 @@ namespace Underlord
                                     gamestate = Vars_Func.GameState.Highscore;
                                     break;
                                 case Vars_Func.GUI_Typ.StartButton:
-                                    Player.saveScore();
-                                    reinitialize();
-                                    gamestate = Vars_Func.GameState.MainMenu;
+                                    //Player.saveScore();
+                                    //reinitialize();
+                                    gamestate = Vars_Func.GameState.Confirm;
                                     break;
                                 default: break;
                             }
@@ -315,6 +328,72 @@ namespace Underlord
                         }
                     }
 
+                    break;
+                #endregion
+                #region Confirm
+                case Vars_Func.GameState.Confirm:
+                    Confirm_GUI.update(gameTime, mouseState, keyboard);
+                    if (Confirm_GUI.getGUI_Button() != null && Confirm_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.NewGameButton)
+                    {
+                        showIngameMenu = false;
+                        IngameMenu_GUI.restGUI();
+                        gamestate = Vars_Func.GameState.Ingame;
+                        //showIngameMenu = false;
+                        //IngameMenu_GUI.restGUI();
+                        //gamestate = Vars_Func.GameState.GameOver;
+                    }
+
+                    if (Confirm_GUI.getGUI_Button() != null && Confirm_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.QuitButton)
+                    {
+                        Player.saveScore();
+                        reinitialize();
+                        MainMenu_GUI.createGUI();
+                        gamestate = Vars_Func.GameState.MainMenu;
+                        //showIngameMenu = false;
+                        //IngameMenu_GUI.restGUI();
+                        //gamestate = Vars_Func.GameState.Ingame;
+                    }
+                    break;
+                #endregion
+                #region GameOver
+                case Vars_Func.GameState.GameOver:
+                    GameOver_GUI.update(gameTime, mouseState, keyboard);
+                    if (GameOver_GUI.getGUI_Button() != null && GameOver_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.NewGameButton)
+                    {
+                        showIngameMenu = false;
+                        Player.saveScore();
+                        reinitialize();
+                        MainMenu_GUI.createGUI();
+                        IngameMenu_GUI.restGUI();
+                        gamestate = Vars_Func.GameState.Ingame;
+                    }
+
+                    if (GameOver_GUI.getGUI_Button() != null && GameOver_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.QuitButton)
+                    {
+                        Player.saveScore();
+                        this.Exit();
+                    }
+                    break;
+                #endregion
+                #region Intro
+                case Vars_Func.GameState.Intro:
+                    IntroMenu_GUI.update(gameTime, mouseState, keyboard);
+                    if (IntroMenu_GUI.getGUI_Button() != null && IntroMenu_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.NewGameButton)
+                    {
+                        MainMenu_GUI.restGUI();
+                        reinitialize();
+                        Setting_GUI.ShowHelp = true;
+                        gamestate = Vars_Func.GameState.Ingame;
+
+                    }
+                    if (IntroMenu_GUI.getGUI_Button() != null && IntroMenu_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.QuitButton)
+                    {
+                        MainMenu_GUI.restGUI();
+                        reinitialize();
+                        Setting_GUI.ShowHelp = false;
+                        gamestate = Vars_Func.GameState.Ingame;
+
+                    }
                     break;
                 #endregion
                 default:
@@ -472,6 +551,46 @@ namespace Underlord
                                 this.graphics.ToggleFullScreen();
                             }
                         }
+                    }
+                    break;
+                #endregion
+                #region Confirm
+                case Vars_Func.GameState.Confirm:
+                    if (!Confirm_GUI.UpdateReady)
+                    {
+                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                        IngameMenu_GUI.Draw(spriteBatch, font);
+                    }
+                    else
+                    {
+                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                        Confirm_GUI.Draw(spriteBatch, font);
+                    }
+                    break;
+                #endregion
+                #region GameOver
+                case Vars_Func.GameState.GameOver:
+                    if (!GameOver_GUI.UpdateReady)
+                    {
+                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                    }
+                    else
+                    {
+                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                        GameOver_GUI.Draw(spriteBatch, font);
+                    }
+
+                    break;
+                #endregion
+                #region Intro
+                case Vars_Func.GameState.Intro:
+                    if (!IntroMenu_GUI.UpdateReady)
+                    {
+                        MainMenu_GUI.Draw(spriteBatch, font);
+                    }
+                    else
+                    {
+                        IntroMenu_GUI.Draw(spriteBatch, font);
                     }
                     break;
                 #endregion

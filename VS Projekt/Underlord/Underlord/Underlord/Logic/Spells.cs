@@ -45,6 +45,9 @@ namespace Underlord.Logic
                     if (Player.enoughMana(fireballCost))
                     {
                         Player.Mana -= fireballCost;
+                        map.getHexagonAt(position).Fireball = Vars_Func.getFireBall();
+                        map.getHexagonAt(position).Fireball.resetFireBall();
+                        map.getHexagonAt(position).Fireball.ReleaseFire = true;
                         // is the target a creature?
                         if (map.getHexagonAt(position).Obj != null && (map.getHexagonAt(position).Obj.getThingTyp() == Logic.Vars_Func.ThingTyp.DungeonCreature ||
                                 map.getHexagonAt(position).Obj.getThingTyp() == Logic.Vars_Func.ThingTyp.NeutralCreature || map.getHexagonAt(position).Obj.getThingTyp() == Logic.Vars_Func.ThingTyp.HeroCreature))

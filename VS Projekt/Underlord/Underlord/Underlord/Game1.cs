@@ -96,7 +96,7 @@ namespace Underlord
             Player.Gold = 200;
             Player.Mana = 100;
             Player.Food = 200;
-            Player.Score = 0;
+            Player.Score = 9999;
             Spells.SummonImpCost = 0;
             GUI.SelectedThingTyp = Vars_Func.ThingTyp.length;
             hexagonSideLength = 1; //dont change

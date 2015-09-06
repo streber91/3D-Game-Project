@@ -51,7 +51,7 @@ namespace Underlord.Logic
                         {
                             //damage creature
                             Creature target = (Creature)map.getHexagonAt(position).Obj;
-                            target.takeDamage(50);
+                            target.takeDamage(100);
                             //is creature dead?
                             if (target.DamageTaken >= target.HP) map.DyingCreatures.Add(target);
                         }
@@ -74,7 +74,7 @@ namespace Underlord.Logic
                             {
                                 //damage creature
                                 Creature target = (Creature)map.getHexagonAt(hex).Obj;
-                                target.takeDamage(30);
+                                target.takeDamage(60);
                                 //is creature dead?
                                 if (target.DamageTaken >= target.HP) map.DyingCreatures.Add(target);
                             }

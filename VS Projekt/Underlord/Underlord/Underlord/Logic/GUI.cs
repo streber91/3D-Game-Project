@@ -75,7 +75,7 @@ namespace Underlord.Logic
             waveElements.Add(wave);
 
             //Add Score
-            scoreElement = new GUI_Element(new Rectangle(260 + 13, 13, 144, 36), "", Vars_Func.GUI_ElementTyp.TextFieldSmall);
+            scoreElement = new GUI_Element(new Rectangle(1090 - 144, 13 + 36, 144, 36), "", Vars_Func.GUI_ElementTyp.TextFieldSmall);
 
             #region Controll Buttons
             // Add mine button
@@ -353,7 +353,7 @@ namespace Underlord.Logic
             tutorialButtons.Add(upg_t);
 
             //Set the wave tutorial button
-            GUI_Element wave_t = new GUI_Element(new Rectangle(1090 - 20, 13 + 36, 20, 20), " ?", Vars_Func.GUI_ElementTyp.Wavetimer_TutorialButton);
+            GUI_Element wave_t = new GUI_Element(new Rectangle(1090 - 20, 13 + 16, 20, 20), " ?", Vars_Func.GUI_ElementTyp.Wavetimer_TutorialButton);
             wave_t.Highlightable = true;
             tutorialButtons.Add(wave_t);
 
@@ -647,24 +647,6 @@ namespace Underlord.Logic
             }
             #endregion
 
-            #region Draw Standart-Tutorial-Buttons
-            // draw the standard tutorialbuttons
-            if (showHelp)
-            {
-                foreach (GUI_Element b in tutorialButtons)
-                {
-                    if (b.ElementTyp == Vars_Func.GUI_ElementTyp.GUI_TutorialButton ||
-                        b.ElementTyp == Vars_Func.GUI_ElementTyp.Minimap_TutorialButton ||
-                        b.ElementTyp == Vars_Func.GUI_ElementTyp.Resources_TutorialButton ||
-                        b.ElementTyp == Vars_Func.GUI_ElementTyp.Spells_TutorialButton ||
-                        b.ElementTyp == Vars_Func.GUI_ElementTyp.Wavetimer_TutorialButton)
-                    {
-                        b.Draw(spriteBatch, font);
-                    }
-                }
-            }
-            #endregion
-
             #region Draw Building-Elements
             if (Interaction.GameState == Vars_Func.GameState.Build ||
                 Interaction.GameState == Vars_Func.GameState.PlaceAnts ||
@@ -701,6 +683,24 @@ namespace Underlord.Logic
             }
             #endregion
 
+            #region Draw Standart-Tutorial-Buttons
+            // draw the standard tutorialbuttons
+            if (showHelp)
+            {
+                foreach (GUI_Element b in tutorialButtons)
+                {
+                    if (b.ElementTyp == Vars_Func.GUI_ElementTyp.GUI_TutorialButton ||
+                        b.ElementTyp == Vars_Func.GUI_ElementTyp.Minimap_TutorialButton ||
+                        b.ElementTyp == Vars_Func.GUI_ElementTyp.Resources_TutorialButton ||
+                        b.ElementTyp == Vars_Func.GUI_ElementTyp.Spells_TutorialButton ||
+                        b.ElementTyp == Vars_Func.GUI_ElementTyp.Wavetimer_TutorialButton)
+                    {
+                        b.Draw(spriteBatch, font);
+                    }
+                }
+            }
+            #endregion
+
             #region Draw ScoreElement
             scoreElement.Draw(spriteBatch, font);
             #endregion
@@ -730,7 +730,7 @@ namespace Underlord.Logic
 
             #region Draw Score
             //draw the score
-            spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), "Score: " + Player.Score, new Vector2(260 + 19, 16), Color.Black);
+            spriteBatch.DrawString(Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold), "Score: " + Player.Score, new Vector2(1090 - 138, 16 + 36), Color.Black);
             #endregion
 
             bool enableUpgrades = false;

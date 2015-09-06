@@ -285,6 +285,8 @@ namespace Underlord.Logic
                         mouseState.RightButton == ButtonState.Pressed &&
                         GUI.SelectedThingTyp == Vars_Func.ThingTyp.Nest &&
                         GUI.Nest.Typ != Vars_Func.NestTyp.Entrance &&
+                        GUI.Nest.Typ != Vars_Func.NestTyp.Temple &&
+                        GUI.Nest.Typ != Vars_Func.NestTyp.Farm &&
                         (map.getHexagonAt(mouseover).Obj == null ||
                         (map.getHexagonAt(mouseover).Obj.getThingTyp() != Vars_Func.ThingTyp.Wall &&
                         map.getHexagonAt(mouseover).Obj.getThingTyp() != Vars_Func.ThingTyp.Nest &&

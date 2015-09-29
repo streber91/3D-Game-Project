@@ -24,6 +24,7 @@ namespace Underlord.Entity
         float positionLerpCounter, fightLerpCounter, startLerpCounter;
         float degree;
         float tempZ;
+        float[] animationSpeeds;
 
         AnimationModel model;
         Vars_Func.CreatureState currentState = Vars_Func.CreatureState.Walking;
@@ -127,6 +128,9 @@ namespace Underlord.Entity
                     ageModifire = 1;
 			        map.getHexagonAt(position).Obj = this;
                     map.Creatures.Add(this);
+                    animationSpeeds = new float[2];
+                    animationSpeeds[0] = 2.5f;
+                    animationSpeeds[1] = 1;
                     break;
                 case Vars_Func.CreatureTyp.Skeleton:
                     this.typ = typ;
@@ -145,6 +149,9 @@ namespace Underlord.Entity
                     ageModifire = 1;
                     map.getHexagonAt(position).Obj = this;
                     map.Creatures.Add(this);
+                    animationSpeeds = new float[2];
+                    animationSpeeds[0] = 2;
+                    animationSpeeds[1] = 0.8f;
                     break;
                 case Vars_Func.CreatureTyp.Knight:
                     this.typ = typ;
@@ -166,6 +173,10 @@ namespace Underlord.Entity
                     startHex = map.getHexagonAt(home.Position);
                     startLerpCounter = 0;
                     reachGround = false;
+                    animationSpeeds = new float[3];
+                    animationSpeeds[0] = 2;
+                    animationSpeeds[1] = 0.8f;
+                    animationSpeeds[2] = 1;
                     break;
                 case Vars_Func.CreatureTyp.HQCreatur:
                     this.typ = typ;
@@ -186,7 +197,9 @@ namespace Underlord.Entity
                     map.getHexagonAt(position).IsHQ = true;
                     map.getHexagonAt(position).EnlightendHexagon(map);
                     currentState = Vars_Func.CreatureState.PingPong;
-
+                    animationSpeeds = new float[2];
+                    animationSpeeds[0] = 1;
+                    animationSpeeds[1] = 1;
                     // Some Fireball Test
                     //map.getHexagonAt(position).Fireball = Vars_Func.getFireBall();
                     break;
@@ -357,7 +370,7 @@ namespace Underlord.Entity
         {
             if (updatePlayer)
             {
-                AnimationPlayer player = this.model.PlayClip(this.model.AnimationClip[index]);
+                AnimationPlayer player = this.model.PlayClip(this.model.AnimationClip[index], animationSpeeds[index]);
                 player.Looping = true;
                 updatePlayer = false;
             }

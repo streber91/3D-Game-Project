@@ -46,7 +46,7 @@ namespace Underlord
             graphics.PreferredBackBufferWidth = 1366;
             graphics.PreferredBackBufferHeight = 768;
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            //IsMouseVisible = true;
         }
 
         protected override void Initialize()
@@ -759,6 +759,8 @@ namespace Underlord
                 default:
                     break;
             }
+            spriteBatch.Draw(Vars_Func.getCursor(), new Vector2(mouseState.X, mouseState.Y), Color.White);
+
             spriteBatch.End();
 
             base.Draw(gameTime);

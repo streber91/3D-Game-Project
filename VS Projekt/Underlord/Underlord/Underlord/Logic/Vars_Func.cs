@@ -77,6 +77,7 @@ namespace Underlord.Logic
        static FireBallModel FireBall;
 
        static Texture2D pixel;
+       static Texture2D cursor;
        static List<SpriteFont> GUI_Fonts;
        static List<Texture2D> GUI_Elements;
 
@@ -108,6 +109,7 @@ namespace Underlord.Logic
        public static FireBallModel getFireBall() { return FireBall; }
 
        public static Texture2D getPixel() { return pixel; }
+       public static Texture2D getCursor() { return cursor; }
        public static SpriteFont getGUI_Font(GUI_Font typ) { return GUI_Fonts[(int)typ]; }
        public static Texture2D getGUI_ElementTextures(GUI_ElementTyp typ) { return GUI_Elements[(int)typ]; }
 
@@ -135,6 +137,7 @@ namespace Underlord.Logic
            GrowModels = new List<BasicModel>();
 
            pixel = Content.Load<Texture2D>("TEST");
+           cursor = Content.Load<Texture2D>("Textures/GUI/Cursor//cursor_48_01");
            GUI_Fonts = new List<SpriteFont>();
 
            //Augusta, AugustaBold, AugustaBold2, AugustaHeadline, AugustaTextField, AusgustaText

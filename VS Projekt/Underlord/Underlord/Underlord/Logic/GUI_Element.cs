@@ -400,10 +400,16 @@ namespace Underlord.Logic
                 {
                     c.Draw(spriteBatch, font);
                 }
-                if (elementTyp == Vars_Func.GUI_ElementTyp.BottomHUD) spriteBatch.Draw(Vars_Func.getGUI_ElementTextures(elementTyp), new Vector2(currentRectangle.X, currentRectangle.Y), Color.Red);
-                //else spriteBatch.Draw(Vars_Func.getGUI_ElementTextures(elementTyp), new Vector2(rectangle.X, rectangle.Y), spriteColor);
+                if (elementTyp == Vars_Func.GUI_ElementTyp.BottomHUD)
+                {
+                    spriteBatch.Draw(Vars_Func.getGUI_ElementTextures(elementTyp), new Vector2(currentRectangle.X, currentRectangle.Y), Color.Red);
+                    //else spriteBatch.Draw(Vars_Func.getGUI_ElementTextures(elementTyp), new Vector2(rectangle.X, rectangle.Y), spriteColor);
+                }
+                else
+                {
+                    spriteBatch.Draw(Vars_Func.getGUI_ElementTextures(elementTyp), currentRectangle, spriteColor);
+                }
 
-                else spriteBatch.Draw(Vars_Func.getGUI_ElementTextures(elementTyp), currentRectangle, spriteColor);
                 spriteBatch.DrawString(font, text, new Vector2(currentRectangle.X + textXBonus, currentRectangle.Y + 2 + textYBonus), Color.Black);
 
                 if (frameElement != null)

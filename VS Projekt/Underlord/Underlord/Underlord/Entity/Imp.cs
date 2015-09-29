@@ -247,8 +247,8 @@ namespace Underlord.Entity
             //Vars_Func.getCreatureModell(typ).Color = drawColor;
             //Vars_Func.getCreatureModell(typ).Draw(camera, modelMatrix);
             this.model.Color = drawColor;
-            this.model.Draw(camera, modelMatrix, false, isEnlightend, lightPower);
-            Vars_Func.getImpShadow().Draw(camera, modelMatrix, false, isEnlightend, lightPower);
+            this.model.Draw(camera, modelMatrix, !(drawColor.Equals(Color.White)), isEnlightend, lightPower);
+            Vars_Func.getImpShadow().Draw(camera, modelMatrix, !(drawColor.Equals(Color.White)), isEnlightend, lightPower);
         }
     }
 }

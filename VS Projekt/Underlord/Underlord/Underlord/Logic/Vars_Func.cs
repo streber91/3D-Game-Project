@@ -22,7 +22,7 @@ namespace Underlord.Logic
 
        public enum GameState
        {
-           StartMenu, MainMenu, Ingame, Settings, Highscore, Tutorial, Confirm, GameOver, Intro,
+           StartMenu, MainMenu, Ingame, Settings, Highscore, Tutorial, Confirm, GameOver, Intro, InsertNameConfirm, InserNameReset, InserNameQuit,
                                CreateRoom, Build, Mine, MergeRooms, DeleteRoom, Upgrade, BuildUpgrade, Fireball, SummonImp, PlaceAnts, PlaceSkeletons, PlaceFarm, PlaceTemple, PlaceEntrance, ReturnToMainMenu,
                                GUI_Tutorial, HQCreature_Tutorial, Creature_Tutorial, Minimap_Tutorial, Nest_Tutorial, PlaceNest_Tutorial, Resources_Tutorial, Upgrades_Tutorial, Wavetimer_Tutorial, Spells_Tutorial, length };
 
@@ -34,7 +34,7 @@ namespace Underlord.Logic
 
        public enum GUI_ElementTyp
        {
-           Dummy, Aca,
+                                    Dummy, Aca,
                                     Nest, Graveyard, Farm, Temple, Entrance,
                                     FrameHUD, ButtonHUD, BackgroundHUD, MinimapHUD, RessoucesFrame, RessoucesHUD, RessoucesPapier, InfoHUD, SecondInfoHUD,
                                     Food, Gold, Mana,
@@ -44,7 +44,7 @@ namespace Underlord.Logic
                                     LeftHUD, RightHUD, BottomHUD, TopHUD,
                                     StartBackgroundHUD, BlackBackgoundHUD, TextFrame, TextBlance, UnderlordHUD, UnderlordFireLogo, UnderlordBurnedLogo,
                                     TextFieldSmall, TextFieldMiddle, TextFieldBig, BookField, TextArrow, ChainSmall, ChainMiddle, ChainBig, ChainLarge,
-                                    FullScreenButton, 
+                                    FullScreenButton, BrightnessUp, BrightnessDown,
                                     Menu, StartGame, QuitGame, Highscore, Tutorial, ReturnAccept, ReturnDecline,
                                     Fireball, SummonImp,
                                     GUI_Tutorial, HQCreature_Tutorial, Creature_Tutorial, Minimap_Tutorial, Nest_Tutorial, PlaceNest_Tutorial, Resources_Tutorial, Upgrades_Tutorial, Wavetimer_Tutorial, Spells_Tutorial,
@@ -235,7 +235,9 @@ namespace Underlord.Logic
 
            //FullScreenButton
            #region Setting-GUI Elements
-           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/TextFields//scroll_76x88"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/TextFields//scroll_88x76"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/TextFields//scroll_up_88x76"));
+           GUI_Elements.Add(Content.Load<Texture2D>("Textures/GUI/TextFields//scroll_down_88x76"));
            #endregion
 
            //Menu, StartGame, QuitGame, Highscore, Tutorial, ReturnAccept, ReturnDecline

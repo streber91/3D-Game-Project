@@ -373,7 +373,7 @@ namespace Underlord.Entity
             Matrix.CreateTranslation(drawPosition);
 
             Vars_Func.getNestModell(typ).Color = drawColor;
-            Vars_Func.getNestModell(typ).Draw(camera, modelMatrix, false, isEnlightend, lightPower/2);
+            Vars_Func.getNestModell(typ).Draw(camera, modelMatrix, !(drawColor.Equals(Color.White)), isEnlightend, lightPower / 2);
 
 
             if (typ == Vars_Func.NestTyp.Farm)
@@ -387,7 +387,7 @@ namespace Underlord.Entity
                 Matrix.CreateRotationY(0) *
                 Matrix.CreateRotationZ(0) *
                 Matrix.CreateTranslation(farmPostion);
-                Vars_Func.getFarmInput().Draw(camera, farmMatrix, false, isEnlightend, lightPower / 2);
+                Vars_Func.getFarmInput().Draw(camera, farmMatrix, !(drawColor.Equals(Color.White)), isEnlightend, lightPower / 2);
             }
 
             else if (typ == Vars_Func.NestTyp.Temple)
@@ -404,7 +404,7 @@ namespace Underlord.Entity
                 Matrix.CreateRotationY(0) *
                 Matrix.CreateRotationZ(rotationSpeed) *
                 Matrix.CreateTranslation(drawPosition);
-                Vars_Func.getTempelStone().Draw(camera, tempelMatrix, false, isEnlightend, lightPower / 2);
+                Vars_Func.getTempelStone().Draw(camera, tempelMatrix, !(drawColor.Equals(Color.White)), isEnlightend, lightPower / 2);
 
                 Vector3 tempelBathPosition = new Vector3(drawPosition.X, drawPosition.Y, drawPosition.Z +1f);
                 Matrix tempelBathMatrix = Matrix.Identity *
@@ -413,7 +413,7 @@ namespace Underlord.Entity
                 Matrix.CreateRotationY(0) *
                 Matrix.CreateRotationZ(0) *
                 Matrix.CreateTranslation(tempelBathPosition);
-                Vars_Func.getTempelBath().Draw(camera, tempelBathMatrix, false, isEnlightend, lightPower / 2);
+                Vars_Func.getTempelBath().Draw(camera, tempelBathMatrix, !(drawColor.Equals(Color.White)), isEnlightend, lightPower / 2);
             }
         }
 

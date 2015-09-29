@@ -232,9 +232,6 @@ namespace Underlord.Entity
             }
             else
             {
-                //Update the fireball
-                Vars_Func.getFireBall().Update(time);
-
                 if (currentState == Vars_Func.CreatureState.OpenMouth && (positionLerpCounter / (1000 * 1 / speed)) < 1)
                 {
                     positionLerpCounter += (float)time.ElapsedGameTime.Milliseconds;
@@ -431,7 +428,7 @@ namespace Underlord.Entity
                 Matrix.CreateRotationZ(camera.Rotation) *
                 Matrix.CreateTranslation(drawPosition);
                 this.model.Color = drawColor;
-                this.model.Draw(camera, modelMatrix, false, isEnlightend, lightPower);
+                this.model.Draw(camera, modelMatrix, !(drawColor.Equals(Color.White)), isEnlightend, lightPower);
 
                 drawPosition = new Vector3(drawPosition.X, drawPosition.Y, drawPosition.Z + Vars_Func.getCreatureParams(typ).X + tempZ);
                 Matrix mouthMatrix = Matrix.Identity *
@@ -441,7 +438,7 @@ namespace Underlord.Entity
                 Matrix.CreateRotationZ(camera.Rotation) *
                 Matrix.CreateTranslation(drawPosition);
                 Vars_Func.getHQMouthModel().Color = drawColor;
-                Vars_Func.getHQMouthModel().Draw(camera, mouthMatrix, false, isEnlightend, lightPower);
+                Vars_Func.getHQMouthModel().Draw(camera, mouthMatrix, !(drawColor.Equals(Color.White)), isEnlightend, lightPower);
             }
             else
             {
@@ -469,8 +466,8 @@ namespace Underlord.Entity
                 //Vars_Func.getCreatureModell(typ).Color = drawColor;
                 //Vars_Func.getCreatureModell(typ).Draw(camera, modelMatrix);
                 this.model.Color = drawColor;
-                this.model.Draw(camera, modelMatrix, false, isEnlightend, lightPower);
-                Vars_Func.getCreatureShadow(typ).Draw(camera, modelMatrix, false, isEnlightend, lightPower);
+                this.model.Draw(camera, modelMatrix, !(drawColor.Equals(Color.White)), isEnlightend, lightPower);
+                Vars_Func.getCreatureShadow(typ).Draw(camera, modelMatrix, !(drawColor.Equals(Color.White)), isEnlightend, lightPower);
             }
         }
 

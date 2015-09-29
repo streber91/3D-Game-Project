@@ -518,8 +518,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Textures\GUI\TextFields\scroll_76x88.png">
-      <Name>scroll_76x88</Name>
+    <Compile Include="Textures\GUI\TextFields\scroll_88x76.png">
+      <Name>scroll_88x76</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -1065,6 +1065,18 @@
   <ItemGroup>
     <Compile Include="Textures\HUD\Screen\info_aca_260x265.png">
       <Name>info_aca_260x265</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\GUI\TextFields\scroll_down_88x76.png">
+      <Name>scroll_down_88x76</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\GUI\TextFields\scroll_up_88x76.png">
+      <Name>scroll_up_88x76</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

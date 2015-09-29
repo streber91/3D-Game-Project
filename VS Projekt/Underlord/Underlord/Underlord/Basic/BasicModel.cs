@@ -182,7 +182,9 @@ namespace Underlord.Basic
                     basicEffect.SpecularPower = 0;
                 }
                 basicEffect.DiffuseColor = new Vector3(0.7f, 0.4f, 0.1f);
-                basicEffect.AmbientLightColor = new Vector3(0.5f, 0.5f, 0.5f);
+                float brightness = (float)(Logic.Setting_GUI.getBrigthness())/10;
+                basicEffect.AmbientLightColor = new Vector3(brightness, brightness, brightness);
+                //basicEffect.AmbientLightColor = new Vector3(0.5f, 0.5f, 0.5f);
                 basicEffect.LightingEnabled = true;
                 basicEffect.DirectionalLight0.Enabled = true;
                 basicEffect.DirectionalLight0.DiffuseColor = new Vector3(0.4f, 0.1f, 0.2f);

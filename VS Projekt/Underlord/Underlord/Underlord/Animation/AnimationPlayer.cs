@@ -17,6 +17,11 @@ namespace Underlord.Animation
         #region Fields
 
         /// <summary>
+        /// Current animation speed
+        /// </summary>
+        private float speed = 1f; 
+
+        /// <summary>
         /// Current position in time in the clip
         /// </summary>
         private float position = 0;
@@ -50,6 +55,11 @@ namespace Underlord.Animation
         #endregion
 
         #region Properties
+
+        public float Speed
+        {
+            set{ speed = value; }
+        }
 
         /// <summary>
         /// The position in the animation
@@ -144,7 +154,7 @@ namespace Underlord.Animation
         /// <param name="delta"></param>
         public void Update(GameTime gameTime)
         {
-            Position = Position + (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Position = Position + (float)gameTime.ElapsedGameTime.TotalSeconds * speed;
             if (looping && Position >= Duration)
                 Position = 0;
         }

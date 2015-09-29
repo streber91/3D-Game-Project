@@ -43,12 +43,12 @@ namespace Underlord.Logic
             dummy.Children.Add(headLine);
             all.Add(headLine);
 
-            GUI_Element returnFrame = new GUI_Element(new Rectangle(225 - (384 / 2), 0, 384, 84), "", Vars_Func.GUI_ElementTyp.ChainMiddle);
+            GUI_Element returnFrame = new GUI_Element(new Rectangle(128 - (128 / 2), 0, 256, 84), "", Vars_Func.GUI_ElementTyp.ChainMiddle);
             dummy.Children.Add(returnFrame);
             frames.Add(returnFrame);
             all.Add(returnFrame);
 
-            returnButton = new GUI_Element(new Rectangle(225 - (384 / 2), 42, 384, 96), "              Back", Vars_Func.GUI_ElementTyp.TextArrow, Vars_Func.GUI_Typ.StartButton);
+            returnButton = new GUI_Element(new Rectangle(128 - (128 / 2), 42, 256, 64), "                 Back", Vars_Func.GUI_ElementTyp.TextArrow, Vars_Func.GUI_Typ.StartButton);
             returnButton.Highlightable = true;
             returnButton.YBonus = 15;
             dummy.Children.Add(returnButton);
@@ -149,7 +149,7 @@ namespace Underlord.Logic
                 {
                     f.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaTextField));
                 }
-                returnButton.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaTextField));
+                returnButton.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaText));
                 book.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaText));
                 headLine.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaHeadline));
                 backgroundFrame.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold2));

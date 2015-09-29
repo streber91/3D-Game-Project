@@ -22,7 +22,7 @@ namespace Underlord.Logic
         static MouseState oldMouseState;
         static int buttonCounter = 0;
         static bool keyIsDown = false, cleanUp = false, dontDraw = false, updateReady = false;
-        static float visibleLerpCounter = 1; 
+        static float visibleLerpCounter = 1;
 
         #region Initialize
         public static void createGUI()
@@ -237,7 +237,7 @@ namespace Underlord.Logic
 
         #region Draw
         public static void Draw(SpriteBatch spriteBatch, SpriteFont font)
-        {
+        {          
             if (!dontDraw && updateReady)
             {
                 dummy.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold2));

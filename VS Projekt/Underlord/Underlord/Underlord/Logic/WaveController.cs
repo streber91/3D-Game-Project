@@ -37,7 +37,7 @@ namespace Underlord.Logic
                 map.Waves.Add(new Wave(waveCounter * 10, (int)(5 + waveCounter / 3)));
                 ++waveCounter;
                 timeCounter -= interWaveTime;
-                interWaveTime = Math.Max(interWaveTime - (60000 * 0.5f), 60000);
+                interWaveTime = Math.Max(interWaveTime - (60000 * 2.0f), 60000);
             }
         }
     }

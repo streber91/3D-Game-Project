@@ -33,7 +33,7 @@ namespace Underlord.Environment
         float lightPower;
         Vector3 currentDrawPosition;
         Random randomValue;
-        FireBallModel fireBall;
+        List<FireBallModel> fireBalls;
 
         #region Properties
         public bool TargetFlag
@@ -118,10 +118,10 @@ namespace Underlord.Environment
         {
             get { return isStartLight; }
         }
-        public FireBallModel Fireball
+        public List<FireBallModel> Fireballs
         {
-            get { return fireBall; }
-            set { fireBall = value; }
+            get { return fireBalls; }
+            set { fireBalls = value; }
         }
         #endregion
 
@@ -152,6 +152,7 @@ namespace Underlord.Environment
             randomValue = new Random();
             growObject = Logic.Vars_Func.GrowObject.length;
             targetFlag = false;
+            fireBalls = new List<FireBallModel>();
         }
         #endregion
 
@@ -237,7 +238,7 @@ namespace Underlord.Environment
                 Matrix.CreateRotationZ(0) *
                 Matrix.CreateTranslation(drawPosition);
                 Logic.Vars_Func.getTargetFlag().Color = drawColor;
-                Logic.Vars_Func.getTargetFlag().Draw(camera, modelMatrix2, false, isEnlightend, lightPower);
+                Logic.Vars_Func.getTargetFlag().Draw(camera, modelMatrix2, !(drawColor.Equals(Color.White)), isEnlightend, lightPower);
             }
 
             switch (growObject)
@@ -251,7 +252,7 @@ namespace Underlord.Environment
                     Matrix.CreateRotationZ(0) *
                     Matrix.CreateTranslation(drawPosition);
                     Logic.Vars_Func.getGrowModel(growObject).Color = drawColor;
-                    Logic.Vars_Func.getGrowModel(growObject).Draw(camera, farmModelMatrix, false, isEnlightend, lightPower/2);
+                    Logic.Vars_Func.getGrowModel(growObject).Draw(camera, farmModelMatrix, !(drawColor.Equals(Color.White)), isEnlightend, lightPower / 2);
                     break;
                 case Logic.Vars_Func.GrowObject.Temple:
                     //drawPosition = new Vector3(drawPosition.X, drawPosition.Y, drawPosition.Z + Logic.Vars_Func.getGrowObjectParams(growObject).X);
@@ -273,42 +274,48 @@ namespace Underlord.Environment
                     Matrix.CreateRotationZ(0) *
                     Matrix.CreateTranslation(drawPosition);
                     Logic.Vars_Func.getGrowModel(growObject).Color = drawColor;
-                    Logic.Vars_Func.getGrowModel(growObject).Draw(camera, graveyardModelMatrix, false, isEnlightend, lightPower/2);
+                    Logic.Vars_Func.getGrowModel(growObject).Draw(camera, graveyardModelMatrix, !(drawColor.Equals(Color.White)), isEnlightend, lightPower / 2);
                     break;
                 case Logic.Vars_Func.GrowObject.length:
                     break;
             }
 
             #region Draw Fireball
-            if (fireBall != null)
+            if (fireBalls.Count > 0)
             {
-                // Draw the fireball
-                Vector3 fireBallPostion = new Vector3(drawPosition.X, drawPosition.Y, drawPosition.Z + fireBall.Z);
-                Matrix fireBallMatrix = Matrix.Identity *
-                Matrix.CreateScale(fireBall.Scale) *
-                Matrix.CreateRotationX(0) *
-                Matrix.CreateRotationY(0) *
-                Matrix.CreateRotationZ(fireBall.RotationZ) *
-                Matrix.CreateTranslation(fireBallPostion);
-                fireBall.Color = drawColor;
-                fireBall.Draw(camera, fireBallMatrix);
-
-                // Draw the all the ball's fire
-                foreach (FireBallModel fire in fireBall.Fires)
+                System.Diagnostics.Debug.WriteLine(fireBalls.Count);
+                for (int i = fireBalls.Count-1; i >= 0; i--)
                 {
-                    Vector3 firePositon = new Vector3(fireBallPostion.X, fireBallPostion.Y, fireBallPostion.Z + fire.Z);
-                    Matrix fireMatrix = Matrix.Identity *
-                    Matrix.CreateScale(fire.Scale) *
+                    FireBallModel fireBall = fireBalls[i];
+                    // Draw the fireball
+                    Vector3 fireBallPostion = new Vector3(drawPosition.X, drawPosition.Y, drawPosition.Z + fireBall.Z);
+                    Matrix fireBallMatrix = Matrix.Identity *
+                    Matrix.CreateScale(fireBall.Scale) *
                     Matrix.CreateRotationX(0) *
                     Matrix.CreateRotationY(0) *
-                    Matrix.CreateRotationZ(fire.RotationZ) *
-                    Matrix.CreateTranslation(firePositon);
-                    fire.Color = drawColor;
-                    fire.Draw(camera, fireMatrix);
-                }
-                if (fireBallPostion.Z < 0)
-                {
-                    fireBall = null;
+                    Matrix.CreateRotationZ(fireBall.RotationZ) *
+                    Matrix.CreateTranslation(fireBallPostion);
+                    fireBall.Color = drawColor;
+                    fireBall.Draw(camera, fireBallMatrix);
+
+                    // Draw the all the ball's fire
+                    foreach (FireBallModel fire in fireBall.Fires)
+                    {
+                        Vector3 firePositon = new Vector3(fireBallPostion.X, fireBallPostion.Y, fireBallPostion.Z + fire.Z);
+                        Matrix fireMatrix = Matrix.Identity *
+                        Matrix.CreateScale(fire.Scale) *
+                        Matrix.CreateRotationX(0) *
+                        Matrix.CreateRotationY(0) *
+                        Matrix.CreateRotationZ(fire.RotationZ) *
+                        Matrix.CreateTranslation(firePositon);
+                        fire.Color = drawColor;
+                        fire.Draw(camera, fireMatrix);
+                    }
+                    if (fireBallPostion.Z < 0)
+                    {
+                        fireBall.Remove();
+                        fireBalls.Remove(fireBall);
+                    }
                 }
             }
             #endregion
@@ -330,6 +337,7 @@ namespace Underlord.Environment
                 }
                 if (isStartLight)
                 {
+                    Logic.Vars_Func.getTorchModel().Color = drawColor;
                     Logic.Vars_Func.getTorchModel().Draw(camera, modelMatrix, !(drawColor.Equals(Color.White)), isEnlightend, lightPower / 2);
                 }
             }

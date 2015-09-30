@@ -135,10 +135,11 @@ namespace Underlord.Animation
         /// </summary>
         /// <param name="clip">The clip to play</param>
         /// <returns>The player that will play this clip</returns>
-        public AnimationPlayer PlayClip(AnimationClip clip)
+        public AnimationPlayer PlayClip(AnimationClip clip, float speed)
         {
             // Create a clip player and assign it to this model
             player = new AnimationPlayer(clip, this);
+            player.Speed = speed;
             return player;
         }
         #endregion

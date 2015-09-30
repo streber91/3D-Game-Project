@@ -45,52 +45,51 @@ namespace Underlord.Logic
                     if (Player.enoughMana(fireballCost))
                     {
                         Player.Mana -= fireballCost;
-                        map.getHexagonAt(position).Fireball = Vars_Func.getFireBall();
-                        map.getHexagonAt(position).Fireball.resetFireBall();
-                        map.getHexagonAt(position).Fireball.ReleaseFire = true;
-                        // is the target a creature?
-                        if (map.getHexagonAt(position).Obj != null && (map.getHexagonAt(position).Obj.getThingTyp() == Logic.Vars_Func.ThingTyp.DungeonCreature ||
-                                map.getHexagonAt(position).Obj.getThingTyp() == Logic.Vars_Func.ThingTyp.NeutralCreature || map.getHexagonAt(position).Obj.getThingTyp() == Logic.Vars_Func.ThingTyp.HeroCreature))
-                        {
-                            //damage creature
-                            Creature target = (Creature)map.getHexagonAt(position).Obj;
-                            target.takeDamage(100);
-                            //is creature dead?
-                            if (target.DamageTaken >= target.HP) map.DyingCreatures.Add(target);
-                        }
-                        //// is the target an imp?
-                        //else if (map.getHexagonAt(position).Obj != null && map.getHexagonAt(position).Obj.getThingTyp() == Logic.Vars_Func.ThingTyp.Imp)
+                        map.getHexagonAt(position).Fireballs.Add( new Basic.FireBallModel( Vars_Func.getFireBall().Model,Vars_Func.getFireBall().Fires, map, position));
+                        
+                        //// is the target a creature?
+                        //if (map.getHexagonAt(position).Obj != null && (map.getHexagonAt(position).Obj.getThingTyp() == Logic.Vars_Func.ThingTyp.DungeonCreature ||
+                        //        map.getHexagonAt(position).Obj.getThingTyp() == Logic.Vars_Func.ThingTyp.NeutralCreature || map.getHexagonAt(position).Obj.getThingTyp() == Logic.Vars_Func.ThingTyp.HeroCreature))
                         //{
-                        //    //damage imp
-                        //    Imp target = (Imp)map.getHexagonAt(position).Obj;
+                        //    //damage creature
+                        //    Creature target = (Creature)map.getHexagonAt(position).Obj;
                         //    target.takeDamage(100);
-                        //    // is imp dead?
-                        //    if (target.DamageTaken >= target.HP) map.remove(target);
+                        //    //is creature dead?
+                        //    if (target.DamageTaken >= target.HP) map.DyingCreatures.Add(target);
                         //}
+                        ////// is the target an imp?
+                        ////else if (map.getHexagonAt(position).Obj != null && map.getHexagonAt(position).Obj.getThingTyp() == Logic.Vars_Func.ThingTyp.Imp)
+                        ////{
+                        ////    //damage imp
+                        ////    Imp target = (Imp)map.getHexagonAt(position).Obj;
+                        ////    target.takeDamage(100);
+                        ////    // is imp dead?
+                        ////    if (target.DamageTaken >= target.HP) map.remove(target);
+                        ////}
 
-                        // effects neighbors
-                        foreach (Vector2 hex in map.getHexagonAt(position).Neighbors)
-                        {
-                            // is the target a creature?
-                            if (map.getHexagonAt(hex).Obj != null && (map.getHexagonAt(hex).Obj.getThingTyp() == Logic.Vars_Func.ThingTyp.DungeonCreature ||
-                                map.getHexagonAt(hex).Obj.getThingTyp() == Logic.Vars_Func.ThingTyp.NeutralCreature || map.getHexagonAt(hex).Obj.getThingTyp() == Logic.Vars_Func.ThingTyp.HeroCreature))
-                            {
-                                //damage creature
-                                Creature target = (Creature)map.getHexagonAt(hex).Obj;
-                                target.takeDamage(60);
-                                //is creature dead?
-                                if (target.DamageTaken >= target.HP) map.DyingCreatures.Add(target);
-                            }
-                            //// is the target an imp?
-                            //else if (map.getHexagonAt(hex).Obj != null && map.getHexagonAt(hex).Obj.getThingTyp() == Logic.Vars_Func.ThingTyp.Imp)
-                            //{
-                            //    //damage imp
-                            //    Imp target = (Imp)map.getHexagonAt(hex).Obj;
-                            //    target.takeDamage(100);
-                            //    // is imp dead?
-                            //    if (target.DamageTaken >= target.HP) map.remove(target);
-                            //}
-                        }
+                        //// effects neighbors
+                        //foreach (Vector2 hex in map.getHexagonAt(position).Neighbors)
+                        //{
+                        //    // is the target a creature?
+                        //    if (map.getHexagonAt(hex).Obj != null && (map.getHexagonAt(hex).Obj.getThingTyp() == Logic.Vars_Func.ThingTyp.DungeonCreature ||
+                        //        map.getHexagonAt(hex).Obj.getThingTyp() == Logic.Vars_Func.ThingTyp.NeutralCreature || map.getHexagonAt(hex).Obj.getThingTyp() == Logic.Vars_Func.ThingTyp.HeroCreature))
+                        //    {
+                        //        //damage creature
+                        //        Creature target = (Creature)map.getHexagonAt(hex).Obj;
+                        //        target.takeDamage(60);
+                        //        //is creature dead?
+                        //        if (target.DamageTaken >= target.HP) map.DyingCreatures.Add(target);
+                        //    }
+                        //    //// is the target an imp?
+                        //    //else if (map.getHexagonAt(hex).Obj != null && map.getHexagonAt(hex).Obj.getThingTyp() == Logic.Vars_Func.ThingTyp.Imp)
+                        //    //{
+                        //    //    //damage imp
+                        //    //    Imp target = (Imp)map.getHexagonAt(hex).Obj;
+                        //    //    target.takeDamage(100);
+                        //    //    // is imp dead?
+                        //    //    if (target.DamageTaken >= target.HP) map.remove(target);
+                        //    //}
+                        //}
                     }
                     break;
             }

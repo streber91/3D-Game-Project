@@ -37,6 +37,8 @@ namespace Underlord
 
         float updateTimeCounter, updates, drawUpdates;
         float frameTimeCounter, frames, drawFrame;
+        float timeCounter;
+        float minDelayTime;
 
         public Game1()
         {
@@ -44,7 +46,7 @@ namespace Underlord
             graphics.PreferredBackBufferWidth = 1366;
             graphics.PreferredBackBufferHeight = 768;
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            //IsMouseVisible = true;
         }
 
         protected override void Initialize()
@@ -63,6 +65,8 @@ namespace Underlord
             showIngameMenu = false;
             buttonIsPressed = false;
             reinitializeDone = false;
+            timeCounter = 0.0f;
+            minDelayTime = 100.0f;
 
             Vars_Func.loadContent(Content);
             map = new Map(planeLength, Logic.Vars_Func.HexTyp.Sand, true, hexagonSideLength);
@@ -88,6 +92,7 @@ namespace Underlord
             Confirm_GUI.createGUI();
             GameOver_GUI.createGUI();
             IntroMenu_GUI.createGUI();
+            InsertNameGUI.createGUI();
 
             base.Initialize();
             Interaction.Game = this;
@@ -112,6 +117,7 @@ namespace Underlord
             updateTimeCounter = 0;
             updates = 0;
             drawUpdates = 0;
+            timeCounter = 0.0f;
             WaveController.restart();
 
             map = new Map(planeLength, Logic.Vars_Func.HexTyp.Sand, true, hexagonSideLength);
@@ -146,6 +152,8 @@ namespace Underlord
 
         protected override void Update(GameTime gameTime)
         {
+            timeCounter += gameTime.ElapsedGameTime.Milliseconds;
+
             // updates per second
             updateTimeCounter += gameTime.ElapsedGameTime.Milliseconds;
             ++updates;
@@ -185,9 +193,13 @@ namespace Underlord
                 #region Startmenu
                 case Vars_Func.GameState.StartMenu:
                     StartMenu_GUI.update(gameTime, mouseState, keyboard);
-                    if (StartMenu_GUI.getGUI_Button() != null && StartMenu_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.StartButton)
+                    if (timeCounter > minDelayTime)
                     {
-                        gamestate = Vars_Func.GameState.MainMenu;
+                        if (StartMenu_GUI.getGUI_Button() != null && StartMenu_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.StartButton)
+                        {
+                            gamestate = Vars_Func.GameState.MainMenu;
+                            timeCounter = 0;
+                        }
                     }
                     break;
                 #endregion
@@ -202,24 +214,31 @@ namespace Underlord
 
                     if (MainMenu_GUI.getGUI_Button() != null)
                     {
-                        switch (MainMenu_GUI.getGUI_Button().Typ)
+                        if (timeCounter > minDelayTime)
                         {
-                            case Vars_Func.GUI_Typ.NewGameButton:
-                                reinitialize();
-                                //gamestate = Vars_Func.GameState.Ingame;
-                                gamestate = Vars_Func.GameState.Intro;
-                                MainMenu_GUI.restGUI();
-                                break;
-                            case Vars_Func.GUI_Typ.SettingsButton:
-                                gamestate = Vars_Func.GameState.Settings;
-                                break;
-                            case Vars_Func.GUI_Typ.HighScoreButton:
-                                gamestate = Vars_Func.GameState.Highscore;
-                                break;
-                            case Vars_Func.GUI_Typ.QuitButton:
-                                this.Exit();
-                                break;
-                            default: break;
+                            switch (MainMenu_GUI.getGUI_Button().Typ)
+                            {
+                                case Vars_Func.GUI_Typ.NewGameButton:
+                                    reinitialize();
+                                    //gamestate = Vars_Func.GameState.Ingame;
+                                    gamestate = Vars_Func.GameState.Intro;
+                                    timeCounter = 0;
+                                    //MainMenu_GUI.restGUI();
+                                    break;
+                                case Vars_Func.GUI_Typ.SettingsButton:
+                                    gamestate = Vars_Func.GameState.Settings;
+                                    timeCounter = 0;
+                                    break;
+                                case Vars_Func.GUI_Typ.HighScoreButton:
+                                    gamestate = Vars_Func.GameState.Highscore;
+                                    timeCounter = 0;
+                                    break;
+                                case Vars_Func.GUI_Typ.QuitButton:
+                                    timeCounter = 0;
+                                    this.Exit();
+                                    break;
+                                default: break;
+                            }
                         }
                     }
                     break;
@@ -295,17 +314,25 @@ namespace Underlord
                     if (showIngameMenu)
                     {
                         IngameMenu_GUI.restGUI();
-                        if (Highscore_GUI.getGUI_Button() != null && Highscore_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.StartButton)
+                        if (timeCounter > minDelayTime)
                         {
-                            gamestate = Vars_Func.GameState.Ingame;
+                            if (Highscore_GUI.getGUI_Button() != null && Highscore_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.StartButton)
+                            {
+                                gamestate = Vars_Func.GameState.Ingame;
+                                timeCounter = 0;
+                            }
                         }
                     }
                     else
                     {
                         MainMenu_GUI.restGUI();
-                        if (Highscore_GUI.getGUI_Button() != null && Highscore_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.StartButton)
+                        if (timeCounter > minDelayTime)
                         {
-                            gamestate = Vars_Func.GameState.MainMenu;
+                            if (Highscore_GUI.getGUI_Button() != null && Highscore_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.StartButton)
+                            {
+                                gamestate = Vars_Func.GameState.MainMenu;
+                                timeCounter = 0;
+                            }
                         }
                     }
                     break;
@@ -316,17 +343,25 @@ namespace Underlord
                     if (showIngameMenu)
                     {
                         IngameMenu_GUI.restGUI();
-                        if (Setting_GUI.getGUI_Button() != null && Setting_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.StartButton)
+                        if (timeCounter > minDelayTime)
                         {
-                            gamestate = Vars_Func.GameState.Ingame;
+                            if (Setting_GUI.getGUI_Button() != null && Setting_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.StartButton)
+                            {
+                                gamestate = Vars_Func.GameState.Ingame;
+                                timeCounter = 0;
+                            }
                         }
                     }
                     else
                     {
                         MainMenu_GUI.restGUI();
-                        if (Setting_GUI.getGUI_Button() != null && Setting_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.StartButton)
+                        if (timeCounter > minDelayTime)
                         {
-                            gamestate = Vars_Func.GameState.MainMenu;
+                            if (Setting_GUI.getGUI_Button() != null && Setting_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.StartButton)
+                            {
+                                gamestate = Vars_Func.GameState.MainMenu;
+                                timeCounter = 0;
+                            }
                         }
                     }
 
@@ -335,67 +370,149 @@ namespace Underlord
                 #region Confirm
                 case Vars_Func.GameState.Confirm:
                     Confirm_GUI.update(gameTime, mouseState, keyboard);
-                    if (Confirm_GUI.getGUI_Button() != null && Confirm_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.NewGameButton)
+                    if (timeCounter > minDelayTime)
                     {
-                        showIngameMenu = false;
-                        IngameMenu_GUI.restGUI();
-                        gamestate = Vars_Func.GameState.Ingame;
-                        //showIngameMenu = false;
-                        //IngameMenu_GUI.restGUI();
-                        //gamestate = Vars_Func.GameState.GameOver;
-                    }
-
-                    if (Confirm_GUI.getGUI_Button() != null && Confirm_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.QuitButton)
-                    {
-                        Player.saveScore();
-                        reinitialize();
-                        IntroMenu_GUI.createGUI();
-                        MainMenu_GUI.createGUI();
-                        gamestate = Vars_Func.GameState.MainMenu;
-                        //showIngameMenu = false;
-                        //IngameMenu_GUI.restGUI();
-                        //gamestate = Vars_Func.GameState.Ingame;
+                        if (Confirm_GUI.getGUI_Button() != null && Confirm_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.NewGameButton)
+                        {
+                            showIngameMenu = false;
+                            IngameMenu_GUI.restGUI();
+                            gamestate = Vars_Func.GameState.Ingame;
+                            //showIngameMenu = false;
+                            //IngameMenu_GUI.restGUI();
+                            //gamestate = Vars_Func.GameState.GameOver;
+                            timeCounter = 0;
+                        }
+                        if (Confirm_GUI.getGUI_Button() != null && Confirm_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.QuitButton)
+                        {
+                            //Player.saveScore();
+                            //reinitialize();
+                            //IntroMenu_GUI.createGUI();
+                            //MainMenu_GUI.createGUI();
+                            //gamestate = Vars_Func.GameState.MainMenu;
+                            gamestate = Vars_Func.GameState.InsertNameConfirm;
+                            //showIngameMenu = false;
+                            //IngameMenu_GUI.restGUI();
+                            //gamestate = Vars_Func.GameState.Ingame;
+                            timeCounter = 0;
+                        }
                     }
                     break;
                 #endregion
                 #region GameOver
                 case Vars_Func.GameState.GameOver:
                     GameOver_GUI.update(gameTime, mouseState, keyboard);
-                    if (GameOver_GUI.getGUI_Button() != null && GameOver_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.NewGameButton)
+                    if (timeCounter > minDelayTime)
                     {
-                        showIngameMenu = false;
-                        Player.saveScore();
-                        reinitialize();
-                        MainMenu_GUI.createGUI();
-                        IngameMenu_GUI.restGUI();
-                        gamestate = Vars_Func.GameState.Ingame;
-                    }
+                        if (GameOver_GUI.getGUI_Button() != null && GameOver_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.NewGameButton)
+                        {
+                            //showIngameMenu = false;
+                            //Player.saveScore();
+                            //reinitialize();
+                            //MainMenu_GUI.createGUI();
+                            //IngameMenu_GUI.restGUI();
+                            //gamestate = Vars_Func.GameState.Ingame;
+                            gamestate = Vars_Func.GameState.InserNameReset;
+                            timeCounter = 0;
+                        }
 
-                    if (GameOver_GUI.getGUI_Button() != null && GameOver_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.QuitButton)
-                    {
-                        Player.saveScore();
-                        this.Exit();
+                        if (GameOver_GUI.getGUI_Button() != null && GameOver_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.QuitButton)
+                        {
+                            //Player.saveScore();
+                            //this.Exit();
+                            gamestate = Vars_Func.GameState.InserNameQuit;
+                            timeCounter = 0;
+                        }
                     }
                     break;
                 #endregion
                 #region Intro
                 case Vars_Func.GameState.Intro:
                     IntroMenu_GUI.update(gameTime, mouseState, keyboard);
-                    if (IntroMenu_GUI.getGUI_Button() != null && IntroMenu_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.NewGameButton)
+                    if (timeCounter > minDelayTime)
                     {
-                        MainMenu_GUI.restGUI();
-                        reinitialize();
-                        Setting_GUI.ShowHelp = true;
-                        gamestate = Vars_Func.GameState.Ingame;
+                        if (IntroMenu_GUI.getGUI_Button() != null && IntroMenu_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.NewGameButton)
+                        {
+                            MainMenu_GUI.restGUI();
+                            reinitialize();
+                            Setting_GUI.ShowHelp = true;
+                            gamestate = Vars_Func.GameState.Ingame;
+                            timeCounter = 0;
 
+                        }
+                        if (IntroMenu_GUI.getGUI_Button() != null && IntroMenu_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.QuitButton)
+                        {
+                            MainMenu_GUI.restGUI();
+                            reinitialize();
+                            Setting_GUI.ShowHelp = false;
+                            gamestate = Vars_Func.GameState.Ingame;
+                            timeCounter = 0;
+
+                        }
                     }
-                    if (IntroMenu_GUI.getGUI_Button() != null && IntroMenu_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.QuitButton)
+                    break;
+                #endregion
+                #region Insert Name After Confirm
+                case Vars_Func.GameState.InsertNameConfirm:
+                    InsertNameGUI.update(gameTime, mouseState, keyboard);
+                    if (timeCounter > minDelayTime)
                     {
-                        MainMenu_GUI.restGUI();
-                        reinitialize();
-                        Setting_GUI.ShowHelp = false;
-                        gamestate = Vars_Func.GameState.Ingame;
+                        if (InsertNameGUI.getGUI_Button() != null && InsertNameGUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.QuitButton)
+                        {
+                            //Retrun the player name 
+                            string PlayerName = InsertNameGUI.getPlayerName();
 
+                            //TODO: pass on to the Player class
+
+                            Player.saveScore();
+                            reinitialize();
+                            IntroMenu_GUI.createGUI();
+                            MainMenu_GUI.createGUI();
+                            gamestate = Vars_Func.GameState.MainMenu;
+                            timeCounter = 0;
+                        }
+                    }
+                    break;
+                #endregion
+                #region Insert Name Before Reset
+                case Vars_Func.GameState.InserNameReset:
+                    InsertNameGUI.update(gameTime, mouseState, keyboard);
+                    if (timeCounter > minDelayTime)
+                    {
+                        if (InsertNameGUI.getGUI_Button() != null && InsertNameGUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.QuitButton)
+                        {
+                            //Retrun the player name 
+                            string PlayerName = InsertNameGUI.getPlayerName();
+
+                            //TODO: pass on to the Player class
+
+                            showIngameMenu = false;
+                            Player.saveScore();
+                            reinitialize();
+                            MainMenu_GUI.createGUI();
+                            IngameMenu_GUI.restGUI();
+                            gamestate = Vars_Func.GameState.Ingame;
+                            timeCounter = 0;
+                        }
+                    }
+                    break;
+                #endregion
+                #region Insert Name Before Quit
+                case Vars_Func.GameState.InserNameQuit:
+                    InsertNameGUI.update(gameTime, mouseState, keyboard);
+                    if (timeCounter > minDelayTime)
+                    {
+                        if (InsertNameGUI.getGUI_Button() != null && InsertNameGUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.QuitButton)
+                        {
+                            timeCounter = 0;
+                            //Retrun the player name 
+                            string PlayerName = InsertNameGUI.getPlayerName();
+
+                            //TODO: pass on to the Player class
+
+                            Player.saveScore();
+                            this.Exit();
+
+                        }
                     }
                     break;
                 #endregion
@@ -597,9 +714,53 @@ namespace Underlord
                     }
                     break;
                 #endregion
+                #region Insert Name After Confirm
+                case Vars_Func.GameState.InsertNameConfirm:
+                    if (!InsertNameGUI.UpdateReady)
+                    {
+                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                        Confirm_GUI.Draw(spriteBatch, font);
+                    }
+                    else
+                    {
+                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                        InsertNameGUI.Draw(spriteBatch, font);
+                    }
+                    break;
+                #endregion
+                #region Insert Name Before Reset
+                case Vars_Func.GameState.InserNameReset:
+                    if (!InsertNameGUI.UpdateReady)
+                    {
+                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                        GameOver_GUI.Draw(spriteBatch, font);
+                    }
+                    else
+                    {
+                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                        InsertNameGUI.Draw(spriteBatch, font);
+                    }
+                    break;
+                #endregion
+                #region Insert Name Before Quit
+                case Vars_Func.GameState.InserNameQuit:
+                    if (!InsertNameGUI.UpdateReady)
+                    {
+                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                        GameOver_GUI.Draw(spriteBatch, font);
+                    }
+                    else
+                    {
+                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                        InsertNameGUI.Draw(spriteBatch, font);
+                    }
+                    break;
+                #endregion
                 default:
                     break;
             }
+            spriteBatch.Draw(Vars_Func.getCursor(), new Vector2(mouseState.X, mouseState.Y), Color.White);
+
             spriteBatch.End();
 
             base.Draw(gameTime);

@@ -347,7 +347,7 @@ namespace Underlord.Logic
                 #region Ingame
                 case Vars_Func.GameState.Ingame:
                     //colors the hexagon at mouseposition in Ingame mode yellow
-                    map.getHexagonAt(mouseover).Color = Color.Yellow;
+                    map.getHexagonAt(mouseover).Color = Color.Snow;
                     //only ten clicks per second
                     if (timeCounter > 100)
                     {

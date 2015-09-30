@@ -32,6 +32,7 @@ namespace Underlord.Environment
         LightModel light;
         List<Wave> waves;
         List<Wave> endedWaves;
+        List<FireBallModel> fireBalls;
 
         Vector2 hqPosition;
         int planeSidelength;
@@ -115,6 +116,10 @@ namespace Underlord.Environment
         {
             set { light = value; }
         }
+        public List<FireBallModel> FireBalls
+        {
+            get { return fireBalls; }
+        }
         #endregion
 
         #region Constructor
@@ -137,6 +142,7 @@ namespace Underlord.Environment
             dyingCreatures = new List<Creature>();
             waves = new List<Wave>();
             endedWaves = new List<Wave>();
+            fireBalls = new List<FireBallModel>();
 
             hqPosition = new Vector2();
             //drawHeight = 2; //how many hexagons are drawn up and down of the middle (+1)
@@ -526,6 +532,10 @@ namespace Underlord.Environment
             foreach (Wave w in waves)
             {
                 w.update(gameTime, this);
+            }
+            foreach (FireBallModel fB in fireBalls)
+            {
+                fB.Update(gameTime);
             }
             light.Update(gameTime);
             while (dyingCreatures.Count > 0)

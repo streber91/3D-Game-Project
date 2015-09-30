@@ -24,6 +24,7 @@ namespace Underlord.Entity
 
         float positionLerpCounter, diggLerpCounter;
         float degree;
+        float[] animationSpeeds;
 
         AnimationModel model;
         Vars_Func.ImpState currentState = Vars_Func.ImpState.Walking;
@@ -69,6 +70,11 @@ namespace Underlord.Entity
             currentHex = map.getHexagonAt(position);
             oldHex = map.getHexagonAt(position);
             targetHex = null;
+            animationSpeeds = new float[4];
+            animationSpeeds[0] = 2;
+            animationSpeeds[1] = 1;
+            animationSpeeds[2] = 1;
+            animationSpeeds[3] = 1;
         }
         #endregion
 
@@ -95,20 +101,6 @@ namespace Underlord.Entity
             this.model.Update(time);       
         }
 
-        //override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor)
-        //{
-        //    drawPosition = new Vector3(drawPosition.X, drawPosition.Y, drawPosition.Z + 0.5f);
-            
-        //    Matrix modelMatrix = Matrix.Identity *
-        //    Matrix.CreateScale(0.05f) *
-        //    Matrix.CreateRotationX(MathHelper.PiOver2) *
-        //    Matrix.CreateRotationY(0) *
-        //    Matrix.CreateRotationZ(0) *
-        //    Matrix.CreateTranslation(drawPosition);
-
-        //    this.model.Color = drawColor;
-        //    this.model.Draw(camera, modelMatrix);
-        //}
         private void UpdateState(GameTime time)
         {
             switch (currentState)
@@ -174,7 +166,7 @@ namespace Underlord.Entity
         {
             if (updatePlayer)
             {
-                AnimationPlayer player = this.model.PlayClip(this.model.AnimationClip[index]);
+                AnimationPlayer player = this.model.PlayClip(this.model.AnimationClip[index], animationSpeeds[index]);
                 player.Looping = true;
                 updatePlayer = false;
             }
@@ -247,8 +239,8 @@ namespace Underlord.Entity
             //Vars_Func.getCreatureModell(typ).Color = drawColor;
             //Vars_Func.getCreatureModell(typ).Draw(camera, modelMatrix);
             this.model.Color = drawColor;
-            this.model.Draw(camera, modelMatrix, false, isEnlightend, lightPower);
-            Vars_Func.getImpShadow().Draw(camera, modelMatrix, false, isEnlightend, lightPower);
+            this.model.Draw(camera, modelMatrix, !(drawColor.Equals(Color.White)), isEnlightend, lightPower);
+            Vars_Func.getImpShadow().Draw(camera, modelMatrix, !(drawColor.Equals(Color.White)), isEnlightend, lightPower);
         }
     }
 }

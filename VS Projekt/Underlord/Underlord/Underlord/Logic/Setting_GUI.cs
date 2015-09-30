@@ -17,13 +17,15 @@ namespace Underlord.Logic
         static List<GUI_Element> elements = new List<GUI_Element>();
         static List<GUI_Element> frames = new List<GUI_Element>();
 
-        static GUI_Element dummy, headLine, returnButton, fullscreenButton, backgroundFrame, book,tutorialButton;
+        static GUI_Element dummy, headLine, returnButton, fullscreenButton, brightnessUp, brightnessDown, backgroundFrame, book,tutorialButton;
         static GUI_Element pressedButton = null;
         static bool cleanUp = false, dontDraw = false, updateReady = false, fullscreen = false, help = true/*, buttonPressed = false*/;
+        static int brightness; 
 
         #region Initialize
         public static void createGUI()
         {
+            brightness = 5;
             dummy = new GUI_Element(new Rectangle(0, -600, 1366, 768), "", Vars_Func.GUI_ElementTyp.Dummy, 1f);
             dummy.MoveAlongX = false;
             dummy.MoveAlongY = true;
@@ -43,12 +45,12 @@ namespace Underlord.Logic
             dummy.Children.Add(headLine);
             all.Add(headLine);
 
-            GUI_Element returnFrame = new GUI_Element(new Rectangle(225 - (384 / 2), 0, 384, 84), "", Vars_Func.GUI_ElementTyp.ChainMiddle);
+            GUI_Element returnFrame = new GUI_Element(new Rectangle(128 - (128 / 2), 0, 256, 84), "", Vars_Func.GUI_ElementTyp.ChainMiddle);
             dummy.Children.Add(returnFrame);
             frames.Add(returnFrame);
             all.Add(returnFrame);
 
-            returnButton = new GUI_Element(new Rectangle(225 - (384 / 2), 42, 384, 96), "              Back", Vars_Func.GUI_ElementTyp.TextArrow, Vars_Func.GUI_Typ.StartButton);
+            returnButton = new GUI_Element(new Rectangle(128 - (128 / 2), 42, 256, 64), "                 Back", Vars_Func.GUI_ElementTyp.TextArrow, Vars_Func.GUI_Typ.StartButton);
             returnButton.Highlightable = true;
             returnButton.YBonus = 15;
             dummy.Children.Add(returnButton);
@@ -60,7 +62,7 @@ namespace Underlord.Logic
             all.Add(bookFrame);
 
             string spaceSmall = "     ", spaceBig = "        ";
-            book = new GUI_Element(new Rectangle(1366 / 2 - (911 / 2), 180, 911, 512), "\n" + spaceBig + "Fullscreen: \n\n\n"
+            book = new GUI_Element(new Rectangle(1366 / 2 - (911 / 2), 180, 911, 512+48), "\n" + spaceBig + "Fullscreen:                                       Brightness:          "+brightness+"\n\n\n"
                                                                                             + spaceBig + "Show Help:  \n\n"
                                                                                             + spaceBig + "Menu:" + spaceSmall + "       Tab\n"
                                                                                             + spaceBig + "Confirm:" + spaceSmall + "  Enter/LMT\n"
@@ -76,6 +78,18 @@ namespace Underlord.Logic
             book.YBonus = 10;
             dummy.Children.Add(book);
             all.Add(book);
+
+            brightnessUp = new GUI_Element(new Rectangle(1366 / 2 + 215, 180 + 15 + 16, 32, 32), "", Vars_Func.GUI_ElementTyp.BrightnessUp);
+            brightnessUp.Highlightable = true;
+            brightnessUp.YBonus = 20;
+            dummy.Children.Add(brightnessUp);
+            all.Add(brightnessUp);
+
+            brightnessDown = new GUI_Element(new Rectangle(1366 / 2 + 215, 180 + 15 + 16 + 32, 32, 32), "", Vars_Func.GUI_ElementTyp.BrightnessDown);
+            brightnessDown.Highlightable = true;
+            brightnessDown.YBonus = 20;
+            dummy.Children.Add(brightnessDown);
+            all.Add(brightnessDown);
 
             fullscreenButton = new GUI_Element(new Rectangle(1366 / 2 - 200, 180 + 20, 76, 76), "  Off", Vars_Func.GUI_ElementTyp.FullScreenButton);
             fullscreenButton.Highlightable = true;
@@ -120,6 +134,10 @@ namespace Underlord.Logic
             updateReady = false;
             //buttonPressed = false;
         }
+        public static int getBrigthness()
+        {
+            return brightness;
+        }
         #endregion
 
         #region Update
@@ -141,19 +159,46 @@ namespace Underlord.Logic
                 e.Update(time, null, mouseState);
             }
 
-            if (fullscreenButton.Rectangle.Contains(mouseState.X, mouseState.Y) && lastMouseState.LeftButton == ButtonState.Released &&
-               mouseState.LeftButton == ButtonState.Pressed)
+            if (fullscreenButton.Rectangle.Contains(mouseState.X, mouseState.Y) 
+                && lastMouseState.LeftButton == ButtonState.Released 
+                && mouseState.LeftButton == ButtonState.Pressed)
             {
                 fullscreen = !fullscreen;
                 //buttonPressed = true;
             }
 
-            if (tutorialButton.Rectangle.Contains(mouseState.X, mouseState.Y) && lastMouseState.LeftButton == ButtonState.Released &&
-               mouseState.LeftButton == ButtonState.Pressed)
+            if (tutorialButton.Rectangle.Contains(mouseState.X, mouseState.Y) 
+                && lastMouseState.LeftButton == ButtonState.Released 
+                && mouseState.LeftButton == ButtonState.Pressed)
             {
                 help = !help;
                 //buttonPressed = true;
             }
+
+            if (brightnessUp.Rectangle.Contains(mouseState.X, mouseState.Y) 
+                && lastMouseState.LeftButton == ButtonState.Released 
+                && mouseState.LeftButton == ButtonState.Pressed)
+            {
+
+                if (brightness < 10)
+                {
+                    brightness++;
+                    UpdateBook();
+                }
+            }
+
+            if (brightnessDown.Rectangle.Contains(mouseState.X, mouseState.Y) 
+                && lastMouseState.LeftButton == ButtonState.Released 
+                && mouseState.LeftButton == ButtonState.Pressed)
+            {
+                if (brightness > 1)
+                {
+                    brightness--;
+                    UpdateBook();
+                }
+            }
+
+
 
             //if (!(fullscreenButton.Rectangle.Contains(mouseState.X, mouseState.Y) && mouseState.LeftButton == ButtonState.Pressed) &&
             //   !keyboard.IsKeyDown(Keys.Enter) && buttonPressed)
@@ -200,6 +245,30 @@ namespace Underlord.Logic
         }
         #endregion
 
+        private static void UpdateBook()
+        {
+            dummy.Children.Remove(book);
+            all.Remove(book);
+            
+            string spaceSmall = "     ", spaceBig = "        ";
+            book = new GUI_Element(new Rectangle(1366 / 2 - (911 / 2), 180, 911, 512 + 48), "\n" + spaceBig + "Fullscreen:                                       Brightness:          " + brightness + "\n\n\n"
+                                                                                            + spaceBig + "Show Help:  \n\n"
+                                                                                            + spaceBig + "Menu:" + spaceSmall + "       Tab\n"
+                                                                                            + spaceBig + "Confirm:" + spaceSmall + "  Enter/LMT\n"
+                                                                                            + spaceBig + "Refuse:" + spaceSmall + "     Esc/RMT\n"
+                                                                                            + spaceBig + "Close Help:  Esc\n"
+                                                                                            + spaceBig + "Mine:" + spaceSmall + "        M \n"
+                                                                                            + spaceBig + "Room:" + spaceSmall + "      R\n"
+                                                                                            + spaceBig + "Merge:" + spaceSmall + "     T\n"
+                                                                                            + spaceBig + "Delete:" + spaceSmall + "     D\n"
+                                                                                            + spaceBig + "Upgrade:" + spaceSmall + "U\n"
+                                                                                            + spaceBig + "Build:" + spaceSmall + "      N\n"
+                                                                                            , Vars_Func.GUI_ElementTyp.BookField);
+            book.YBonus = 10;
+            dummy.Children.Add(book);
+            all.Add(book);
+        }
+
         #region Draw
         public static void Draw(SpriteBatch spriteBatch, SpriteFont font)
         {
@@ -214,11 +283,13 @@ namespace Underlord.Logic
                 {
                     f.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaTextField));
                 }
-                returnButton.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaTextField));
+                returnButton.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaText));
                 book.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaText));
                 headLine.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaHeadline));
                 fullscreenButton.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaText));
                 tutorialButton.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaText));
+                brightnessUp.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaText));
+                brightnessDown.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaText));
                 backgroundFrame.Draw(spriteBatch, Vars_Func.getGUI_Font(Vars_Func.GUI_Font.AugustaBold2));
             }
         }

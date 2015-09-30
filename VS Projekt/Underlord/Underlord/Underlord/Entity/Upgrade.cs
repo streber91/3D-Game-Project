@@ -47,7 +47,7 @@ namespace Underlord.Entity
             Matrix.CreateTranslation(drawPosition);
 
             Vars_Func.getUpgradeModell(typ).Color = drawColor;
-            Vars_Func.getUpgradeModell(typ).Draw(camera, modelMatrix, true, isEnlightend, lightPower);
+            Vars_Func.getUpgradeModell(typ).Draw(camera, modelMatrix, !(drawColor.Equals(Color.White)), isEnlightend, lightPower);
         }
 
         //override public void DrawModel(Camera camera, Vector3 drawPosition, Color drawColor)

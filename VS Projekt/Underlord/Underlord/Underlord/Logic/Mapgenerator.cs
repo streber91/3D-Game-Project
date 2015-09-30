@@ -10,40 +10,49 @@ namespace Underlord.Logic
     static class Mapgenerator
     {
         public static int counter = 0;
-        public static void generateMap(Environment.Map map, int size, int diamond, int gold)
+        public static void generateMap(Environment.Map map, int size, int diamond, int gold, bool random)
         {
             List<Vars_Func.WallTyp> specials = new List<Vars_Func.WallTyp>();
-            specials.Add(Vars_Func.WallTyp.HQ);
-            specials.Add(Vars_Func.WallTyp.EN);
+            if (random || size != 50)
+            {
+                specials.Add(Vars_Func.WallTyp.HQ);
+                specials.Add(Vars_Func.WallTyp.EN);
+            }
             Random rand = new Random();
             Vector2 EN = new Vector2();
+            int randnum;
             int dia = diamond;
             int go = gold;
             //determine special walls
-            for (int i = 0 ; i < Math.Pow((size/5),2) - 2; ++i)
+            if (random || size != 50)
             {
-                if (dia > 0)
+                for (int i = 0; i < Math.Pow((size / 5), 2) - 2; ++i)
                 {
-                    specials.Add(Vars_Func.WallTyp.Diamond);
-                    --dia;
+                    if (dia > 0)
+                    {
+                        specials.Add(Vars_Func.WallTyp.Diamond);
+                        --dia;
+                    }
+                    else if (go > 0)
+                    {
+                        specials.Add(Vars_Func.WallTyp.Gold);
+                        --go;
+                    }
+                    else
+                    {
+                        specials.Add(Vars_Func.WallTyp.Stone);
+                    }
+
                 }
-                else if (go > 0)
-                {
-                    specials.Add(Vars_Func.WallTyp.Gold);
-                    --go;
-                }
-                else
-                {
-                    specials.Add(Vars_Func.WallTyp.Stone);
-                }
-                
             }
+            else demomap(specials);
             // build map
             for (int i = 0; i < size; ++i)
             {
                 for (int j = 0; j < size; ++j)
                 {
-                    int randnum = rand.Next(specials.Count);
+                    if(random || size != 50) randnum = rand.Next(specials.Count);
+                    else randnum = 0;
                     // special wall
                     if (j % 5 == 0 && i % 5 == 0)
                     {
@@ -128,6 +137,32 @@ namespace Underlord.Logic
                         counter = 0;
                     }
                 }
+            }
+        }
+
+        private static void demomap(List<Vars_Func.WallTyp> list)
+        {
+            for (int i = 0; i < 33; ++i)
+            {
+                list.Add(Vars_Func.WallTyp.Stone);
+            }
+            list.Add(Vars_Func.WallTyp.Diamond);
+            list.Add(Vars_Func.WallTyp.HQ);
+            list.Add(Vars_Func.WallTyp.Gold);
+            list.Add(Vars_Func.WallTyp.Gold);
+            for (int i = 0; i < 8; ++i)
+            {
+                list.Add(Vars_Func.WallTyp.Stone);
+            }
+            list.Add(Vars_Func.WallTyp.Gold);
+            for (int i = 0; i < 3; ++i)
+            {
+                list.Add(Vars_Func.WallTyp.Stone);
+            }
+            list.Add(Vars_Func.WallTyp.EN);
+            while (list.Count < 100)
+            {
+                list.Add(Vars_Func.WallTyp.Stone);
             }
         }
     }

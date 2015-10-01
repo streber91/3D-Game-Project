@@ -92,7 +92,7 @@ namespace Underlord
             Confirm_GUI.createGUI();
             GameOver_GUI.createGUI();
             IntroMenu_GUI.createGUI();
-            InsertNameGUI.createGUI();
+            //InsertNameGUI.createGUI();
 
             base.Initialize();
             Interaction.Game = this;
@@ -384,12 +384,13 @@ namespace Underlord
                         }
                         if (Confirm_GUI.getGUI_Button() != null && Confirm_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.QuitButton)
                         {
-                            //Player.saveScore();
-                            //reinitialize();
-                            //IntroMenu_GUI.createGUI();
-                            //MainMenu_GUI.createGUI();
-                            //gamestate = Vars_Func.GameState.MainMenu;
-                            gamestate = Vars_Func.GameState.InsertNameConfirm;
+                            Player.saveScore();
+                            reinitialize();
+                            IntroMenu_GUI.createGUI();
+                            MainMenu_GUI.createGUI();
+                            Highscore_GUI.createGUI();
+                            gamestate = Vars_Func.GameState.MainMenu;
+                            //gamestate = Vars_Func.GameState.InsertNameConfirm;
                             //showIngameMenu = false;
                             //IngameMenu_GUI.restGUI();
                             //gamestate = Vars_Func.GameState.Ingame;
@@ -405,22 +406,23 @@ namespace Underlord
                     {
                         if (GameOver_GUI.getGUI_Button() != null && GameOver_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.NewGameButton)
                         {
-                            //showIngameMenu = false;
-                            //Player.saveScore();
-                            //reinitialize();
-                            //MainMenu_GUI.createGUI();
-                            //IngameMenu_GUI.restGUI();
-                            //gamestate = Vars_Func.GameState.Ingame;
-                            gamestate = Vars_Func.GameState.InserNameReset;
-                            timeCounter = 0;
+                            showIngameMenu = false;
+                            Player.saveScore();
+                            reinitialize();
+                            MainMenu_GUI.createGUI();
+                            IngameMenu_GUI.restGUI();
+                            Highscore_GUI.createGUI();
+                            gamestate = Vars_Func.GameState.Ingame;
+                            //gamestate = Vars_Func.GameState.InserNameReset;
+                            //timeCounter = 0;
                         }
 
                         if (GameOver_GUI.getGUI_Button() != null && GameOver_GUI.getGUI_Button().Typ == Vars_Func.GUI_Typ.QuitButton)
                         {
-                            //Player.saveScore();
-                            //this.Exit();
-                            gamestate = Vars_Func.GameState.InserNameQuit;
-                            timeCounter = 0;
+                            Player.saveScore();
+                            this.Exit();
+                            //gamestate = Vars_Func.GameState.InserNameQuit;
+                            //timeCounter = 0;
                         }
                     }
                     break;

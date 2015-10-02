@@ -277,7 +277,7 @@ namespace Underlord.Environment
             creatures.Remove(creature);
             heroes.Remove(creature);
             dyingCreatures.Remove(creature);
-            if (GUI.Creature == creature) GUI.Creature = null;
+            if (BasicGUI.Creature == creature) BasicGUI.Creature = null;
         }
 
         public void remove(Imp imp)

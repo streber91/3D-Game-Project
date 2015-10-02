@@ -10,7 +10,7 @@ using Underlord.Environment;
 
 namespace Underlord.Logic
 {
-    static class GUI
+    static class BasicGUI
     {
         static Vars_Func.ThingTyp selectedThingTyp = Vars_Func.ThingTyp.length;
         static Nest nest;

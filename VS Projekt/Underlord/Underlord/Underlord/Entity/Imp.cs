@@ -26,7 +26,7 @@ namespace Underlord.Entity
         float degree;
         float[] animationSpeeds;
 
-        AnimationModel model;
+        CharacterModel model;
         Vars_Func.ImpState currentState = Vars_Func.ImpState.Walking;
         Vars_Func.ImpState oldState = Vars_Func.ImpState.Nothing;
         bool updatePlayer; 
@@ -65,7 +65,7 @@ namespace Underlord.Entity
             map.getHexagonAt(position).Imps.Add(this);
             map.ImpList.Add(this);
             currentJob = new Job(Vars_Func.ImpJob.Idle);
-            this.model = new AnimationModel(Vars_Func.getImpModell().Model, Vars_Func.getImpModell().AnimationClip);
+            this.model = new CharacterModel(Vars_Func.getImpModell().Model, Vars_Func.getImpModell().AnimationClip);
             updatePlayer = true;
             currentHex = map.getHexagonAt(position);
             oldHex = map.getHexagonAt(position);
@@ -166,7 +166,7 @@ namespace Underlord.Entity
         {
             if (updatePlayer)
             {
-                AnimationPlayer player = this.model.PlayClip(this.model.AnimationClip[index], animationSpeeds[index]);
+                ClipPlayer player = this.model.PlayClip(this.model.AnimationClip[index], animationSpeeds[index]);
                 player.Looping = true;
                 updatePlayer = false;
             }

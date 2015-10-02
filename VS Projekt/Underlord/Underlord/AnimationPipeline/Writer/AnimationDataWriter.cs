@@ -5,22 +5,22 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using AnimationAux;
+using Animation;
 
-namespace AnimationPipeline
+namespace Pipeline
 {
     [ContentTypeWriter]
-    public class ModelExtraWriter : ContentTypeWriter<ModelExtra>
+    public class AnimationDataWriter : ContentTypeWriter<AnimationData>
     {
-        protected override void Write(ContentWriter output, ModelExtra extra)
+        protected override void Write(ContentWriter output, AnimationData data)
         {
-            output.WriteObject(extra.Skeleton);
-            output.WriteObject(extra.Clips);
+            output.WriteObject(data.Skeleton);
+            output.WriteObject(data.Clips);
         }
 
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
-            return typeof(ModelExtraReader).AssemblyQualifiedName;
+            return typeof(AnimationDataReader).AssemblyQualifiedName;
         }
     }
 }

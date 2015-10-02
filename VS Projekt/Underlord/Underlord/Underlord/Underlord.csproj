@@ -107,10 +107,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Animation\AnimationModel.cs" />
-    <Compile Include="Animation\AnimationPlayer.cs" />
-    <Compile Include="Animation\Bone.cs" />
-    <Compile Include="Animation\ImpModel.cs" />
+    <Compile Include="Animation\Model\CharacterModel.cs" />
+    <Compile Include="Animation\Player\ClipPlayer.cs" />
+    <Compile Include="Animation\Player\Bone.cs" />
+    <Compile Include="Animation\Model\ImpModel.cs" />
     <Compile Include="Basic\BasicModel.cs" />
     <Compile Include="Basic\FireBallModel.cs" />
     <Compile Include="Basic\FireModel.cs" />
@@ -127,18 +127,18 @@
     <Compile Include="Entity\Upgrade.cs" />
     <Compile Include="Entity\Creature.cs" />
     <Compile Include="Entity\Thing.cs" />
-    <Compile Include="Logic\Confirm_GUI.cs" />
-    <Compile Include="Logic\GameOver_GUI.cs" />
-    <Compile Include="Logic\GUI_Element.cs" />
-    <Compile Include="Logic\Highscore_GUI.cs" />
-    <Compile Include="Logic\IngameMenu_GUI.cs" />
-    <Compile Include="Logic\InputController.cs" />
-    <Compile Include="Logic\IntroMenu_GUI.cs" />
-    <Compile Include="Logic\MainMenu_GUI.cs" />
-    <Compile Include="Logic\InsertNameGUI.cs" />
+    <Compile Include="GUI\Confirm_GUI.cs" />
+    <Compile Include="GUI\GameOver_GUI.cs" />
+    <Compile Include="GUI\GUI_Element.cs" />
+    <Compile Include="GUI\Highscore_GUI.cs" />
+    <Compile Include="GUI\IngameMenu_GUI.cs" />
+    <Compile Include="GUI\InputReader.cs" />
+    <Compile Include="GUI\IntroMenu_GUI.cs" />
+    <Compile Include="GUI\MainMenu_GUI.cs" />
+    <Compile Include="GUI\InsertNameGUI.cs" />
     <Compile Include="Logic\Player.cs" />
-    <Compile Include="Logic\Setting_GUI.cs" />
-    <Compile Include="Logic\StartMenu_GUI.cs" />
+    <Compile Include="GUI\Setting_GUI.cs" />
+    <Compile Include="GUI\StartMenu_GUI.cs" />
     <Compile Include="Logic\Vars_Func.cs" />
     <Compile Include="Logic\Interaction.cs" />
     <Compile Include="Logic\Job.cs" />
@@ -150,7 +150,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Renderer\Camera.cs" />
-    <Compile Include="Logic\GUI.cs" />
+    <Compile Include="GUI\BasicGUI.cs" />
     <Compile Include="Renderer\Particle.cs" />
     <Compile Include="Renderer\ParticleGenerator.cs" />
   </ItemGroup>
@@ -159,17 +159,18 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AnimationAux\AnimationAux.csproj">
+    <ProjectReference Include="..\AnimationAux\Animation.csproj">
       <Project>{F2F7FA8C-1FC7-42CC-93D8-E5DFF48AC09B}</Project>
-      <Name>AnimationAux</Name>
+      <Name>Animation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AnimationPipeline\AnimationPipeline.csproj">
+    <ProjectReference Include="..\AnimationPipeline\Pipeline.csproj">
       <Project>{FF2FBE94-50B5-4E78-9592-B95F32A8881E}</Project>
-      <Name>AnimationPipeline</Name>
+      <Name>Pipeline</Name>
     </ProjectReference>
     <ProjectReference Include="..\UnderlordContent\UnderlordContent.contentproj">
-      <Name>UnderlordContent</Name>
+      <Name>UnderlordContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{4F41F530-BA45-4089-998A-98291EC8F7AA}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

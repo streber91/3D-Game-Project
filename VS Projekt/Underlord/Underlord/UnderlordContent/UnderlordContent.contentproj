@@ -97,13 +97,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AnimationAux\AnimationAux.csproj">
+    <ProjectReference Include="..\AnimationAux\Animation.csproj">
       <Project>{F2F7FA8C-1FC7-42CC-93D8-E5DFF48AC09B}</Project>
-      <Name>AnimationAux</Name>
+      <Name>Animation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AnimationPipeline\AnimationPipeline.csproj">
+    <ProjectReference Include="..\AnimationPipeline\Pipeline.csproj">
       <Project>{FF2FBE94-50B5-4E78-9592-B95F32A8881E}</Project>
-      <Name>AnimationPipeline</Name>
+      <Name>Pipeline</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -279,12 +279,12 @@
     <Compile Include="AnimationModels\Skeleton\skeleton_simple_fight_ANI_01.fbx">
       <Name>skeleton_simple_fight_ANI_01</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>AnimationProcessor</Processor>
+      <Processor>AnimationImportPipeline</Processor>
     </Compile>
     <Compile Include="AnimationModels\Skeleton\skeleton_simple_walk_ANI_01.fbx">
       <Name>skeleton_simple_walk_ANI_01</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>AnimationProcessor</Processor>
+      <Processor>AnimationImportPipeline</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -296,12 +296,12 @@
     <Compile Include="AnimationModels\Ant\ant_simple_fight_ANI_01.fbx">
       <Name>ant_simple_fight_ANI_01</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>AnimationProcessor</Processor>
+      <Processor>AnimationImportPipeline</Processor>
     </Compile>
     <Compile Include="AnimationModels\Ant\ant_simple_walk_ANI_01.fbx">
       <Name>ant_simple_walk_ANI_01</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>AnimationProcessor</Processor>
+      <Processor>AnimationImportPipeline</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -313,29 +313,29 @@
     <Compile Include="AnimationModels\Imp\imp_simple_grab_ANI_01.fbx">
       <Name>imp_simple_grab_ANI_01</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>AnimationProcessor</Processor>
+      <Processor>AnimationImportPipeline</Processor>
     </Compile>
     <Compile Include="AnimationModels\Imp\imp_simple_harvesting_ANI_01.fbx">
       <Name>imp_simple_harvesting_ANI_01</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>AnimationProcessor</Processor>
+      <Processor>AnimationImportPipeline</Processor>
     </Compile>
     <Compile Include="AnimationModels\Imp\imp_simple_praying_ANI_01.fbx">
       <Name>imp_simple_praying_ANI_01</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>AnimationProcessor</Processor>
+      <Processor>AnimationImportPipeline</Processor>
     </Compile>
     <Compile Include="AnimationModels\Imp\imp_simple_walk_ANI_01.fbx">
       <Name>imp_simple_walk_ANI_01</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>AnimationProcessor</Processor>
+      <Processor>AnimationImportPipeline</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnimationModels\HQ\devil_head_GEO_01.fbx">
       <Name>devil_head_GEO_01</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>AnimationProcessor</Processor>
+      <Processor>AnimationImportPipeline</Processor>
     </Compile>
     <Compile Include="AnimationModels\HQ\devil_mouth_GEO_01.fbx">
       <Name>devil_mouth_GEO_01</Name>
@@ -352,17 +352,17 @@
     <Compile Include="AnimationModels\Knight\knight_simple_fight_ANI_01.fbx">
       <Name>knight_simple_fight_ANI_01</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>AnimationProcessor</Processor>
+      <Processor>AnimationImportPipeline</Processor>
     </Compile>
     <Compile Include="AnimationModels\Knight\knight_simple_flying_ANI_01.fbx">
       <Name>knight_simple_flying_ANI_01</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>AnimationProcessor</Processor>
+      <Processor>AnimationImportPipeline</Processor>
     </Compile>
     <Compile Include="AnimationModels\Knight\knight_simple_walk_ANI_01.fbx">
       <Name>knight_simple_walk_ANI_01</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>AnimationProcessor</Processor>
+      <Processor>AnimationImportPipeline</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>

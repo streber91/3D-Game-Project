@@ -5,9 +5,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Underlord", "Underlord\Unde
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnderlordContent", "Underlord\UnderlordContent\UnderlordContent.contentproj", "{4F41F530-BA45-4089-998A-98291EC8F7AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimationAux", "Underlord\AnimationAux\AnimationAux.csproj", "{F2F7FA8C-1FC7-42CC-93D8-E5DFF48AC09B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Animation", "Underlord\AnimationAux\Animation.csproj", "{F2F7FA8C-1FC7-42CC-93D8-E5DFF48AC09B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimationPipeline", "Underlord\AnimationPipeline\AnimationPipeline.csproj", "{FF2FBE94-50B5-4E78-9592-B95F32A8881E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pipeline", "Underlord\AnimationPipeline\Pipeline.csproj", "{FF2FBE94-50B5-4E78-9592-B95F32A8881E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

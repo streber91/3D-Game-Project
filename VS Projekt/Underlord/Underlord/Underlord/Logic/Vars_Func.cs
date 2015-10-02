@@ -57,7 +57,7 @@ namespace Underlord.Logic
        public enum GrowObject { Farm, Temple, Graveyard, length };
 
        #region Fields
-       static List<AnimationModel> CreatureModels;
+       static List<CharacterModel> CreatureModels;
        static List<BasicModel> CreatureShadows;
        static List<BasicModel> NestModels;
        static List<BasicModel> UpgradeModels;
@@ -89,7 +89,7 @@ namespace Underlord.Logic
        static Vector3[] NestParamters = { new Vector3(0, 1, 0), new Vector3(0, 1, 0), new Vector3(0, 1, 0), new Vector3(0.01f, 1, 0), new Vector3(0.01f, 1, 0) };
        static Vector3[] GrowObjectParameters = { new Vector3(0.01f, 1, 0), new Vector3(0.01f, 1, 0), new Vector3(0.01f, 1, 0) };
 
-       public static AnimationModel getCreatureModell(CreatureTyp typ) { return CreatureModels[(int)typ]; }
+       public static CharacterModel getCreatureModell(CreatureTyp typ) { return CreatureModels[(int)typ]; }
        public static BasicModel getCreatureShadow(CreatureTyp typ) { return CreatureShadows[(int)typ]; }
        public static BasicModel getNestModell(NestTyp typ) { return NestModels[(int)typ]; }
        public static BasicModel getUpgradeModell(UpgradeTyp typ) { return UpgradeModels[(int)typ]; }
@@ -124,7 +124,7 @@ namespace Underlord.Logic
 
        public static void loadContent(ContentManager Content)
        {
-           CreatureModels = new List<AnimationModel>();
+           CreatureModels = new List<CharacterModel>();
            CreatureShadows = new List<BasicModel>();
            NestModels = new List<BasicModel>();
            UpgradeModels = new List<BasicModel>();
@@ -341,34 +341,34 @@ namespace Underlord.Logic
            TempelBath = new BasicModel(Content.Load<Model>("Models/Tempel//tempel_manaBath_GEO_01"));
 
            // Add ant character
-           AnimationModel ant = new AnimationModel(Content.Load<Model>("AnimationModels/Ant//ant_simple_walk_ANI_01"));
-           ant.AddClip(new AnimationModel(Content.Load<Model>("AnimationModels/Ant//ant_simple_fight_ANI_01")));
+           CharacterModel ant = new CharacterModel(Content.Load<Model>("AnimationModels/Ant//ant_simple_walk_ANI_01"));
+           ant.AddClip(new CharacterModel(Content.Load<Model>("AnimationModels/Ant//ant_simple_fight_ANI_01")));
            CreatureModels.Add(ant);
            CreatureShadows.Add(new BasicModel(Content.Load<Model>("AnimationModels/Ant//ant_shadow_GEO_01")));
 
            // Add knight character
-           AnimationModel knight = new AnimationModel(Content.Load<Model>("AnimationModels/Knight//knight_simple_walk_ANI_01"));
-           knight.AddClip(new AnimationModel(Content.Load<Model>("AnimationModels/Knight//knight_simple_fight_ANI_01")));
-           knight.AddClip(new AnimationModel(Content.Load<Model>("AnimationModels/Knight//knight_simple_flying_ANI_01")));
+           CharacterModel knight = new CharacterModel(Content.Load<Model>("AnimationModels/Knight//knight_simple_walk_ANI_01"));
+           knight.AddClip(new CharacterModel(Content.Load<Model>("AnimationModels/Knight//knight_simple_fight_ANI_01")));
+           knight.AddClip(new CharacterModel(Content.Load<Model>("AnimationModels/Knight//knight_simple_flying_ANI_01")));
            CreatureModels.Add(knight);
            CreatureShadows.Add(new BasicModel(Content.Load<Model>("AnimationModels/Knight//knight_shadow_GEO_01")));
 
            // Add HQ character
-           CreatureModels.Add(new AnimationModel(Content.Load<Model>("AnimationModels/HQ//devil_head_GEO_01")));
+           CreatureModels.Add(new CharacterModel(Content.Load<Model>("AnimationModels/HQ//devil_head_GEO_01")));
            HQMouthModel = new BasicModel(Content.Load<Model>("AnimationModels/HQ//devil_mouth_GEO_01"));
            CreatureShadows.Add(new BasicModel(Content.Load<Model>("AnimationModels/Skeleton//skeleton_shadow_GEO_01")));
 
            // Add skeleton character
-           AnimationModel skeleton = new AnimationModel(Content.Load<Model>("AnimationModels/Skeleton//skeleton_simple_walk_ANI_01"));
-           skeleton.AddClip(new AnimationModel(Content.Load<Model>("AnimationModels/Skeleton//skeleton_simple_fight_ANI_01")));
+           CharacterModel skeleton = new CharacterModel(Content.Load<Model>("AnimationModels/Skeleton//skeleton_simple_walk_ANI_01"));
+           skeleton.AddClip(new CharacterModel(Content.Load<Model>("AnimationModels/Skeleton//skeleton_simple_fight_ANI_01")));
            CreatureModels.Add(skeleton);
            CreatureShadows.Add(new BasicModel(Content.Load<Model>("AnimationModels/Skeleton//skeleton_shadow_GEO_01")));
 
            // Add imp character
            ImpModel = new ImpModel(Content.Load<Model>("AnimationModels/Imp//imp_simple_walk_ANI_01"));
-           ImpModel.AddClip(new AnimationModel(Content.Load<Model>("AnimationModels/Imp//imp_simple_grab_ANI_01")));
-           ImpModel.AddClip(new AnimationModel(Content.Load<Model>("AnimationModels/Imp//imp_simple_praying_ANI_01")));
-           ImpModel.AddClip(new AnimationModel(Content.Load<Model>("AnimationModels/Imp//imp_simple_harvesting_ANI_01")));
+           ImpModel.AddClip(new CharacterModel(Content.Load<Model>("AnimationModels/Imp//imp_simple_grab_ANI_01")));
+           ImpModel.AddClip(new CharacterModel(Content.Load<Model>("AnimationModels/Imp//imp_simple_praying_ANI_01")));
+           ImpModel.AddClip(new CharacterModel(Content.Load<Model>("AnimationModels/Imp//imp_simple_harvesting_ANI_01")));
            ImpShadow = new BasicModel(Content.Load<Model>("AnimationModels/Imp//imp_shadow_GEO_01"));
 
            // Add torch model

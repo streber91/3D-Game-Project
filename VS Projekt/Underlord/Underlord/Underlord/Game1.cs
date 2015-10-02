@@ -83,7 +83,7 @@ namespace Underlord
             
             
             minimap = new Minimap(map, new Vector2(graphics.PreferredBackBufferWidth - minimapSize, 0), new Vector2(minimapSize, minimapSize));
-            GUI.createGUI();
+            BasicGUI.createGUI();
             StartMenu_GUI.createGUI();
             MainMenu_GUI.createGUI();
             Highscore_GUI.createGUI();
@@ -106,7 +106,7 @@ namespace Underlord
             Player.Food = 200;
             Player.Score = 0;
             Spells.SummonImpCost = 0;
-            GUI.SelectedThingTyp = Vars_Func.ThingTyp.length;
+            BasicGUI.SelectedThingTyp = Vars_Func.ThingTyp.length;
             hexagonSideLength = 1; //dont change
             mapDrawWidth = 10; //dont go over 15
             planeLength = 50; //need an even number!
@@ -303,7 +303,7 @@ namespace Underlord
                         Vars_Func.resetHexagonColors(map);
 
                         WaveController.update(gameTime, map);
-                        GUI.update(gameTime, map, mouseState);
+                        BasicGUI.update(gameTime, map, mouseState);
                         Interaction.Update(gameTime, map, mouseover, mouseState, lastMouseState, keyboard);
                     }
                     break;
@@ -583,7 +583,7 @@ namespace Underlord
                     if (reinitializeDone)
                     {
                         //minimap.drawMinimap(spriteBatch, indexOfMiddleHexagon);
-                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                        BasicGUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
                         //spriteBatch.DrawString(font, mouseState.X.ToString() + " : " + mouseState.Y.ToString(), new Vector2(20, 200), Color.Black);
                         //spriteBatch.DrawString(font, mousePosition.X.ToString() + " : " + mousePosition.Y.ToString() + " : " + mousePosition.Z.ToString(), new Vector2(20, 220), Color.Black);
                         //spriteBatch.DrawString(font, "FPS: " + drawFrame.ToString(), new Vector2(20, 240), Color.Black);
@@ -680,12 +680,12 @@ namespace Underlord
                 case Vars_Func.GameState.Confirm:
                     if (!Confirm_GUI.UpdateReady)
                     {
-                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                        BasicGUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
                         IngameMenu_GUI.Draw(spriteBatch, font);
                     }
                     else
                     {
-                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                        BasicGUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
                         Confirm_GUI.Draw(spriteBatch, font);
                     }
                     break;
@@ -694,11 +694,11 @@ namespace Underlord
                 case Vars_Func.GameState.GameOver:
                     if (!GameOver_GUI.UpdateReady)
                     {
-                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                        BasicGUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
                     }
                     else
                     {
-                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                        BasicGUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
                         GameOver_GUI.Draw(spriteBatch, font);
                     }
 
@@ -720,12 +720,12 @@ namespace Underlord
                 case Vars_Func.GameState.InsertNameConfirm:
                     if (!InsertNameGUI.UpdateReady)
                     {
-                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                        BasicGUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
                         Confirm_GUI.Draw(spriteBatch, font);
                     }
                     else
                     {
-                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                        BasicGUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
                         InsertNameGUI.Draw(spriteBatch, font);
                     }
                     break;
@@ -734,12 +734,12 @@ namespace Underlord
                 case Vars_Func.GameState.InserNameReset:
                     if (!InsertNameGUI.UpdateReady)
                     {
-                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                        BasicGUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
                         GameOver_GUI.Draw(spriteBatch, font);
                     }
                     else
                     {
-                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                        BasicGUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
                         InsertNameGUI.Draw(spriteBatch, font);
                     }
                     break;
@@ -748,12 +748,12 @@ namespace Underlord
                 case Vars_Func.GameState.InserNameQuit:
                     if (!InsertNameGUI.UpdateReady)
                     {
-                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                        BasicGUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
                         GameOver_GUI.Draw(spriteBatch, font);
                     }
                     else
                     {
-                        GUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
+                        BasicGUI.Draw(spriteBatch, font, minimap, indexOfMiddleHexagon);
                         InsertNameGUI.Draw(spriteBatch, font);
                     }
                     break;

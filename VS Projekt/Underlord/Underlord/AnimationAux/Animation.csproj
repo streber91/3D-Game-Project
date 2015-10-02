@@ -7,7 +7,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AnimationAux</RootNamespace>
+    <RootNamespace>Animation</RootNamespace>
     <AssemblyName>XnaAux</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -92,10 +92,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnimationClip.cs" />
-    <Compile Include="AnimationClipReader.cs" />
-    <Compile Include="ModelExtra.cs" />
-    <Compile Include="ModelExtraReader.cs" />
+    <Compile Include="Clip.cs" />
+    <Compile Include="Reader\ClipReader.cs" />
+    <Compile Include="AnimationData.cs" />
+    <Compile Include="Reader\AnimationDataReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

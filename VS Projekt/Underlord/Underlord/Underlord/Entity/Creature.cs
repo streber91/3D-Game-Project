@@ -26,7 +26,7 @@ namespace Underlord.Entity
         float tempZ;
         float[] animationSpeeds;
 
-        AnimationModel model;
+        CharacterModel model;
         Vars_Func.CreatureState currentState = Vars_Func.CreatureState.Walking;
         Vars_Func.CreatureState oldState = Vars_Func.CreatureState.Nothing;
         bool updatePlayer, reachGround; 
@@ -204,7 +204,7 @@ namespace Underlord.Entity
                     //map.getHexagonAt(position).Fireball = Vars_Func.getFireBall();
                     break;
             }
-            this.model = new AnimationModel(Vars_Func.getCreatureModell(typ).Model);
+            this.model = new CharacterModel(Vars_Func.getCreatureModell(typ).Model);
             model.AnimationClip = Vars_Func.getCreatureModell(typ).AnimationClip;
             updatePlayer = true;
             currentHex = map.getHexagonAt(position);
@@ -370,7 +370,7 @@ namespace Underlord.Entity
         {
             if (updatePlayer)
             {
-                AnimationPlayer player = this.model.PlayClip(this.model.AnimationClip[index], animationSpeeds[index]);
+                ClipPlayer player = this.model.PlayClip(this.model.AnimationClip[index], animationSpeeds[index]);
                 player.Looping = true;
                 updatePlayer = false;
             }

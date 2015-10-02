@@ -5,20 +5,20 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 
-namespace AnimationAux
+namespace Animation
 {
-    public class AnimationClipReader : ContentTypeReader<AnimationClip>
+    public class ClipReader : ContentTypeReader<Clip>
     {
-        protected override AnimationClip Read(ContentReader input, AnimationClip existingInstance)
+        protected override Clip Read(ContentReader input, Clip existingInstance)
         {
-            AnimationClip clip = new AnimationClip();
+            Clip clip = new Clip();
             clip.Name = input.ReadString();
             clip.Duration = input.ReadDouble();
 
             int boneCnt = input.ReadInt32();
             for (int i = 0; i < boneCnt; i++)
             {
-                AnimationClip.Bone bone = new AnimationClip.Bone();
+                Clip.Bone bone = new Clip.Bone();
                 clip.Bones.Add(bone);
 
                 bone.Name = input.ReadString();
@@ -27,7 +27,7 @@ namespace AnimationAux
 
                 for (int j = 0; j < cnt; j++)
                 {
-                    AnimationClip.Keyframe keyframe = new AnimationClip.Keyframe();
+                    Clip.Keyframe keyframe = new Clip.Keyframe();
                     keyframe.Time = input.ReadDouble();
                     keyframe.Rotation = input.ReadQuaternion();
                     keyframe.Translation = input.ReadVector3();

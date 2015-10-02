@@ -379,7 +379,7 @@ namespace Underlord.Entity
             if (typ == Vars_Func.NestTyp.Farm)
             {
                 Vars_Func.getFarmInput().Color = drawColor;
-                float zValue = MathHelper.Lerp(0.4f, -0.1f, ((float)(Player.Food) / 3000));
+                float zValue = MathHelper.Lerp(0.3f, -0.1f, ((float)(Player.Food) / 3000));
                 Vector3 farmPostion = new Vector3(drawPosition.X, drawPosition.Y, drawPosition.Z - zValue);
                 Matrix farmMatrix = Matrix.Identity *
                 Matrix.CreateScale(Vars_Func.getNestParams(typ).Y) *

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
-using AnimationAux;
+using Animation;
 using Underlord.Renderer;
 using Underlord.Animation;
 
@@ -17,32 +17,15 @@ namespace Underlord.Basic
     {
         #region Fields
 
-        /// <summary>
-        /// The model asset name.
-        /// </summary>
         protected string assetName = "";
-
-        /// <summary>
-        /// The actual underlying XNA model.
-        /// </summary>
         protected Model model = null;
-
-        /// <summary>
-        /// The texture of the model.
-        /// </summary>
         protected Texture2D modelTexture;
-
-        /// <summary>
-        /// The color of the model.
-        /// </summary>
         protected Color modelColor;
 
         #endregion
 
         #region Properties
-        /// <summary>
-        /// The model property.
-        /// </summary>
+
         public Model Model
         {
             get { return this.model; }
@@ -68,11 +51,8 @@ namespace Underlord.Basic
         }        
         #endregion
 
-        #region Updating
-        /// <summary>
-        /// Update the model.
-        /// </summary>
-        /// <param name="gameTime">The game's time</param>
+        #region Update
+
         public void Update(GameTime gameTime)
         {
             /// TODO: Update something.
@@ -81,12 +61,8 @@ namespace Underlord.Basic
 
         #endregion
 
-        #region Drawing
-        /// <summary>
-        /// Draw the model
-        /// </summary>
-        /// <param name="camera">A camera to determine the view</param>
-        /// <param name="world">A world matrix to place the model</param>
+        #region Draw
+
         public void Draw(Camera camera, Matrix world, bool drawAmbient, bool isEnlightend, float lightPower)
         {
             if (model == null)
@@ -97,6 +73,7 @@ namespace Underlord.Basic
             Matrix[] boneTransforms = new Matrix[model.Bones.Count];
             model.Root.Transform = world;
             model.CopyAbsoluteBoneTransformsTo(boneTransforms);
+            
             // Draw the model.
             foreach (ModelMesh modelMesh in model.Meshes)
             {
@@ -192,47 +169,5 @@ namespace Underlord.Basic
             }
         }
         #endregion
-
-        //public void Draw(Camera camera, Matrix world)
-        //{
-        //    if (model == null)
-        //        return;
-
-        //    //
-        //    // Compute all of the bone absolute transforms
-        //    //
-
-        //    Matrix[] boneTransforms = new Matrix[model.Bones.Count];
-        //    model.Root.Transform = world;
-        //    model.CopyAbsoluteBoneTransformsTo(boneTransforms);
-
-        //    //
-        //    // Determine the skin transforms from the skeleton
-        //    //
-
-        //    // Draw the model.
-        //    foreach (ModelMesh modelMesh in model.Meshes)
-        //    {
-        //        foreach (BasicEffect basicEffect in modelMesh.Effects)
-        //        {
-        //            basicEffect.World = boneTransforms[modelMesh.ParentBone.Index];
-        //            basicEffect.View = camera.View;
-        //            basicEffect.Projection = camera.Projection;
-
-        //            basicEffect.EnableDefaultLighting();
-        //            basicEffect.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-        //            basicEffect.GraphicsDevice.BlendState = BlendState.AlphaBlend;
-
-        //            basicEffect.AmbientLightColor = new Vector3(modelColor.R, modelColor.G, modelColor.B);
-
-        //            if (this.modelTexture != basicEffect.Texture)
-        //            {
-        //                basicEffect.Texture = this.modelTexture;
-        //            }
-        //        }
-        //        modelMesh.Draw();
-        //    }
-        //}
-        //#endregion
     }
 }
